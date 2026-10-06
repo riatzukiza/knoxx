@@ -192,3 +192,22 @@
   p-skill-candidate: 0.2
   receipt-refs: 2026-10-06T14:28:52.198143Z
   note: Keep accepted source synchronization separate from unmerged feature migration. An inherited ready-triggered merge job makes draft preparation necessary until reviewed base enforcement. No spore warranted.
+- ts: 2026-10-06T19:09:48.828883+00:00
+  session: /home/err/spaces/cephalon-music-fix/knoxx
+  task: Restore native music process-result decoding and Docker engine packaging
+  p-efficiency: 0.8
+  p-friction: 0.3
+  p-skill-candidate: 0.3
+  spore: none
+  receipt-refs: native-music-result-hotfix
+  note: Real process output plus WAV-byte checks expose this boundary bug; use guarded counters because Shadow may exit zero on failed tests. Preserve pre-existing lint blockers with a base comparison.
+
+- ts: 2026-10-06T21:59:44.619814Z
+  session: /home/err/spaces/cephalon-music-fix/knoxx
+  task: Route active cephalon development reviews to personal forks
+  p-efficiency: 0.91
+  p-friction: 0.26
+  p-skill-candidate: 0.20
+  spore: none
+  receipt-refs: cephalon-personal-fork-review-migration
+  note: Review subscriptions belong to the PR base repository owner. A branch in a personal fork targeting the org still reviews under org scope; use an in-personal-fork PR, preserve parent synchronization and native evidence, and qualify release/deployment separately.
