@@ -192,3 +192,12 @@
   p-skill-candidate: 0.2
   receipt-refs: 2026-10-06T14:28:52.198143Z
   note: Keep accepted source synchronization separate from unmerged feature migration. An inherited ready-triggered merge job makes draft preparation necessary until reviewed base enforcement. No spore warranted.
+
+- ts: 2026-10-06T14:34:56.169954Z
+  session: foresight-parallel-goal
+  task: Preserve Knoxx381 history on personal development stack
+  p-efficiency: 0.9
+  p-friction: 0.2
+  p-skill-candidate: 0.25
+  receipt-refs: 2026-10-06T14:34:56.169954Z
+  note: Ordinary merge preserves an older feature source while retaining accepted main cleanup; direct whole-tree copying would reintroduce unrelated documentation. Record original settled findings as provenance rather than new approval. No spore warranted.

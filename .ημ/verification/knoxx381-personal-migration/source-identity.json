@@ -1,0 +1,66 @@
+{
+  "origin_pr": "https://github.com/open-hax/knoxx/pull/381",
+  "original_source": "40221a69f7fff675b46614d9ab318b4ef52f3786",
+  "original_feature_base": "0fdaae13f421ff9623b1bb6fe1afb7694ab68ca1",
+  "personal_sync_base": "5670338fcf1db7d51a2690f388e4e4c5c409c48a",
+  "accepted_origin_main": "3409977bca4ba35e09967f9a99d50867a679a73c",
+  "migration_merge": "a980408978e47b1df4861f444a5d75726c66e46b",
+  "feature_artifacts": [
+    {
+      "path": "backend/src/cljs/knoxx/backend/extern/axxium_authority.cljs",
+      "git_blob": "f36edabb904ebcd39cdd954402d4149a5bcb15e8",
+      "sha256": "87d859a7f0334331dee7d44fab394d66444e07b8c090e573e8505edaa00901fc"
+    },
+    {
+      "path": "backend/src/cljs/knoxx/backend/infra/auth/axxium.cljs",
+      "git_blob": "946cb16c44e5ff53ee68029fa6865407db0eda88",
+      "sha256": "41e8d0ead398944fe8a8771ed6f3f45367e11ca4c3dbadc1fe3d9328e099b0f4"
+    },
+    {
+      "path": "backend/test/cljs/knoxx/backend/axxium_identity_test.cljs",
+      "git_blob": "e6c4903049bf983b43af9d525b5cf7a2c7a14869",
+      "sha256": "a6494b2186d0c66282a09af5081ded546c31517d79ce9b06ba2aaa7189067c80"
+    },
+    {
+      "path": "docs/verification/axxium-local.md",
+      "git_blob": "61310af5cf4b66d103b46e850267d5758784a61f",
+      "sha256": "1d9bb22612eae1d9f41443cd9443d5c35f6dc1f7601463e0150a5ba55419a943"
+    },
+    {
+      "path": "frontend/src/cljs/knoxx/frontend/auth/api.cljs",
+      "git_blob": "724bf2a6f235187e86d060a1460cf5e1c04d376b",
+      "sha256": "7324caa1bb162a1f4ac43cb66a84d0d974daf9fa009080a99ecd8fb197c58aca"
+    },
+    {
+      "path": "frontend/src/cljs/knoxx/frontend/auth/boundary.cljs",
+      "git_blob": "c43b48e7853ad4f126f3572b3ba30dc0325eb22e",
+      "sha256": "55d4d08a9ac2e04a005b987d47b5a828bd4deb660d420e8633206e2c4841d933"
+    },
+    {
+      "path": "frontend/src/cljs/knoxx/frontend/auth/login.cljs",
+      "git_blob": "56584f2a7b7c85926263beea0a0e818b845588e5",
+      "sha256": "3f8c9117b91968438862d44764241b9f69b0130bd0285bc21f0f4ad96c8dfa62"
+    },
+    {
+      "path": "frontend/test/cljs/knoxx/frontend/auth/boundary_interaction_test.cljs",
+      "git_blob": "235f4507b9855dbcfcf4448e00567301cddd13a9",
+      "sha256": "5cee41f4a53f9d4064545e94c21f3211f3fd4ed6996527deaa931b50ecd67437"
+    },
+    {
+      "path": "frontend/vite.identity-local.config.ts",
+      "git_blob": "25b7983f67f46330226879b3b3e7ed5fdb5330d8",
+      "sha256": "f9f30b4dd2a1125f4dd85364a27a3d7c9f33cfa12051e0eca6dbb84c86d18354"
+    },
+    {
+      "path": "scripts/verify-axxium-local-tour.sh",
+      "git_blob": "b87bdda724cc92e9b0c6c983c09a55e668209b15",
+      "sha256": "7c9f940394eb624b4db8a54e54be158501190d9ae90134e00dd7dd5eff4698fe"
+    },
+    {
+      "path": "scripts/verify-axxium-local.mjs",
+      "git_blob": "eefa82dc2199396e2a92ce71650e18b3816b406c",
+      "sha256": "2a059860bfca8ee5048624d034282a899a2b2e2e99626b8ceb5c9046a5a0ce4b"
+    }
+  ],
+  "scope": "source identity and history only; no fresh runtime or native approval evidence"
+}
