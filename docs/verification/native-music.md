@@ -92,15 +92,32 @@ It then checks unauthenticated `POST /mcp` returns 401, finds the granted
 }
 ```
 
-The unique directory is generated under the validated workspace root; the tool
-receives the workspace-relative `Music/generated/.../proof.wav` path. The same
-derived root is used for reading the WAV and cleaning up. Expected native metadata is
+The tool receives the logical `Music/generated/.../proof.wav` path. If the
+validated container has nonblank `KNOXX_MUSIC_LIBRARY_ROOT`, the backend's
+`Music` alias places `generated/...` under that root; relative root configuration
+is resolved from the validated container working directory `/app`. Without an
+override, `Music/generated/...` remains under the validated workspace root.
+The effective root must exist, be writable and reside on a writable durable
+mount. WAV reads and cleanup use that same derived physical directory. Expected native metadata is
 `ok=true`, `durationSec=0.5`, `sampleRate=44100`, `channels=2`, and
 `samples=22050`, plus matching `workspace-path` and `absolute-path` fields.
 The script reads the actual WAV from the container, checks its header against
 the metadata, its PCM byte count and nonzero audio, and prints its SHA-256.
 It removes only its dedicated directory in `finally` and on SIGINT/SIGTERM.
 Cleanup failure exits nonzero. SIGKILL cannot run cleanup handlers.
+
+The repeatable configuration-path regression proof is:
+
+```bash
+node .ημ/review-evidence/knoxx-pr3/music-root-path-proof.mjs
+```
+
+It evaluates the actual verifier directory expression and container-side script,
+then generates and reads a real native WAV and removes only the owned directory.
+Cases cover a trimmed absolute override, a relative override, no override and a
+blank override. It uses isolated temporary filesystem roots and a Docker command
+boundary; it performs no live MCP call or deployment qualification. The former
+workspace-only expression fails for the absolute override before any tool call.
 
 The cephalon deployment's `WORKSPACE_ROOT=/state/workspace` is supported through
 this derivation. The script refuses an ephemeral container workspace. It checks the native tool over the

@@ -146,6 +146,42 @@ function workspaceRoot(container, mounts) {
   return root;
 }
 
+const fixtureDirectoryScript = `
+  const fs = require('node:fs'), path = require('node:path'), assert = require('node:assert/strict');
+  const configured = process.env.KNOXX_MUSIC_LIBRARY_ROOT?.trim();
+  const root = fs.realpathSync(configured ? path.resolve(configured) : process.argv[1]);
+  assert.ok(path.isAbsolute(root) && root !== '/' && !/[\\x00-\\x1f]/.test(root), 'music root must be a dedicated directory');
+  assert.ok(fs.statSync(root).isDirectory(), 'music root must be an existing directory');
+  fs.accessSync(root, fs.constants.R_OK | fs.constants.W_OK | fs.constants.X_OK);
+  const relative = process.argv[2];
+  assert.ok(relative.startsWith('Music/generated/.verify-native-music-') && !relative.includes('..'), 'owned fixture path required');
+  const suffix = configured ? relative.slice('Music/'.length) : relative;
+  console.log(JSON.stringify({root, directory:path.join(root, suffix)}));
+`;
+
+/**
+ * Resolve this proof's dedicated directory using the backend's Music alias.
+ * Read only the nonsecret music root after server/workspace identity validation;
+ * require the effective root on writable durable storage before invoking a tool.
+ * @param {string} container Validated Docker container name or ID.
+ * @param {Array<{Type: string, Destination: string, RW: boolean}>} mounts Validated mounts.
+ * @param {string} workspace Canonical validated workspace root.
+ * @param {string} relativeDirectory Unique logical Music/generated fixture path.
+ * @returns {string} Canonical container path shared by WAV reads and cleanup.
+ * @throws {Error} If the effective root or its durable mount is invalid.
+ */
+function fixtureDirectory(container, mounts, workspace, relativeDirectory) {
+  const { root, directory } = JSON.parse(command('docker',
+    ['exec', container, 'node', '-e', fixtureDirectoryScript, workspace, relativeDirectory]));
+  assert.ok(path.posix.isAbsolute(root) && root !== '/', 'music root must be absolute');
+  assert.ok(mounts.some(mount => ['bind', 'volume'].includes(mount.Type) && mount.RW === true
+    && (root === mount.Destination || root.startsWith(`${mount.Destination.replace(/\/$/, '')}/`))),
+  'effective music root must be inside writable durable storage');
+  assert.ok(directory.startsWith(`${root}/`) && directory !== root, 'cleanup must select only the owned fixture');
+  pass(`music-fixture-directory=${directory} (effective Music alias on durable storage)`);
+  return directory;
+}
+
 /**
  * Verify unauthenticated refusal and authenticated native music generation over MCP.
  * Validate server identity first, inspect the generated WAV bytes and metadata,
@@ -167,7 +203,7 @@ async function liveProof(container, url) {
   const { StreamableHTTPClientTransport } = require('@modelcontextprotocol/sdk/client/streamableHttp.js');
   const client = new Client({ name: 'knoxx-native-music-proof', version: '1' });
   const relativeDirectory = `Music/generated/.verify-native-music-${randomUUID()}`;
-  const directory = path.posix.join(workspace, relativeDirectory);
+  const directory = fixtureDirectory(container, mounts, workspace, relativeDirectory);
   const outputPath = `${relativeDirectory}/proof.wav`;
   /**
    * Remove only this run's dedicated fixture directory inside the container.
