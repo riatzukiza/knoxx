@@ -183,3 +183,12 @@
   spore: none
   receipt-refs: knoxx-382-provenance-links
   note: Validate proposed receipt envelopes before pushing; exact-head review evidence must be renewed after provenance fixes.
+
+- ts: 2026-10-06T14:28:52.198143Z
+  session: foresight-parallel-goal
+  task: Knoxx personal main synchronization
+  p-efficiency: 0.9
+  p-friction: 0.2
+  p-skill-candidate: 0.2
+  receipt-refs: 2026-10-06T14:28:52.198143Z
+  note: Keep accepted source synchronization separate from unmerged feature migration. An inherited ready-triggered merge job makes draft preparation necessary until reviewed base enforcement. No spore warranted.
