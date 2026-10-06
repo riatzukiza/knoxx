@@ -49,7 +49,7 @@ function sourceProof() {
     'compile', 'test'], {
     cwd: backend, encoding: 'utf8', timeout: 600000, maxBuffer: 8 * 1024 * 1024,
     env: { ...process.env, CONTRACTS_DIR: 'test/fixtures/empty-contracts',
-      NODE_OPTIONS: `${process.env.NODE_OPTIONS ?? ''} --require ${path.join(backend, 'scripts/shadow-test-error-guard.cjs')}` },
+      NODE_OPTIONS: `${process.env.NODE_OPTIONS ?? ''} --require ${JSON.stringify(path.join(backend, 'scripts/shadow-test-error-guard.cjs'))}` },
   });
   const output = `${result.stdout ?? ''}${result.stderr ?? ''}`;
   process.stdout.write(output);

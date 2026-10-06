@@ -211,3 +211,10 @@
   spore: none
   receipt-refs: cephalon-personal-fork-review-migration
   note: Review subscriptions belong to the PR base repository owner. A branch in a personal fork targeting the org still reviews under org scope; use an in-personal-fork PR, preserve parent synchronization and native evidence, and qualify release/deployment separately.
+
+## 2026-10-06 — cephalon-personal-node-options-path
+
+- Evidence: receipt `cephalon-personal-node-options-path`; native review/finding IDs above.
+- Scores: efficiency0.80, friction0.30, skill-candidate0.35.
+- Lesson: verify real process parsing and named diagnostic failure outcomes; distinguish the captured environment boundary from real engine tests and deployment qualification. Preserve initial fixture/precondition failures in evidence.
+- No spore incubated or promoted.

@@ -28,6 +28,23 @@ be the compiler's working directory; the wrapper selects it automatically.
 Node must satisfy the backend's declared `>=22.19.0` requirement. This worktree
 was verified with Node 24.14.1 and Java 21.
 
+The verifier quotes its guard preload path inside `NODE_OPTIONS` and preserves
+existing options. A repeatable process-boundary proof is retained with the review
+evidence:
+
+```bash
+node .ημ/review-evidence/knoxx-pr3/node-options-path-proof.mjs
+```
+
+It captures the actual source-proof environment construction before compilation,
+then runs real Node children from temporary paths containing spaces, quotes and
+backslashes. Both the existing preload and the real error guard must load; the
+guard must still exit1 for a late rejection after `exit(0)`. The unquoted path
+failed before any child test could run. The corrected expression passes both
+path cases, and the real source proof still passes3tests/18assertions with zero
+compiler warnings. The boundary fixture does not run Shadow, contact a server
+or publish. Its temporary directory is removed in `finally`.
+
 ## Live proof after an operator deploys this revision
 
 Build the production backend from the committed revision being reviewed. The
