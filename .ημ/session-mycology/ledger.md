@@ -201,3 +201,12 @@
   spore: none
   receipt-refs: 94f0ede3cc5bbbce09a54dbb6f2d25aa85b74e33570111b15d086fea2399ac35
   note: Both CMS write branches and fiveDoD retained; value-level zipper edit is not sufficient syntax preservation. Current native Ready visibility differs from demonstrated planning admission. Actual pinned source supports portable CLJS candidate surface, compiled/runtime feasibility remains held; failed guessed-library-path404 retained. No live event or spore.
+- ts: 2026-10-07T08:04:08.875778831Z
+  session: /home/err/.codex/parallel-goal/child-prs-20261006/knoxx9-warning-view-repair-9pyfdtjm/worktree
+  task: Knoxx9 additive sanitized warning view correction
+  p-efficiency: 0.9
+  p-friction: 0.12
+  p-skill-candidate: 0.16
+  spore: none
+  receipt-refs: a74bc9272b2aba6487a548161f45165c943160f6bfb21363e93972028ed5f4ad
+  note: A labeled derived diagnostic can improve display portability while immutable raw observations remain inspectable. Bind exact byte interval, raw and view hashes, and say that history is not erased. Never present sanitized bytes as a native lossless original. This targeted evidence correction does not qualify implementation or author review threads.

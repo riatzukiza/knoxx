@@ -1,0 +1,44 @@
+{
+  "view_kind": "explicitly sanitized derived diagnostic; not a lossless native original",
+  "native_finding": {
+    "review": 5439212684,
+    "root": 4204374302,
+    "thread": "PRRT_kwDOU4VeEc6pzmAp",
+    "item": "cr-comment:v1:cf1d90267a55ff0d466cfa98",
+    "reviewed_head": "5a4c40dc71df7e1bed4e857c8f5b85ee469ebdd3"
+  },
+  "original": {
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/candidate/native-before-full-card.stderr.b64",
+    "git_blob": "5c9a42fe72f3d1904ef973ae325b7d64ed22e6fc",
+    "decoded_bytes": 195,
+    "decoded_sha256": "8c3ee44d2cc082a7115c837772b0e6e7f6e509b31ca190fb8ea89225adc50cec",
+    "transport_bytes": 261,
+    "transport_sha256": "06810e5c8a35e406294fb14a3b97a44f5e81d53bb1ec4f5c953815eb5b7496f1",
+    "remains_accessible": true,
+    "historical_bytes_erased": false
+  },
+  "derived": {
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/sanitized-warning-view/native-before-full-card.stderr.sanitized.b64",
+    "decoded_bytes": 115,
+    "decoded_sha256": "a560d490d3735a3cf301fc4b1067d855b04b35263d4c1a3233d9f682bc0b4ba5",
+    "transport_bytes": 157,
+    "transport_sha256": "f3801c92dc51ffd6aa69170aeb3adc07e08c996d3ba34b33aa400d538607b34f",
+    "encoding": "canonical unwrapped base64 plus exactly one terminal LF"
+  },
+  "redaction_policy": {
+    "scope": "Exactly the single absolute config-path field of this one warning; no other bytes",
+    "start_byte_offset": 41,
+    "end_byte_offset_exclusive": 163,
+    "removed_bytes": 122,
+    "replacement_utf8": "<owned-fixture>/kanban/openhax.kanban.json",
+    "unchanged_prefix_sha256": "c4d6b1343b28db655f3d833f5c270f5dc8b753e02610292411a260bb9e54284f",
+    "unchanged_suffix_sha256": "b9748e02d10b2c9556a47a2001924981d4058948478b88082be6464afa9f5a85",
+    "all_warning_content_outside_config_path_exact": true
+  },
+  "reconstruction": "Read original Git blob at reviewed_head:path, decode with the documented transport grammar and verify original hashes. Replace only the recorded byte interval to reproduce the derived view. The removed bytes remain solely in the preserved original; restoring that interval reconstructs the original exactly.",
+  "limits": [
+    "Not a fresh native run or board validation.",
+    "The raw original and historical public bytes remain accessible; this view does not erase past disclosure.",
+    "No general sanitizer, credential-disclosure conclusion, policy change or claim other evidence is sanitized."
+  ]
+}
