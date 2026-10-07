@@ -1532,5 +1532,140 @@
       "bytes": 297,
       "sha256": "fa8814e6876ab6fb133f244af16e4d1b31e66c1b7d0da4deb6d5e510f5f5b1a6"
     }
+  },
+  {
+    "label": "required-backend-lint-after-gateway",
+    "command": [
+      "timeout",
+      "120",
+      "python3",
+      "isolated-command.py",
+      "offline",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/worktree/backend",
+      "pnpm",
+      "run",
+      "lint"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6",
+    "at": "2026-10-07T02:31:02.590993+00:00",
+    "exit": 3,
+    "stdout": {
+      "capture": "required-backend-lint-after-gateway.stdout.b64",
+      "bytes": 38904,
+      "sha256": "c2de84bbe6d4a6ce43d30cb9c649c422bb82e7880192d234e1967793ec9fe3ae"
+    },
+    "stderr": {
+      "capture": "required-backend-lint-after-gateway.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "backend-js-boundary-after-gateway",
+    "command": [
+      "timeout",
+      "60",
+      "python3",
+      "isolated-command.py",
+      "offline",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/worktree/backend",
+      "pnpm",
+      "run",
+      "boundary:check"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6",
+    "at": "2026-10-07T02:31:45.118388+00:00",
+    "exit": 0,
+    "stdout": {
+      "capture": "backend-js-boundary-after-gateway.stdout.b64",
+      "bytes": 274,
+      "sha256": "7d72e43d1240b9395fbb7c0a813d1bbb540e10522e0398fbee107da3fa1dd942"
+    },
+    "stderr": {
+      "capture": "backend-js-boundary-after-gateway.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "compiled-green-full-gateway",
+    "command": [
+      "timeout",
+      "600",
+      "python3",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/isolated-command.py",
+      "offline",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/worktree/backend",
+      "pnpm",
+      "exec",
+      "node",
+      "scripts/run-shadow-tests-ci.mjs"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/worktree",
+    "at": "2026-10-07T02:30:43.642807+00:00",
+    "exit": 0,
+    "stdout": {
+      "capture": "compiled-green-full-gateway.stdout.b64",
+      "bytes": 61976,
+      "sha256": "24bd7471cf11a9063ed05cf3b8edb414b90640aa4a5eef078e28b5c0dce455bc"
+    },
+    "stderr": {
+      "capture": "compiled-green-full-gateway.stderr.b64",
+      "bytes": 31764,
+      "sha256": "0a0b0cfa25ea8c55f28f3969db690a6f73a0449685adb1b6895c7de59740e831"
+    }
+  },
+  {
+    "label": "native-card-after-gateway",
+    "command": [
+      "timeout",
+      "30",
+      "node",
+      "/home/err/.volta/tools/image/packages/eta-mu/lib/node_modules/eta-mu/node_modules/@eta-mu/rheos/dist/cli.cjs",
+      "read-task",
+      "knoxx-action-agent-spawn-boundary-fix",
+      "--config",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/worktree/kanban/openhax.kanban.json"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6",
+    "at": "2026-10-07T02:33:14.409129+00:00",
+    "exit": 0,
+    "stdout": {
+      "capture": "native-card-after-gateway.stdout.b64",
+      "bytes": 3800,
+      "sha256": "d40e179637a6b564af51c91ba2ea46b652c982231b59d23203c045db74f4dfc4"
+    },
+    "stderr": {
+      "capture": "native-card-after-gateway.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "required-backend-typecheck-after-gateway",
+    "command": [
+      "timeout",
+      "600",
+      "python3",
+      "isolated-command.py",
+      "offline",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/worktree/backend",
+      "pnpm",
+      "run",
+      "typecheck"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6",
+    "at": "2026-10-07T02:32:59.046333+00:00",
+    "exit": 0,
+    "stdout": {
+      "capture": "required-backend-typecheck-after-gateway.stdout.b64",
+      "bytes": 257,
+      "sha256": "e474cd8fed7368879411ff6daa7b56e997797acd9433a08af87237ccd56dee75"
+    },
+    "stderr": {
+      "capture": "required-backend-typecheck-after-gateway.stderr.b64",
+      "bytes": 297,
+      "sha256": "fa8814e6876ab6fb133f244af16e4d1b31e66c1b7d0da4deb6d5e510f5f5b1a6"
+    }
   }
 ]

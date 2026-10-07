@@ -1,5 +1,6 @@
 (ns knoxx.backend.infra.core
-  (:require [knoxx.backend.infra.agent.hydration :refer [ensure-settings!]]
+  (:require [knoxx.backend.infra.agent.action-capabilities :as action-capabilities]
+            [knoxx.backend.infra.agent.hydration :refer [ensure-settings!]]
             [knoxx.backend.infra.agent.turn :as agent-turns :refer [lounge-messages*]]
             [knoxx.backend.infra.routes.app :as app-routes]
             [knoxx.backend.infra.routes.resources :as resource-routes]
@@ -141,22 +142,23 @@
    as a list of services rather than burying the two dispatch closures in the
    middle of it."
   [resolved-config policy-context]
-  (await (discord-source/bind-gateways!
-          {:policy-db policy-context
-           :on-message! (fn [msg]
-                          (source-runtime/dispatch-driver-event!
-                           resolved-config
-                           :driver/discord
-                           (:gatewayActorId msg)
-                           {:event/type :discord.message
-                            :event/payload msg}))
-           :on-voice-state! (fn [state]
-                              (source-runtime/dispatch-driver-event!
-                               resolved-config
-                               :driver/discord
-                               (:gatewayActorId state)
-                               {:event/type :discord.voice.state-update
-                                :event/payload state}))})))
+  (let [gateway-config (action-capabilities/attach resolved-config)]
+    (await (discord-source/bind-gateways!
+            {:policy-db policy-context
+             :on-message! (fn [msg]
+                            (source-runtime/dispatch-driver-event!
+                             gateway-config
+                             :driver/discord
+                             (:gatewayActorId msg)
+                             {:event/type :discord.message
+                              :event/payload msg}))
+             :on-voice-state! (fn [state]
+                                (source-runtime/dispatch-driver-event!
+                                 gateway-config
+                                 :driver/discord
+                                 (:gatewayActorId state)
+                                 {:event/type :discord.voice.state-update
+                                  :event/payload state}))}))))
 
 (defn- ^:async start-background-services!
   [app resolved-config]

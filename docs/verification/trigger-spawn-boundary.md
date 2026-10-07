@@ -32,7 +32,11 @@ Provider session construction, hydration and prompting use local fixture seams;
 the runner and durable admission are not mocked. Fixture admission is a local
 HTTP guard, not a test of deployed authentication or a live model response.
 Separate tests retain the existing event-policy authority refusals and positive
-identity assertions, and check that hostile configuration/payload capability
+identity assertions. Captured production Discord gateway callbacks cover both
+message and voice events with absent and hostile caller capability maps, without
+opening a gateway. They preserve policy handles, actor IDs, event types and
+payload data while replacing the capability map. Other ingress tests check that
+hostile configuration/payload capability
 slots cannot replace the trusted runtime function. Missing/noncallable values
 must refuse before resolution or runner admission. No test marks the board
 checklist complete or waives the required lint/typecheck gates.

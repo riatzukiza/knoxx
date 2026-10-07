@@ -208,3 +208,7 @@ Friction3/5: keep static CLJS multi-arity fixture shape faithful; negative asser
 ## Discord gateway ingress correction
 
 Friction 3/5: an all-caller peer review found a separately bound closure missed by producer startup injection. Captured production binder callbacks expose both absent/hostile capability slots: RED1/18/4fail/0error and actual exit1. Preserve prior passing suite with its coverage limit; compose once at the actual outer closure. No spore promotion.
+
+## Gateway GREEN and completion hold
+
+Friction 3/5: producer startup is not the only config closure; enumerate independent binders and explicit HTTP dispatch callers. Gateway RED was committed before the outer closure repair. Fresh guarded1854/9152 zero, server compiler0warnings and boundarycheck pass. Preserve failed lint8/288 and original/corrected RED histories. Native card remains IP, all acceptance retained, no complete/blocked status claimed. No same-session spore promotion.
