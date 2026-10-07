@@ -1,0 +1,44 @@
+{
+  "feature_checkpoint": "bb9461202221cf7787b3b9103dfcefaa3ae85fe5",
+  "native_comment_only_commit": "f755745b",
+  "native_comment_ok": true,
+  "dedup_before": true,
+  "body_section_exact": true,
+  "old_comment_content_prefix_exact": true,
+  "hold_text_occurrences": 1,
+  "submitted_comment_bytes": 1522,
+  "submitted_sha256": "7666794e81025af7528e0e1e784f25eab639d896bc1d066785693538b56755c5",
+  "normalized_appended_text_bytes": 1521,
+  "normalized_appended_text_sha256": "47eaa7f9f72ebf876565726253dd02e8907983ab37c11a99554801d7e0275d8c",
+  "full_comment_section_after_bytes": 1976,
+  "full_comment_section_after_sha256": "7ad3d7f4fa65b0bfea9a98fcb41ef0c70758ea6c928229771d3da96214e4a0d4",
+  "engine_shape": "Engine appends to existing comment section; it does not create a third parsed section. Submitted terminal LF is omitted in readback. Earlier local assertion assumed a third section and stopped before proof/receipt creation; f755 retains the actual card/event operation unchanged.",
+  "direct_move_process_exit": 0,
+  "direct_move_native_result": "REJECTED: No transition from in_progress to blocked",
+  "after_status": "in_progress",
+  "uuid_and_points_exact": true,
+  "prefixes_before_own_evidence_append": {
+    "kanban/.events/ledger.edn": {
+      "original_bytes": 49223,
+      "original_sha256": "fee6d77053324230829d157f821591f9bd90f58c07d30859fa25b3da36cd867a",
+      "append_bytes": 1939,
+      "appended_sha256": "0404d0782fde91ed1aba2a6df7e25bdd73e2703cfd2cbf234c7e41f29601434d"
+    },
+    ".\u03b7\u03bc/receipts.edn": {
+      "original_bytes": 15626,
+      "original_sha256": "a9cb21c0e2535840c8ff918bfd62e8dc915755878ae5c61ed53183ab515f9ab9",
+      "append_bytes": 0,
+      "appended_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    ".\u03b7\u03bc/session-mycology/ledger.md": {
+      "original_bytes": 10773,
+      "original_sha256": "b44ce51b9aed2931b4eb4db2c043568faba24909d8a9a80f837f2a525e38413e",
+      "append_bytes": 0,
+      "appended_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "manual_verification_limit": "Isolated production-route HTTP runner/Clio proof does not establish whole live authenticated application manual verification; no paid provider/deployment/Discord transport qualification",
+  "new_feature_tests_rerun": false,
+  "commands": 5,
+  "strict_streams": 10
+}
