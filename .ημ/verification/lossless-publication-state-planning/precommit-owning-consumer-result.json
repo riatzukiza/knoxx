@@ -1,0 +1,209 @@
+{
+  "count": 17,
+  "historical-count": 16,
+  "historical-accepted": 0,
+  "historical-refused": 16,
+  "owned": [
+    {
+      "ok": true,
+      "line-number": 17,
+      "schema": {
+        "status": "declared",
+        "id": "receipt-recorded",
+        "version": 1
+      },
+      "errors": []
+    }
+  ],
+  "results": [
+    {
+      "ok": false,
+      "line-number": 1,
+      "schema": {
+        "status": "unversioned"
+      },
+      "errors": [
+        "missing required key: repo",
+        "missing required key: dod",
+        "missing required key: pi",
+        "missing required key: manifest",
+        "missing required key: refs",
+        "invalid ts: 2026-09-13T05:20:28.957109+00:00"
+      ]
+    },
+    {
+      "ok": false,
+      "line-number": 2,
+      "schema": {
+        "status": "unversioned"
+      },
+      "errors": [
+        "missing required key: repo",
+        "missing required key: dod",
+        "missing required key: pi",
+        "missing required key: manifest",
+        "missing required key: refs",
+        "unknown kind: :verification",
+        "invalid ts: 2026-09-13T06:18:58.431075+00:00"
+      ]
+    },
+    {
+      "ok": false,
+      "line-number": 3,
+      "schema": {
+        "status": "unversioned"
+      },
+      "errors": [
+        "missing required key: repo",
+        "missing required key: dod",
+        "missing required key: pi",
+        "missing required key: manifest",
+        "missing required key: refs",
+        "unknown kind: :verification",
+        "invalid ts: 2026-09-13T06:38:57.549005+00:00"
+      ]
+    },
+    {
+      "ok": false,
+      "line-number": 4,
+      "schema": {
+        "status": "unversioned"
+      },
+      "errors": [
+        "missing required key: repo"
+      ]
+    },
+    {
+      "ok": false,
+      "line-number": 5,
+      "schema": {
+        "status": "unversioned"
+      },
+      "errors": [
+        "missing required key: repo"
+      ]
+    },
+    {
+      "ok": false,
+      "line-number": 6,
+      "schema": {
+        "status": "unversioned"
+      },
+      "errors": [
+        "missing required key: repo"
+      ]
+    },
+    {
+      "ok": false,
+      "line-number": 7,
+      "schema": {
+        "status": "unversioned"
+      },
+      "errors": [
+        "missing required key: repo"
+      ]
+    },
+    {
+      "ok": false,
+      "line-number": 8,
+      "schema": {
+        "status": "unversioned"
+      },
+      "errors": [
+        "missing required key: repo"
+      ]
+    },
+    {
+      "ok": false,
+      "line-number": 9,
+      "schema": {
+        "status": "unversioned"
+      },
+      "errors": [
+        "missing required key: repo"
+      ]
+    },
+    {
+      "ok": false,
+      "line-number": 10,
+      "schema": {
+        "status": "unversioned"
+      },
+      "errors": [
+        "missing required key: repo"
+      ]
+    },
+    {
+      "ok": false,
+      "line-number": 11,
+      "schema": {
+        "status": "unversioned"
+      },
+      "errors": [
+        "missing required key: repo"
+      ]
+    },
+    {
+      "ok": false,
+      "line-number": 12,
+      "schema": {
+        "status": "unversioned"
+      },
+      "errors": [
+        "missing required key: repo"
+      ]
+    },
+    {
+      "ok": false,
+      "line-number": 13,
+      "schema": {
+        "status": "unversioned"
+      },
+      "errors": [
+        "missing required key: repo"
+      ]
+    },
+    {
+      "ok": false,
+      "line-number": 14,
+      "schema": {
+        "status": "unversioned"
+      },
+      "errors": [
+        "unknown kind: :repair",
+        "invalid ts: 2026-10-03T09:26:41.171987+00:00"
+      ]
+    },
+    {
+      "ok": false,
+      "line-number": 15,
+      "schema": {
+        "status": "unversioned"
+      },
+      "errors": [
+        "unknown kind: :repair",
+        "invalid ts: 2026-10-03T09:31:36.941973+00:00"
+      ]
+    },
+    {
+      "ok": false,
+      "line-number": 16,
+      "schema": {
+        "status": "unversioned"
+      },
+      "errors": [
+        "missing required key: repo"
+      ]
+    },
+    {
+      "ok": true,
+      "line-number": 17,
+      "schema": {
+        "status": "declared",
+        "id": "receipt-recorded",
+        "version": 1
+      },
+      "errors": []
+    }
+  ]
+}

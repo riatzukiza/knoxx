@@ -1,0 +1,32 @@
+{
+  "version": "1.1.49",
+  "annotated_tag": "40f691428e149f27be88b51c2050ab05896e0ce8",
+  "commit": "b5f8d06f9a1149b10ff97bfde1ef65fb4f65a966",
+  "files": [
+    {
+      "path": "src/rewrite_clj/parser.cljc",
+      "gitblob": "6eb163d6276f529b18ac4cd6815c681a0fb716f9",
+      "sha256": "55810bcf487899f1798ae9afd93c63872983408473eec4a9036e4ef8b74005da",
+      "bytes": 1767
+    },
+    {
+      "path": "deps.edn",
+      "gitblob": "15eb07683762cf1e5c8f5f32993ecc51977d178a",
+      "sha256": "e7f3ede24ad4b6e3fa6e968e01830c2debcada28a92cc3f47aa4217289a540ce",
+      "bytes": 9661
+    },
+    {
+      "path": "src/rewrite_clj/zip/editz.cljc",
+      "gitblob": "0023ba22333ee859400ab9ba08c094a478c8589f",
+      "sha256": "1cada0f9337a1631e1dba75477d17fd89e81b019518bc57769df0275bbdbc7c0",
+      "bytes": 4089
+    },
+    {
+      "path": "src/rewrite_clj/zip.cljc",
+      "gitblob": "2d361661ae620e0387be03e7793902b12891f07d",
+      "sha256": "1da4f8c0676a9be21c265690a92bb50a84352064f7684b11a17f657b0e472d79",
+      "bytes": 46569
+    }
+  ],
+  "scope": "static primary source only; no NBB/compiled-host/library runtime qualification"
+}
