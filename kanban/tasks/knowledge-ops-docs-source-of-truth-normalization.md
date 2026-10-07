@@ -1,7 +1,7 @@
 ---
 category: "tasks"
 labels: ["tasks", "2sp", "has-parent"]
-write-id: "1791397522995-0.6rx1h1rwxqppbc803ae"
+write-id: "1791402226777-0.4g0rlb3kvy9rcemdlb6"
 points: "2"
 source: "specs/tasks/knowledge-ops-docs-source-of-truth-normalization.md"
 title: "Knowledge Ops — Docs Source-of-Truth Normalization"
@@ -79,5 +79,7 @@ Scope is tightly bounded to README-level edits across 3-4 named files: `orgs/ope
 ---
 
 HOLD: Full issue164 remains blocked on the mandatory OpenPlanner README outside the authorized Foresight direct-repository scope. Knoxx current-routing documentation only delivers the in-scope reader entrypoint; it does not complete the whole source-of-truth normalization task. The current Ready-to-Blocked transition is unsupported by the accepted Promethean FSM; existing open-hax/rheos issue4 owns direct blocker reporting. Original criteria, UUID, Ready/P2/2 metadata and historical intent remain. No full completion or new Ready qualification is claimed.
+
+CORRECTION to the prior HOLD comment (write-id 1791397522995-0.6rx1h1rwxqppbc803ae; event kanban-knoxx-knowledge-ops-docs-source-of-truth-normalization-1791397522998): the wording that Rheos issue 4 “owns direct blocker reporting” described the request owner, not an available transition capability. Existing open-hax/rheos issue 4 requests direct obstruction-reporting transitions from unfinished stages, but that capability is not yet available; the inspected accepted Promethean FSM still does not support Ready→Blocked. This additive clarification supersedes that capability wording without replacing the original HOLD comment or event. CodeRabbit review 5447302044 findings 4211086091 and 4211086102 also prompted spacing corrections in the current evidence README and this explicit distinction in the current routing note. Full issue 164 remains blocked on its mandatory OpenPlanner README outside the authorized Foresight direct-repository scope. Knoxx current-routing documentation delivers only the in-scope reader entrypoint. All original criteria, UUID, Ready/P2/2 metadata and historical intent remain; no task transition, checklist completion, whole-task completion or new Ready qualification is claimed.
 
 ---
