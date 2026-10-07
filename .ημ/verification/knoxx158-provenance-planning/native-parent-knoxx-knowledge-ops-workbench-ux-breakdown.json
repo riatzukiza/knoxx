@@ -1,0 +1,27 @@
+{
+  "uuid": "knoxx-knowledge-ops-workbench-ux-breakdown",
+  "frontmatter": {
+    "category": "epics",
+    "labels": [
+      "epics"
+    ],
+    "points": "null",
+    "source": "specs/epics/knowledge-ops-workbench-ux-breakdown.md",
+    "title": "Knoxx Workbench UX \u2014 Epic and Sub-Spec Breakdown",
+    "priority": "P2",
+    "status": "done",
+    "uuid": "knoxx-knowledge-ops-workbench-ux-breakdown",
+    "created_at": "2026-04-12T00:00:00Z"
+  },
+  "sections": [
+    {
+      "type": "body",
+      "content": "# Knoxx Workbench UX \u2014 Epic and Sub-Spec Breakdown\n\n> Source: `specs/epics/knowledge-ops-workbench-ux-breakdown.md`\n\n**Parent spec**: `knowledge-ops-workbench-ux-v1.md`\n**Date**: 2026-04-12\n**Status**: Phase 1 complete, Phase 2 complete, Epic 2.4 complete, Epic 3.2 complete, Epic 6.3 complete\n**Total estimated points**: 40 points across 25 sub-specs"
+    },
+    {
+      "type": "comment",
+      "content": "## Critical Clarification (2026-04-12)\n\n**The Workbench is ONE workplace among many, NOT a replacement for the main app.**\n\n- **Main app navbar** (Chat, CMS, Ingestion, Query, Gardens, Runs, Translations, Admin, Workbench) provides top-level navigation between workplaces.\n- **Workbench Shell** provides internal structure (Context Bar, Main Canvas, Inspection Panel, Status Bar) for the workbench workplace.\n- **The workbench is NOT a unified replacement interface.** It is one of several workplaces in the larger Knoxx application."
+    }
+  ],
+  "source-path": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx158-provenance-planning-8cbb1e7535/native-after/kanban/epics/knowledge-ops-workbench-ux-breakdown.md"
+}

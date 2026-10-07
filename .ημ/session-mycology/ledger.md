@@ -192,3 +192,12 @@
   p-skill-candidate: 0.2
   receipt-refs: 2026-10-06T14:28:52.198143Z
   note: Keep accepted source synchronization separate from unmerged feature migration. An inherited ready-triggered merge job makes draft preparation necessary until reviewed base enforcement. No spore warranted.
+- ts: 2026-10-07T07:29:22.175655961Z
+  session: /home/err/.codex/parallel-goal/issues-20261006/Knoxx158-provenance-planning-8cbb1e7535/worktree
+  task: Refine whole provenance158 UI against actual router and foreign migration owners
+  p-efficiency: 0.8
+  p-friction: 0.3
+  p-skill-candidate: 0.0
+  spore: none
+  receipt-refs: 44eda7e1c100c11c199ac444f46dc0687d857a60219e5f3d751693cf28308970
+  note: Preserve allfiveDoD and native Ready1; missing mount/Memory destination require review, not isolated legacy UI. Preferred existing ReactUxx boundary through protectedCLJS route remains proposed; no backend/provider or external adoption. Original body/metadata/history retained; no live event/spore.

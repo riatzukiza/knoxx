@@ -1,0 +1,29 @@
+{
+  "uuid": "knoxx-knowledge-ops-graph-memory-runtime-smoke-e2e",
+  "frontmatter": {
+    "category": "tasks",
+    "labels": [
+      "tasks",
+      "3sp",
+      "has-parent"
+    ],
+    "points": "3",
+    "source": "specs/tasks/knowledge-ops-graph-memory-runtime-smoke-e2e.md",
+    "title": "Knowledge Ops \u2014 Graph Memory Runtime Smoke E2E",
+    "priority": "P1",
+    "status": "review",
+    "uuid": "knoxx-knowledge-ops-graph-memory-runtime-smoke-e2e",
+    "created_at": "2026-04-05T00:00:00Z"
+  },
+  "sections": [
+    {
+      "type": "body",
+      "content": "# Knowledge Ops \u2014 Graph Memory Runtime Smoke E2E\n\n> Source: `specs/tasks/knowledge-ops-graph-memory-runtime-smoke-e2e.md`\n> Parent: `knowledge-ops-graph-memory-reconciliation.md`\n> Points: 3\n\nDate: 2026-04-05\nStatus: ready\nParent: `knowledge-ops-graph-memory-reconciliation.md`\nStory points: 3\n\n## Purpose\n\nAdd one end-to-end smoke path that proves the local graph-memory stack works across producer, lake, workbench, and consumer surfaces.\n\n## Problem\n\nToday, different layers fail in different ways, and there is no single smoke slice that says:\n\n- producers can write\n- OpenPlanner can export/query\n- Graph-Weaver can sync\n- Knoxx can consume the result\n\n## Goals\n\n1. Define one small cross-service smoke scenario.\n2. Run it against the live local stack.\n3. Fail fast when graph-memory coherence regresses.\n\n## Non-Goals\n\n1. Full integration-test coverage of every graph feature.\n2. UI screenshot testing.\n3. Multi-tenant auth coverage beyond smoke assertions.\n\n## Suggested smoke path\n\n1. Emit or ingest a known graph node/edge pair.\n2. Verify OpenPlanner stats/export/query.\n3. Verify Graph-Weaver status sync and node visibility.\n4. Verify Knoxx graph-facing API/tool can retrieve the same slice.\n\n## Verification\n\n- Smoke command/script returns success only when the chain is coherent.\n- Failure output identifies the broken hop.\n\n## Definition of done\n\n- A repeatable local runtime smoke exists and is documented."
+    },
+    {
+      "type": "comment",
+      "content": "**Breakdown 2026-05-29 (accepted \u2192 ready):** 3sp, P1. Scope confirmed \u2014 one smoke script exercising the write\u2192export\u2192query\u2192consume chain across four services. No sub-tasks needed at this size. Slice is: (1) pick the simplest write path that reaches OpenPlanner, (2) assert three graph route responses, (3) document the command. Exit signal: smoke returns 0 and documents any broken hop. Ready for implementation."
+    }
+  ],
+  "source-path": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx158-provenance-planning-8cbb1e7535/native-after/kanban/tasks/knowledge-ops-graph-memory-runtime-smoke-e2e.md"
+}

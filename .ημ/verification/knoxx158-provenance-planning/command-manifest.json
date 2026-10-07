@@ -1,0 +1,1156 @@
+[
+  {
+    "name": "native-full-content-provenance",
+    "argv": [
+      "/home/err/.volta/tools/image/node/22.20.0/bin/node",
+      "/home/err/.codex/parallel-goal/issues-20261006/Admitted-next-intake-3496822abc/runtime/rheos-cli.cjs",
+      "read-task",
+      "knoxx-2.3-content-editor-provenance",
+      "--config",
+      "/home/err/.codex/parallel-goal/issues-20261006/Admitted-next-intake-3496822abc/knoxx-fixture/kanban/openhax.kanban.json"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Admitted-next-intake-3496822abc/knoxx-fixture/kanban",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:12:37.163560+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/native-full-content-provenance.stdout.b64",
+      "bytes": 3941,
+      "sha256": "0c4b1c6fab1f1573c90df4f2be25d8a1f710474d3469a213251ac80fab6939bc",
+      "original_native_bytes": 3941,
+      "original_native_sha256": "0c4b1c6fab1f1573c90df4f2be25d8a1f710474d3469a213251ac80fab6939bc"
+    },
+    "stderr": {
+      "path": "captures/native-full-content-provenance.stderr.b64",
+      "bytes": 192,
+      "sha256": "f431afe38932ddd4952ad275ad3b16cad8c1f615bfd5774a0f5907ac81934773",
+      "original_native_bytes": 192,
+      "original_native_sha256": "f431afe38932ddd4952ad275ad3b16cad8c1f615bfd5774a0f5907ac81934773"
+    },
+    "provenance_context": "sealed-intake"
+  },
+  {
+    "name": "native-issue158-body",
+    "argv": [
+      "gh",
+      "api",
+      "--paginate",
+      "--slurp",
+      "repos/open-hax/knoxx/issues/158"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Admitted-next-intake-3496822abc",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:12:38.343623+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/native-issue158-body.stdout.b64",
+      "bytes": 7895,
+      "sha256": "4742a86d18cbf765f4864f5e5b36665b5ab3b3ed1a4631fe4571b5e13a0e65e9",
+      "original_native_bytes": 7547,
+      "original_native_sha256": "d2aaddc45199f00ac8d01faa5295a0167e858916904a9253a083932c6359a94b"
+    },
+    "stderr": {
+      "path": "captures/native-issue158-body.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_native_bytes": 0,
+      "original_native_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "provenance_context": "sealed-intake"
+  },
+  {
+    "name": "native-issue158-comments",
+    "argv": [
+      "gh",
+      "api",
+      "--paginate",
+      "--slurp",
+      "repos/open-hax/knoxx/issues/158/comments?per_page=100"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Admitted-next-intake-3496822abc",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:12:38.850956+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/native-issue158-comments.stdout.b64",
+      "bytes": 5154,
+      "sha256": "fca9266bf647adafe23b0b9acbcf03b31b95ab133a168540dd0bce619142f893",
+      "original_native_bytes": 4460,
+      "original_native_sha256": "2a7f8365976c61b633b71fbc6c63dc9daf3ad1d442b9d43aa34cfcb50c3da9b4"
+    },
+    "stderr": {
+      "path": "captures/native-issue158-comments.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_native_bytes": 0,
+      "original_native_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "provenance_context": "sealed-intake"
+  },
+  {
+    "name": "accepted-reference-ContentEditorPage",
+    "argv": [
+      "git",
+      "--git-dir=/home/err/.codex/parallel-goal/issues-20261006/Knoxx-lossless-planning-142bca4cee/source.git",
+      "grep",
+      "-n",
+      "ContentEditorPage",
+      "3409977bca4ba35e09967f9a99d50867a679a73c",
+      "--",
+      "frontend"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Admitted-next-intake-3496822abc",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:14:30.726717+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/accepted-reference-ContentEditorPage.stdout.b64",
+      "bytes": 3372,
+      "sha256": "bd82f0d661d25a193ff6124ecec975bfbe008278b3043cfba13899ff8520be97",
+      "original_native_bytes": 3372,
+      "original_native_sha256": "bd82f0d661d25a193ff6124ecec975bfbe008278b3043cfba13899ff8520be97"
+    },
+    "stderr": {
+      "path": "captures/accepted-reference-ContentEditorPage.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_native_bytes": 0,
+      "original_native_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "provenance_context": "sealed-intake"
+  },
+  {
+    "name": "introduced-2.3-content-editor-provenance",
+    "argv": [
+      "git",
+      "--git-dir=/home/err/.codex/parallel-goal/issues-20261006/Knoxx-lossless-planning-142bca4cee/source.git",
+      "log",
+      "--reverse",
+      "--format=%H %s",
+      "3409977bca4ba35e09967f9a99d50867a679a73c",
+      "--",
+      "kanban/workbench/2.3-content-editor-provenance.md"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Admitted-next-intake-3496822abc",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:14:32.124202+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/introduced-2.3-content-editor-provenance.stdout.b64",
+      "bytes": 239,
+      "sha256": "e40d14973ae74e64fb0e186940a84ebaa075f7262b62da9a70770eb8216b9b06",
+      "original_native_bytes": 239,
+      "original_native_sha256": "e40d14973ae74e64fb0e186940a84ebaa075f7262b62da9a70770eb8216b9b06"
+    },
+    "stderr": {
+      "path": "captures/introduced-2.3-content-editor-provenance.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_native_bytes": 0,
+      "original_native_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "provenance_context": "sealed-intake"
+  },
+  {
+    "name": "native-planning-association-2.3-content-editor-provenance",
+    "argv": [
+      "gh",
+      "api",
+      "repos/open-hax/knoxx/commits/2b457af4ef587fbcde717f1b612e37fc264e75f0/pulls"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Admitted-next-intake-3496822abc",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:14:32.778906+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/native-planning-association-2.3-content-editor-provenance.stdout.b64",
+      "bytes": 16214,
+      "sha256": "7878e2f15edf539941d9355f4f643a90e79fe94c002cb0a597894b63d591b5c0",
+      "original_native_bytes": 16886,
+      "original_native_sha256": "02d0884ce4b3f24f4d5c8dd9493e08a2c5dfa2b65b57d2b64c143f2cd47708b8"
+    },
+    "stderr": {
+      "path": "captures/native-planning-association-2.3-content-editor-provenance.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_native_bytes": 0,
+      "original_native_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "provenance_context": "sealed-intake"
+  },
+  {
+    "name": "native-events-knoxx-2.3-content-editor-provenance",
+    "argv": [
+      "/home/err/.volta/tools/image/node/22.20.0/bin/node",
+      "/home/err/.codex/parallel-goal/issues-20261006/Admitted-next-intake-3496822abc/runtime/rheos-cli.cjs",
+      "events",
+      "knoxx-2.3-content-editor-provenance",
+      "--limit",
+      "100",
+      "--json",
+      "--config",
+      "/home/err/.codex/parallel-goal/issues-20261006/Admitted-next-intake-3496822abc/knoxx-fixture/kanban/openhax.kanban.json"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Admitted-next-intake-3496822abc/knoxx-fixture/kanban",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:14:33.372377+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/native-events-knoxx-2.3-content-editor-provenance.stdout.b64",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "original_native_bytes": 3,
+      "original_native_sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    "stderr": {
+      "path": "captures/native-events-knoxx-2.3-content-editor-provenance.stderr.b64",
+      "bytes": 192,
+      "sha256": "f431afe38932ddd4952ad275ad3b16cad8c1f615bfd5774a0f5907ac81934773",
+      "original_native_bytes": 192,
+      "original_native_sha256": "f431afe38932ddd4952ad275ad3b16cad8c1f615bfd5774a0f5907ac81934773"
+    },
+    "provenance_context": "sealed-intake"
+  },
+  {
+    "name": "canonical-FIRST-current-PR363",
+    "argv": [
+      "/home/err/.volta/tools/image/node/22.20.0/bin/node",
+      "/home/err/.codex/parallel-goal/issues-20261006/Admitted-next-intake-3496822abc/runtime/nbb/cli.js",
+      "-cp",
+      "/home/err/.codex/parallel-goal/issues-20261006/Admitted-next-intake-3496822abc/runtime/pr-flow/scripts",
+      "/home/err/.codex/parallel-goal/issues-20261006/Admitted-next-intake-3496822abc/runtime/pr-flow/scripts/pr.cljs",
+      "status",
+      "open-hax/knoxx",
+      "363"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Admitted-next-intake-3496822abc",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:14:44.736194+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/canonical-FIRST-current-PR363.stdout.b64",
+      "bytes": 699,
+      "sha256": "2cdbbaff4a1a29d5a55ae5555da3a6cca4c7b80ec8647810db7e31b55aa1b3b3",
+      "original_native_bytes": 699,
+      "original_native_sha256": "2cdbbaff4a1a29d5a55ae5555da3a6cca4c7b80ec8647810db7e31b55aa1b3b3"
+    },
+    "stderr": {
+      "path": "captures/canonical-FIRST-current-PR363.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_native_bytes": 0,
+      "original_native_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "provenance_context": "sealed-intake"
+  },
+  {
+    "name": "native-current-PR363-full-files",
+    "argv": [
+      "gh",
+      "api",
+      "--paginate",
+      "--slurp",
+      "repos/open-hax/knoxx/pulls/363/files?per_page=100"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Admitted-next-intake-3496822abc",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:14:45.520376+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/native-current-PR363-full-files.stdout.b64",
+      "bytes": 286682,
+      "sha256": "584153f26030afa8f7a20fa364ea4bb95c7ae7c2e1acb61cb3270571fae6acaa",
+      "original_native_bytes": 288602,
+      "original_native_sha256": "6c57bce2abfb44fa501f3af96b9029786c5f7dc202683c1f20fc7ba61a832e26"
+    },
+    "stderr": {
+      "path": "captures/native-current-PR363-full-files.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_native_bytes": 0,
+      "original_native_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "provenance_context": "sealed-intake"
+  },
+  {
+    "name": "canonical-FIRST-current-PR369",
+    "argv": [
+      "/home/err/.volta/tools/image/node/22.20.0/bin/node",
+      "/home/err/.codex/parallel-goal/issues-20261006/Admitted-next-intake-3496822abc/runtime/nbb/cli.js",
+      "-cp",
+      "/home/err/.codex/parallel-goal/issues-20261006/Admitted-next-intake-3496822abc/runtime/pr-flow/scripts",
+      "/home/err/.codex/parallel-goal/issues-20261006/Admitted-next-intake-3496822abc/runtime/pr-flow/scripts/pr.cljs",
+      "status",
+      "open-hax/knoxx",
+      "369"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Admitted-next-intake-3496822abc",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:14:55.929322+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/canonical-FIRST-current-PR369.stdout.b64",
+      "bytes": 596,
+      "sha256": "c55f85daad0524f1f2f1d4bacec0dd4a9ed76e2c0c62b25d3e163c286a253542",
+      "original_native_bytes": 596,
+      "original_native_sha256": "c55f85daad0524f1f2f1d4bacec0dd4a9ed76e2c0c62b25d3e163c286a253542"
+    },
+    "stderr": {
+      "path": "captures/canonical-FIRST-current-PR369.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_native_bytes": 0,
+      "original_native_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "provenance_context": "sealed-intake"
+  },
+  {
+    "name": "native-current-PR369-full-files",
+    "argv": [
+      "gh",
+      "api",
+      "--paginate",
+      "--slurp",
+      "repos/open-hax/knoxx/pulls/369/files?per_page=100"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Admitted-next-intake-3496822abc",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:14:56.631674+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/native-current-PR369-full-files.stdout.b64",
+      "bytes": 161914,
+      "sha256": "949e7a0a7e17c768f6fd0897fc3f7612f800455191c40e6f7f0c490a39663b20",
+      "original_native_bytes": 162787,
+      "original_native_sha256": "4727a24bc9964ac15d8ed8806e507f8711f237b3f301cef57fc724af051dd892"
+    },
+    "stderr": {
+      "path": "captures/native-current-PR369-full-files.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_native_bytes": 0,
+      "original_native_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "provenance_context": "sealed-intake"
+  },
+  {
+    "name": "canonical-FIRST-historical-PR24",
+    "argv": [
+      "/home/err/.volta/tools/image/node/22.20.0/bin/node",
+      "/home/err/.codex/parallel-goal/issues-20261006/Admitted-next-intake-3496822abc/runtime/nbb/cli.js",
+      "-cp",
+      "/home/err/.codex/parallel-goal/issues-20261006/Admitted-next-intake-3496822abc/runtime/pr-flow/scripts",
+      "/home/err/.codex/parallel-goal/issues-20261006/Admitted-next-intake-3496822abc/runtime/pr-flow/scripts/pr.cljs",
+      "status",
+      "open-hax/knoxx",
+      "24"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Admitted-next-intake-3496822abc",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:15:59.576786+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/canonical-FIRST-historical-PR24.stdout.b64",
+      "bytes": 515,
+      "sha256": "0c79610f8ab80d63702deab66855206e10601976c74bc2d6b17852ad2ec750aa",
+      "original_native_bytes": 515,
+      "original_native_sha256": "0c79610f8ab80d63702deab66855206e10601976c74bc2d6b17852ad2ec750aa"
+    },
+    "stderr": {
+      "path": "captures/canonical-FIRST-historical-PR24.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_native_bytes": 0,
+      "original_native_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "provenance_context": "sealed-intake"
+  },
+  {
+    "name": "native-historical-PR24-body",
+    "argv": [
+      "gh",
+      "api",
+      "--paginate",
+      "--slurp",
+      "repos/open-hax/knoxx/pulls/24"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Admitted-next-intake-3496822abc",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:16:01.459147+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/native-historical-PR24-body.stdout.b64",
+      "bytes": 17358,
+      "sha256": "35fc1263b7e08baaaf1273c7e66550cca584f31ebb93000000e59b859af6eea4",
+      "original_native_bytes": 18065,
+      "original_native_sha256": "259cacc807b34363fa3b2d998bbde555384fb53d403dc66d37d9345e5b3dceba"
+    },
+    "stderr": {
+      "path": "captures/native-historical-PR24-body.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_native_bytes": 0,
+      "original_native_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "provenance_context": "sealed-intake"
+  },
+  {
+    "name": "native-historical-PR24-reviews",
+    "argv": [
+      "gh",
+      "api",
+      "--paginate",
+      "--slurp",
+      "repos/open-hax/knoxx/pulls/24/reviews?per_page=100"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Admitted-next-intake-3496822abc",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:16:01.943102+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/native-historical-PR24-reviews.stdout.b64",
+      "bytes": 9,
+      "sha256": "93a632246f28a39eedc6577fda8be826f662ca408592e96b1b2b26b4256eea3d",
+      "original_native_bytes": 4,
+      "original_native_sha256": "cf1cbb66a638b4860a516671fb74850e6ccf787fe6c4c8d29e9c04efe880bd05"
+    },
+    "stderr": {
+      "path": "captures/native-historical-PR24-reviews.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_native_bytes": 0,
+      "original_native_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "provenance_context": "sealed-intake"
+  },
+  {
+    "name": "native-historical-PR24-comments",
+    "argv": [
+      "gh",
+      "api",
+      "--paginate",
+      "--slurp",
+      "repos/open-hax/knoxx/pulls/24/comments?per_page=100"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Admitted-next-intake-3496822abc",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:16:02.351818+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/native-historical-PR24-comments.stdout.b64",
+      "bytes": 9,
+      "sha256": "93a632246f28a39eedc6577fda8be826f662ca408592e96b1b2b26b4256eea3d",
+      "original_native_bytes": 4,
+      "original_native_sha256": "cf1cbb66a638b4860a516671fb74850e6ccf787fe6c4c8d29e9c04efe880bd05"
+    },
+    "stderr": {
+      "path": "captures/native-historical-PR24-comments.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_native_bytes": 0,
+      "original_native_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "provenance_context": "sealed-intake"
+  },
+  {
+    "name": "canonical-FIRST-parent-sync1",
+    "argv": [
+      "/home/err/.volta/tools/image/node/22.20.0/bin/node",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx158-provenance-planning-8cbb1e7535/runtime/nbb/cli.js",
+      "-cp",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx158-provenance-planning-8cbb1e7535/runtime/pr-flow/scripts",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx158-provenance-planning-8cbb1e7535/runtime/pr-flow/scripts/pr.cljs",
+      "status",
+      "riatzukiza/knoxx",
+      "1"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx158-provenance-planning-8cbb1e7535",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:21:57.274632+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/canonical-FIRST-parent-sync1.stdout.b64",
+      "bytes": 616,
+      "sha256": "623d777e9a3f455d4cb359a40299def0cab483379b52e53502ea6b970753d858",
+      "original_native_bytes": 616,
+      "original_native_sha256": "623d777e9a3f455d4cb359a40299def0cab483379b52e53502ea6b970753d858"
+    },
+    "stderr": {
+      "path": "captures/canonical-FIRST-parent-sync1.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_native_bytes": 0,
+      "original_native_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "fresh-fork",
+    "argv": [
+      "gh",
+      "api",
+      "--paginate",
+      "--slurp",
+      "repos/riatzukiza/knoxx"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx158-provenance-planning-8cbb1e7535",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:21:57.744145+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/fresh-fork.stdout.b64",
+      "bytes": 14485,
+      "sha256": "fe960f06819d75fe988743467509c0f5533952d3c72ac540c3bf5a786d6ff8a7",
+      "original_native_bytes": 15880,
+      "original_native_sha256": "efc48c1309866ae3ff74cc058d7a2578501af6714ed809347b45e32549167bbf"
+    },
+    "stderr": {
+      "path": "captures/fresh-fork.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_native_bytes": 0,
+      "original_native_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "fresh-origin-main",
+    "argv": [
+      "gh",
+      "api",
+      "--paginate",
+      "--slurp",
+      "repos/open-hax/knoxx/commits/main"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx158-provenance-planning-8cbb1e7535",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:21:58.234667+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/fresh-origin-main.stdout.b64",
+      "bytes": 12239,
+      "sha256": "e7c2d402d57ce5702b1929ec1182770432685a0b225bac321a3ec2678a771b8a",
+      "original_native_bytes": 12571,
+      "original_native_sha256": "d15cb20ad1ae4318d432f1bb2dbba9b6998ccf73cda111818c8f1f693a4edf70"
+    },
+    "stderr": {
+      "path": "captures/fresh-origin-main.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_native_bytes": 0,
+      "original_native_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "fresh-personal-main",
+    "argv": [
+      "gh",
+      "api",
+      "--paginate",
+      "--slurp",
+      "repos/riatzukiza/knoxx/commits/main"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx158-provenance-planning-8cbb1e7535",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:21:59.241456+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/fresh-personal-main.stdout.b64",
+      "bytes": 378224,
+      "sha256": "296b76b9297a02cd1ec6496a7557c557c205f8babf8602789c8b2d8b5cc47b97",
+      "original_native_bytes": 382813,
+      "original_native_sha256": "ab97663a969903fc55bd46345fc127ddbaede8c40a27c4f865c5f9e44aa5b132"
+    },
+    "stderr": {
+      "path": "captures/fresh-personal-main.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_native_bytes": 0,
+      "original_native_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "fresh-parent-sync1",
+    "argv": [
+      "gh",
+      "api",
+      "--paginate",
+      "--slurp",
+      "repos/riatzukiza/knoxx/pulls/1"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx158-provenance-planning-8cbb1e7535",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:21:59.913549+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/fresh-parent-sync1.stdout.b64",
+      "bytes": 16605,
+      "sha256": "e4fbda60c78c75c86e5cb09ab0f43fa6b6763b2e6955b487fa535f9d8335b01c",
+      "original_native_bytes": 17447,
+      "original_native_sha256": "4a84dfcea6182488cc662c3a9608cf676f67dd8e4fc0725c781257767acc3e9b"
+    },
+    "stderr": {
+      "path": "captures/fresh-parent-sync1.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_native_bytes": 0,
+      "original_native_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "fresh-personal-openPRs",
+    "argv": [
+      "gh",
+      "api",
+      "--paginate",
+      "--slurp",
+      "repos/riatzukiza/knoxx/pulls?state=open&per_page=100"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx158-provenance-planning-8cbb1e7535",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:22:00.492683+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/fresh-personal-openPRs.stdout.b64",
+      "bytes": 175826,
+      "sha256": "1cbf39ff3aee1d96db86674558f9719281992b4f73136ecf03b407dbb3dd97d7",
+      "original_native_bytes": 177037,
+      "original_native_sha256": "0a91664b99eac263201af95fdae665e8b1942fd7341f86209d0a1c5c0dbac7e9"
+    },
+    "stderr": {
+      "path": "captures/fresh-personal-openPRs.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_native_bytes": 0,
+      "original_native_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "new-complete-private-store",
+    "argv": [
+      "git",
+      "clone",
+      "--bare",
+      "--no-local",
+      "--no-hardlinks",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-lossless-planning-142bca4cee/source.git",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx158-provenance-planning-8cbb1e7535/source.git"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx158-provenance-planning-8cbb1e7535",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:22:07.370539+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/new-complete-private-store.stdout.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_native_bytes": 0,
+      "original_native_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "captures/new-complete-private-store.stderr.b64",
+      "bytes": 132,
+      "sha256": "22b82f5a18267a9d99bab571d6d59113c79fa85d9630a29f8012ee65add075c0",
+      "original_native_bytes": 132,
+      "original_native_sha256": "22b82f5a18267a9d99bab571d6d59113c79fa85d9630a29f8012ee65add075c0"
+    },
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "fresh-own-sync-fetch",
+    "argv": [
+      "git",
+      "--git-dir=/home/err/.codex/parallel-goal/issues-20261006/Knoxx158-provenance-planning-8cbb1e7535/source.git",
+      "fetch",
+      "https://github.com/riatzukiza/knoxx.git",
+      "refs/heads/codex/sync-knoxx-origin-main"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx158-provenance-planning-8cbb1e7535",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:22:07.633199+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/fresh-own-sync-fetch.stdout.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_native_bytes": 0,
+      "original_native_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "captures/fresh-own-sync-fetch.stderr.b64",
+      "bytes": 107,
+      "sha256": "06a169210a9f403164c85dae15ec049a7a7734999eb1181461d2911e45ec6da3",
+      "original_native_bytes": 107,
+      "original_native_sha256": "06a169210a9f403164c85dae15ec049a7a7734999eb1181461d2911e45ec6da3"
+    },
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "new-dedicated-worktree",
+    "argv": [
+      "git",
+      "--git-dir=/home/err/.codex/parallel-goal/issues-20261006/Knoxx158-provenance-planning-8cbb1e7535/source.git",
+      "worktree",
+      "add",
+      "-b",
+      "codex/knoxx158-provenance-planning",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx158-provenance-planning-8cbb1e7535/worktree",
+      "5670338fcf1db7d51a2690f388e4e4c5c409c48a"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx158-provenance-planning-8cbb1e7535",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:22:08.171126+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/new-dedicated-worktree.stdout.b64",
+      "bytes": 82,
+      "sha256": "724f8eb2045f618b011e1d26ae9a1b9c1959f3caf78b8c4a80649239f4e0ea4e",
+      "original_native_bytes": 82,
+      "original_native_sha256": "724f8eb2045f618b011e1d26ae9a1b9c1959f3caf78b8c4a80649239f4e0ea4e"
+    },
+    "stderr": {
+      "path": "captures/new-dedicated-worktree.stderr.b64",
+      "bytes": 69,
+      "sha256": "017b3df7cebb1be714688ad57a0a694784967082ad18ba674701918b9b414f77",
+      "original_native_bytes": 69,
+      "original_native_sha256": "017b3df7cebb1be714688ad57a0a694784967082ad18ba674701918b9b414f77"
+    },
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "complete-objects",
+    "argv": [
+      "git",
+      "rev-list",
+      "--objects",
+      "--all",
+      "--missing=print"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx158-provenance-planning-8cbb1e7535/worktree",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:22:08.299353+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/complete-objects.stdout.b64",
+      "bytes": 5736061,
+      "sha256": "51318b4fbacb274ddbea2804acc541f686bfa46e1c747fa68379ab6042d1ef60",
+      "original_native_bytes": 5736061,
+      "original_native_sha256": "51318b4fbacb274ddbea2804acc541f686bfa46e1c747fa68379ab6042d1ef60"
+    },
+    "stderr": {
+      "path": "captures/complete-objects.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_native_bytes": 0,
+      "original_native_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "full-fsck",
+    "argv": [
+      "git",
+      "fsck",
+      "--full",
+      "--no-reflogs"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx158-provenance-planning-8cbb1e7535/worktree",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:22:13.088279+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/full-fsck.stdout.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_native_bytes": 0,
+      "original_native_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "captures/full-fsck.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_native_bytes": 0,
+      "original_native_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "accepted-origin-ancestry",
+    "argv": [
+      "git",
+      "merge-base",
+      "--is-ancestor",
+      "3409977bca4ba35e09967f9a99d50867a679a73c",
+      "5670338fcf1db7d51a2690f388e4e4c5c409c48a"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx158-provenance-planning-8cbb1e7535/worktree",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:22:13.092922+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/accepted-origin-ancestry.stdout.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_native_bytes": 0,
+      "original_native_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "captures/accepted-origin-ancestry.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_native_bytes": 0,
+      "original_native_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "native-before-full-card",
+    "argv": [
+      "/home/err/.volta/tools/image/node/22.20.0/bin/node",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx158-provenance-planning-8cbb1e7535/runtime/rheos-cli.cjs",
+      "read-task",
+      "knoxx-2.3-content-editor-provenance",
+      "--config",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx158-provenance-planning-8cbb1e7535/native-before/kanban/openhax.kanban.json"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx158-provenance-planning-8cbb1e7535/native-before/kanban",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:29:17.852948+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/native-before-full-card.stdout.b64",
+      "bytes": 3949,
+      "sha256": "24ad6501c497f71bed59fc1027b90d192336e21744b68f54f6ff0950e54d8a88",
+      "original_native_bytes": 3949,
+      "original_native_sha256": "24ad6501c497f71bed59fc1027b90d192336e21744b68f54f6ff0950e54d8a88"
+    },
+    "stderr": {
+      "path": "captures/native-before-full-card.stderr.b64",
+      "bytes": 200,
+      "sha256": "d113d7ba400c9093a855f930ed6df72abb0cf4116abbaf35ffc7508768f4fae5",
+      "original_native_bytes": 200,
+      "original_native_sha256": "d113d7ba400c9093a855f930ed6df72abb0cf4116abbaf35ffc7508768f4fae5"
+    },
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "native-before-events",
+    "argv": [
+      "/home/err/.volta/tools/image/node/22.20.0/bin/node",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx158-provenance-planning-8cbb1e7535/runtime/rheos-cli.cjs",
+      "events",
+      "knoxx-2.3-content-editor-provenance",
+      "--limit",
+      "100",
+      "--json",
+      "--config",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx158-provenance-planning-8cbb1e7535/native-before/kanban/openhax.kanban.json"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx158-provenance-planning-8cbb1e7535/native-before/kanban",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:29:18.269954+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/native-before-events.stdout.b64",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "original_native_bytes": 3,
+      "original_native_sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    "stderr": {
+      "path": "captures/native-before-events.stderr.b64",
+      "bytes": 200,
+      "sha256": "d113d7ba400c9093a855f930ed6df72abb0cf4116abbaf35ffc7508768f4fae5",
+      "original_native_bytes": 200,
+      "original_native_sha256": "d113d7ba400c9093a855f930ed6df72abb0cf4116abbaf35ffc7508768f4fae5"
+    },
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "native-after-full-card",
+    "argv": [
+      "/home/err/.volta/tools/image/node/22.20.0/bin/node",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx158-provenance-planning-8cbb1e7535/runtime/rheos-cli.cjs",
+      "read-task",
+      "knoxx-2.3-content-editor-provenance",
+      "--config",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx158-provenance-planning-8cbb1e7535/native-after/kanban/openhax.kanban.json"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx158-provenance-planning-8cbb1e7535/native-after/kanban",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:29:19.656442+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/native-after-full-card.stdout.b64",
+      "bytes": 10456,
+      "sha256": "85d41721d9ddc85386c225dc20007e73218ccc70ebe6a404dcc6b569dd4eb462",
+      "original_native_bytes": 10456,
+      "original_native_sha256": "85d41721d9ddc85386c225dc20007e73218ccc70ebe6a404dcc6b569dd4eb462"
+    },
+    "stderr": {
+      "path": "captures/native-after-full-card.stderr.b64",
+      "bytes": 199,
+      "sha256": "ecfe86602162b923ff9655eac209797159fabef17ee951571ceb0bb51eec1aef",
+      "original_native_bytes": 199,
+      "original_native_sha256": "ecfe86602162b923ff9655eac209797159fabef17ee951571ceb0bb51eec1aef"
+    },
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "native-after-events",
+    "argv": [
+      "/home/err/.volta/tools/image/node/22.20.0/bin/node",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx158-provenance-planning-8cbb1e7535/runtime/rheos-cli.cjs",
+      "events",
+      "knoxx-2.3-content-editor-provenance",
+      "--limit",
+      "100",
+      "--json",
+      "--config",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx158-provenance-planning-8cbb1e7535/native-after/kanban/openhax.kanban.json"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx158-provenance-planning-8cbb1e7535/native-after/kanban",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:29:20.240931+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/native-after-events.stdout.b64",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "original_native_bytes": 3,
+      "original_native_sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    "stderr": {
+      "path": "captures/native-after-events.stderr.b64",
+      "bytes": 199,
+      "sha256": "ecfe86602162b923ff9655eac209797159fabef17ee951571ceb0bb51eec1aef",
+      "original_native_bytes": 199,
+      "original_native_sha256": "ecfe86602162b923ff9655eac209797159fabef17ee951571ceb0bb51eec1aef"
+    },
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "native-parent-knoxx-knowledge-ops-workbench-ux-breakdown",
+    "argv": [
+      "/home/err/.volta/tools/image/node/22.20.0/bin/node",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx158-provenance-planning-8cbb1e7535/runtime/rheos-cli.cjs",
+      "read-task",
+      "knoxx-knowledge-ops-workbench-ux-breakdown",
+      "--config",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx158-provenance-planning-8cbb1e7535/native-after/kanban/openhax.kanban.json"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx158-provenance-planning-8cbb1e7535/native-after/kanban",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:29:20.822956+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/native-parent-knoxx-knowledge-ops-workbench-ux-breakdown.stdout.b64",
+      "bytes": 1651,
+      "sha256": "eb0bad5b2bdaccd65bbcce20f98a93c09758f903e11241c895723c908707369f",
+      "original_native_bytes": 1651,
+      "original_native_sha256": "eb0bad5b2bdaccd65bbcce20f98a93c09758f903e11241c895723c908707369f"
+    },
+    "stderr": {
+      "path": "captures/native-parent-knoxx-knowledge-ops-workbench-ux-breakdown.stderr.b64",
+      "bytes": 199,
+      "sha256": "ecfe86602162b923ff9655eac209797159fabef17ee951571ceb0bb51eec1aef",
+      "original_native_bytes": 199,
+      "original_native_sha256": "ecfe86602162b923ff9655eac209797159fabef17ee951571ceb0bb51eec1aef"
+    },
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "native-parent-knoxx-knowledge-ops-graph-memory-runtime-smoke-e2e",
+    "argv": [
+      "/home/err/.volta/tools/image/node/22.20.0/bin/node",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx158-provenance-planning-8cbb1e7535/runtime/rheos-cli.cjs",
+      "read-task",
+      "knoxx-knowledge-ops-graph-memory-runtime-smoke-e2e",
+      "--config",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx158-provenance-planning-8cbb1e7535/native-after/kanban/openhax.kanban.json"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx158-provenance-planning-8cbb1e7535/native-after/kanban",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:29:21.443072+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/native-parent-knoxx-knowledge-ops-graph-memory-runtime-smoke-e2e.stdout.b64",
+      "bytes": 2709,
+      "sha256": "521749e9365b00a748bb728cb6d5e41fda76d8f72c00e8b699b2d02bf8916a24",
+      "original_native_bytes": 2709,
+      "original_native_sha256": "521749e9365b00a748bb728cb6d5e41fda76d8f72c00e8b699b2d02bf8916a24"
+    },
+    "stderr": {
+      "path": "captures/native-parent-knoxx-knowledge-ops-graph-memory-runtime-smoke-e2e.stderr.b64",
+      "bytes": 199,
+      "sha256": "ecfe86602162b923ff9655eac209797159fabef17ee951571ceb0bb51eec1aef",
+      "original_native_bytes": 199,
+      "original_native_sha256": "ecfe86602162b923ff9655eac209797159fabef17ee951571ceb0bb51eec1aef"
+    },
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "own-declared-decision-append",
+    "argv": [
+      "/home/err/.volta/tools/image/node/22.20.0/bin/node",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx158-provenance-planning-8cbb1e7535/runtime/nbb/cli.js",
+      "-cp",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx158-provenance-planning-8cbb1e7535/runtime/receipt-river/src/cljs",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx158-provenance-planning-8cbb1e7535/worktree/.\u03b7\u03bc/verification/knoxx158-provenance-planning/owning-receipt-consumer.cljs",
+      "append",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx158-provenance-planning-8cbb1e7535/worktree/.\u03b7\u03bc/receipts.edn"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx158-provenance-planning-8cbb1e7535/worktree",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:29:21.835212+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/own-declared-decision-append.stdout.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_native_bytes": 0,
+      "original_native_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "captures/own-declared-decision-append.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_native_bytes": 0,
+      "original_native_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "own-current-receipt-consumer",
+    "argv": [
+      "/home/err/.volta/tools/image/node/22.20.0/bin/node",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx158-provenance-planning-8cbb1e7535/runtime/nbb/cli.js",
+      "-cp",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx158-provenance-planning-8cbb1e7535/runtime/receipt-river/src/cljs",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx158-provenance-planning-8cbb1e7535/worktree/.\u03b7\u03bc/verification/knoxx158-provenance-planning/owning-receipt-consumer.cljs",
+      "check",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx158-provenance-planning-8cbb1e7535/worktree/.\u03b7\u03bc/receipts.edn",
+      "16"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx158-provenance-planning-8cbb1e7535/worktree",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:29:22.113394+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/own-current-receipt-consumer.stdout.b64",
+      "bytes": 4172,
+      "sha256": "1e574ef81cb3936e53f63a29b2a1b5928a0918fceab132325a9cfb8dd637140e",
+      "original_native_bytes": 2612,
+      "original_native_sha256": "b28eda4031bd81a6f65d2c4a501960e0a4ebc5ae34092a06f081bc75e2db145d"
+    },
+    "stderr": {
+      "path": "captures/own-current-receipt-consumer.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_native_bytes": 0,
+      "original_native_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "portable-reflection-append",
+    "argv": [
+      "/usr/local/bin/bb",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx158-provenance-planning-8cbb1e7535/runtime/mycology/sm-log.bb",
+      "--task",
+      "Refine whole provenance158 UI against actual router and foreign migration owners",
+      "--efficiency",
+      "0.8",
+      "--friction",
+      "0.3",
+      "--candidate",
+      "0.0",
+      "--receipt-refs",
+      "44eda7e1c100c11c199ac444f46dc0687d857a60219e5f3d751693cf28308970",
+      "--note",
+      "Preserve allfiveDoD and native Ready1; missing mount/Memory destination require review, not isolated legacy UI. Preferred existing ReactUxx boundary through protectedCLJS route remains proposed; no backend/provider or external adoption. Original body/metadata/history retained; no live event/spore."
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx158-provenance-planning-8cbb1e7535/worktree",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:29:22.188344+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/portable-reflection-append.stdout.b64",
+      "bytes": 141,
+      "sha256": "0a49c37cb813f2eedb0c63c78b2ea37b809e320b2a65cd37db7ea4752ee68aef",
+      "original_native_bytes": 141,
+      "original_native_sha256": "0a49c37cb813f2eedb0c63c78b2ea37b809e320b2a65cd37db7ea4752ee68aef"
+    },
+    "stderr": {
+      "path": "captures/portable-reflection-append.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_native_bytes": 0,
+      "original_native_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "portable-reflection-reader",
+    "argv": [
+      "/usr/local/bin/bb",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx158-provenance-planning-8cbb1e7535/runtime/mycology/sm-list.bb",
+      "--ledger-only",
+      "--limit",
+      "1"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx158-provenance-planning-8cbb1e7535/worktree",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:29:22.226619+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/portable-reflection-reader.stdout.b64",
+      "bytes": 724,
+      "sha256": "6a96aee2783952a821ad307353d9d22ace0efe8a8a4cb978e63631d429795984",
+      "original_native_bytes": 724,
+      "original_native_sha256": "6a96aee2783952a821ad307353d9d22ace0efe8a8a4cb978e63631d429795984"
+    },
+    "stderr": {
+      "path": "captures/portable-reflection-reader.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_native_bytes": 0,
+      "original_native_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "native-final-after-full-card",
+    "argv": [
+      "/home/err/.volta/tools/image/node/22.20.0/bin/node",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx158-provenance-planning-8cbb1e7535/runtime/rheos-cli.cjs",
+      "read-task",
+      "knoxx-2.3-content-editor-provenance",
+      "--config",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx158-provenance-planning-8cbb1e7535/native-final-after/kanban/openhax.kanban.json"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx158-provenance-planning-8cbb1e7535/native-final-after/kanban",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:32:45.062583+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/native-final-after-full-card.stdout.b64",
+      "bytes": 11424,
+      "sha256": "f4b03c215b8adbda1b48dead2fdb4016f1c7ef029c93d42f4b4e6b7d4c451fbd",
+      "original_native_bytes": 11424,
+      "original_native_sha256": "f4b03c215b8adbda1b48dead2fdb4016f1c7ef029c93d42f4b4e6b7d4c451fbd"
+    },
+    "stderr": {
+      "path": "captures/native-final-after-full-card.stderr.b64",
+      "bytes": 205,
+      "sha256": "6d3a5c4e51222a629c3a8699d29af01c1cea8a4e0af813d8bc3cf922daf71978",
+      "original_native_bytes": 205,
+      "original_native_sha256": "6d3a5c4e51222a629c3a8699d29af01c1cea8a4e0af813d8bc3cf922daf71978"
+    },
+    "provenance_context": "candidate-final-body"
+  }
+]

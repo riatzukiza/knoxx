@@ -1,0 +1,12 @@
+{
+  "source": "root coordinator supplied independent observed evidence; no native request or gate rerun by this lane",
+  "owner_issue": "https://github.com/riatzukiza/.agents/issues/22",
+  "personal_PR": 9,
+  "head": "5a4c40dc71df7e1bed4e857c8f5b85ee469ebdd3",
+  "review": 5438887085,
+  "run": 37586270393,
+  "job": 112676997045,
+  "unresolved_explanatory_threads": 3,
+  "outcome": "strict hosted failure; App prerequisites succeeded",
+  "qualification": "hold; no self-Handled/local classifier/waiver; no new dependency or board write"
+}
