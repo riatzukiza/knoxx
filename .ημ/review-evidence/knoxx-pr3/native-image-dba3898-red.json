@@ -1,0 +1,56 @@
+{
+  "revision": "dba3898c501de47aedc2bf06be8c3c41577df5e3",
+  "image_id": "sha256:a8827a015821caba101d050de8ab4dc6cb23f01b77dff4764fc9228d93c6aa2b",
+  "image_user": "1000",
+  "args": [
+    "docker",
+    "run",
+    "--rm",
+    "--network",
+    "none",
+    "--user",
+    "1000:1000",
+    "--read-only",
+    "--cap-drop",
+    "ALL",
+    "--security-opt",
+    "no-new-privileges",
+    "--pids-limit",
+    "128",
+    "--cpus",
+    "1",
+    "--memory",
+    "768m",
+    "--tmpfs",
+    "/tmp:rw,noexec,nosuid,size=32m",
+    "--mount",
+    "type=bind,src=/tmp/cephalon-native-image-proof-eql6m0hq,dst=/proof",
+    "--entrypoint",
+    "node",
+    "sha256:a8827a015821caba101d050de8ab4dc6cb23f01b77dff4764fc9228d93c6aa2b",
+    "-e",
+    "\nconst fs=require('node:fs'),crypto=require('node:crypto'),cp=require('node:child_process');\nif(process.getuid()!==1000||process.getgid()!==1000)throw Error('nonroot proof UID/GID mismatch');\nconst hash=p=>crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex');\nconsole.log(JSON.stringify({uid:process.getuid(),gid:process.getgid(),engineSha256:hash('/app/scripts/synthesize-music.mjs'),serverSha256:hash('/app/dist/server.js')}));\nconst r=cp.spawnSync(process.execPath,['/app/scripts/synthesize-music.mjs','/proof/spec.json','/proof/render.wav'],{encoding:'utf8',timeout:30000});\nprocess.stdout.write(r.stdout||'');process.stderr.write(r.stderr||'');\nif(r.error)console.error(r.error.message);\nprocess.exit(r.status===null?1:r.status);\n"
+  ],
+  "exit": 1,
+  "stdout": "{\"uid\":1000,\"gid\":1000,\"engineSha256\":\"24935357c402fe8ea89c7a7ddbc6e44770aa446dd7099576f0f2a596037d5d87\",\"serverSha256\":\"115076b2407cadcc829c0dca2058023d5bf249ecba0ea4e4c29810d910cf138f\"}\n",
+  "stderr": "node:internal/modules/cjs/loader:1864\n  return process.dlopen(module, path.toNamespacedPath(filename));\n                 ^\n\nError: libasound.so.2: cannot open shared object file: No such file or directory\n    at Object..node (node:internal/modules/cjs/loader:1864:18)\n    at Module.load (node:internal/modules/cjs/loader:1441:32)\n    at Function._load (node:internal/modules/cjs/loader:1263:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:328:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:237:24)\n    at Module.require (node:internal/modules/cjs/loader:1463:12)\n    at require (node:internal/modules/helpers:147:16)\n    at Object.<anonymous> (/app/node_modules/.pnpm/node-web-audio-api@1.0.9/node_modules/node-web-audio-api/load-native.cjs:57:27)\n    at Module._compile (node:internal/modules/cjs/loader:1705:14)\n    at Object..js (node:internal/modules/cjs/loader:1838:10) {\n  code: 'ERR_DLOPEN_FAILED'\n}\n\nNode.js v22.22.2\n",
+  "inputs": [
+    {
+      "path": "backend/Dockerfile",
+      "sha256": "35723b99c6ab9268359deb38722a9b64b727c1d869f6db8cc814b5aeeed64f3d"
+    },
+    {
+      "path": "backend/docker/sandbox/Dockerfile",
+      "sha256": "b4eacbbc364734a966a6af2e09e410bb6aacece12474efa90c90e9a9f8e868ba"
+    },
+    {
+      "path": "backend/package.json",
+      "sha256": "37812f05dcb69774ab780d326f27d0c948a513a8e7406e954db67d2f318c62fa"
+    },
+    {
+      "path": "backend/scripts/synthesize-music.mjs",
+      "sha256": "24935357c402fe8ea89c7a7ddbc6e44770aa446dd7099576f0f2a596037d5d87"
+    }
+  ],
+  "server_sha256": "115076b2407cadcc829c0dca2058023d5bf249ecba0ea4e4c29810d910cf138f"
+}

@@ -27,6 +27,7 @@ RUN apt-get update \
 # Compiled by `shadow-cljs release server` before `docker build`.
 COPY dist ./dist
 COPY docker ./docker
+COPY scripts/synthesize-music.mjs ./scripts/synthesize-music.mjs
 
 # Compose/deployment MUST mount the real contracts tree at /app/contracts. It
 # cannot be COPYed here: the build context is ./backend, so the repository-level
@@ -39,8 +40,14 @@ COPY docker ./docker
 # The directories below are still created so the process boots far enough to
 # report a configuration error instead of failing on mkdir.
 RUN useradd --uid 1000 --create-home --shell /bin/bash agent || true \
- && mkdir -p /runs/knoxx-agent /tmp/knoxx-agent /app/contracts /app/workspace \
- && chown -R 1000:1000 /runs /tmp/knoxx-agent /app
+  && mkdir -p /runs/knoxx-agent /tmp/knoxx-agent /app/contracts /app/workspace \
+  && chown -R 1000:1000 /runs /tmp/knoxx-agent /app
+
+# node-web-audio-api links ALSA even for offline rendering. Keep this runtime
+# dependency separate from the cached Node dependency installation layer.
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends libasound2 \
+  && rm -rf /var/lib/apt/lists/*
 
 USER 1000
 

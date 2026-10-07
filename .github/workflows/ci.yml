@@ -124,6 +124,10 @@ jobs:
       - name: Backend production release
         run: pnpm -C backend run build
 
+      - name: Packaged native music (non-root image)
+        timeout-minutes: 20
+        run: pnpm -C backend exec nbb ../scripts/verify_native_music_image.cljs --build knoxx-native-music-ci
+
       - name: Production ESM route registration
         run: pnpm -C backend run test:routes:release
 

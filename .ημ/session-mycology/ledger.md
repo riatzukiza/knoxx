@@ -192,3 +192,79 @@
   p-skill-candidate: 0.2
   receipt-refs: 2026-10-06T14:28:52.198143Z
   note: Keep accepted source synchronization separate from unmerged feature migration. An inherited ready-triggered merge job makes draft preparation necessary until reviewed base enforcement. No spore warranted.
+- ts: 2026-10-06T19:09:48.828883+00:00
+  session: /home/err/spaces/cephalon-music-fix/knoxx
+  task: Restore native music process-result decoding and Docker engine packaging
+  p-efficiency: 0.8
+  p-friction: 0.3
+  p-skill-candidate: 0.3
+  spore: none
+  receipt-refs: native-music-result-hotfix
+  note: Real process output plus WAV-byte checks expose this boundary bug; use guarded counters because Shadow may exit zero on failed tests. Preserve pre-existing lint blockers with a base comparison.
+
+- ts: 2026-10-06T21:59:44.619814Z
+  session: /home/err/spaces/cephalon-music-fix/knoxx
+  task: Route active cephalon development reviews to personal forks
+  p-efficiency: 0.91
+  p-friction: 0.26
+  p-skill-candidate: 0.20
+  spore: none
+  receipt-refs: cephalon-personal-fork-review-migration
+  note: Review subscriptions belong to the PR base repository owner. A branch in a personal fork targeting the org still reviews under org scope; use an in-personal-fork PR, preserve parent synchronization and native evidence, and qualify release/deployment separately.
+
+## 2026-10-06 — cephalon-personal-node-options-path
+
+- Evidence: receipt `cephalon-personal-node-options-path`; native review/finding IDs above.
+- Scores: efficiency0.80, friction0.30, skill-candidate0.35.
+- Lesson: verify real process parsing and named diagnostic failure outcomes; distinguish the captured environment boundary from real engine tests and deployment qualification. Preserve initial fixture/precondition failures in evidence.
+- No spore incubated or promoted.
+
+## 2026-10-06 — cephalon-personal-head-qualification-20261006T2300
+
+- Evidence: receipt `cephalon-personal-head-qualification-20261006T2300`; native current-head CI/review and explanatory comment IDs in that receipt.
+- Scores: efficiency0.78, friction0.25, skill-candidate0.30.
+- Lesson: refresh every current-state paragraph in native PR descriptions, distinguish reviewer runner execution from separate hosted functional CI, and verify dependency metadata with actual installed schemas while keeping live deployment unverified. Required-check read failures were resolved using the already authorized keyring environment, not by changing the classifier.
+- Missing direct branch tests remain explicit coverage observations; a full native review is pending independently of its trigger acknowledgment. No synthetic approval, policy waiver or status-only push.
+- No spore incubated or promoted. Existing canonical PR/receipt skills already own these lessons.
+
+## 2026-10-06 — cephalon-personal-music-root-verifier
+
+- Evidence: receipt `cephalon-personal-music-root-verifier`, native review5435695163/finding4201449851 and retained music-root replay proof.
+- Scores: efficiency0.80, friction0.30, skill-candidate0.40.
+- Lesson: human verifiers must consume the product's effective alias configuration for both artifact reads and cleanup; a currently unset override does not establish correctness for supported configured deployments. Normalize cross-realm arrays at the fixture edge before structural assertions.
+- Boundary: actual synthesis/filesystem proof and source3/18 pass, while live MCP and exact image deployment remain unverified. No spore incubated or promoted.
+
+## 2026-10-07 — cephalon-personal-source-mimo-compatibility-20261007T0001
+
+- Evidence: receipt `cephalon-personal-source-mimo-compatibility-20261007T0001`.
+- Scores: efficiency0.87, friction0.18, skill-candidate0.22.
+- Lesson: Verify a conditional zero-frame compatibility hypothesis at the actual engine/process boundary and preserve SDK metadata through actual schemas; native approvals do not imply deployment or full gate convergence.
+- No spore incubated or promoted; existing canonical skills already own the reusable protocol. Observation-only append retained for the next concrete owned commit.
+
+## 2026-10-07 — cephalon-personal-native-result-before-wav
+
+- Evidence: receipt `cephalon-personal-native-result-before-wav`, native review5436249219/body item cr-comment:v1:aae20fb6c861931c943714fe.
+- Scores: efficiency0.82, friction0.25, skill-candidate0.30.
+- Lesson: preserve the real native failure before dependent artifact I/O; execute compiled asynchronous test fixtures with the existing error guard so early process exit cannot hide rejection. The initial unguarded probe failed its expected-output assertion and supplied no proof.
+- Actual normal synthesis and guarded negative-output probes passed their distinct expectations; live deployment and review convergence remain unqualified. No spore incubated or promoted.
+
+## 2026-10-07 — cephalon-personal-native-image-missing-alsa
+
+- Evidence: same-named receipt, actual red imagea8827a01 and retained raw native probe.
+- Scores: efficiency0.87, friction0.22, skill-candidate0.34.
+- Lesson: a real source engine and passing functional CI do not establish OS dependencies in the final image. Run the packaged native engine with its actual non-root identity and code hashes. Preserve expensive image layers when adding a small runtime library, and keep proof containers isolated from gateways and production mounts.
+- No spore incubated or promoted; exact fixed-image GREEN is still pending.
+
+## 2026-10-07 — cephalon-personal-native-image-git-context
+
+- Evidence: same-named receipt and real Git-context helper probe.
+- Scores: efficiency0.91, friction0.15, skill-candidate0.29.
+- Lesson: materialize committed Docker inputs with Git file modes to bind source identity, exclude private untracked files and keep cache behavior consistent across checkout umasks. Distinguish cancelled candidate builds from production makers and actual engine RED.
+- No spore incubated or promoted.
+
+## 2026-10-07 — cephalon-personal-native-image-alsa-green
+
+- Evidence: same-named receipt, actual image3f7b7256 and clearly labelled tool-output transcription.
+- Scores: efficiency0.93, friction0.08, skill-candidate0.25.
+- Lesson: pair source and package tests with actual image identity and artifact hashes; preserving a missing-library RED then non-root WAV GREEN makes the infrastructure change independently reviewable. Distinguish packaged engine success from served MCP and creative guarantees.
+- No spore incubated or promoted.
