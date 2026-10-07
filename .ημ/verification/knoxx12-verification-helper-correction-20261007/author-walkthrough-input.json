@@ -1,0 +1,20 @@
+{
+  "scope": "local inputs for root author walkthrough; not native comments or reviewer credit",
+  "anchors": [
+    {
+      "path": ".\u03b7\u03bc/verification/knoxx159-contract-runtime-planning/owning_receipt_consumer.cljs",
+      "line": 9,
+      "body": "Count syntax is checked before reading input; range is checked before subvec. Original NaN was false refusal, while16junk/16.5 silently truncated. All original17 bytes remain; current owner suffix supports ordinary multi-row successors and preserves blank physical records."
+    },
+    {
+      "path": ".\u03b7\u03bc/verification/knoxx159-contract-runtime-planning/verify_preservation.py",
+      "line": 52,
+      "body": "Published268-entry manifest is unchanged and bound to an independently generated immutable-Git record before FS checks. Regular executable flags and120000 symlink identity are checked; float/bool metadata cannot masquerade as exact integer sizes."
+    },
+    {
+      "path": ".\u03b7\u03bc/verification/knoxx159-contract-runtime-planning/verify_preservation.py",
+      "line": 76,
+      "body": "Historical captured PASS remains preserved but does not admit current bytes. The current owner API validates every physical row and all declared own rows17 onward. --at FULL_SHA selects immutable Git input. Original16 refusals remain; correction18 is valid. Backend gates and whole-plan admission remain future/blocked."
+    }
+  ]
+}

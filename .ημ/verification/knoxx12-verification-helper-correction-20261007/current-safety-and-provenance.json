@@ -1,0 +1,16 @@
+{
+  "baseline": "9097d6f0166381d2b32326371e0045331340da3c",
+  "current_native_draft": true,
+  "current_native_auto_merge": null,
+  "current_native_blocked": true,
+  "unchanged_auto_merge_caller": {
+    "pin": "0823119585244bc5dfeea3c2b4cd64b0b0aa7cef",
+    "job_guard": "github.event.pull_request.draft == false && github.event.pull_request.head.repo.full_name == github.repository",
+    "method": "SQUASH",
+    "safety": "DRAFT is required; no readiness/automation mutation in this lane"
+  },
+  "unchanged_review_caller_pin": "b5b28237c45323cdc1914317260192163d957735",
+  "reflection_appends": 2,
+  "receipt_append_physical_row": 18,
+  "native_review_footer": "0 included remain /1 perhour; no explicit deadline; no review request"
+}
