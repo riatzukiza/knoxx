@@ -192,3 +192,27 @@
   p-skill-candidate: 0.2
   receipt-refs: 2026-10-06T14:28:52.198143Z
   note: Keep accepted source synchronization separate from unmerged feature migration. An inherited ready-triggered merge job makes draft preparation necessary until reviewed base enforcement. No spore warranted.
+
+## Knoxx161 RED
+
+Friction 2/5: explicit namespace override did not constrain the compiled suite; retain full actual scope and counters, not intended scope or compiler exit. Dependency transport setup corrections are private and preserved. No spore promotion.
+
+## Fixture correction
+
+Friction 3/5: independent raw review showed static CLJS multi-arity fixture mismatch. Match original arities before interpreting effect counters. Retain original error capture; corrected RED directly observes poisoned global runner and non-refusing effects.
+
+## Knoxx161 local feature/gate hold
+
+Friction3/5: keep static CLJS multi-arity fixture shape faithful; negative assertions and poisoned calls matter only after fixture dispatch succeeds. Corrected RED retained before GREEN. Actual guarded1853/9134 zero and privateHTTP/Clio admission pass; accepted inherited lint8errors288warnings remains a completion blocker with existing owners181/182. Keep setup failures/Node OOM and local provider limits inspectable. No spore promotion or native qualification inferred.
+
+## Discord gateway ingress correction
+
+Friction 3/5: an all-caller peer review found a separately bound closure missed by producer startup injection. Captured production binder callbacks expose both absent/hostile capability slots: RED1/18/4fail/0error and actual exit1. Preserve prior passing suite with its coverage limit; compose once at the actual outer closure. No spore promotion.
+
+## Gateway GREEN and completion hold
+
+Friction 3/5: producer startup is not the only config closure; enumerate independent binders and explicit HTTP dispatch callers. Gateway RED was committed before the outer closure repair. Fresh guarded1854/9152 zero, server compiler0warnings and boundarycheck pass. Preserve failed lint8/288 and original/corrected RED histories. Native card remains IP, all acceptance retained, no complete/blocked status claimed. No same-session spore promotion.
+
+## Native operational hold
+
+Friction 2/5: command process0 does not imply a lawful transition; retain REJECTED result and native IP readback. Engine add-comment extends the existing comment section, so compare the original content prefix instead of requiring a new section. One HOLD records lint dependency181/182. Whole live authenticated application human verification remains unverified beyond isolated production-route/runner/Clio proof. No alternate transition, handwritten state, repeated comment, feature rerun or publication.

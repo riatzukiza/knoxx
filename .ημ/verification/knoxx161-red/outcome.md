@@ -1,0 +1,3 @@
+Knoxx161 RED at unchanged production source
+
+The compiler ran the full suite despite the attempted focused namespace override: 1,849 tests / 9,116 assertions / nine failures / one error. Eight failures and one error establish the new injection/refusal contract; the SVG rendering failure is unrelated and retained. Compiler exit 0 does not qualify failed tests. The global runner poison throws in the injected-capability test, and all four absent/noncallable capability cases fail refusal. The portable law JVM probe passes named-registry EDN roundtrip and strict function admission. No product code changed. Runtime Node 24.21.0, private JVM/dependencies and offline bubblewrap network namespace; no shared service writes.

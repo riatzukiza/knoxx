@@ -1,0 +1,62 @@
+[
+  {
+    "label": "portable-law-probe-strict-function",
+    "command": [
+      "timeout",
+      "45",
+      "python3",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/isolated-command.py",
+      "offline",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/worktree/backend",
+      "clojure",
+      "-M:cljs",
+      "-e",
+      "(require (quote [knoxx.backend.law.action-capabilities :as law]) (quote [clojure.edn :as edn])) (assert (= law/registry (edn/read-string (pr-str law/registry)))) (assert (law/spawn-context? {:spawn-agent! (fn [_ _] nil)})) (doseq [value [nil {} :spawn \"spawn\" #{} [] 1 false]] (assert (false? (law/spawn-context? {:spawn-agent! value})))) (println \"Portable named EDN capability law PASS; no capability invocation\")"
+    ],
+    "cwd": "/home/err/.codex/worktrees/cc59/foresight",
+    "at": "2026-10-07T01:48:11.336550+00:00",
+    "exit": 0,
+    "stdout": {
+      "capture": "portable-law-probe-strict-function.stdout.b64",
+      "bytes": 65,
+      "sha256": "5d0b74fd52646b6a97d8ef45a2ea48d4f3a1c22b6b2e2e97a06f51998a15c075"
+    },
+    "stderr": {
+      "capture": "portable-law-probe-strict-function.stderr.b64",
+      "bytes": 132,
+      "sha256": "6fd719e0e756021b2d513184abd377a101f1a3f184a21140fea8ffb40a559bc0"
+    }
+  },
+  {
+    "label": "compiled-focused-red",
+    "command": [
+      "timeout",
+      "600",
+      "python3",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/isolated-command.py",
+      "offline",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/worktree/backend",
+      "clojure",
+      "-M:cljs",
+      "-m",
+      "shadow.cljs.devtools.cli",
+      "compile",
+      "test",
+      "--config-merge",
+      "{:builds {:test {:ns-regexp \"^knoxx\\\\.backend\\\\.(actions\\\\.start-agent-session|law\\\\.action-capabilities)-test$\"}}}"
+    ],
+    "cwd": "/home/err/.codex/worktrees/cc59/foresight",
+    "at": "2026-10-07T01:54:45.717458+00:00",
+    "exit": 0,
+    "stdout": {
+      "capture": "compiled-focused-red.stdout.b64",
+      "bytes": 62633,
+      "sha256": "687beea85e13ca68d83252e7f9fcf69c01b555b7fa532a6405b8aa2595e50a75"
+    },
+    "stderr": {
+      "capture": "compiled-focused-red.stderr.b64",
+      "bytes": 31847,
+      "sha256": "427637cb365171d4c3591d1b713622414fddd46cb3d23d63599688ae1b57816c"
+    }
+  }
+]
