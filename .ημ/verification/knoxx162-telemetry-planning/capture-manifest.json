@@ -1,0 +1,247 @@
+[
+  {
+    "name": "native-knoxx-knowledge-ops-adaptive-expand-policy-telemetry",
+    "argv": [
+      "/home/err/.volta/tools/image/node/24.14.1/bin/node",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx162-telemetry-planning-2427278dfe/runtime/rheos-cli.cjs",
+      "read-task",
+      "knoxx-knowledge-ops-adaptive-expand-policy-telemetry",
+      "--config",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx162-telemetry-planning-2427278dfe/accepted-board/kanban/openhax.kanban.json"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx162-telemetry-planning-2427278dfe/accepted-board",
+    "exit": 0,
+    "captured_at": "2026-10-07T04:03:00.225796+00:00",
+    "stdout": {
+      "path": "native-knoxx-knowledge-ops-adaptive-expand-policy-telemetry.stdout.b64",
+      "bytes": 3863,
+      "sha256": "4578f08b04ae11f78e5ab6b7c2511da2e0d7ac1d9b7b6f66ed5f156f5f80e085"
+    },
+    "stderr": {
+      "path": "native-knoxx-knowledge-ops-adaptive-expand-policy-telemetry.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "name": "native-knoxx-knowledge-ops-adaptive-expand-policy-seam",
+    "argv": [
+      "/home/err/.volta/tools/image/node/24.14.1/bin/node",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx162-telemetry-planning-2427278dfe/runtime/rheos-cli.cjs",
+      "read-task",
+      "knoxx-knowledge-ops-adaptive-expand-policy-seam",
+      "--config",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx162-telemetry-planning-2427278dfe/accepted-board/kanban/openhax.kanban.json"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx162-telemetry-planning-2427278dfe/accepted-board",
+    "exit": 0,
+    "captured_at": "2026-10-07T04:03:00.901294+00:00",
+    "stdout": {
+      "path": "native-knoxx-knowledge-ops-adaptive-expand-policy-seam.stdout.b64",
+      "bytes": 3868,
+      "sha256": "38b10c989c39d9bf95ba24925d6bd88cb3cacfd6b830417ccf4ad07756df52ec"
+    },
+    "stderr": {
+      "path": "native-knoxx-knowledge-ops-adaptive-expand-policy-seam.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "name": "stale-original-core",
+    "argv": [
+      "git",
+      "show",
+      "3409977bca4ba35e09967f9a99d50867a679a73c:backend/src/cljs/knoxx/backend/core.cljs"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx162-telemetry-planning-2427278dfe/worktree",
+    "exit": 128,
+    "captured_at": "2026-10-07T04:03:00.969502+00:00",
+    "stdout": {
+      "path": "stale-original-core.stdout.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "stale-original-core.stderr.b64",
+      "bytes": 116,
+      "sha256": "fd6a489530ba3696e6678440cc4c1131bd3f586f7f768359c655a505a59b9434"
+    }
+  },
+  {
+    "name": "proposed-knoxx-knowledge-ops-adaptive-expand-policy-telemetry",
+    "argv": [
+      "/home/err/.volta/tools/image/node/24.14.1/bin/node",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx162-telemetry-planning-2427278dfe/runtime/rheos-cli.cjs",
+      "read-task",
+      "knoxx-knowledge-ops-adaptive-expand-policy-telemetry",
+      "--config",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx162-telemetry-planning-2427278dfe/worktree/kanban/openhax.kanban.json"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx162-telemetry-planning-2427278dfe/worktree",
+    "exit": 0,
+    "captured_at": "2026-10-07T04:06:15.301636+00:00",
+    "stdout": {
+      "path": "proposed-knoxx-knowledge-ops-adaptive-expand-policy-telemetry.stdout.b64",
+      "bytes": 8238,
+      "sha256": "a7ea49094ddee04fe60149b7e00e942d167fd366190b2b224876bd8446bf9ebc"
+    },
+    "stderr": {
+      "path": "proposed-knoxx-knowledge-ops-adaptive-expand-policy-telemetry.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "name": "proposed-knoxx-knowledge-ops-adaptive-expand-policy-seam",
+    "argv": [
+      "/home/err/.volta/tools/image/node/24.14.1/bin/node",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx162-telemetry-planning-2427278dfe/runtime/rheos-cli.cjs",
+      "read-task",
+      "knoxx-knowledge-ops-adaptive-expand-policy-seam",
+      "--config",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx162-telemetry-planning-2427278dfe/worktree/kanban/openhax.kanban.json"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx162-telemetry-planning-2427278dfe/worktree",
+    "exit": 0,
+    "captured_at": "2026-10-07T04:06:15.971494+00:00",
+    "stdout": {
+      "path": "proposed-knoxx-knowledge-ops-adaptive-expand-policy-seam.stdout.b64",
+      "bytes": 3862,
+      "sha256": "98ec2db84b11daaff00c771a491066fdaf35db0aef1aa0a018e1d8fad8635702"
+    },
+    "stderr": {
+      "path": "proposed-knoxx-knowledge-ops-adaptive-expand-policy-seam.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "name": "actual-owner-append",
+    "argv": [
+      "/home/err/.volta/tools/image/node/24.14.1/bin/node",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx162-telemetry-planning-2427278dfe/runtime/nbb/cli.js",
+      "-cp",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx162-telemetry-planning-2427278dfe/runtime/receipt-river/src/cljs",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx162-telemetry-planning-2427278dfe/own-consumer.cljs",
+      "append",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx162-telemetry-planning-2427278dfe/worktree/.\u03b7\u03bc/receipts.edn"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx162-telemetry-planning-2427278dfe/worktree",
+    "exit": 0,
+    "captured_at": "2026-10-07T04:06:16.229667+00:00",
+    "stdout": {
+      "path": "actual-owner-append.stdout.b64",
+      "bytes": 132,
+      "sha256": "d6f8cdc15bfe73d51b084f139a8512a9dea622a49255c41cd581fdb64e7d8d31"
+    },
+    "stderr": {
+      "path": "actual-owner-append.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "name": "portable-before",
+    "argv": [
+      "/usr/local/bin/bb",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx162-telemetry-planning-2427278dfe/runtime/mycology/sm-list.bb",
+      "--ledger-only",
+      "--limit",
+      "1"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx162-telemetry-planning-2427278dfe/worktree",
+    "exit": 0,
+    "captured_at": "2026-10-07T04:06:16.262969+00:00",
+    "stdout": {
+      "path": "portable-before.stdout.b64",
+      "bytes": 459,
+      "sha256": "e6fb2341dcd249952fe5bd05e4348e0cb19c802dd8e06e77e323f8cecf4103e6"
+    },
+    "stderr": {
+      "path": "portable-before.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "name": "portable-append",
+    "argv": [
+      "/usr/local/bin/bb",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx162-telemetry-planning-2427278dfe/runtime/mycology/sm-log.bb",
+      "--task",
+      "Knoxx162 full telemetry planning refinement",
+      "--efficiency",
+      "0.86",
+      "--friction",
+      "0.28",
+      "--candidate",
+      "0.20",
+      "--receipt-refs",
+      "5f163c171c992646645f0ac0cf1925d261742548b126e36ff270a00d49263012",
+      "--note",
+      "Inspect actual emitter/admission and resolved policy identity before accepting a stale single-file telemetry plan. Preserve original Ready history and five-field/three-outcome scope; no implementation, live event or spore promotion."
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx162-telemetry-planning-2427278dfe/worktree",
+    "exit": 0,
+    "captured_at": "2026-10-07T04:06:16.348071+00:00",
+    "stdout": {
+      "path": "portable-append.stdout.b64",
+      "bytes": 140,
+      "sha256": "3982c86c3ad5898076831cf7e30db713a3968f5acf63b79b7a42dd78fd365a90"
+    },
+    "stderr": {
+      "path": "portable-append.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "name": "portable-after",
+    "argv": [
+      "/usr/local/bin/bb",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx162-telemetry-planning-2427278dfe/runtime/mycology/sm-list.bb",
+      "--ledger-only",
+      "--limit",
+      "1"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx162-telemetry-planning-2427278dfe/worktree",
+    "exit": 0,
+    "captured_at": "2026-10-07T04:06:16.370972+00:00",
+    "stdout": {
+      "path": "portable-after.stdout.b64",
+      "bytes": 623,
+      "sha256": "30483270b14904fe6725b8203ba3d0767541831846d846f6ccbc65573ddbab02"
+    },
+    "stderr": {
+      "path": "portable-after.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "name": "actual-owner-worktree",
+    "argv": [
+      "/home/err/.volta/tools/image/node/24.14.1/bin/node",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx162-telemetry-planning-2427278dfe/runtime/nbb/cli.js",
+      "-cp",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx162-telemetry-planning-2427278dfe/runtime/receipt-river/src/cljs",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx162-telemetry-planning-2427278dfe/own-consumer.cljs",
+      "file",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx162-telemetry-planning-2427278dfe/worktree/.\u03b7\u03bc/receipts.edn"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx162-telemetry-planning-2427278dfe/worktree",
+    "exit": 0,
+    "captured_at": "2026-10-07T04:06:16.702930+00:00",
+    "stdout": {
+      "path": "actual-owner-worktree.stdout.b64",
+      "bytes": 2576,
+      "sha256": "fd421ec7cb7ad9c32f555d06c67112ab02c48c98259a170714e4db83abec9b09"
+    },
+    "stderr": {
+      "path": "actual-owner-worktree.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  }
+]
