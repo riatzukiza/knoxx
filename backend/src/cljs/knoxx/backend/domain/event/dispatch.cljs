@@ -135,6 +135,8 @@
 (defn- actor-context
   [config trigger event trusted?]
   {:config config
+   ;; Capability composition belongs to the outer runtime, never event payload.
+   :spawn-agent! (get-in config [:action/capabilities :spawn-agent!])
    :event event
    ;; Dispatch provenance is deliberately outside the normalized event. A
    ;; caller can forge every event field, but cannot change which entry point

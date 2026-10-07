@@ -13,7 +13,7 @@
   for where that report is resolved."
   (:require [clojure.string :as str]
             [knoxx.backend.domain.contracts.resolve :as contracts-resolve]
-            [knoxx.backend.domain.event.dispatch :as event-dispatch]
+            [knoxx.backend.infra.event-dispatch :as runtime-dispatch]
             [knoxx.backend.domain.node.crypto :as crypto]
             [knoxx.backend.extern.fastify :as fastify]
             [knoxx.backend.infra.agent.runner :as agent-runner]
@@ -240,7 +240,7 @@
    :observe-source-revision (or (:observe-source-revision dependencies)
                                 (facade/source-revision-observer! config))
    :emit! (or (:emit! dependencies)
-              (fn [event] (event-dispatch/dispatch! config event)))
+              (fn [event] (runtime-dispatch/dispatch! config event)))
    :register-turn-settler! (or (:register-turn-settler! dependencies)
                                agent-runner/register-event-turn-settler!)
    :unregister-turn-settler! (or (:unregister-turn-settler! dependencies)

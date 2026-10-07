@@ -4,6 +4,7 @@
             [knoxx.backend.domain.driver.builtin :as driver-builtin]
             [knoxx.backend.domain.driver.registry :as driver-registry]
             [knoxx.backend.domain.source.runtime :as source-runtime]
+            [knoxx.backend.infra.agent.action-capabilities :as capabilities]
             [knoxx.backend.domain.event.dispatch :as event-dispatch]
             [knoxx.backend.domain.resources.loader :as resources]))
 
@@ -47,7 +48,7 @@
                   (fn [_] [discord-source-record trigger-record])]
       (try
         (await (source-runtime/dispatch-driver-event!
-                fixture-config
+                (capabilities/attach fixture-config)
                 :driver/discord
                 "discord_automation"
                 {:event/type :discord.message
