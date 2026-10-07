@@ -377,6 +377,7 @@ curl http://localhost:8000/api/auth/context \
 
 Start here when changing behavior:
 
+- [Knowledge Ops source and runtime routing](docs/notes/knowledge-ops-source-runtime-routing.md) — current documentation entrypoint, retired-spec lineage, and the remaining cross-repository prerequisite.
 - `docs/shadow-cljs-backend-rewrite.md` — CLJS backend migration and route parity (historical; migration complete).
 - `backend/README.md` — current backend build targets, startup path, and route map.
 - `docs/agent-runtime-workbench.md` — chat/workbench runtime doctrine and landed shape.

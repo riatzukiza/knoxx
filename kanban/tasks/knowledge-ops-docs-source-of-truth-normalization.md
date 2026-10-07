@@ -1,13 +1,14 @@
 ---
-uuid: "knoxx-knowledge-ops-docs-source-of-truth-normalization"
-title: "Knowledge Ops — Docs Source-of-Truth Normalization"
-status: ready
-priority: P2
+category: "tasks"
 labels: ["tasks", "2sp", "has-parent"]
-created_at: "2026-04-05T00:00:00Z"
+write-id: "1791397522995-0.6rx1h1rwxqppbc803ae"
+points: "2"
 source: "specs/tasks/knowledge-ops-docs-source-of-truth-normalization.md"
-points: 2
-category: tasks
+title: "Knowledge Ops — Docs Source-of-Truth Normalization"
+priority: "P2"
+status: "ready"
+uuid: "knoxx-knowledge-ops-docs-source-of-truth-normalization"
+created_at: "2026-04-05T00:00:00Z"
 ---
 
 # Knowledge Ops — Docs Source-of-Truth Normalization
@@ -74,3 +75,9 @@ Scope is tightly bounded to README-level edits across 3-4 named files: `orgs/ope
 ---
 
 **Triage 2026-05-29 (accepted → ready):** All ready-gate criteria pass. 2sp confirmed, DoD is unambiguous (remove obvious current-state contradictions), affected files are explicitly named, no hard inter-task dependency blocks the work. Promoting to ready.
+
+---
+
+HOLD: Full issue164 remains blocked on the mandatory OpenPlanner README outside the authorized Foresight direct-repository scope. Knoxx current-routing documentation only delivers the in-scope reader entrypoint; it does not complete the whole source-of-truth normalization task. The current Ready-to-Blocked transition is unsupported by the accepted Promethean FSM; existing open-hax/rheos issue4 owns direct blocker reporting. Original criteria, UUID, Ready/P2/2 metadata and historical intent remain. No full completion or new Ready qualification is claimed.
+
+---

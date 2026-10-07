@@ -192,3 +192,12 @@
   p-skill-candidate: 0.2
   receipt-refs: 2026-10-06T14:28:52.198143Z
   note: Keep accepted source synchronization separate from unmerged feature migration. An inherited ready-triggered merge job makes draft preparation necessary until reviewed base enforcement. No spore warranted.
+- ts: 2026-10-07T18:37:50.753175214Z
+  session: /home/err/.codex/parallel-goal/knoxx164-current-routing-docs-gqonyjm7/worktree
+  task: Knoxx164 current documentation routing and exact native external HOLD
+  p-efficiency: 0.72
+  p-friction: 0.44
+  p-skill-candidate: 0.0
+  spore: none
+  receipt-refs: Knoxx164:owned-record17,event1791397522998
+  note: Preserve original parsed card sections and metadata through native serialization rather than promising raw-prefix identity. Inspect each create/push/PR workflow and pinned receiving command; draft guards cover selected jobs only. Read-only events EROFS and external OpenPlanner hold stay visible. No spore, transition, publication, deployment or review credit.
