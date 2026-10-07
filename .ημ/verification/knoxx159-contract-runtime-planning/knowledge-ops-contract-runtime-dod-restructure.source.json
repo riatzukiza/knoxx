@@ -1,0 +1,9 @@
+{
+  "historical_commit": "c02d4ac29986cb5e7a9edb20a4349da8a964ea9c",
+  "path": "specs/epics/knowledge-ops-contract-runtime-dod-restructure.md",
+  "blob": "1605f0be2e4320bba3b2c95dff0f2d87e27c1214",
+  "bytes": 11649,
+  "sha256": "17627b37bb0714488b61d6b0ad5fc7cd71e60b5c219bc52745fe8adbc8482ee5",
+  "exact_encoding": "canonical base64 no terminal LF",
+  "authority": "Historical recovered intent only; no current acceptance/lift/implementation qualification."
+}

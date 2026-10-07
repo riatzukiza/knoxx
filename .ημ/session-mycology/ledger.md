@@ -192,3 +192,12 @@
   p-skill-candidate: 0.2
   receipt-refs: 2026-10-06T14:28:52.198143Z
   note: Keep accepted source synchronization separate from unmerged feature migration. An inherited ready-triggered merge job makes draft preparation necessary until reviewed base enforcement. No spore warranted.
+- ts: 2026-10-07T08:24:57.382196538Z
+  session: /home/err/.codex/parallel-goal/knoxx159-contract-runtime-plan-xpjhi9i7/worktree
+  task: Plan the whole existing Knoxx159 contract runtime epic
+  p-efficiency: 0.93
+  p-friction: 0.07
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn
+  note: Historical exact nine-step intent is not current authority. Preserve seven retirement decisions and scope before current data/effect/persistence crosswalk; scoped trusted resolution reads differ from prohibited effects after failed admission. Exact schema ownership and full future gates retained. Native Ready observed only. New independent private source/runtime; neutral readonly owner reads preserve fixture. No implementation/native write or spore promotion.
