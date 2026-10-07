@@ -233,3 +233,17 @@
 - Scores: efficiency0.80, friction0.30, skill-candidate0.40.
 - Lesson: human verifiers must consume the product's effective alias configuration for both artifact reads and cleanup; a currently unset override does not establish correctness for supported configured deployments. Normalize cross-realm arrays at the fixture edge before structural assertions.
 - Boundary: actual synthesis/filesystem proof and source3/18 pass, while live MCP and exact image deployment remain unverified. No spore incubated or promoted.
+
+## 2026-10-07 — cephalon-personal-source-mimo-compatibility-20261007T0001
+
+- Evidence: receipt `cephalon-personal-source-mimo-compatibility-20261007T0001`.
+- Scores: efficiency0.87, friction0.18, skill-candidate0.22.
+- Lesson: Verify a conditional zero-frame compatibility hypothesis at the actual engine/process boundary and preserve SDK metadata through actual schemas; native approvals do not imply deployment or full gate convergence.
+- No spore incubated or promoted; existing canonical skills already own the reusable protocol. Observation-only append retained for the next concrete owned commit.
+
+## 2026-10-07 — cephalon-personal-native-result-before-wav
+
+- Evidence: receipt `cephalon-personal-native-result-before-wav`, native review5436249219/body item cr-comment:v1:aae20fb6c861931c943714fe.
+- Scores: efficiency0.82, friction0.25, skill-candidate0.30.
+- Lesson: preserve the real native failure before dependent artifact I/O; execute compiled asynchronous test fixtures with the existing error guard so early process exit cannot hide rejection. The initial unguarded probe failed its expected-output assertion and supplied no proof.
+- Actual normal synthesis and guarded negative-output probes passed their distinct expectations; live deployment and review convergence remain unqualified. No spore incubated or promoted.
