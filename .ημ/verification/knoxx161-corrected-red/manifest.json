@@ -1,0 +1,30 @@
+{
+  "label": "corrected-predecessor-red",
+  "command": [
+    "timeout",
+    "600",
+    "python3",
+    "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/isolated-command.py",
+    "offline",
+    "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/red-corrected-worktree/backend",
+    "clojure",
+    "-M:cljs",
+    "-m",
+    "shadow.cljs.devtools.cli",
+    "compile",
+    "test"
+  ],
+  "cwd": "/home/err/.codex/worktrees/cc59/foresight",
+  "at": "2026-10-07T02:06:02.029798+00:00",
+  "exit": 0,
+  "stdout": {
+    "capture": "corrected-predecessor-red.stdout.b64",
+    "bytes": 4497,
+    "sha256": "1603a3e0fc68c3167782671099aa54de25135d61525f5590af4dc3a794bb4098"
+  },
+  "stderr": {
+    "capture": "corrected-predecessor-red.stderr.b64",
+    "bytes": 348,
+    "sha256": "88e8a501a284d184d96250108e41977043633a51526f225c0d247b6733c1e2a3"
+  }
+}
