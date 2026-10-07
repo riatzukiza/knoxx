@@ -1,0 +1,1671 @@
+[
+  {
+    "label": "fork-map",
+    "command": [
+      "timeout",
+      "45",
+      "env",
+      "-u",
+      "GH_TOKEN",
+      "-u",
+      "GITHUB_TOKEN",
+      "gh",
+      "api",
+      "repos/riatzukiza/knoxx"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6",
+    "at": "2026-10-07T01:40:10.783280+00:00",
+    "exit": 0,
+    "stdout": {
+      "capture": "fork-map.stdout.b64",
+      "bytes": 15878,
+      "sha256": "d96933a0498a20aa972f36bb2d881a36bcd804cf9a46405eaa264d72cdc2cc8c"
+    },
+    "stderr": {
+      "capture": "fork-map.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "origin-main",
+    "command": [
+      "timeout",
+      "45",
+      "env",
+      "-u",
+      "GH_TOKEN",
+      "-u",
+      "GITHUB_TOKEN",
+      "gh",
+      "api",
+      "repos/open-hax/knoxx/git/ref/heads/main"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6",
+    "at": "2026-10-07T01:40:10.780479+00:00",
+    "exit": 0,
+    "stdout": {
+      "capture": "origin-main.stdout.b64",
+      "bytes": 326,
+      "sha256": "a9641e0ef848653ed4b6377e0ae486c639d7589a17abe2f18d08c7c4fe0be1da"
+    },
+    "stderr": {
+      "capture": "origin-main.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "base-pr1-native",
+    "command": [
+      "timeout",
+      "45",
+      "env",
+      "-u",
+      "GH_TOKEN",
+      "-u",
+      "GITHUB_TOKEN",
+      "gh",
+      "api",
+      "repos/riatzukiza/knoxx/pulls/1"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6",
+    "at": "2026-10-07T01:40:10.786245+00:00",
+    "exit": 0,
+    "stdout": {
+      "capture": "base-pr1-native.stdout.b64",
+      "bytes": 17445,
+      "sha256": "0a23edea4765e596b2af2c5b8c41a6d6829834e85baa61a77da63976c1e1dde1"
+    },
+    "stderr": {
+      "capture": "base-pr1-native.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "base-pr1-canonical-status",
+    "command": [
+      "timeout",
+      "60",
+      "env",
+      "-u",
+      "GH_TOKEN",
+      "-u",
+      "GITHUB_TOKEN",
+      "XDG_CACHE_HOME=/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/cache",
+      "TMPDIR=/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/tmp",
+      "/home/err/.codex/parallel-goal/personal-root-20261006/pr116-admission-runtime/node-runtime/node_modules/.bin/nbb",
+      "-cp",
+      "/home/err/.agents/skills/pr-flow/scripts",
+      "/home/err/.agents/skills/pr-flow/scripts/pr.cljs",
+      "status",
+      "riatzukiza/knoxx",
+      "1"
+    ],
+    "cwd": "/home/err/.codex/worktrees/cc59/foresight",
+    "at": "2026-10-07T01:39:50.547194+00:00",
+    "exit": 0,
+    "stdout": {
+      "capture": "base-pr1-canonical-status.stdout.b64",
+      "bytes": 616,
+      "sha256": "623d777e9a3f455d4cb359a40299def0cab483379b52e53502ea6b970753d858"
+    },
+    "stderr": {
+      "capture": "base-pr1-canonical-status.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "independent-clone",
+    "command": [
+      "timeout",
+      "90",
+      "git",
+      "-c",
+      "core.hooksPath=/dev/null",
+      "clone",
+      "--bare",
+      "--filter=blob:none",
+      "--no-tags",
+      "https://github.com/riatzukiza/knoxx.git",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/source.git"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6",
+    "at": "2026-10-07T01:40:31.300206+00:00",
+    "exit": 0,
+    "stdout": {
+      "capture": "independent-clone.stdout.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "capture": "independent-clone.stderr.b64",
+      "bytes": 118,
+      "sha256": "07921185232ca6753ccf9583aed974757844a26ba2e3f47ba8980ee804526dec"
+    }
+  },
+  {
+    "label": "independent-worktree",
+    "command": [
+      "timeout",
+      "90",
+      "git",
+      "-c",
+      "core.hooksPath=/dev/null",
+      "--git-dir=/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/source.git",
+      "worktree",
+      "add",
+      "-b",
+      "codex/knoxx161-spawn-capability",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/worktree",
+      "5670338fcf1db7d51a2690f388e4e4c5c409c48a"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6",
+    "at": "2026-10-07T01:40:46.955216+00:00",
+    "exit": 0,
+    "stdout": {
+      "capture": "independent-worktree.stdout.b64",
+      "bytes": 82,
+      "sha256": "724f8eb2045f618b011e1d26ae9a1b9c1959f3caf78b8c4a80649239f4e0ea4e"
+    },
+    "stderr": {
+      "capture": "independent-worktree.stderr.b64",
+      "bytes": 3428,
+      "sha256": "bc627bbaf65c4b2c411fad8a0791a414b8b9b45c66192216c51156dad034f870"
+    }
+  },
+  {
+    "label": "rheos-help",
+    "command": [
+      "timeout",
+      "30",
+      "env",
+      "-u",
+      "KANBAN_CONFIG",
+      "XDG_CACHE_HOME=/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/cache",
+      "TMPDIR=/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/tmp",
+      "node",
+      "/home/err/.volta/tools/image/packages/eta-mu/lib/node_modules/eta-mu/node_modules/@eta-mu/rheos/dist/cli.cjs",
+      "--help"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/worktree",
+    "at": "2026-10-07T01:43:13.867874+00:00",
+    "exit": 0,
+    "stdout": {
+      "capture": "rheos-help.stdout.b64",
+      "bytes": 915,
+      "sha256": "a9845ed0d428f74b6e8d5841d8aeefe86ab460e4e53ac718e4e3ba21e84f18d0"
+    },
+    "stderr": {
+      "capture": "rheos-help.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "card-before",
+    "command": [
+      "timeout",
+      "30",
+      "env",
+      "-u",
+      "KANBAN_CONFIG",
+      "XDG_CACHE_HOME=/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/cache",
+      "TMPDIR=/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/tmp",
+      "node",
+      "/home/err/.volta/tools/image/packages/eta-mu/lib/node_modules/eta-mu/node_modules/@eta-mu/rheos/dist/cli.cjs",
+      "read-task",
+      "knoxx-action-agent-spawn-boundary-fix",
+      "--config",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/worktree/kanban/openhax.kanban.json"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/worktree",
+    "at": "2026-10-07T01:43:14.512948+00:00",
+    "exit": 0,
+    "stdout": {
+      "capture": "card-before.stdout.b64",
+      "bytes": 3739,
+      "sha256": "2b6a7f308211617955a1520483c4ba67b8d8cd9f95c37e5990378064b5ba1016"
+    },
+    "stderr": {
+      "capture": "card-before.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "rheos-move-todo",
+    "command": [
+      "timeout",
+      "30",
+      "env",
+      "-u",
+      "KANBAN_CONFIG",
+      "XDG_CACHE_HOME=/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/cache",
+      "TMPDIR=/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/tmp",
+      "node",
+      "/home/err/.volta/tools/image/packages/eta-mu/lib/node_modules/eta-mu/node_modules/@eta-mu/rheos/dist/cli.cjs",
+      "move",
+      "knoxx-action-agent-spawn-boundary-fix",
+      "--to",
+      "todo",
+      "--config",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/worktree/kanban/openhax.kanban.json"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/worktree",
+    "at": "2026-10-07T01:44:17.384366+00:00",
+    "exit": 0,
+    "stdout": {
+      "capture": "rheos-move-todo.stdout.b64",
+      "bytes": 59,
+      "sha256": "97dcc660520d48005c70b8f21deed7bf3c340e801a39b2c3aa6551b403b63ce0"
+    },
+    "stderr": {
+      "capture": "rheos-move-todo.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "rheos-move-in_progress",
+    "command": [
+      "timeout",
+      "30",
+      "env",
+      "-u",
+      "KANBAN_CONFIG",
+      "XDG_CACHE_HOME=/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/cache",
+      "TMPDIR=/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/tmp",
+      "node",
+      "/home/err/.volta/tools/image/packages/eta-mu/lib/node_modules/eta-mu/node_modules/@eta-mu/rheos/dist/cli.cjs",
+      "move",
+      "knoxx-action-agent-spawn-boundary-fix",
+      "--to",
+      "in_progress",
+      "--config",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/worktree/kanban/openhax.kanban.json"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/worktree",
+    "at": "2026-10-07T01:44:18.134222+00:00",
+    "exit": 0,
+    "stdout": {
+      "capture": "rheos-move-in_progress.stdout.b64",
+      "bytes": 65,
+      "sha256": "53c820b193c9a7da25444bfa7ab3a05fd6c9cb58273b85d579b957ea6dc2e122"
+    },
+    "stderr": {
+      "capture": "rheos-move-in_progress.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "private-pnpm-install",
+    "command": [
+      "timeout",
+      "180",
+      "python3",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/isolated-command.py",
+      "network",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/worktree/backend",
+      "node",
+      "/opt/toolchains/packages/pnpm/lib/node_modules/pnpm/bin/pnpm.cjs",
+      "install",
+      "--frozen-lockfile",
+      "--ignore-scripts",
+      "--store-dir",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/pnpm-store"
+    ],
+    "cwd": "/home/err/.codex/worktrees/cc59/foresight",
+    "at": "2026-10-07T01:45:03.559918+00:00",
+    "exit": 1,
+    "stdout": {
+      "capture": "private-pnpm-install.stdout.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "capture": "private-pnpm-install.stderr.b64",
+      "bytes": 58,
+      "sha256": "6205a23b4ec50a4de46c54436cce957ed7aa09ac0aa9f7bbb652e31a56705be5"
+    }
+  },
+  {
+    "label": "private-clojure-prepare",
+    "command": [
+      "timeout",
+      "180",
+      "python3",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/isolated-command.py",
+      "network",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/worktree/backend",
+      "clojure",
+      "-P",
+      "-M:cljs"
+    ],
+    "cwd": "/home/err/.codex/worktrees/cc59/foresight",
+    "at": "2026-10-07T01:45:03.725495+00:00",
+    "exit": 1,
+    "stdout": {
+      "capture": "private-clojure-prepare.stdout.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "capture": "private-clojure-prepare.stderr.b64",
+      "bytes": 58,
+      "sha256": "6205a23b4ec50a4de46c54436cce957ed7aa09ac0aa9f7bbb652e31a56705be5"
+    }
+  },
+  {
+    "label": "private-clojure-prepare-owned-mount-repair",
+    "command": [
+      "timeout",
+      "180",
+      "python3",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/isolated-command.py",
+      "network",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/worktree/backend",
+      "clojure",
+      "-P",
+      "-M:cljs"
+    ],
+    "cwd": "/home/err/.codex/worktrees/cc59/foresight",
+    "at": "2026-10-07T01:45:24.083123+00:00",
+    "exit": 0,
+    "stdout": {
+      "capture": "private-clojure-prepare-owned-mount-repair.stdout.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "capture": "private-clojure-prepare-owned-mount-repair.stderr.b64",
+      "bytes": 132,
+      "sha256": "6fd719e0e756021b2d513184abd377a101f1a3f184a21140fea8ffb40a559bc0"
+    }
+  },
+  {
+    "label": "private-pnpm-install-owned-mount-repair",
+    "command": [
+      "timeout",
+      "180",
+      "python3",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/isolated-command.py",
+      "network",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/worktree/backend",
+      "node",
+      "/opt/toolchains/packages/pnpm/lib/node_modules/pnpm/bin/pnpm.cjs",
+      "install",
+      "--frozen-lockfile",
+      "--ignore-scripts",
+      "--store-dir",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/pnpm-store"
+    ],
+    "cwd": "/home/err/.codex/worktrees/cc59/foresight",
+    "at": "2026-10-07T01:45:22.863567+00:00",
+    "exit": 1,
+    "stdout": {
+      "capture": "private-pnpm-install-owned-mount-repair.stdout.b64",
+      "bytes": 10409,
+      "sha256": "1dbb995a0aaac36dfd1115d40ceed04078e398a4f881a64a13f9a44e31e787d7"
+    },
+    "stderr": {
+      "capture": "private-pnpm-install-owned-mount-repair.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "portable-law-probe",
+    "command": [
+      "timeout",
+      "45",
+      "python3",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/isolated-command.py",
+      "offline",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/worktree/backend",
+      "clojure",
+      "-M:cljs",
+      "-e",
+      "(require (quote [knoxx.backend.law.action-capabilities :as law]) (quote [clojure.edn :as edn])) (assert (= law/registry (edn/read-string (pr-str law/registry)))) (assert (law/spawn-context? {:spawn-agent! (fn [_ _] nil)})) (doseq [value [nil {} :spawn \"spawn\" #{} [] 1 false]] (assert (false? (law/spawn-context? {:spawn-agent! value})))) (println \"Portable named EDN capability law PASS; no capability invocation\")"
+    ],
+    "cwd": "/home/err/.codex/worktrees/cc59/foresight",
+    "at": "2026-10-07T01:46:38.282799+00:00",
+    "exit": 1,
+    "stdout": {
+      "capture": "portable-law-probe.stdout.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "capture": "portable-law-probe.stderr.b64",
+      "bytes": 313,
+      "sha256": "ab7a3f1a3ccade2e4d039b3c86aeffee0d53ccbd58011bbd20a85a6f0c094d10"
+    }
+  },
+  {
+    "label": "sandbox-network-probe",
+    "command": [
+      "timeout",
+      "20",
+      "python3",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/isolated-command.py",
+      "network",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6",
+      "python3",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/network-probe.py"
+    ],
+    "cwd": "/home/err/.codex/worktrees/cc59/foresight",
+    "at": "2026-10-07T01:47:41.214210+00:00",
+    "exit": 1,
+    "stdout": {
+      "capture": "sandbox-network-probe.stdout.b64",
+      "bytes": 47,
+      "sha256": "35b14485a07d4dd7eab803ea620821d9e4b7479d897bf094b9b048be53f059ce"
+    },
+    "stderr": {
+      "capture": "sandbox-network-probe.stderr.b64",
+      "bytes": 600,
+      "sha256": "b21e3357cd5b54b0dce421d68856420441aca13481666fdc41f0e1a57436b889"
+    }
+  },
+  {
+    "label": "sandbox-network-probe-resolver-repair",
+    "command": [
+      "timeout",
+      "20",
+      "python3",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/isolated-command.py",
+      "network",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6",
+      "python3",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/network-probe.py"
+    ],
+    "cwd": "/home/err/.codex/worktrees/cc59/foresight",
+    "at": "2026-10-07T01:47:59.320093+00:00",
+    "exit": 0,
+    "stdout": {
+      "capture": "sandbox-network-probe-resolver-repair.stdout.b64",
+      "bytes": 69,
+      "sha256": "8e6c92281219a2ff5429fb60abce9bf7758ca18cc93c0b6942e7182df01ea30d"
+    },
+    "stderr": {
+      "capture": "sandbox-network-probe-resolver-repair.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "portable-law-probe-strict-function",
+    "command": [
+      "timeout",
+      "45",
+      "python3",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/isolated-command.py",
+      "offline",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/worktree/backend",
+      "clojure",
+      "-M:cljs",
+      "-e",
+      "(require (quote [knoxx.backend.law.action-capabilities :as law]) (quote [clojure.edn :as edn])) (assert (= law/registry (edn/read-string (pr-str law/registry)))) (assert (law/spawn-context? {:spawn-agent! (fn [_ _] nil)})) (doseq [value [nil {} :spawn \"spawn\" #{} [] 1 false]] (assert (false? (law/spawn-context? {:spawn-agent! value})))) (println \"Portable named EDN capability law PASS; no capability invocation\")"
+    ],
+    "cwd": "/home/err/.codex/worktrees/cc59/foresight",
+    "at": "2026-10-07T01:48:11.336550+00:00",
+    "exit": 0,
+    "stdout": {
+      "capture": "portable-law-probe-strict-function.stdout.b64",
+      "bytes": 65,
+      "sha256": "5d0b74fd52646b6a97d8ef45a2ea48d4f3a1c22b6b2e2e97a06f51998a15c075"
+    },
+    "stderr": {
+      "capture": "portable-law-probe-strict-function.stderr.b64",
+      "bytes": 132,
+      "sha256": "6fd719e0e756021b2d513184abd377a101f1a3f184a21140fea8ffb40a559bc0"
+    }
+  },
+  {
+    "label": "private-pnpm-install-resolver-repair",
+    "command": [
+      "timeout",
+      "240",
+      "python3",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/isolated-command.py",
+      "network",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/worktree/backend",
+      "node",
+      "/opt/toolchains/packages/pnpm/lib/node_modules/pnpm/bin/pnpm.cjs",
+      "install",
+      "--frozen-lockfile",
+      "--ignore-scripts",
+      "--store-dir",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/pnpm-store"
+    ],
+    "cwd": "/home/err/.codex/worktrees/cc59/foresight",
+    "at": "2026-10-07T01:48:09.723346+00:00",
+    "exit": 1,
+    "stdout": {
+      "capture": "private-pnpm-install-resolver-repair.stdout.b64",
+      "bytes": 7166,
+      "sha256": "52752ab9cd3b3dd52ef59c5a55f74d977190affb502b2c0350105cefef5ffe6c"
+    },
+    "stderr": {
+      "capture": "private-pnpm-install-resolver-repair.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "receipt-owner-independent-clone",
+    "command": [
+      "timeout",
+      "60",
+      "git",
+      "-c",
+      "core.hooksPath=/dev/null",
+      "clone",
+      "--no-tags",
+      "https://github.com/open-hax/receipt-river.git",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/receipt-owner"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6",
+    "at": "2026-10-07T01:49:55.224288+00:00",
+    "exit": 0,
+    "stdout": {
+      "capture": "receipt-owner-independent-clone.stdout.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "capture": "receipt-owner-independent-clone.stderr.b64",
+      "bytes": 105,
+      "sha256": "f3a5fd0aa0516b7ca9df50e33dca99fd431227281e0037dc3c591ed73ccf7327"
+    }
+  },
+  {
+    "label": "sandbox-registry-fetch-ipv4",
+    "command": [
+      "timeout",
+      "15",
+      "python3",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/isolated-command.py",
+      "network",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6",
+      "node",
+      "--dns-result-order=ipv4first",
+      "-e",
+      "fetch(\"https://registry.npmjs.org/tslib/-/tslib-2.8.1.tgz\",{signal:AbortSignal.timeout(8000)}).then(async r=>{console.log(\"registry HTTP\",r.status,\"bytes\",(await r.arrayBuffer()).byteLength)}).catch(e=>{console.log(e.name,e.message);process.exitCode=1})"
+    ],
+    "cwd": "/home/err/.codex/worktrees/cc59/foresight",
+    "at": "2026-10-07T01:50:26.993456+00:00",
+    "exit": 0,
+    "stdout": {
+      "capture": "sandbox-registry-fetch-ipv4.stdout.b64",
+      "bytes": 30,
+      "sha256": "a6abab1ed2118d7f2b608a8fcf1070cd6e0b8d97a0758e31f8594e0a6d85bf3d"
+    },
+    "stderr": {
+      "capture": "sandbox-registry-fetch-ipv4.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "sandbox-registry-curl",
+    "command": [
+      "timeout",
+      "15",
+      "python3",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/isolated-command.py",
+      "network",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6",
+      "curl",
+      "-I",
+      "--max-time",
+      "10",
+      "https://registry.npmjs.org/tslib/-/tslib-2.8.1.tgz"
+    ],
+    "cwd": "/home/err/.codex/worktrees/cc59/foresight",
+    "at": "2026-10-07T01:50:46.014862+00:00",
+    "exit": 0,
+    "stdout": {
+      "capture": "sandbox-registry-curl.stdout.b64",
+      "bytes": 690,
+      "sha256": "23f39b976e55bd987ee05159f1b179c5e47c94dcc2e8a2b9cf51affb12cf33ae"
+    },
+    "stderr": {
+      "capture": "sandbox-registry-curl.stderr.b64",
+      "bytes": 396,
+      "sha256": "cb6ba2ae0e6d23bd6ea7d922c2639dc25a2aefb65048d92cba412b45dc63d3bb"
+    }
+  },
+  {
+    "label": "focused-source-red",
+    "command": [
+      "timeout",
+      "45",
+      "python3",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/isolated-command.py",
+      "offline",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6",
+      "node",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/focused-nbb-runtime/node_modules/nbb/cli.js",
+      "-cp",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/focused-boundary-fixtures:/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/worktree/backend/src/cljs:/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/worktree/backend/test/cljs",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/focused-nbb-red.cljs"
+    ],
+    "cwd": "/home/err/.codex/worktrees/cc59/foresight",
+    "at": "2026-10-07T01:54:25.617615+00:00",
+    "exit": 1,
+    "stdout": {
+      "capture": "focused-source-red.stdout.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "capture": "focused-source-red.stderr.b64",
+      "bytes": 988,
+      "sha256": "d58d7713d6676a37bb78813bced28d39d54455d0367476f7872986ba06d5e790"
+    }
+  },
+  {
+    "label": "private-pnpm-install-ipv4",
+    "command": [
+      "timeout",
+      "240",
+      "python3",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/isolated-command.py",
+      "network",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/worktree/backend",
+      "node",
+      "/opt/toolchains/packages/pnpm/lib/node_modules/pnpm/bin/pnpm.cjs",
+      "install",
+      "--frozen-lockfile",
+      "--ignore-scripts",
+      "--store-dir",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/pnpm-store"
+    ],
+    "cwd": "/home/err/.codex/worktrees/cc59/foresight",
+    "at": "2026-10-07T01:50:56.895503+00:00",
+    "exit": 0,
+    "stdout": {
+      "capture": "private-pnpm-install-ipv4.stdout.b64",
+      "bytes": 8000,
+      "sha256": "db106596f295cbf697191eda3cb211d35be275dd7141e96b2eb77c760351efe5"
+    },
+    "stderr": {
+      "capture": "private-pnpm-install-ipv4.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "compiled-focused-red",
+    "command": [
+      "timeout",
+      "600",
+      "python3",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/isolated-command.py",
+      "offline",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/worktree/backend",
+      "clojure",
+      "-M:cljs",
+      "-m",
+      "shadow.cljs.devtools.cli",
+      "compile",
+      "test",
+      "--config-merge",
+      "{:builds {:test {:ns-regexp \"^knoxx\\\\.backend\\\\.(actions\\\\.start-agent-session|law\\\\.action-capabilities)-test$\"}}}"
+    ],
+    "cwd": "/home/err/.codex/worktrees/cc59/foresight",
+    "at": "2026-10-07T01:54:45.717458+00:00",
+    "exit": 0,
+    "stdout": {
+      "capture": "compiled-focused-red.stdout.b64",
+      "bytes": 62633,
+      "sha256": "687beea85e13ca68d83252e7f9fcf69c01b555b7fa532a6405b8aa2595e50a75"
+    },
+    "stderr": {
+      "capture": "compiled-focused-red.stderr.b64",
+      "bytes": 31847,
+      "sha256": "427637cb365171d4c3591d1b713622414fddd46cb3d23d63599688ae1b57816c"
+    }
+  },
+  {
+    "label": "private-loopback-prerequisite",
+    "command": [
+      "timeout",
+      "15",
+      "python3",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/isolated-command.py",
+      "offline",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6",
+      "node",
+      "-e",
+      "const http=require(\"node:http\");const server=http.createServer((q,r)=>r.end(\"private\"));server.on(\"error\",e=>{console.error(e.code);process.exitCode=1});server.listen(0,\"127.0.0.1\",()=>{const a=server.address();console.log(\"owned listener\",a.port);fetch(`http://127.0.0.1:${a.port}`).then(r=>r.text()).then(t=>{console.log(t);server.close()}).catch(e=>{console.error(e.cause?.code||e.message);server.close();process.exitCode=1})})"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/worktree",
+    "at": "2026-10-07T02:04:01.508355+00:00",
+    "exit": 0,
+    "stdout": {
+      "capture": "private-loopback-prerequisite.stdout.b64",
+      "bytes": 29,
+      "sha256": "6cc986e87d18efba74c3c732f0b55cd0899d5d4ccc7daa298fe1aad0067c5699"
+    },
+    "stderr": {
+      "capture": "private-loopback-prerequisite.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "private-browser-copy",
+    "command": [
+      "timeout",
+      "90",
+      "cp",
+      "-a",
+      "--reflink=auto",
+      "/opt/google/chrome",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/browser"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/worktree",
+    "at": "2026-10-07T02:04:54.239958+00:00",
+    "exit": 0,
+    "stdout": {
+      "capture": "private-browser-copy.stdout.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "capture": "private-browser-copy.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "compiled-green-first",
+    "command": [
+      "timeout",
+      "600",
+      "python3",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/isolated-command.py",
+      "offline",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/worktree/backend",
+      "clojure",
+      "-M:cljs",
+      "-m",
+      "shadow.cljs.devtools.cli",
+      "compile",
+      "test"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/worktree",
+    "at": "2026-10-07T02:03:16.136942+00:00",
+    "exit": 0,
+    "stdout": {
+      "capture": "compiled-green-first.stdout.b64",
+      "bytes": 63908,
+      "sha256": "a1c6a13c8d46305037d70c05c2531d22f21051c3542da35e6c3deef641bcaecf"
+    },
+    "stderr": {
+      "capture": "compiled-green-first.stderr.b64",
+      "bytes": 31802,
+      "sha256": "55916c0f3ea974bb3731e59ef0bb5a35059da5113af02f0609484ba333f0ea23"
+    }
+  },
+  {
+    "label": "changed-kondo",
+    "command": [
+      "timeout",
+      "60",
+      "python3",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/isolated-command.py",
+      "offline",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/worktree/backend",
+      "clj-kondo",
+      "--lint",
+      "src/cljs/knoxx/backend/law/action_capabilities.cljc",
+      "src/cljs/knoxx/backend/infra/agent/action_capabilities.cljs",
+      "src/cljs/knoxx/backend/infra/event_dispatch.cljs",
+      "src/cljs/knoxx/backend/infra/event_runtime.cljs",
+      "test/cljs/knoxx/backend/infra/action_capabilities_test.cljs",
+      "test/cljs/knoxx/backend/law/action_capabilities_test.cljs",
+      "--fail-level",
+      "warning"
+    ],
+    "cwd": "/home/err/.codex/worktrees/cc59/foresight",
+    "at": "2026-10-07T02:06:20.969119+00:00",
+    "exit": 0,
+    "stdout": {
+      "capture": "changed-kondo.stdout.b64",
+      "bytes": 42,
+      "sha256": "7e5af8f65d04c87b90d4b32b9b9305743df86161a17e8f79af225ce118de9f6a"
+    },
+    "stderr": {
+      "capture": "changed-kondo.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "corrected-predecessor-red",
+    "command": [
+      "timeout",
+      "600",
+      "python3",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/isolated-command.py",
+      "offline",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/red-corrected-worktree/backend",
+      "clojure",
+      "-M:cljs",
+      "-m",
+      "shadow.cljs.devtools.cli",
+      "compile",
+      "test"
+    ],
+    "cwd": "/home/err/.codex/worktrees/cc59/foresight",
+    "at": "2026-10-07T02:06:02.029798+00:00",
+    "exit": 0,
+    "stdout": {
+      "capture": "corrected-predecessor-red.stdout.b64",
+      "bytes": 4497,
+      "sha256": "1603a3e0fc68c3167782671099aa54de25135d61525f5590af4dc3a794bb4098"
+    },
+    "stderr": {
+      "capture": "corrected-predecessor-red.stderr.b64",
+      "bytes": 348,
+      "sha256": "88e8a501a284d184d96250108e41977043633a51526f225c0d247b6733c1e2a3"
+    }
+  },
+  {
+    "label": "compiled-green-corrected-fixtures",
+    "command": [
+      "timeout",
+      "600",
+      "python3",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/isolated-command.py",
+      "offline",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/worktree/backend",
+      "clojure",
+      "-M:cljs",
+      "-m",
+      "shadow.cljs.devtools.cli",
+      "compile",
+      "test"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/worktree",
+    "at": "2026-10-07T02:09:46.538532+00:00",
+    "exit": 1,
+    "stdout": {
+      "capture": "compiled-green-corrected-fixtures.stdout.b64",
+      "bytes": 22,
+      "sha256": "d47c26d2d9f09cd0197c0fcb735ce50a720d525968286a679b830f10fab1f0bc"
+    },
+    "stderr": {
+      "capture": "compiled-green-corrected-fixtures.stderr.b64",
+      "bytes": 995,
+      "sha256": "724c2180c9f5232667012512b861dcf3eb69ad65193ba20aec71dc4a763e0297"
+    }
+  },
+  {
+    "label": "smoke-fixture-kondo",
+    "command": [
+      "timeout",
+      "40",
+      "python3",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/isolated-command.py",
+      "offline",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/worktree/backend",
+      "clj-kondo",
+      "--lint",
+      "test/cljs/knoxx/backend/extern/trigger_spawn_http_test.cljs",
+      "--fail-level",
+      "warning"
+    ],
+    "cwd": "/home/err/.codex/worktrees/cc59/foresight",
+    "at": "2026-10-07T02:10:35.051309+00:00",
+    "exit": 3,
+    "stdout": {
+      "capture": "smoke-fixture-kondo.stdout.b64",
+      "bytes": 264,
+      "sha256": "cc16d922a491bb2861414f7aa47cca3a570a13637c0ba7f4604baa484cd3cde2"
+    },
+    "stderr": {
+      "capture": "smoke-fixture-kondo.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "smoke-fixture-kondo-corrected",
+    "command": [
+      "timeout",
+      "40",
+      "python3",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/isolated-command.py",
+      "offline",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/worktree/backend",
+      "clj-kondo",
+      "--lint",
+      "test/cljs/knoxx/backend/extern/trigger_spawn_http_test.cljs",
+      "--fail-level",
+      "warning"
+    ],
+    "cwd": "/home/err/.codex/worktrees/cc59/foresight",
+    "at": "2026-10-07T02:11:15.834884+00:00",
+    "exit": 3,
+    "stdout": {
+      "capture": "smoke-fixture-kondo-corrected.stdout.b64",
+      "bytes": 277,
+      "sha256": "dce8eccddfc18400b7cc7fe6113ba343b1dde88800c351eef0661e03ccfcfefd"
+    },
+    "stderr": {
+      "capture": "smoke-fixture-kondo-corrected.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "compiled-green-http-corrected",
+    "command": [
+      "timeout",
+      "600",
+      "python3",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/isolated-command.py",
+      "offline",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/worktree/backend",
+      "clojure",
+      "-M:cljs",
+      "-m",
+      "shadow.cljs.devtools.cli",
+      "compile",
+      "test"
+    ],
+    "cwd": "/home/err/.codex/worktrees/cc59/foresight",
+    "at": "2026-10-07T02:11:16.044633+00:00",
+    "exit": 1,
+    "stdout": {
+      "capture": "compiled-green-http-corrected.stdout.b64",
+      "bytes": 22,
+      "sha256": "d47c26d2d9f09cd0197c0fcb735ce50a720d525968286a679b830f10fab1f0bc"
+    },
+    "stderr": {
+      "capture": "compiled-green-http-corrected.stderr.b64",
+      "bytes": 1381,
+      "sha256": "09cc5f4a5d6733bfc5c6edabced065d2590b0b4ee525374867adf1229d4f80e9"
+    }
+  },
+  {
+    "label": "smoke-fixture-kondo-syntax-final",
+    "command": [
+      "timeout",
+      "40",
+      "python3",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/isolated-command.py",
+      "offline",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/worktree/backend",
+      "clj-kondo",
+      "--lint",
+      "test/cljs/knoxx/backend/extern/trigger_spawn_http_test.cljs",
+      "--fail-level",
+      "warning"
+    ],
+    "cwd": "/home/err/.codex/worktrees/cc59/foresight",
+    "at": "2026-10-07T02:12:32.697779+00:00",
+    "exit": 2,
+    "stdout": {
+      "capture": "smoke-fixture-kondo-syntax-final.stdout.b64",
+      "bytes": 149,
+      "sha256": "7999f3c3498efe0e273037270931a0c62caf43201402b5f6c90923c73a3c0c29"
+    },
+    "stderr": {
+      "capture": "smoke-fixture-kondo-syntax-final.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "smoke-fixture-kondo-final",
+    "command": [
+      "timeout",
+      "40",
+      "python3",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/isolated-command.py",
+      "offline",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/worktree/backend",
+      "clj-kondo",
+      "--lint",
+      "test/cljs/knoxx/backend/extern/trigger_spawn_http_test.cljs",
+      "--fail-level",
+      "warning"
+    ],
+    "cwd": "/home/err/.codex/worktrees/cc59/foresight",
+    "at": "2026-10-07T02:13:15.918261+00:00",
+    "exit": 0,
+    "stdout": {
+      "capture": "smoke-fixture-kondo-final.stdout.b64",
+      "bytes": 42,
+      "sha256": "1c9f3b80319b5e8f105c7fcbfa372347ab0ec97b8fbcafe46f920d3aea7c8496"
+    },
+    "stderr": {
+      "capture": "smoke-fixture-kondo-final.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "backend-full-lint",
+    "command": [
+      "timeout",
+      "60",
+      "python3",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/isolated-command.py",
+      "offline",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/worktree/backend",
+      "clj-kondo",
+      "--lint",
+      "src/cljs",
+      "test/cljs",
+      "--fail-level",
+      "warning"
+    ],
+    "cwd": "/home/err/.codex/worktrees/cc59/foresight",
+    "at": "2026-10-07T02:13:23.271549+00:00",
+    "exit": 3,
+    "stdout": {
+      "capture": "backend-full-lint.stdout.b64",
+      "bytes": 38855,
+      "sha256": "e8109eba72e4ccd964d5aa1944a968147bd2d90a38cd6d83d471351e6802ea62"
+    },
+    "stderr": {
+      "capture": "backend-full-lint.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "baseline-full-lint",
+    "command": [
+      "timeout",
+      "60",
+      "python3",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/isolated-command.py",
+      "offline",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/baseline-worktree/backend",
+      "clj-kondo",
+      "--lint",
+      "src/cljs",
+      "test/cljs",
+      "--fail-level",
+      "warning"
+    ],
+    "cwd": "/home/err/.codex/worktrees/cc59/foresight",
+    "at": "2026-10-07T02:13:36.293670+00:00",
+    "exit": 3,
+    "stdout": {
+      "capture": "baseline-full-lint.stdout.b64",
+      "bytes": 38666,
+      "sha256": "b2474b48cd4a6e84d33d74e824e86a23f0d0f22ad82f85ac64f9fedab6479736"
+    },
+    "stderr": {
+      "capture": "baseline-full-lint.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "compiled-green-http-final",
+    "command": [
+      "timeout",
+      "600",
+      "python3",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/isolated-command.py",
+      "offline",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/worktree/backend",
+      "clojure",
+      "-M:cljs",
+      "-m",
+      "shadow.cljs.devtools.cli",
+      "compile",
+      "test"
+    ],
+    "cwd": "/home/err/.codex/worktrees/cc59/foresight",
+    "at": "2026-10-07T02:13:22.097011+00:00",
+    "exit": 0,
+    "stdout": {
+      "capture": "compiled-green-http-final.stdout.b64",
+      "bytes": 21128,
+      "sha256": "90555d97427d785373c023d29d2de93ef52a9b473605392529724267fd1439d4"
+    },
+    "stderr": {
+      "capture": "compiled-green-http-final.stderr.b64",
+      "bytes": 21105,
+      "sha256": "2944b20a76903a74d7f1e13f2825cc7ef655248f1035c2b2847ab416b36194b5"
+    }
+  },
+  {
+    "label": "backend-js-tests",
+    "command": [
+      "timeout",
+      "90",
+      "python3",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/isolated-command.py",
+      "offline",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/worktree/backend",
+      "/bin/sh",
+      "-c",
+      "node --test test/js/*.test.mjs"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/worktree",
+    "at": "2026-10-07T02:14:43.007773+00:00",
+    "exit": 1,
+    "stdout": {
+      "capture": "backend-js-tests.stdout.b64",
+      "bytes": 33075,
+      "sha256": "dde3ebb5f4709c875fe5be06feae506040733f07e7bdf22058b1869f66e4352c"
+    },
+    "stderr": {
+      "capture": "backend-js-tests.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "backend-full-lint-after-fixture",
+    "command": [
+      "timeout",
+      "60",
+      "python3",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/isolated-command.py",
+      "offline",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/worktree/backend",
+      "clj-kondo",
+      "--lint",
+      "src/cljs",
+      "test/cljs",
+      "--fail-level",
+      "warning"
+    ],
+    "cwd": "/home/err/.codex/worktrees/cc59/foresight",
+    "at": "2026-10-07T02:14:54.823702+00:00",
+    "exit": 3,
+    "stdout": {
+      "capture": "backend-full-lint-after-fixture.stdout.b64",
+      "bytes": 38666,
+      "sha256": "3442b50cd5ebe994cfd99024a13337ddc98448dc0f6c6a0246759d9a507321cc"
+    },
+    "stderr": {
+      "capture": "backend-full-lint-after-fixture.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "backend-js-boundary",
+    "command": [
+      "timeout",
+      "60",
+      "python3",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/isolated-command.py",
+      "offline",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/worktree/backend",
+      "node",
+      "scripts/check-js-boundary.mjs",
+      "--check"
+    ],
+    "cwd": "/home/err/.codex/worktrees/cc59/foresight",
+    "at": "2026-10-07T02:15:19.470771+00:00",
+    "exit": 0,
+    "stdout": {
+      "capture": "backend-js-boundary.stdout.b64",
+      "bytes": 90,
+      "sha256": "c1ec39821a0e8f33bc75afaae6660d22e4a3e0e22473b6530278f7e49f413be7"
+    },
+    "stderr": {
+      "capture": "backend-js-boundary.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "compiled-green-guarded-full",
+    "command": [
+      "timeout",
+      "600",
+      "python3",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/isolated-command.py",
+      "offline",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/worktree/backend",
+      "node",
+      "/opt/toolchains/packages/pnpm/lib/node_modules/pnpm/bin/pnpm.cjs",
+      "exec",
+      "node",
+      "scripts/run-shadow-tests-ci.mjs"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/worktree",
+    "at": "2026-10-07T02:14:45.578293+00:00",
+    "exit": 1,
+    "stdout": {
+      "capture": "compiled-green-guarded-full.stdout.b64",
+      "bytes": 27549,
+      "sha256": "70de07bb3e97e954213894010e4e94eb5f22349c0e2fe0f8eca5a9f301094ef1"
+    },
+    "stderr": {
+      "capture": "compiled-green-guarded-full.stderr.b64",
+      "bytes": 25382,
+      "sha256": "cfe64f0d7e7154632805a7c463b2de2193fe0eea54e263b029d6d162965ac415"
+    }
+  },
+  {
+    "label": "backend-js-tests-pnpm-path",
+    "command": [
+      "timeout",
+      "90",
+      "python3",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/isolated-command.py",
+      "offline",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/worktree/backend",
+      "/bin/sh",
+      "-c",
+      "node --test test/js/*.test.mjs"
+    ],
+    "cwd": "/home/err/.codex/worktrees/cc59/foresight",
+    "at": "2026-10-07T02:16:25.321534+00:00",
+    "exit": 0,
+    "stdout": {
+      "capture": "backend-js-tests-pnpm-path.stdout.b64",
+      "bytes": 6464,
+      "sha256": "397ca43e1353445caeddd4878cde22f8fc337fd65fdd57a2967655fa4e7aadb6"
+    },
+    "stderr": {
+      "capture": "backend-js-tests-pnpm-path.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "native-lint-owner-search",
+    "command": [
+      "timeout",
+      "30",
+      "env",
+      "-u",
+      "GH_TOKEN",
+      "-u",
+      "GITHUB_TOKEN",
+      "gh",
+      "api",
+      "search/issues?q=repo%3Aopen-hax%2Fknoxx%20is%3Aissue%20%28clj-kondo%20OR%20lint%20OR%20warnings%29&per_page=100"
+    ],
+    "cwd": "/home/err/.codex/worktrees/cc59/foresight",
+    "at": "2026-10-07T02:18:06.370408+00:00",
+    "exit": 0,
+    "stdout": {
+      "capture": "native-lint-owner-search.stdout.b64",
+      "bytes": 548526,
+      "sha256": "cd744f5e6109a0eeba9103b9cd1ac67cb37c36ea0e6707b2ed4e94feb3ef1836"
+    },
+    "stderr": {
+      "capture": "native-lint-owner-search.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "required-backend-pnpm-lint",
+    "command": [
+      "timeout",
+      "60",
+      "python3",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/isolated-command.py",
+      "offline",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/worktree/backend",
+      "pnpm",
+      "run",
+      "lint"
+    ],
+    "cwd": "/home/err/.codex/worktrees/cc59/foresight",
+    "at": "2026-10-07T02:18:05.145855+00:00",
+    "exit": 3,
+    "stdout": {
+      "capture": "required-backend-pnpm-lint.stdout.b64",
+      "bytes": 38904,
+      "sha256": "ffb5723a4d15566bc6897db4d283596ff1471fe1c626b96cb5a271d057beed62"
+    },
+    "stderr": {
+      "capture": "required-backend-pnpm-lint.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "native-lint-epic-182",
+    "command": [
+      "timeout",
+      "30",
+      "env",
+      "-u",
+      "GH_TOKEN",
+      "-u",
+      "GITHUB_TOKEN",
+      "gh",
+      "api",
+      "repos/open-hax/knoxx/issues/182"
+    ],
+    "cwd": "/home/err/.codex/worktrees/cc59/foresight",
+    "at": "2026-10-07T02:19:19.133729+00:00",
+    "exit": 0,
+    "stdout": {
+      "capture": "native-lint-epic-182.stdout.b64",
+      "bytes": 4992,
+      "sha256": "9c8dd1222ab4ee37cdb2ce1d505e1d42c89f9e5be933bc4063ed738b0a73f29a"
+    },
+    "stderr": {
+      "capture": "native-lint-epic-182.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "native-zero-warning-181",
+    "command": [
+      "timeout",
+      "30",
+      "env",
+      "-u",
+      "GH_TOKEN",
+      "-u",
+      "GITHUB_TOKEN",
+      "gh",
+      "api",
+      "repos/open-hax/knoxx/issues/181"
+    ],
+    "cwd": "/home/err/.codex/worktrees/cc59/foresight",
+    "at": "2026-10-07T02:19:22.671822+00:00",
+    "exit": 0,
+    "stdout": {
+      "capture": "native-zero-warning-181.stdout.b64",
+      "bytes": 4713,
+      "sha256": "1dacde99537be3ff74d7314663b3f1b1824884583a61933ea28108996769dad9"
+    },
+    "stderr": {
+      "capture": "native-zero-warning-181.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "compiled-green-guarded-full-repaired-seed",
+    "command": [
+      "timeout",
+      "600",
+      "python3",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/isolated-command.py",
+      "offline",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/worktree/backend",
+      "pnpm",
+      "exec",
+      "node",
+      "scripts/run-shadow-tests-ci.mjs"
+    ],
+    "cwd": "/home/err/.codex/worktrees/cc59/foresight",
+    "at": "2026-10-07T02:17:44.498731+00:00",
+    "exit": 0,
+    "stdout": {
+      "capture": "compiled-green-guarded-full-repaired-seed.stdout.b64",
+      "bytes": 61907,
+      "sha256": "ed78000ed49ec3f01f57d359fd2974a18951dc861c61aabd7e516a1df867ce33"
+    },
+    "stderr": {
+      "capture": "compiled-green-guarded-full-repaired-seed.stderr.b64",
+      "bytes": 31760,
+      "sha256": "bceef24acb71a87b4cbf604a9b91255907537057e17e0c0eea11f0bb90349a1c"
+    }
+  },
+  {
+    "label": "required-backend-typecheck",
+    "command": [
+      "timeout",
+      "600",
+      "python3",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/isolated-command.py",
+      "offline",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/worktree/backend",
+      "pnpm",
+      "run",
+      "typecheck"
+    ],
+    "cwd": "/home/err/.codex/worktrees/cc59/foresight",
+    "at": "2026-10-07T02:20:47.237584+00:00",
+    "exit": 0,
+    "stdout": {
+      "capture": "required-backend-typecheck.stdout.b64",
+      "bytes": 260,
+      "sha256": "b05698801147ab8f5a6c9eb25537cf52d502725cec7a06d4a31b7efe3ff9a72e"
+    },
+    "stderr": {
+      "capture": "required-backend-typecheck.stderr.b64",
+      "bytes": 297,
+      "sha256": "fa8814e6876ab6fb133f244af16e4d1b31e66c1b7d0da4deb6d5e510f5f5b1a6"
+    }
+  },
+  {
+    "label": "native-card-final-read",
+    "command": [
+      "timeout",
+      "30",
+      "env",
+      "-u",
+      "KANBAN_CONFIG",
+      "XDG_CACHE_HOME=/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/cache",
+      "TMPDIR=/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/tmp",
+      "node",
+      "/home/err/.volta/tools/image/packages/eta-mu/lib/node_modules/eta-mu/node_modules/@eta-mu/rheos/dist/cli.cjs",
+      "read-task",
+      "knoxx-action-agent-spawn-boundary-fix",
+      "--config",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/worktree/kanban/openhax.kanban.json"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/worktree",
+    "at": "2026-10-07T02:22:28.276239+00:00",
+    "exit": 0,
+    "stdout": {
+      "capture": "native-card-final-read.stdout.b64",
+      "bytes": 3800,
+      "sha256": "d40e179637a6b564af51c91ba2ea46b652c982231b59d23203c045db74f4dfc4"
+    },
+    "stderr": {
+      "capture": "native-card-final-read.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "discord-gateway-compiled-red",
+    "command": [
+      "timeout",
+      "600",
+      "python3",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/isolated-command.py",
+      "offline",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/worktree/backend",
+      "clojure",
+      "-M:cljs",
+      "-m",
+      "shadow.cljs.devtools.cli",
+      "--config-merge",
+      "{:builds {:test {:ns-regexp \"^knoxx\\\\.backend\\\\.infra\\\\.discord-gateway-capabilities-test$\"}}}",
+      "compile",
+      "test"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/worktree",
+    "at": "2026-10-07T02:27:01.933285+00:00",
+    "exit": 0,
+    "stdout": {
+      "capture": "discord-gateway-compiled-red.stdout.b64",
+      "bytes": 33558,
+      "sha256": "03fde7e996cdae6d7df9f49a88ae698bd9fbf5930e07fd579f2a274b8383a2c4"
+    },
+    "stderr": {
+      "capture": "discord-gateway-compiled-red.stderr.b64",
+      "bytes": 27656,
+      "sha256": "d370389a053bc1468483f159625f7884fb7a6d48a85552d4233b5da1377da29d"
+    }
+  },
+  {
+    "label": "discord-gateway-red-guarded",
+    "command": [
+      "python3",
+      "gateway-red-diagnostic.py"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6",
+    "at": "2026-10-07T02:29:14.370322+00:00",
+    "exit": 1,
+    "stdout": {
+      "capture": "discord-gateway-red-guarded.stdout.b64",
+      "bytes": 3376,
+      "sha256": "caf07ac7368fc2f4d1c96d71da865edefe06aaa4b4b4cb89b9598cff0b3e8448"
+    },
+    "stderr": {
+      "capture": "discord-gateway-red-guarded.stderr.b64",
+      "bytes": 297,
+      "sha256": "fa8814e6876ab6fb133f244af16e4d1b31e66c1b7d0da4deb6d5e510f5f5b1a6"
+    }
+  },
+  {
+    "label": "required-backend-lint-after-gateway",
+    "command": [
+      "timeout",
+      "120",
+      "python3",
+      "isolated-command.py",
+      "offline",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/worktree/backend",
+      "pnpm",
+      "run",
+      "lint"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6",
+    "at": "2026-10-07T02:31:02.590993+00:00",
+    "exit": 3,
+    "stdout": {
+      "capture": "required-backend-lint-after-gateway.stdout.b64",
+      "bytes": 38904,
+      "sha256": "c2de84bbe6d4a6ce43d30cb9c649c422bb82e7880192d234e1967793ec9fe3ae"
+    },
+    "stderr": {
+      "capture": "required-backend-lint-after-gateway.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "backend-js-boundary-after-gateway",
+    "command": [
+      "timeout",
+      "60",
+      "python3",
+      "isolated-command.py",
+      "offline",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/worktree/backend",
+      "pnpm",
+      "run",
+      "boundary:check"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6",
+    "at": "2026-10-07T02:31:45.118388+00:00",
+    "exit": 0,
+    "stdout": {
+      "capture": "backend-js-boundary-after-gateway.stdout.b64",
+      "bytes": 274,
+      "sha256": "7d72e43d1240b9395fbb7c0a813d1bbb540e10522e0398fbee107da3fa1dd942"
+    },
+    "stderr": {
+      "capture": "backend-js-boundary-after-gateway.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "compiled-green-full-gateway",
+    "command": [
+      "timeout",
+      "600",
+      "python3",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/isolated-command.py",
+      "offline",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/worktree/backend",
+      "pnpm",
+      "exec",
+      "node",
+      "scripts/run-shadow-tests-ci.mjs"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/worktree",
+    "at": "2026-10-07T02:30:43.642807+00:00",
+    "exit": 0,
+    "stdout": {
+      "capture": "compiled-green-full-gateway.stdout.b64",
+      "bytes": 61976,
+      "sha256": "24bd7471cf11a9063ed05cf3b8edb414b90640aa4a5eef078e28b5c0dce455bc"
+    },
+    "stderr": {
+      "capture": "compiled-green-full-gateway.stderr.b64",
+      "bytes": 31764,
+      "sha256": "0a0b0cfa25ea8c55f28f3969db690a6f73a0449685adb1b6895c7de59740e831"
+    }
+  },
+  {
+    "label": "native-card-after-gateway",
+    "command": [
+      "timeout",
+      "30",
+      "node",
+      "/home/err/.volta/tools/image/packages/eta-mu/lib/node_modules/eta-mu/node_modules/@eta-mu/rheos/dist/cli.cjs",
+      "read-task",
+      "knoxx-action-agent-spawn-boundary-fix",
+      "--config",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/worktree/kanban/openhax.kanban.json"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6",
+    "at": "2026-10-07T02:33:14.409129+00:00",
+    "exit": 0,
+    "stdout": {
+      "capture": "native-card-after-gateway.stdout.b64",
+      "bytes": 3800,
+      "sha256": "d40e179637a6b564af51c91ba2ea46b652c982231b59d23203c045db74f4dfc4"
+    },
+    "stderr": {
+      "capture": "native-card-after-gateway.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "required-backend-typecheck-after-gateway",
+    "command": [
+      "timeout",
+      "600",
+      "python3",
+      "isolated-command.py",
+      "offline",
+      "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6/worktree/backend",
+      "pnpm",
+      "run",
+      "typecheck"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/knoxx161-implementation-20261007-7wwt_9h6",
+    "at": "2026-10-07T02:32:59.046333+00:00",
+    "exit": 0,
+    "stdout": {
+      "capture": "required-backend-typecheck-after-gateway.stdout.b64",
+      "bytes": 257,
+      "sha256": "e474cd8fed7368879411ff6daa7b56e997797acd9433a08af87237ccd56dee75"
+    },
+    "stderr": {
+      "capture": "required-backend-typecheck-after-gateway.stderr.b64",
+      "bytes": 297,
+      "sha256": "fa8814e6876ab6fb133f244af16e4d1b31e66c1b7d0da4deb6d5e510f5f5b1a6"
+    }
+  }
+]

@@ -1,0 +1,10 @@
+{
+  "disabled-contracts/synthetic-slang-ledger.edn": {
+    "bytes": 1078,
+    "sha256": "28110ca5cb2bff20bc1ffd5c558e1acfc70e8943e1c6363e5e6b814d66c089a2"
+  },
+  "kanban/.events/ledger.edn": {
+    "bytes": 48340,
+    "sha256": "52ebe376ff4148211bf71e906d6cdfede4790d38bc59b47edf852c23db264b5b"
+  }
+}

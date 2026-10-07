@@ -1,0 +1,13 @@
+{
+  "accepted_baseline": "5670338fcf1db7d51a2690f388e4e4c5c409c48a",
+  "baseline_minus_current": [
+    "src/cljs/knoxx/backend/infra/routes/document_admission.cljs:POSITION: warning: file at least 403 lines (warning >=400)",
+    "src/cljs/knoxx/backend/infra/routes/tools.cljs:POSITION: warning: file at least 421 lines (warning >=400)"
+  ],
+  "current_minus_baseline": [
+    "src/cljs/knoxx/backend/infra/routes/document_admission.cljs:POSITION: warning: file at least 404 lines (warning >=400)",
+    "src/cljs/knoxx/backend/infra/routes/tools.cljs:POSITION: warning: file at least 422 lines (warning >=400)"
+  ],
+  "failed_zero_warning_gate": true,
+  "normalization": "Positions removed only; numeric file-size diagnostic differences retained, not suppressed"
+}
