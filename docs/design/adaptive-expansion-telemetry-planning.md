@@ -139,5 +139,7 @@ honored with draft/auto-off publication if still unsafe. Issues 181/182 remain
 lint/architecture holds, not waivers. This refinement needs canonical planning
 review and a lawful Rheos admission decision before red/green implementation.
 Unknown or exhausted native capacity is a hold; no local approval or full round
-is inferred. No software, board lifecycle, provider, host or shared service ran
-for this planning candidate. A later origin release/deploy is separately gated.
+is inferred. Local Rheos, NBB and Babashka planning mechanics ran as documented; no backend
+implementation, compiler, test suite, provider/SDK call, live backend runtime,
+shared-service execution or board lifecycle change occurred. A later origin
+release/deploy is separately gated.
