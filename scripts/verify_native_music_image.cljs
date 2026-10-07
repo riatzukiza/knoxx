@@ -42,17 +42,32 @@
       (doseq [name (js->clj (.readdirSync fs file))]
         (regular-tree! (.join path file name))))))
 
+(defn copy-tracked-inputs!
+  "Materialize only committed Docker inputs, preserving Git bytes and file modes."
+  [context revision]
+  (let [tree (command! "git" ["ls-tree" "-rz" revision "--" "backend/Dockerfile"
+                              "backend/package.json" "backend/docker"
+                              "backend/scripts/synthesize-music.mjs"] {})]
+    (doseq [entry (remove str/blank? (str/split tree #"\u0000"))]
+      (let [[metadata file] (str/split entry #"\t" 2)
+            [mode kind object] (str/split metadata #" ")
+            relative (subs file (count "backend/"))
+            destination (.join path context relative)]
+        (require! (and (str/starts-with? file "backend/") (= "blob" kind)
+                       (#{"100644" "100755"} mode)) "Committed image inputs must be regular files")
+        (.mkdirSync fs (.dirname path destination) #js {:recursive true :mode 493})
+        (.writeFileSync fs destination (command! "git" ["cat-file" "blob" object] {:encoding nil}))
+        (.chmodSync fs destination (if (= "100755" mode) 493 420))))))
+
 (defn build-image!
   "Build only Dockerfile COPY inputs and a production artifact in an owned context."
   [image revision]
   (let [context (.mkdtempSync fs (.join path (.tmpdir os) "knoxx-native-image-build-"))]
     (try
-      (doseq [relative ["Dockerfile" "package.json" "dist" "docker" "scripts/synthesize-music.mjs"]]
-        (let [source (.join path backend relative)
-              destination (.join path context relative)]
-          (regular-tree! source)
-          (.mkdirSync fs (.dirname path destination) #js {:recursive true})
-          (.cpSync fs source destination #js {:recursive true :dereference false})))
+      (copy-tracked-inputs! context revision)
+      (regular-tree! (.join path backend "dist"))
+      (.cpSync fs (.join path backend "dist") (.join path context "dist")
+               #js {:recursive true :dereference false})
       (command! "docker" ["build" "--progress=plain" "--label"
                           (str "org.opencontainers.image.revision=" revision)
                           "-t" image context]
@@ -136,7 +151,7 @@
         (require! (re-matches #"[0-9a-f]{40}" revision) "Require a full checkout Git revision")
         (require! (str/blank? (command! "git" ["diff" "--name-only" "HEAD" "--"
                                               "backend/Dockerfile" "backend/package.json"
-                                              "backend/scripts/synthesize-music.mjs"] {}))
+                                              "backend/docker" "backend/scripts/synthesize-music.mjs"] {}))
                   "Commit image recipe and native source before image proof")
         (when (= "--build" mode) (build-image! image revision))
         (image-proof! image revision)))

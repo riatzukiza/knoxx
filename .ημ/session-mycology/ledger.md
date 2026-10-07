@@ -254,3 +254,10 @@
 - Scores: efficiency0.87, friction0.22, skill-candidate0.34.
 - Lesson: a real source engine and passing functional CI do not establish OS dependencies in the final image. Run the packaged native engine with its actual non-root identity and code hashes. Preserve expensive image layers when adding a small runtime library, and keep proof containers isolated from gateways and production mounts.
 - No spore incubated or promoted; exact fixed-image GREEN is still pending.
+
+## 2026-10-07 — cephalon-personal-native-image-git-context
+
+- Evidence: same-named receipt and real Git-context helper probe.
+- Scores: efficiency0.91, friction0.15, skill-candidate0.29.
+- Lesson: materialize committed Docker inputs with Git file modes to bind source identity, exclude private untracked files and keep cache behavior consistent across checkout umasks. Distinguish cancelled candidate builds from production makers and actual engine RED.
+- No spore incubated or promoted.

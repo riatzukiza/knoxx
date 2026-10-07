@@ -16,8 +16,10 @@ pnpm -C backend run build
 pnpm -C backend exec nbb ../scripts/verify_native_music_image.cljs --build knoxx-native-music-verify
 ```
 
-The NBB adapter copies only the Dockerfile's declared inputs and the compiled
-artifact into a unique temporary build context. It refuses symlinks and special
+The NBB adapter materializes only the committed Dockerfile inputs from Git,
+including their recorded file modes, and copies the compiled artifact into a
+unique temporary build context. Untracked files in the checkout are excluded.
+It refuses symlinks and special
 files, labels the candidate with the full checkout revision and checks the
 actual packaged engine and server hashes. The recipe and native source must be
 committed. No environment file, provider credential, runtime volume or Docker
