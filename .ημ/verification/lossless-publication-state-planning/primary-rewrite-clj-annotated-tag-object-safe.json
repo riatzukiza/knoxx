@@ -1,0 +1,24 @@
+{
+  "node_id": "TA_kwDOAK_g99oAKDQwZjY5MTQyOGUxNDlmMjdiZTg4YjUxYzIwNTBhYjA1ODk2ZTBjZTg",
+  "sha": "40f691428e149f27be88b51c2050ab05896e0ce8",
+  "url": "[private external reference]",
+  "tagger": {
+    "name": "lread",
+    "email": "lee@dlread.com",
+    "date": "2024-11-18T13:05:06Z"
+  },
+  "object": {
+    "sha": "b5f8d06f9a1149b10ff97bfde1ef65fb4f65a966",
+    "type": "commit",
+    "url": "[private external reference]"
+  },
+  "tag": "v1.1.49",
+  "message": "For release: 1.1.49\n",
+  "verification": {
+    "verified": false,
+    "reason": "unsigned",
+    "signature": null,
+    "payload": null,
+    "verified_at": null
+  }
+}

@@ -1,0 +1,658 @@
+[
+  {
+    "name": "native-ready-knoxx-publication-lossless-edn-state-edits",
+    "family": "stdout",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/prior-intake/native-ready-knoxx-publication-lossless-edn-state-edits.stdout.b64",
+    "bytes": 1698,
+    "sha256": "0eba099d0d63c11b97ab7d583f8ca4158cd36d64a9eb9cb91bbd9e23965313a4",
+    "provenance_context": "prior-intake"
+  },
+  {
+    "name": "native-ready-knoxx-publication-lossless-edn-state-edits",
+    "family": "stderr",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/prior-intake/native-ready-knoxx-publication-lossless-edn-state-edits.stderr.b64",
+    "bytes": 198,
+    "sha256": "d14bb2ea51167ad1e2f1931fcf70497ff7a7872419560f5b271cdfbef73ce1f3",
+    "provenance_context": "prior-intake"
+  },
+  {
+    "name": "canonical-FIRST-knoxx-343",
+    "family": "stdout",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/prior-intake/canonical-FIRST-knoxx-343.stdout.b64",
+    "bytes": 699,
+    "sha256": "ac0ffc9028638bd8e6243618984fea0002e0f4408b407ddc18a164ed43986ac2",
+    "provenance_context": "prior-intake"
+  },
+  {
+    "name": "canonical-FIRST-knoxx-343",
+    "family": "stderr",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/prior-intake/canonical-FIRST-knoxx-343.stderr.b64",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "provenance_context": "prior-intake"
+  },
+  {
+    "name": "fresh-knoxx-343-files",
+    "family": "stdout",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/prior-intake/fresh-knoxx-343-files.stdout.b64",
+    "bytes": 572949,
+    "sha256": "ca2e2cea1516dce084dafca54140d317dc4d66bc5da8f50e8496c778ebbbccb1",
+    "provenance_context": "prior-intake"
+  },
+  {
+    "name": "fresh-knoxx-343-files",
+    "family": "stderr",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/prior-intake/fresh-knoxx-343-files.stderr.b64",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "provenance_context": "prior-intake"
+  },
+  {
+    "name": "canonical-FIRST-knoxx-305",
+    "family": "stdout",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/prior-intake/canonical-FIRST-knoxx-305.stdout.b64",
+    "bytes": 705,
+    "sha256": "03b73c9aa2cf0bed1c087ad2340a9e16911ca4a749c239a56894d452befd68bd",
+    "provenance_context": "prior-intake"
+  },
+  {
+    "name": "canonical-FIRST-knoxx-305",
+    "family": "stderr",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/prior-intake/canonical-FIRST-knoxx-305.stderr.b64",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "provenance_context": "prior-intake"
+  },
+  {
+    "name": "fresh-knoxx-305-files",
+    "family": "stdout",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/prior-intake/fresh-knoxx-305-files.stdout.b64",
+    "bytes": 5428892,
+    "sha256": "2e97ee9d88b1bede368043bc347a21453b37bfff540cae830d5843aebf5f8c63",
+    "provenance_context": "prior-intake"
+  },
+  {
+    "name": "fresh-knoxx-305-files",
+    "family": "stderr",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/prior-intake/fresh-knoxx-305-files.stderr.b64",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "provenance_context": "prior-intake"
+  },
+  {
+    "name": "fresh-knoxx-issue-246-comments",
+    "family": "stdout",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/prior-intake/fresh-knoxx-issue-246-comments.stdout.b64",
+    "bytes": 9,
+    "sha256": "93a632246f28a39eedc6577fda8be826f662ca408592e96b1b2b26b4256eea3d",
+    "provenance_context": "prior-intake"
+  },
+  {
+    "name": "fresh-knoxx-issue-246-comments",
+    "family": "stderr",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/prior-intake/fresh-knoxx-issue-246-comments.stderr.b64",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "provenance_context": "prior-intake"
+  },
+  {
+    "name": "accepted-lossless-EXACT-card-Git-history",
+    "family": "stdout",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/prior-intake/accepted-lossless-EXACT-card-Git-history.stdout.b64",
+    "bytes": 117,
+    "sha256": "f96cfdb7f9f9d09fbf7f79a27f33340ad3b4a752c9209ec546edb220a887953d",
+    "provenance_context": "prior-intake"
+  },
+  {
+    "name": "accepted-lossless-EXACT-card-Git-history",
+    "family": "stderr",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/prior-intake/accepted-lossless-EXACT-card-Git-history.stderr.b64",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "provenance_context": "prior-intake"
+  },
+  {
+    "name": "canonical-FIRST-knoxx-302",
+    "family": "stdout",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/prior-intake/canonical-FIRST-knoxx-302.stdout.b64",
+    "bytes": 605,
+    "sha256": "c8474c52b8d7853097eb9881636b0970d8d4aa98a97677310ae4993f2f66c34d",
+    "provenance_context": "prior-intake"
+  },
+  {
+    "name": "canonical-FIRST-knoxx-302",
+    "family": "stderr",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/prior-intake/canonical-FIRST-knoxx-302.stderr.b64",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "provenance_context": "prior-intake"
+  },
+  {
+    "name": "native-planning-302",
+    "family": "stdout",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/prior-intake/native-planning-302.stdout.b64",
+    "bytes": 21178,
+    "sha256": "24834fdd0af999cd0dadd2f9a6452698f85dd56e0b4e432857c42b53548196a0",
+    "provenance_context": "prior-intake"
+  },
+  {
+    "name": "native-planning-302",
+    "family": "stderr",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/prior-intake/native-planning-302.stderr.b64",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "provenance_context": "prior-intake"
+  },
+  {
+    "name": "native-planning-302-comments",
+    "family": "stdout",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/prior-intake/native-planning-302-comments.stdout.b64",
+    "bytes": 21167,
+    "sha256": "7b9310143da88b22d80e55b7af713b5d37f65357073148aebcb273f8f1d5823d",
+    "provenance_context": "prior-intake"
+  },
+  {
+    "name": "native-planning-302-comments",
+    "family": "stderr",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/prior-intake/native-planning-302-comments.stderr.b64",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "provenance_context": "prior-intake"
+  },
+  {
+    "name": "native-planning-302-reviews",
+    "family": "stdout",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/prior-intake/native-planning-302-reviews.stdout.b64",
+    "bytes": 42878,
+    "sha256": "5ade69749549f3f408b9bc430483543ded53af94ca08d4ad561b8425b8af0305",
+    "provenance_context": "prior-intake"
+  },
+  {
+    "name": "native-planning-302-reviews",
+    "family": "stderr",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/prior-intake/native-planning-302-reviews.stderr.b64",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "provenance_context": "prior-intake"
+  },
+  {
+    "name": "native-planning-302-files",
+    "family": "stdout",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/prior-intake/native-planning-302-files.stdout.b64",
+    "bytes": 31894,
+    "sha256": "9740206e0f3b26af235486beb1cc7da01d4d0b2e4a8ad8ed5f2d2781aefeb298",
+    "provenance_context": "prior-intake"
+  },
+  {
+    "name": "native-planning-302-files",
+    "family": "stderr",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/prior-intake/native-planning-302-files.stderr.b64",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "provenance_context": "prior-intake"
+  },
+  {
+    "name": "native-lossless-ready-events-JSON",
+    "family": "stdout",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/prior-intake/native-lossless-ready-events-JSON.stdout.b64",
+    "bytes": 3,
+    "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "provenance_context": "prior-intake"
+  },
+  {
+    "name": "native-lossless-ready-events-JSON",
+    "family": "stderr",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/prior-intake/native-lossless-ready-events-JSON.stderr.b64",
+    "bytes": 198,
+    "sha256": "d14bb2ea51167ad1e2f1931fcf70497ff7a7872419560f5b271cdfbef73ce1f3",
+    "provenance_context": "prior-intake"
+  },
+  {
+    "name": "introduced-lossless-commit-native-PR-associations",
+    "family": "stdout",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/prior-intake/introduced-lossless-commit-native-PR-associations.stdout.b64",
+    "bytes": 3,
+    "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "provenance_context": "prior-intake"
+  },
+  {
+    "name": "introduced-lossless-commit-native-PR-associations",
+    "family": "stderr",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/prior-intake/introduced-lossless-commit-native-PR-associations.stderr.b64",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "provenance_context": "prior-intake"
+  },
+  {
+    "name": "primary-rewrite-clj-pinned-tag",
+    "family": "stdout",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/prior-intake/primary-rewrite-clj-pinned-tag.stdout.b64",
+    "bytes": 270,
+    "sha256": "f77eae718ec0138c691c4743af0f6e05d77484f6e6792f0da3208bf22b8451ed",
+    "provenance_context": "prior-intake"
+  },
+  {
+    "name": "primary-rewrite-clj-pinned-tag",
+    "family": "stderr",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/prior-intake/primary-rewrite-clj-pinned-tag.stderr.b64",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "provenance_context": "prior-intake"
+  },
+  {
+    "name": "primary-rewrite-clj-pinned-zip",
+    "family": "stdout",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/prior-intake/primary-rewrite-clj-pinned-zip.stdout.b64",
+    "bytes": 64789,
+    "sha256": "909ee775f1c591318d0439b8817e9ddab272c8797550b8e2856fafc810bd7654",
+    "provenance_context": "prior-intake"
+  },
+  {
+    "name": "primary-rewrite-clj-pinned-zip",
+    "family": "stderr",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/prior-intake/primary-rewrite-clj-pinned-zip.stderr.b64",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "provenance_context": "prior-intake"
+  },
+  {
+    "name": "primary-rewrite-clj-pinned-parser",
+    "family": "stdout",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/prior-intake/primary-rewrite-clj-pinned-parser.stdout.b64",
+    "bytes": 3074,
+    "sha256": "560067df822841dbf8cc59f8d3b2bcbf0ba0cc17c1feccd8aaf7436e18537087",
+    "provenance_context": "prior-intake"
+  },
+  {
+    "name": "primary-rewrite-clj-pinned-parser",
+    "family": "stderr",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/prior-intake/primary-rewrite-clj-pinned-parser.stderr.b64",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "provenance_context": "prior-intake"
+  },
+  {
+    "name": "primary-rewrite-clj-pinned-edit",
+    "family": "stdout",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/prior-intake/primary-rewrite-clj-pinned-edit.stdout.b64",
+    "bytes": 103,
+    "sha256": "3ff2836d8d4c371a2fa092a2beba417ae71dc9d750ddf5901ea38d3dbbb38953",
+    "provenance_context": "prior-intake"
+  },
+  {
+    "name": "primary-rewrite-clj-pinned-edit",
+    "family": "stderr",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/prior-intake/primary-rewrite-clj-pinned-edit.stderr.b64",
+    "bytes": 25,
+    "sha256": "d2c8985c89b29a842ac4946d13bdbc297709f44f20bb968faf9682664b211db6",
+    "provenance_context": "prior-intake"
+  },
+  {
+    "name": "primary-rewrite-clj-annotated-tag-object",
+    "family": "stdout",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/prior-intake/primary-rewrite-clj-annotated-tag-object.stdout.b64",
+    "bytes": 628,
+    "sha256": "c3d9aeb241a02a380fd99a40296aac3f51ed4ab6ccf7a45430fbf3d71d75f205",
+    "provenance_context": "prior-intake"
+  },
+  {
+    "name": "primary-rewrite-clj-annotated-tag-object",
+    "family": "stderr",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/prior-intake/primary-rewrite-clj-annotated-tag-object.stderr.b64",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "provenance_context": "prior-intake"
+  },
+  {
+    "name": "primary-rewrite-clj-pinned-editz",
+    "family": "stdout",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/prior-intake/primary-rewrite-clj-pinned-editz.stdout.b64",
+    "bytes": 6280,
+    "sha256": "22c173ae460cdcd764323b73409241c7c6f3d8087bffb0ba93dfa30d734e163c",
+    "provenance_context": "prior-intake"
+  },
+  {
+    "name": "primary-rewrite-clj-pinned-editz",
+    "family": "stderr",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/prior-intake/primary-rewrite-clj-pinned-editz.stderr.b64",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "provenance_context": "prior-intake"
+  },
+  {
+    "name": "primary-rewrite-clj-pinned-deps",
+    "family": "stdout",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/prior-intake/primary-rewrite-clj-pinned-deps.stdout.b64",
+    "bytes": 13892,
+    "sha256": "5196fb63dd2656f8d54a93c26799592dc379d94f87dfc661bdef6b4a2c3e1d7c",
+    "provenance_context": "prior-intake"
+  },
+  {
+    "name": "primary-rewrite-clj-pinned-deps",
+    "family": "stderr",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/prior-intake/primary-rewrite-clj-pinned-deps.stderr.b64",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "provenance_context": "prior-intake"
+  },
+  {
+    "name": "canonical-FIRST-personal-sync1",
+    "family": "stdout",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/candidate/canonical-FIRST-personal-sync1.stdout.b64",
+    "bytes": 616,
+    "sha256": "623d777e9a3f455d4cb359a40299def0cab483379b52e53502ea6b970753d858",
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "canonical-FIRST-personal-sync1",
+    "family": "stderr",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/candidate/canonical-FIRST-personal-sync1.stderr.b64",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "fresh-fork",
+    "family": "stdout",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/candidate/fresh-fork.stdout.b64",
+    "bytes": 13751,
+    "sha256": "a1e8b23e0c648912a3c10693643d7c4dbde6bedd08acf0b8444f9c38f340272c",
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "fresh-fork",
+    "family": "stderr",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/candidate/fresh-fork.stderr.b64",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "fresh-origin-main",
+    "family": "stdout",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/candidate/fresh-origin-main.stdout.b64",
+    "bytes": 11999,
+    "sha256": "26b17b018181028a6f93f0b366e26791f9de924538509ec3b0d590eb01c0e0c7",
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "fresh-origin-main",
+    "family": "stderr",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/candidate/fresh-origin-main.stderr.b64",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "fresh-personal-main",
+    "family": "stdout",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/candidate/fresh-personal-main.stdout.b64",
+    "bytes": 369151,
+    "sha256": "c91b3e39720436d4d1c2d93cf2e3cffd6474ff20e7fe2d480adc3d52446b11b2",
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "fresh-personal-main",
+    "family": "stderr",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/candidate/fresh-personal-main.stderr.b64",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "fresh-parent-sync1",
+    "family": "stdout",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/candidate/fresh-parent-sync1.stdout.b64",
+    "bytes": 15875,
+    "sha256": "a885e8e28072f80ac9e8157cc7964e8b5fce764b3812071556e607f31c4e94e5",
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "fresh-parent-sync1",
+    "family": "stderr",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/candidate/fresh-parent-sync1.stderr.b64",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "fresh-all-personal-PRs",
+    "family": "stdout",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/candidate/fresh-all-personal-PRs.stdout.b64",
+    "bytes": 158355,
+    "sha256": "92b54e6545796ba36173009206b16e212f486bd78b16458821bef3de7e9e1896",
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "fresh-all-personal-PRs",
+    "family": "stderr",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/candidate/fresh-all-personal-PRs.stderr.b64",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "new-full-independent-source-store",
+    "family": "stdout",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/candidate/new-full-independent-source-store.stdout.b64",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "new-full-independent-source-store",
+    "family": "stderr",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/candidate/new-full-independent-source-store.stderr.b64",
+    "bytes": 127,
+    "sha256": "ad328b34fbf52c3a933d3a83c571f9655c6026a5e6a8bc5a619238584aa7de43",
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "fresh-own-personal-base-fetch",
+    "family": "stdout",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/candidate/fresh-own-personal-base-fetch.stdout.b64",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "fresh-own-personal-base-fetch",
+    "family": "stderr",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/candidate/fresh-own-personal-base-fetch.stderr.b64",
+    "bytes": 107,
+    "sha256": "06a169210a9f403164c85dae15ec049a7a7734999eb1181461d2911e45ec6da3",
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "new-dedicated-lossless-planning-worktree",
+    "family": "stdout",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/candidate/new-dedicated-lossless-planning-worktree.stdout.b64",
+    "bytes": 82,
+    "sha256": "724f8eb2045f618b011e1d26ae9a1b9c1959f3caf78b8c4a80649239f4e0ea4e",
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "new-dedicated-lossless-planning-worktree",
+    "family": "stderr",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/candidate/new-dedicated-lossless-planning-worktree.stderr.b64",
+    "bytes": 76,
+    "sha256": "db53730238ed8786746f901d27801a421a9e1e58dd67d8b461f536ac4116393b",
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "full-connectivity",
+    "family": "stdout",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/candidate/full-connectivity.stdout.b64",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "full-connectivity",
+    "family": "stderr",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/candidate/full-connectivity.stderr.b64",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "complete-reachable-objects",
+    "family": "stdout",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/candidate/complete-reachable-objects.stdout.b64",
+    "bytes": 5724782,
+    "sha256": "eb4ce83908b1b691df869dcad9a05bdabc14338986f75985b75ac3d7b7077048",
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "complete-reachable-objects",
+    "family": "stderr",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/candidate/complete-reachable-objects.stderr.b64",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "accepted340-ancestry",
+    "family": "stdout",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/candidate/accepted340-ancestry.stdout.b64",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "accepted340-ancestry",
+    "family": "stderr",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/candidate/accepted340-ancestry.stderr.b64",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "native-before-full-card",
+    "family": "stdout",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/candidate/native-before-full-card.stdout.b64",
+    "bytes": 1695,
+    "sha256": "dc414a46c72076c18436413ec6a953e115893ca7c2d711eba209ed697b307d4e",
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "native-before-full-card",
+    "family": "stderr",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/candidate/native-before-full-card.stderr.b64",
+    "bytes": 195,
+    "sha256": "8c3ee44d2cc082a7115c837772b0e6e7f6e509b31ca190fb8ea89225adc50cec",
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "native-before-events",
+    "family": "stdout",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/candidate/native-before-events.stdout.b64",
+    "bytes": 3,
+    "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "native-before-events",
+    "family": "stderr",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/candidate/native-before-events.stderr.b64",
+    "bytes": 195,
+    "sha256": "8c3ee44d2cc082a7115c837772b0e6e7f6e509b31ca190fb8ea89225adc50cec",
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "native-after-full-card",
+    "family": "stdout",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/candidate/native-after-full-card.stdout.b64",
+    "bytes": 6708,
+    "sha256": "f7e2d33e954f1e448fefaaf65b8f7bed4060a1b3e6b96ee940ba8793baf8f9a1",
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "native-after-full-card",
+    "family": "stderr",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/candidate/native-after-full-card.stderr.b64",
+    "bytes": 194,
+    "sha256": "e6f1bc80ad04f709e4bd20e188e2a4df3514fcce71181466710c2b69696791d2",
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "native-after-events",
+    "family": "stdout",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/candidate/native-after-events.stdout.b64",
+    "bytes": 3,
+    "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "native-after-events",
+    "family": "stderr",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/candidate/native-after-events.stderr.b64",
+    "bytes": 194,
+    "sha256": "e6f1bc80ad04f709e4bd20e188e2a4df3514fcce71181466710c2b69696791d2",
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "own-declared-decision-append",
+    "family": "stdout",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/candidate/own-declared-decision-append.stdout.b64",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "own-declared-decision-append",
+    "family": "stderr",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/candidate/own-declared-decision-append.stderr.b64",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "own-declared-decision-current-consumer",
+    "family": "stdout",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/candidate/own-declared-decision-current-consumer.stdout.b64",
+    "bytes": 4172,
+    "sha256": "1e574ef81cb3936e53f63a29b2a1b5928a0918fceab132325a9cfb8dd637140e",
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "own-declared-decision-current-consumer",
+    "family": "stderr",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/candidate/own-declared-decision-current-consumer.stderr.b64",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "portable-reflection-append",
+    "family": "stdout",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/candidate/portable-reflection-append.stdout.b64",
+    "bytes": 136,
+    "sha256": "8285ad0a8902447a5dc4b0dd9b18f3555caa1acfb8e111c2e6cd4dad80b06b04",
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "portable-reflection-append",
+    "family": "stderr",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/candidate/portable-reflection-append.stderr.b64",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "portable-reflection-reader",
+    "family": "stdout",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/candidate/portable-reflection-reader.stdout.b64",
+    "bytes": 810,
+    "sha256": "2ac54efdf28a4f15abd2b29a930a908507241724e12335643f85ab012c791978",
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "portable-reflection-reader",
+    "family": "stderr",
+    "path": ".\u03b7\u03bc/verification/lossless-publication-state-planning/captures/candidate/portable-reflection-reader.stderr.b64",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "provenance_context": "candidate"
+  }
+]

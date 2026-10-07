@@ -1,0 +1,17 @@
+{
+  "path": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-lossless-planning-142bca4cee",
+  "worktree": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-lossless-planning-142bca4cee/worktree",
+  "source_git": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-lossless-planning-142bca4cee/source.git",
+  "branch": "codex/knoxx-lossless-publication-planning",
+  "base": "5670338fcf1db7d51a2690f388e4e4c5c409c48a",
+  "personal_main": "b3903dfc4c9e9dd5e32ae658cf5d8abb88b8e792",
+  "origin_main": "3409977bca4ba35e09967f9a99d50867a679a73c",
+  "sync_branch": "codex/sync-knoxx-origin-main",
+  "sync_base": "b3903dfc4c9e9dd5e32ae658cf5d8abb88b8e792",
+  "syncPR": 1,
+  "card": "kanban/tasks/knoxx-publication-lossless-edn-state-edits.md",
+  "native_state": "Ready/P1/3 unchanged; no new admission",
+  "source_entries": 2597,
+  "fork_auto_merge_allowed": false,
+  "routing": "pending personal sync; no foreignfeature adoption"
+}

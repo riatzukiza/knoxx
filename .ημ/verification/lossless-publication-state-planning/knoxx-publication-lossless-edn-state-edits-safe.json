@@ -1,0 +1,18 @@
+{
+  "uuid": "knoxx-publication-lossless-edn-state-edits",
+  "frontmatter": {
+    "uuid": "knoxx-publication-lossless-edn-state-edits",
+    "title": "Publication \u2014 Lossless EDN State Edits",
+    "status": "ready",
+    "priority": "P1",
+    "points": "3",
+    "labels": ""
+  },
+  "sections": [
+    {
+      "type": "body",
+      "content": "# Publication \u2014 Lossless EDN State Edits\n\n> Parent epic: `knoxx-publication-runtime-follow-up`\n\n## Purpose\n\nReplace value-level whole-manifest rewrites with syntax-preserving targeted edits for human-maintained publication/resource EDN.\n\n## Work\n\n- Locate publication/CMS state mutation paths that parse EDN and rewrite with `pr-str` or equivalent whole-value serialization.\n- Introduce a syntax-preserving edit seam using `rewrite-clj` or an equivalent zipper representation.\n- Preserve comments, unrelated resources, ordering, and surrounding formatting where practical.\n- Fail closed on malformed/unreadable state; never reconstruct a partial manifest from a failed read.\n- Add fixture and property/round-trip tests covering comments, sibling resources, documents, gardens, and targeted state transitions.\n\n## Definition of Done\n\n- A targeted publication state mutation changes only the intended semantic node.\n- Comments and unrelated resource syntax survive the edit.\n- Malformed state produces no write.\n- Existing publication identity/manifest-preservation tests remain green.\n- Backend test/lint/typecheck gates for touched code pass."
+    }
+  ],
+  "source-path": "/home/err/.codex/parallel-goal/issues-20261006/Foresight-next-card-intake-ecea75c6e2/knoxx-fixture/kanban/tasks/knoxx-publication-lossless-edn-state-edits.md"
+}

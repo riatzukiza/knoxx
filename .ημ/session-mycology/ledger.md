@@ -192,3 +192,12 @@
   p-skill-candidate: 0.2
   receipt-refs: 2026-10-06T14:28:52.198143Z
   note: Keep accepted source synchronization separate from unmerged feature migration. An inherited ready-triggered merge job makes draft preparation necessary until reviewed base enforcement. No spore warranted.
+- ts: 2026-10-07T07:05:07.800011436Z
+  session: /home/err/.codex/parallel-goal/issues-20261006/Knoxx-lossless-planning-142bca4cee/worktree
+  task: Refine whole existing lossless publication card without changing its lifecycle or adopting overlapping features
+  p-efficiency: 0.8
+  p-friction: 0.25
+  p-skill-candidate: 0.0
+  spore: none
+  receipt-refs: 94f0ede3cc5bbbce09a54dbb6f2d25aa85b74e33570111b15d086fea2399ac35
+  note: Both CMS write branches and fiveDoD retained; value-level zipper edit is not sufficient syntax preservation. Current native Ready visibility differs from demonstrated planning admission. Actual pinned source supports portable CLJS candidate surface, compiled/runtime feasibility remains held; failed guessed-library-path404 retained. No live event or spore.
