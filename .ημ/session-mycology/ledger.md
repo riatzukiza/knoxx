@@ -192,3 +192,12 @@
   p-skill-candidate: 0.2
   receipt-refs: 2026-10-06T14:28:52.198143Z
   note: Keep accepted source synchronization separate from unmerged feature migration. An inherited ready-triggered merge job makes draft preparation necessary until reviewed base enforcement. No spore warranted.
+- ts: 2026-10-07T07:51:32.870984875Z
+  session: /home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a/worktree
+  task: Refine whole HTTP lifecycle story against actual boot paths and owned event effects
+  p-efficiency: 0.8
+  p-friction: 0.3
+  p-skill-candidate: 0.0
+  spore: none
+  receipt-refs: 527a4b2a27456630917ff0e8480fadcb00da28fbb7ca30d6f290add19dca8b31
+  note: Preserve all six DoD and native Ready5; all actual startup paths, deferred effects and truthful partial/async lifecycle require review. Existing disabled reload repair retained. No backend/compiler/provider or foreign adoption; original body/metadata/history retained; no live event/spore.

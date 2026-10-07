@@ -1,0 +1,82 @@
+{
+  "pin": "154440f3c997aa9208194bba59b5edbef3654f78",
+  "source_git": "/home/err/.codex/parallel-goal/issues-20261006/owned-eight-intake-66b7bab9f5/receipt-river/source.git",
+  "all15exact": true,
+  "files": [
+    {
+      "path": "src/cljs/eta_mu/receipt_river/api.cljs",
+      "bytes": 1594,
+      "sha256": "c027fff0ef9dcbb2b3fa7b2ab77bf9afd0b240a6e8304661fcb2e4be332a0812"
+    },
+    {
+      "path": "src/cljs/eta_mu/receipt_river/archaeology/provider.cljs",
+      "bytes": 546,
+      "sha256": "fc0df23a5d857ad95506b646d0b9f7c4d6c34f30aec6b0b0bba8e416c4e71a63"
+    },
+    {
+      "path": "src/cljs/eta_mu/receipt_river/domain/discovery.cljs",
+      "bytes": 11188,
+      "sha256": "a70b60ec4bed9df4c0f026d1ce71e918e3055526eae5467a3de9c955b6a646df"
+    },
+    {
+      "path": "src/cljs/eta_mu/receipt_river/domain/event.cljs",
+      "bytes": 1388,
+      "sha256": "bd284edccb1e355b19a6b356593a7daa2cb1f52055024f8efc4aca9d90762253"
+    },
+    {
+      "path": "src/cljs/eta_mu/receipt_river/domain/receipt.cljs",
+      "bytes": 1869,
+      "sha256": "adc98967a40d80cde6f3fdf9e328a221986c3f16b8b1631e18e1f4fa78b10a35"
+    },
+    {
+      "path": "src/cljs/eta_mu/receipt_river/extern/bus.cljs",
+      "bytes": 273,
+      "sha256": "068f93ced2662e2493e5b6f42ce47b566b02b21eab225aab994b71de2e2a99fe"
+    },
+    {
+      "path": "src/cljs/eta_mu/receipt_river/extern/crypto.cljs",
+      "bytes": 282,
+      "sha256": "5e852c2782c15b1f89e8157597272cf5965353c6cc31961929003d44932ea05b"
+    },
+    {
+      "path": "src/cljs/eta_mu/receipt_river/extern/fs.cljs",
+      "bytes": 1094,
+      "sha256": "1d6cc5136f40231c6926ef9f16602cd27361df15f80b0f60af78db196bcdf2cb"
+    },
+    {
+      "path": "src/cljs/eta_mu/receipt_river/extern/git.cljs",
+      "bytes": 2587,
+      "sha256": "12140ed090349f961ae4119b68a8750f2ff63c211531eed2396c1b8a35155852"
+    },
+    {
+      "path": "src/cljs/eta_mu/receipt_river/extern/glob.cljs",
+      "bytes": 1233,
+      "sha256": "bd8c5ce5e36264271b4383e688ee44ff043f78c0912c98edb98d8f9623b0871d"
+    },
+    {
+      "path": "src/cljs/eta_mu/receipt_river/extern/runtime.cljs",
+      "bytes": 508,
+      "sha256": "75d863014e3d633fd9467cfd303d90d2326fc9dde0200da768252d19be24a888"
+    },
+    {
+      "path": "src/cljs/eta_mu/receipt_river/infra/cli.cljs",
+      "bytes": 9944,
+      "sha256": "7642faa1097748df724b85d2ade3e5035be14f09334e04b6bd980c1355377ef1"
+    },
+    {
+      "path": "src/cljs/eta_mu/receipt_river/infra/local_git_provider.cljs",
+      "bytes": 6197,
+      "sha256": "aebdd62166f66c16877ab952095b85fb84e177141043981333ac82aa3ad0d251"
+    },
+    {
+      "path": "src/cljs/eta_mu/receipt_river/law/receipt.cljs",
+      "bytes": 4927,
+      "sha256": "a40dd843cf298926dfbe229d5544470dbd51682fd538e841a0fad62d29bed320"
+    },
+    {
+      "path": "src/cljs/eta_mu/receipt_river/shape/edn.cljs",
+      "bytes": 234,
+      "sha256": "0e06bef509eda4cf3aa63e53577d14b74e780563608aa52d6161ae296ceb3914"
+    }
+  ]
+}

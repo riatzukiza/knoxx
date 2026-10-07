@@ -1,0 +1,17 @@
+{
+  "path": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a",
+  "worktree": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a/worktree",
+  "store": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a/source.git",
+  "donor_read_only": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx158-provenance-planning-8cbb1e7535/source.git",
+  "base": "5670338fcf1db7d51a2690f388e4e4c5c409c48a",
+  "origin_main": "3409977bca4ba35e09967f9a99d50867a679a73c",
+  "personal_main": "b3903dfc4c9e9dd5e32ae658cf5d8abb88b8e792",
+  "branch": "codex/knoxx-http-event-lifecycle-planning",
+  "sync_branch": "codex/sync-knoxx-origin-main",
+  "syncPR": 1,
+  "card": "kanban/tasks/knoxx-http-event-runtime-lifecycle-separation.md",
+  "source_entries": 2597,
+  "fork_auto_merge_allowed": false,
+  "intake": "/home/err/.codex/parallel-goal/issues-20261006/Admitted-next-intake-3496822abc",
+  "prospective": "personal DRAFTblockedautooff; root sole publisher"
+}

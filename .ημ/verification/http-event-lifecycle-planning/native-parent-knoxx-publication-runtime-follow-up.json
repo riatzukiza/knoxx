@@ -1,0 +1,18 @@
+{
+  "uuid": "knoxx-publication-runtime-follow-up",
+  "frontmatter": {
+    "uuid": "knoxx-publication-runtime-follow-up",
+    "title": "Publication Runtime Follow-up \u2014 Lifecycle Separation, Lossless State, and Gardens Decoupling",
+    "status": "accepted",
+    "priority": "P1",
+    "points": "13",
+    "labels": ""
+  },
+  "sections": [
+    {
+      "type": "body",
+      "content": "# Publication Runtime Follow-up \u2014 Lifecycle Separation, Lossless State, and Gardens Decoupling\n\nGitHub: #246\n\n## Purpose\n\nOwn the deliberately deferred architectural work exposed by publication closeout: lossless EDN state mutation, HTTP/event-runtime lifecycle separation, Gardens/OpenPlanner REST decoupling, and authoritative production-boundary verification.\n\n## Laws\n\n1. Targeted publication mutation cannot delete or rewrite unrelated manifest resources.\n2. Comments and unrelated syntax in human-maintained EDN survive targeted edits.\n3. HTTP startup cannot implicitly connect gateways or dispatch event/agent work.\n4. Disabled or failed lifecycle operations cannot report false success.\n5. Publication garden/revision/path/locale identity remains immutable across transitions.\n6. Unexpected 4xx/5xx responses on required production surfaces fail verification.\n7. Gardens consumers target a domain contract, not a legacy OpenPlanner REST transport detail.\n\n## Children\n\n- `knoxx-publication-lossless-edn-state-edits` \u2014 3sp\n- `knoxx-http-event-runtime-lifecycle-separation` \u2014 5sp\n- `knoxx-gardens-openplanner-rest-decoupling` \u2014 3sp\n- `knoxx-publication-live-verification-contract` \u2014 2sp\n\n## Definition of Done\n\n- All four child slices are complete.\n- A final live production-boundary verification passes after the migrations.\n- No supported Gardens publication/viewer path directly depends on `/api/openplanner/v1/gardens`.\n- Human-maintained publication/resource manifests are mutated losslessly outside the targeted change.\n- HTTP-only backend startup has zero event-runtime side effects."
+    }
+  ],
+  "source-path": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a/native-after/kanban/epics/knoxx-publication-runtime-follow-up.md"
+}

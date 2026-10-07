@@ -1,0 +1,128 @@
+[
+  {
+    "source_path": "AGENTS.md",
+    "transport_path": ".\u03b7\u03bc/verification/http-event-lifecycle-planning/source/AGENTS.md.b64",
+    "bytes": 13198,
+    "sha256": "a9aae6e9cc829df7319b267c8b93fa188abcc52a2c7e6e87c56846173f29701e",
+    "gitblob": "f7a0e2edcc4714f9780cdd8625acc52cf818fecb"
+  },
+  {
+    "source_path": "backend/src/cljs/knoxx/backend/entrypoint.cljs",
+    "transport_path": ".\u03b7\u03bc/verification/http-event-lifecycle-planning/source/backend/src/cljs/knoxx/backend/entrypoint.cljs.b64",
+    "bytes": 460,
+    "sha256": "c7ca19356601d8c4232e32edbc072ecb2c91a415797c27b427c9c74aebef1da2",
+    "gitblob": "169ab0e9d9d23accbc472837f5f4758da76c1671"
+  },
+  {
+    "source_path": "backend/src/cljs/knoxx/backend/bootstrap.cljs",
+    "transport_path": ".\u03b7\u03bc/verification/http-event-lifecycle-planning/source/backend/src/cljs/knoxx/backend/bootstrap.cljs.b64",
+    "bytes": 17015,
+    "sha256": "37c874a7a4bd353724c65747d42874c6b3353b8fd991bdb9edfb6857d4b567d4",
+    "gitblob": "2e5f1b94ac417a9f336b38c03b403d30024ff108"
+  },
+  {
+    "source_path": "backend/src/cljs/knoxx/backend/infra/core.cljs",
+    "transport_path": ".\u03b7\u03bc/verification/http-event-lifecycle-planning/source/backend/src/cljs/knoxx/backend/infra/core.cljs.b64",
+    "bytes": 12414,
+    "sha256": "f788c933dd62a97f6aef39e3c3e8c180d1910f3d425b9e5f2e08b28fa78094e8",
+    "gitblob": "d33d6bcb9cf9a4acc064f9441a2472c46118e24d"
+  },
+  {
+    "source_path": "backend/src/cljs/knoxx/backend/infra/event_runtime.cljs",
+    "transport_path": ".\u03b7\u03bc/verification/http-event-lifecycle-planning/source/backend/src/cljs/knoxx/backend/infra/event_runtime.cljs.b64",
+    "bytes": 3866,
+    "sha256": "7d6342037257c2006c65a79719c485a43409a292f51960efab9433866c9ee4c1",
+    "gitblob": "70946bfb9349f9632803201dbee1c796bb7fb502"
+  },
+  {
+    "source_path": "backend/src/cljs/knoxx/backend/infra/lifecycle.cljs",
+    "transport_path": ".\u03b7\u03bc/verification/http-event-lifecycle-planning/source/backend/src/cljs/knoxx/backend/infra/lifecycle.cljs.b64",
+    "bytes": 1373,
+    "sha256": "e7e64025a8382361050c4088da7ca27da94790f24f13ed93d67a197629d8b01b",
+    "gitblob": "8e1d7c32b0e09d95decb7d68fea82f8d074b5552"
+  },
+  {
+    "source_path": "backend/src/cljs/knoxx/backend/infra/graceful_shutdown.cljs",
+    "transport_path": ".\u03b7\u03bc/verification/http-event-lifecycle-planning/source/backend/src/cljs/knoxx/backend/infra/graceful_shutdown.cljs.b64",
+    "bytes": 4285,
+    "sha256": "f32a2491e753aa6cb434c5b9167974c4fce40b40a9ae2d774ad2eeb838eff347",
+    "gitblob": "c6223164878485d19a00c77446c92fe8420f1132"
+  },
+  {
+    "source_path": "backend/src/cljs/knoxx/backend/infra/trigger_runner.cljs",
+    "transport_path": ".\u03b7\u03bc/verification/http-event-lifecycle-planning/source/backend/src/cljs/knoxx/backend/infra/trigger_runner.cljs.b64",
+    "bytes": 1015,
+    "sha256": "0f73976fc0a3d2a6245e073d8e9cbf67a1c0497b1d23ae0e3ede66e49f9f3131",
+    "gitblob": "e58cda8437cf3b1fa5fb4c4ac0defda3de5d2d8b"
+  },
+  {
+    "source_path": "backend/src/cljs/knoxx/backend/infra/config.cljs",
+    "transport_path": ".\u03b7\u03bc/verification/http-event-lifecycle-planning/source/backend/src/cljs/knoxx/backend/infra/config.cljs.b64",
+    "bytes": 12749,
+    "sha256": "89966f7ece0ae995f9707ecbcc7b007b672ccdf469f292c8773b3f39cb0e0d82",
+    "gitblob": "ac51a6f4b014d1bc73f3d31da2f735144b003bb9"
+  },
+  {
+    "source_path": "backend/src/cljs/knoxx/backend/infra/routes/tools.cljs",
+    "transport_path": ".\u03b7\u03bc/verification/http-event-lifecycle-planning/source/backend/src/cljs/knoxx/backend/infra/routes/tools.cljs.b64",
+    "bytes": 27374,
+    "sha256": "7e2d152b72b15a3a765bbada7c64fa0b4a00d3dcdf29e2d6f46d1006d7521dfd",
+    "gitblob": "aba0b3da8310114a79d8e565abf69f644961ceb1"
+  },
+  {
+    "source_path": "backend/src/cljs/knoxx/backend/infra/routes/resources.cljs",
+    "transport_path": ".\u03b7\u03bc/verification/http-event-lifecycle-planning/source/backend/src/cljs/knoxx/backend/infra/routes/resources.cljs.b64",
+    "bytes": 56464,
+    "sha256": "f5a9aef6d41bbd1fc82b7a4e7e4ad373836f7daee3bcc897fc6d16de83ed18de",
+    "gitblob": "a2af1491b0fc697fc488f99026e0b5c233420e1d"
+  },
+  {
+    "source_path": "backend/test/cljs/knoxx/backend/infra/event_runtime_disable_test.cljs",
+    "transport_path": ".\u03b7\u03bc/verification/http-event-lifecycle-planning/source/backend/test/cljs/knoxx/backend/infra/event_runtime_disable_test.cljs.b64",
+    "bytes": 1669,
+    "sha256": "0488314e97f8dcca45583195a60831ce610f69206d301eb64afd6e0d4955d79f",
+    "gitblob": "7475f2ba96e09c9008fc275352392e1062d094cb"
+  },
+  {
+    "source_path": "backend/test/cljs/knoxx/backend/infra_core_prewarm_test.cljs",
+    "transport_path": ".\u03b7\u03bc/verification/http-event-lifecycle-planning/source/backend/test/cljs/knoxx/backend/infra_core_prewarm_test.cljs.b64",
+    "bytes": 1688,
+    "sha256": "d3a9a8813d8a30747afd653cb0cf8f26b505b07533a00e544fafbdaa44e79de4",
+    "gitblob": "0a5e90749b8d82369aa74d46703749db434d4ee5"
+  },
+  {
+    "source_path": "backend/package.json",
+    "transport_path": ".\u03b7\u03bc/verification/http-event-lifecycle-planning/source/backend/package.json.b64",
+    "bytes": 3461,
+    "sha256": "37812f05dcb69774ab780d326f27d0c948a513a8e7406e954db67d2f318c62fa",
+    "gitblob": "a388577d6f5fa82af932f18bf9c0d4d4b4a00480"
+  },
+  {
+    "source_path": "backend/shadow-cljs.edn",
+    "transport_path": ".\u03b7\u03bc/verification/http-event-lifecycle-planning/source/backend/shadow-cljs.edn.b64",
+    "bytes": 9065,
+    "sha256": "b182a2993c1e818a36dc9e39c011a8dd830cb097e0b624d95986ea3563165dcd",
+    "gitblob": "f5e969ad3cd61c90f34a91bd8cddf10f62aaf886"
+  },
+  {
+    "source_path": ".github/workflows/ci.yml",
+    "transport_path": ".\u03b7\u03bc/verification/http-event-lifecycle-planning/source/.github/workflows/ci.yml.b64",
+    "bytes": 9206,
+    "sha256": "416fc1909e23b72db7d7ea79234ba44350ada50e7f966e6fab16474494e1b230",
+    "gitblob": "b1a5dca0f22fb46648188aef0f48b03f0b8a0711"
+  },
+  {
+    "source_path": ".github/workflows/auto-merge.yml",
+    "transport_path": ".\u03b7\u03bc/verification/http-event-lifecycle-planning/source/.github/workflows/auto-merge.yml.b64",
+    "bytes": 660,
+    "sha256": "689deb88a61470c18ad7d2e540c6ea81be6812166611f23b552d98ad458af313",
+    "gitblob": "bd4b945f5b4442d175144a430dcbf5b2c81506e5"
+  },
+  {
+    "source_path": "kanban/epics/knoxx-publication-runtime-follow-up.md",
+    "transport_path": ".\u03b7\u03bc/verification/http-event-lifecycle-planning/source/kanban/epics/knoxx-publication-runtime-follow-up.md.b64",
+    "bytes": 1843,
+    "sha256": "a9134c5c51a7ad2b51e39213cec12fa2c5e311beec1ccc6aaf04716a2a8d933e",
+    "gitblob": "05a985670124e044c434af3e1f561014a1f12b61"
+  }
+]
