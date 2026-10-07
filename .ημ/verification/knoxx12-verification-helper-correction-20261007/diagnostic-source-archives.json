@@ -1,0 +1,58 @@
+[
+  {
+    "path": "predecessor-consumer.cljs.b64",
+    "bytes": 3304,
+    "sha256": "46b5b68c9fbfa360679319a2c07b4728a43ed38935c1ab07a516132bcbde9647",
+    "source_kind": "exact predecessor helper",
+    "transport": "canonical base64 with NO terminal LF"
+  },
+  {
+    "path": "predecessor-verifier.py.b64",
+    "bytes": 4878,
+    "sha256": "7c0e4ba7a84be62cd2205987bec5eb0ee8423937c22d976554fdb36696fbf6d1",
+    "source_kind": "exact predecessor helper",
+    "transport": "canonical base64 with NO terminal LF"
+  },
+  {
+    "path": "run_predecessor_diagnostics.py.b64",
+    "bytes": 1869,
+    "sha256": "cce11e79c3ec0dcb44516660ac059ecaa98558bf2ffd87624c501b16d2415855",
+    "source_kind": "owned private diagnostic/writer source; not a product runtime or board engine",
+    "transport": "canonical base64 with NO terminal LF"
+  },
+  {
+    "path": "run_green_diagnostics.py.b64",
+    "bytes": 5974,
+    "sha256": "3d07a6ec4ef9976c29f91e472b04702dde782399952a126fa229136cb7da4202",
+    "source_kind": "owned private diagnostic/writer source; not a product runtime or board engine",
+    "transport": "canonical base64 with NO terminal LF"
+  },
+  {
+    "path": "run_argument_controls.py.b64",
+    "bytes": 2058,
+    "sha256": "f33adf2796e0891ed632f276a193dfc0db1c76c39b6c219730382b4092cb5fa9",
+    "source_kind": "owned private diagnostic/writer source; not a product runtime or board engine",
+    "transport": "canonical base64 with NO terminal LF"
+  },
+  {
+    "path": "run_manifest_type_control.py.b64",
+    "bytes": 1005,
+    "sha256": "5328ce628a0149abeece8269496e7fa493d13bfff15b8ee971fda3bbb65863c2",
+    "source_kind": "owned private diagnostic/writer source; not a product runtime or board engine",
+    "transport": "canonical base64 with NO terminal LF"
+  },
+  {
+    "path": "prepare_receipt_controls.cljs.b64",
+    "bytes": 827,
+    "sha256": "c2403489a8ccc642b60575317585c2ff6042c45222796ce8e2b652d66c6ddd34",
+    "source_kind": "owned private diagnostic/writer source; not a product runtime or board engine",
+    "transport": "canonical base64 with NO terminal LF"
+  },
+  {
+    "path": "corrective_receipt.cljs.b64",
+    "bytes": 3520,
+    "sha256": "d1fdd71f0346cfceff8686350bb0ecaa4b33bfe8add1c426de9d36c9e3ccedba",
+    "source_kind": "owned private diagnostic/writer source; not a product runtime or board engine",
+    "transport": "canonical base64 with NO terminal LF"
+  }
+]

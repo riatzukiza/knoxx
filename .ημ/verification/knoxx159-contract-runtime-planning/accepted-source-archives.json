@@ -1,0 +1,121 @@
+[
+  {
+    "path": "AGENTS.md",
+    "archive": "source-AGENTS.md.b64",
+    "bytes": 13198,
+    "sha256": "a9aae6e9cc829df7319b267c8b93fa188abcc52a2c7e6e87c56846173f29701e",
+    "blob": "f7a0e2edcc4714f9780cdd8625acc52cf818fecb"
+  },
+  {
+    "path": "contracts/AGENTS.md",
+    "archive": "source-contracts__AGENTS.md.b64",
+    "bytes": 20958,
+    "sha256": "34695380b08ea256c22ba1521393699e378775372898dd83ff9ca937d17704ac",
+    "blob": "c57eab45c449060691f6e07251e5295d05705074"
+  },
+  {
+    "path": ".agents/skills/pr-review-to-merge/SKILL.md",
+    "archive": "source-.agents__skills__pr-review-to-merge__SKILL.md.b64",
+    "bytes": 7807,
+    "sha256": "0cdac182fb92b67fcf2aaf92e9b1a0cc474ace6ebf0fd3c70a55f173c56b5afc",
+    "blob": "0371d728a60aaa8b6230387d1e0de6117b45df7a"
+  },
+  {
+    "path": "docs/notes/contracts/contract-oriented-runtime-framing.md",
+    "archive": "source-docs__notes__contracts__contract-oriented-runtime-framing.md.b64",
+    "bytes": 7700,
+    "sha256": "da7645b244bb83e1af9b4a70b1faf9c4fcb20698f1bd60a877d7ddc49c59b350",
+    "blob": "73784b81efedd4ead91255116f1c10a72bd27541"
+  },
+  {
+    "path": "docs/notes/contracts/separate-effects-from-contract-logic.md",
+    "archive": "source-docs__notes__contracts__separate-effects-from-contract-logic.md.b64",
+    "bytes": 1822,
+    "sha256": "7dc6bfebd0a86a8fb51810c62d117e019a3c8c5343d39c0429fc5c45e3bce496",
+    "blob": "707daf48f228dfd9769fe6eca8634d9df5f9b7fa"
+  },
+  {
+    "path": "docs/notes/contracts/agent-contract-trigger-field-removal.md",
+    "archive": "source-docs__notes__contracts__agent-contract-trigger-field-removal.md.b64",
+    "bytes": 1049,
+    "sha256": "4c9946b413c9274ad427bc67b794da6a58559e228de04cdd09733dcd2c0422f0",
+    "blob": "172fad26227676062cf5f73b5080b2bfdd080490"
+  },
+  {
+    "path": "backend/src/cljs/knoxx/backend/domain/contracts/loader.cljs",
+    "archive": "source-backend__src__cljs__knoxx__backend__domain__contracts__loader.cljs.b64",
+    "bytes": 23491,
+    "sha256": "d101c2c2474c52c7e5c54b85ea74f9decefc4858ab2148cc25ae80ce5606f60c",
+    "blob": "7e500a35db38dfc69e9a8001091aad0346d3eeb7"
+  },
+  {
+    "path": "backend/src/cljs/knoxx/backend/domain/resources/loader.cljs",
+    "archive": "source-backend__src__cljs__knoxx__backend__domain__resources__loader.cljs.b64",
+    "bytes": 6971,
+    "sha256": "9f0b9f0dd2d909349c46c15809e7e6dfb81ae0a3c007c0a8ebd63f06a6a398d1",
+    "blob": "c61f887b5f6f80514ed629ca3c0426bf9aad72ac"
+  },
+  {
+    "path": "backend/src/cljs/knoxx/backend/law/contracts.cljs",
+    "archive": "source-backend__src__cljs__knoxx__backend__law__contracts.cljs.b64",
+    "bytes": 22975,
+    "sha256": "397a1525cecc1fdac97e4dcb8920e7d6a5766b9682a7a13348c10c60c114b306",
+    "blob": "8e34bf5fbe631b28f9a2905b4c43480f034612c1"
+  },
+  {
+    "path": "backend/src/cljs/open_hax/contracts/schema.cljs",
+    "archive": "source-backend__src__cljs__open_hax__contracts__schema.cljs.b64",
+    "bytes": 26009,
+    "sha256": "fb7091f97af6950bd3f75c20b6e1d91d81a8ce49446cf485a9b353e11c83eb08",
+    "blob": "5b213a0754a6ae2fe46e14c36e01799d26ea283a"
+  },
+  {
+    "path": "backend/src/cljs/knoxx/backend/infra/config.cljs",
+    "archive": "source-backend__src__cljs__knoxx__backend__infra__config.cljs.b64",
+    "bytes": 12749,
+    "sha256": "89966f7ece0ae995f9707ecbcc7b007b672ccdf469f292c8773b3f39cb0e0d82",
+    "blob": "ac51a6f4b014d1bc73f3d31da2f735144b003bb9"
+  },
+  {
+    "path": "backend/src/cljs/knoxx/backend/infra/db/policy.cljs",
+    "archive": "source-backend__src__cljs__knoxx__backend__infra__db__policy.cljs.b64",
+    "bytes": 70877,
+    "sha256": "8b28abeadef1457c9c2420735c4395d07399563ee1d75553ff5df5cedb3be571",
+    "blob": "54744e21d42e9365c5324b5e4fc6ff7917894b03"
+  },
+  {
+    "path": "package.json",
+    "archive": "source-package.json.b64",
+    "bytes": 1064,
+    "sha256": "e980846d47522322fa05623f2011756fe025e5d2369ca52e647355ff9e5f1c0e",
+    "blob": "902a59274f24f49a2b607db243452358cdf4dec3"
+  },
+  {
+    "path": "backend/package.json",
+    "archive": "source-backend__package.json.b64",
+    "bytes": 3461,
+    "sha256": "37812f05dcb69774ab780d326f27d0c948a513a8e7406e954db67d2f318c62fa",
+    "blob": "a388577d6f5fa82af932f18bf9c0d4d4b4a00480"
+  },
+  {
+    "path": "frontend/package.json",
+    "archive": "source-frontend__package.json.b64",
+    "bytes": 4193,
+    "sha256": "4ffba812f25172ab14f93e38ec5ba776ff7b9c735106eff05a5ceea761f4e9db",
+    "blob": "49933987b40e1c491867d19ba009417434543c12"
+  },
+  {
+    "path": ".github/workflows/auto-merge.yml",
+    "archive": "source-.github__workflows__auto-merge.yml.b64",
+    "bytes": 660,
+    "sha256": "689deb88a61470c18ad7d2e540c6ea81be6812166611f23b552d98ad458af313",
+    "blob": "bd4b945f5b4442d175144a430dcbf5b2c81506e5"
+  },
+  {
+    "path": "kanban/openhax.kanban.json",
+    "archive": "source-kanban__openhax.kanban.json.b64",
+    "bytes": 82,
+    "sha256": "3ecac8aed4429710c83bd88c714a849c3303d52a7fa8b0ba287a8ffb4989eeff",
+    "blob": "182154fff92b4f793a86a9c456523abb6bf9b081"
+  }
+]

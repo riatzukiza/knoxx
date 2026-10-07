@@ -1,0 +1,58 @@
+{
+  "baseline": "9097d6f0166381d2b32326371e0045331340da3c",
+  "base": "5670338fcf1db7d51a2690f388e4e4c5c409c48a",
+  "native_review": 5440107603,
+  "findings": [
+    {
+      "root": 4205088933,
+      "item": "07f01ba64b3158f424885191",
+      "scope": "inherited-count refusal before read/subvec"
+    },
+    {
+      "root": 4205088953,
+      "item": "2f778269f6ea826e095ae7d9",
+      "scope": "published268-entry manifest bound to independent immutable Git/mode-faithful fixture"
+    },
+    {
+      "root": 4205088967,
+      "item": "bc50648c3adb26d7d73b22e0",
+      "scope": "actual current owner API validates current receipt suffix rather than captured historical PASS"
+    }
+  ],
+  "ancillary": {
+    "ruff": "Actual E702 diagnostics embedded in4205088953/4205088967; final private Ruff0.16.7 project-config check0",
+    "docstrings": {
+      "native_warning_comment": 6034220142,
+      "original": "0% one undocumented git function",
+      "current_python_functions": 5,
+      "current_documented_python_functions": 5,
+      "native_followup": "not requested; local AST measurement only"
+    }
+  },
+  "original_red": "manifest SHA tamper and malformed current row17 accepted;16junk/16.5 parsed as16; NaN/missing misclassify all17 and fail, not evidence invalid admission",
+  "green": {
+    "hostile_matrix_cases": 38,
+    "missing_extra_argument_refusals": 7,
+    "git_read_positive": 1,
+    "immutable_at_9097_despite_dirty_working_ledger": true,
+    "additional_json_number_type_refusals": 2
+  },
+  "receipt_scope": {
+    "old_physical_rows": 17,
+    "historical_rows_1_to_16": "refused unchanged by current API",
+    "old_owned_row17": "declared valid; preserved byte-exact",
+    "new_owned_row18": "correction-specific actual API-built declared receipt",
+    "working_or_git_mode": "all physical rows, interior/trailing blank records retained; one EOF separator not counted",
+    "fulltip_validation": "outside proof after ordinary commit, not a self-referential capture"
+  },
+  "preparation_mistakes": [
+    {
+      "observed": "First private harness used check=True and stopped on expected first negative exit1; corrected orchestration, reused preserved capture, no helper/production effect",
+      "raw_trace": "tool output only, not represented as a lossless archived file"
+    },
+    {
+      "observed": "First private Ruff run found I001 and PLW1510; original capture retained, sorted imports/explicit check=False corrected"
+    }
+  ],
+  "source_scope": "Two existing evidence helpers and README append; own receipt/reflection appends and new correction packet. Three original planning products/card/frontmatter, old published fixture manifest, all old captures/config/workflows remain exact. No native writes, product/backend/frontend tests, deployment or reviewer request."
+}

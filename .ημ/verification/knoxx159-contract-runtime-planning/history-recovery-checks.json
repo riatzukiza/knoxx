@@ -1,0 +1,50 @@
+[
+  {
+    "commit": "c02d4ac29986cb5e7a9edb20a4349da8a964ea9c",
+    "accepted_main_ancestry_exit": 0
+  },
+  {
+    "ref": "c02d4ac29986cb5e7a9edb20a4349da8a964ea9c",
+    "spec_present": true,
+    "sha256": "17627b37bb0714488b61d6b0ad5fc7cd71e60b5c219bc52745fe8adbc8482ee5",
+    "blob": "1605f0be2e4320bba3b2c95dff0f2d87e27c1214"
+  },
+  {
+    "ref": "c02d4ac29986cb5e7a9edb20a4349da8a964ea9c^",
+    "spec_present": false,
+    "sha256": null,
+    "blob": null
+  },
+  {
+    "commit": "1bee966fee9f29df49fdd439720ae8031404e8ea",
+    "accepted_main_ancestry_exit": 1
+  },
+  {
+    "ref": "1bee966fee9f29df49fdd439720ae8031404e8ea",
+    "spec_present": false,
+    "sha256": null,
+    "blob": null
+  },
+  {
+    "ref": "1bee966fee9f29df49fdd439720ae8031404e8ea^",
+    "spec_present": true,
+    "sha256": "17627b37bb0714488b61d6b0ad5fc7cd71e60b5c219bc52745fe8adbc8482ee5",
+    "blob": "1605f0be2e4320bba3b2c95dff0f2d87e27c1214"
+  },
+  {
+    "commit": "2b457af4ef587fbcde717f1b612e37fc264e75f0",
+    "accepted_main_ancestry_exit": 0
+  },
+  {
+    "ref": "2b457af4ef587fbcde717f1b612e37fc264e75f0",
+    "spec_present": false,
+    "sha256": null,
+    "blob": null
+  },
+  {
+    "ref": "2b457af4ef587fbcde717f1b612e37fc264e75f0^",
+    "spec_present": true,
+    "sha256": "17627b37bb0714488b61d6b0ad5fc7cd71e60b5c219bc52745fe8adbc8482ee5",
+    "blob": "1605f0be2e4320bba3b2c95dff0f2d87e27c1214"
+  }
+]

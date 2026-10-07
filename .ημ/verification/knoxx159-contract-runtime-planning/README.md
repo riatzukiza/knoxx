@@ -1,0 +1,15 @@
+# Whole issue159 planning preparation
+
+This packet preserves the exact recovered historical specification and superseded note, current source byte archives, native read visibility and new receipt/reflection evidence. All nine steps and seven retirement rows remain required reviewed crosswalks. The three prose products are planning proposals, not runtime implementation or completed acceptance.
+
+Base5670338 preserves accepted3409977. The original card/frontmatter and historical receipt/reflection/event prefixes remain exact. Both native base and refined task reads retain Ready/P2/unsized identity through unchanged JSON config; no lifecycle operation, comment, gate execution or mutation was performed. The fixture has268 Git entries:267 regular files and one unchanged symbolic link. Its sole intentional input change is the appended card body. Neutral /tmp/workspace is an actual read-only mount, not invented source provenance. A first read-only mount failed during setup and remains inspectable; corrected native reads exited0.
+
+The initial native diagnostic used a private absolute fixture path in a deprecated-JSON warning. Its raw stream remains in the outside private audit. The candidate includes a clearly labelled derived warning display with raw hash/size provenance, replacing only that exact workspace prefix. This derived display is not lossless native output. Later primary native reads genuinely use the neutral mount and have unmodified warning streams. Historical card text is unchanged.
+
+Native query-bearing URLs are structurally withheld before capture persistence and marked in manifests; such views are not lossless raw native data. Other strict base64 streams/accepted-source archives retain exact hash/size and no terminal LF. Source archive presence/bytes do not claim every source line or namespace executed. Actual owning Receipt River API executes the current required namespaces; copied source15 provenance and new declared suffix results remain separate from inherited refusals.
+
+No backend/frontend compiler, product suite, lint/typecheck/build, browser/human/live session, provider, service, deployment or reviewer request was run. The included verification document names future full mandatory commands. Pending parent1 is draft/unqualified; the eager SQUASH caller remains unchanged, so future publication is a blocked draft with automatic merge off under root coordination. Current classifier/publisher/baseline holds are not cleared by this plan.
+
+## Current verification-helper correction
+
+The original preparation snapshots above remain historical. Native review5440107603 identified three helper defects: invalid inherited-count coercion, an unchecked published fixture manifest, and current receipt validation that trusted a stored result. The ordinary successor corrects those helpers without changing the nine-step/seven-retirement plan. See `../knoxx12-verification-helper-correction-20261007/README.md` for current method, RED/GREEN controls and physical suffix scope. Original manifests/captures/receipts/reflections remain inspectable and unchanged; this addendum does not retroactively qualify them.

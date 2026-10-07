@@ -1,0 +1,986 @@
+[
+  {
+    "label": "canonical-portable-discovery",
+    "argv": [
+      "timeout",
+      "20",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/runtime/bin/bb",
+      "--config",
+      "/dev/null",
+      "-e",
+      "(load-file \"/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/runtime/canonical-session-mycology/common.bb\") (prn (session-mycology.common/find-project-root))"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/worktree",
+    "exit": 0,
+    "at": "2026-10-07T09:21:21.174763+00:00",
+    "stdout": {
+      "path": "canonical-portable-discovery.stdout.b64",
+      "bytes": 79,
+      "sha256": "eadb44e40ee1f4a6f03d94c472fe631573f6af70e92f6b0857b97e379a9541a0",
+      "raw_bytes": 79,
+      "raw_sha256": "eadb44e40ee1f4a6f03d94c472fe631573f6af70e92f6b0857b97e379a9541a0",
+      "structurally_withheld_urls": []
+    },
+    "stderr": {
+      "path": "canonical-portable-discovery.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_bytes": 0,
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "structurally_withheld_urls": []
+    }
+  },
+  {
+    "label": "canonical-portable-planning-reflection",
+    "argv": [
+      "timeout",
+      "20",
+      "env",
+      "-i",
+      "PATH=/usr/bin:/bin",
+      "HOME=/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/userhome",
+      "XDG_CACHE_HOME=/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/cache",
+      "TMPDIR=/tmp",
+      "bwrap",
+      "--ro-bind",
+      "/",
+      "/",
+      "--dev",
+      "/dev",
+      "--proc",
+      "/proc",
+      "--bind",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/worktree",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/worktree",
+      "--bind",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/tmp",
+      "/tmp",
+      "--bind",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/cache",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/cache",
+      "--unshare-net",
+      "--die-with-parent",
+      "--chdir",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/worktree",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/runtime/bin/bb",
+      "--config",
+      "/dev/null",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/runtime/canonical-session-mycology/sm-log.bb",
+      "--task",
+      "Knoxx12 three verified verification-helper corrections",
+      "--efficiency",
+      ".93",
+      "--friction",
+      ".07",
+      "--candidate",
+      "0",
+      "--receipt-refs",
+      ".\u03b7\u03bc/receipts.edn",
+      "--note",
+      "New independent checkout at9097; investigate invalid count classification, unchecked published fixture manifest and stale captured receipt validation. Preserve all historical evidence and complete nine-step/seven-retirement plan. No native writes or implementation."
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/worktree",
+    "exit": 0,
+    "at": "2026-10-07T09:21:21.316388+00:00",
+    "stdout": {
+      "path": "canonical-portable-planning-reflection.stdout.b64",
+      "bytes": 122,
+      "sha256": "53d70b97270753c31a36548dff5d10cf45d68e96f5ff9cb8b413333d36982507",
+      "raw_bytes": 122,
+      "raw_sha256": "53d70b97270753c31a36548dff5d10cf45d68e96f5ff9cb8b413333d36982507",
+      "structurally_withheld_urls": []
+    },
+    "stderr": {
+      "path": "canonical-portable-planning-reflection.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_bytes": 0,
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "structurally_withheld_urls": []
+    }
+  },
+  {
+    "label": "original-verifier-baseline",
+    "argv": [
+      "timeout",
+      "60",
+      "python3",
+      ".\u03b7\u03bc/verification/knoxx159-contract-runtime-planning/verify_preservation.py"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/worktree",
+    "exit": 0,
+    "at": "2026-10-07T09:21:46.427327+00:00",
+    "stdout": {
+      "path": "original-verifier-baseline.stdout.b64",
+      "bytes": 408,
+      "sha256": "21b44a861691298bddfb8ce524b60684fd330a23d09aa17541fcea843677a282",
+      "raw_bytes": 408,
+      "raw_sha256": "21b44a861691298bddfb8ce524b60684fd330a23d09aa17541fcea843677a282",
+      "structurally_withheld_urls": []
+    },
+    "stderr": {
+      "path": "original-verifier-baseline.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_bytes": 0,
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "structurally_withheld_urls": []
+    }
+  },
+  {
+    "label": "red-count-None",
+    "argv": [
+      "timeout",
+      "60",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/runtime/bin/node",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/runtime/node_modules/nbb/cli.js",
+      "-cp",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/runtime/receipt-owner/src/cljs",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/worktree/.\u03b7\u03bc/verification/knoxx159-contract-runtime-planning/owning_receipt_consumer.cljs",
+      "file",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/worktree/.\u03b7\u03bc/receipts.edn"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/worktree",
+    "exit": 1,
+    "at": "2026-10-07T09:22:09.162261+00:00",
+    "stdout": {
+      "path": "red-count-None.stdout.b64",
+      "bytes": 4904,
+      "sha256": "a5a41cdbd0d6cc8e2e39271de4bdf9e3b3547d51191618242f43bae59fcf7e9a",
+      "raw_bytes": 4904,
+      "raw_sha256": "a5a41cdbd0d6cc8e2e39271de4bdf9e3b3547d51191618242f43bae59fcf7e9a",
+      "structurally_withheld_urls": []
+    },
+    "stderr": {
+      "path": "red-count-None.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_bytes": 0,
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "structurally_withheld_urls": []
+    }
+  },
+  {
+    "label": "red-count-NaN",
+    "argv": [
+      "timeout",
+      "60",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/runtime/bin/node",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/runtime/node_modules/nbb/cli.js",
+      "-cp",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/runtime/receipt-owner/src/cljs",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/worktree/.\u03b7\u03bc/verification/knoxx159-contract-runtime-planning/owning_receipt_consumer.cljs",
+      "file",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/worktree/.\u03b7\u03bc/receipts.edn",
+      "NaN"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/worktree",
+    "exit": 1,
+    "at": "2026-10-07T09:22:27.296617+00:00",
+    "stdout": {
+      "path": "red-count-NaN.stdout.b64",
+      "bytes": 4904,
+      "sha256": "a5a41cdbd0d6cc8e2e39271de4bdf9e3b3547d51191618242f43bae59fcf7e9a",
+      "raw_bytes": 4904,
+      "raw_sha256": "a5a41cdbd0d6cc8e2e39271de4bdf9e3b3547d51191618242f43bae59fcf7e9a",
+      "structurally_withheld_urls": []
+    },
+    "stderr": {
+      "path": "red-count-NaN.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_bytes": 0,
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "structurally_withheld_urls": []
+    }
+  },
+  {
+    "label": "red-count-garbage",
+    "argv": [
+      "timeout",
+      "60",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/runtime/bin/node",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/runtime/node_modules/nbb/cli.js",
+      "-cp",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/runtime/receipt-owner/src/cljs",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/worktree/.\u03b7\u03bc/verification/knoxx159-contract-runtime-planning/owning_receipt_consumer.cljs",
+      "file",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/worktree/.\u03b7\u03bc/receipts.edn",
+      "garbage"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/worktree",
+    "exit": 1,
+    "at": "2026-10-07T09:22:27.770686+00:00",
+    "stdout": {
+      "path": "red-count-garbage.stdout.b64",
+      "bytes": 4904,
+      "sha256": "a5a41cdbd0d6cc8e2e39271de4bdf9e3b3547d51191618242f43bae59fcf7e9a",
+      "raw_bytes": 4904,
+      "raw_sha256": "a5a41cdbd0d6cc8e2e39271de4bdf9e3b3547d51191618242f43bae59fcf7e9a",
+      "structurally_withheld_urls": []
+    },
+    "stderr": {
+      "path": "red-count-garbage.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_bytes": 0,
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "structurally_withheld_urls": []
+    }
+  },
+  {
+    "label": "red-count-16junk",
+    "argv": [
+      "timeout",
+      "60",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/runtime/bin/node",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/runtime/node_modules/nbb/cli.js",
+      "-cp",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/runtime/receipt-owner/src/cljs",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/worktree/.\u03b7\u03bc/verification/knoxx159-contract-runtime-planning/owning_receipt_consumer.cljs",
+      "file",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/worktree/.\u03b7\u03bc/receipts.edn",
+      "16junk"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/worktree",
+    "exit": 0,
+    "at": "2026-10-07T09:22:28.263598+00:00",
+    "stdout": {
+      "path": "red-count-16junk.stdout.b64",
+      "bytes": 2612,
+      "sha256": "b28eda4031bd81a6f65d2c4a501960e0a4ebc5ae34092a06f081bc75e2db145d",
+      "raw_bytes": 2612,
+      "raw_sha256": "b28eda4031bd81a6f65d2c4a501960e0a4ebc5ae34092a06f081bc75e2db145d",
+      "structurally_withheld_urls": []
+    },
+    "stderr": {
+      "path": "red-count-16junk.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_bytes": 0,
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "structurally_withheld_urls": []
+    }
+  },
+  {
+    "label": "red-count-16_5",
+    "argv": [
+      "timeout",
+      "60",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/runtime/bin/node",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/runtime/node_modules/nbb/cli.js",
+      "-cp",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/runtime/receipt-owner/src/cljs",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/worktree/.\u03b7\u03bc/verification/knoxx159-contract-runtime-planning/owning_receipt_consumer.cljs",
+      "file",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/worktree/.\u03b7\u03bc/receipts.edn",
+      "16.5"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/worktree",
+    "exit": 0,
+    "at": "2026-10-07T09:22:28.721221+00:00",
+    "stdout": {
+      "path": "red-count-16_5.stdout.b64",
+      "bytes": 2612,
+      "sha256": "b28eda4031bd81a6f65d2c4a501960e0a4ebc5ae34092a06f081bc75e2db145d",
+      "raw_bytes": 2612,
+      "raw_sha256": "b28eda4031bd81a6f65d2c4a501960e0a4ebc5ae34092a06f081bc75e2db145d",
+      "structurally_withheld_urls": []
+    },
+    "stderr": {
+      "path": "red-count-16_5.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_bytes": 0,
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "structurally_withheld_urls": []
+    }
+  },
+  {
+    "label": "red-count-neg1",
+    "argv": [
+      "timeout",
+      "60",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/runtime/bin/node",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/runtime/node_modules/nbb/cli.js",
+      "-cp",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/runtime/receipt-owner/src/cljs",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/worktree/.\u03b7\u03bc/verification/knoxx159-contract-runtime-planning/owning_receipt_consumer.cljs",
+      "file",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/worktree/.\u03b7\u03bc/receipts.edn",
+      "-1"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/worktree",
+    "exit": 1,
+    "at": "2026-10-07T09:22:29.221822+00:00",
+    "stdout": {
+      "path": "red-count-neg1.stdout.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_bytes": 0,
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "structurally_withheld_urls": []
+    },
+    "stderr": {
+      "path": "red-count-neg1.stderr.b64",
+      "bytes": 2869,
+      "sha256": "320de376fb00dc8027da85b3694e7f421a65182042db7833b337f03a132ce22d",
+      "raw_bytes": 2869,
+      "raw_sha256": "320de376fb00dc8027da85b3694e7f421a65182042db7833b337f03a132ce22d",
+      "structurally_withheld_urls": []
+    }
+  },
+  {
+    "label": "red-count-18",
+    "argv": [
+      "timeout",
+      "60",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/runtime/bin/node",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/runtime/node_modules/nbb/cli.js",
+      "-cp",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/runtime/receipt-owner/src/cljs",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/worktree/.\u03b7\u03bc/verification/knoxx159-contract-runtime-planning/owning_receipt_consumer.cljs",
+      "file",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/worktree/.\u03b7\u03bc/receipts.edn",
+      "18"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/worktree",
+    "exit": 1,
+    "at": "2026-10-07T09:22:29.710129+00:00",
+    "stdout": {
+      "path": "red-count-18.stdout.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_bytes": 0,
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "structurally_withheld_urls": []
+    },
+    "stderr": {
+      "path": "red-count-18.stderr.b64",
+      "bytes": 2869,
+      "sha256": "320de376fb00dc8027da85b3694e7f421a65182042db7833b337f03a132ce22d",
+      "raw_bytes": 2869,
+      "raw_sha256": "320de376fb00dc8027da85b3694e7f421a65182042db7833b337f03a132ce22d",
+      "structurally_withheld_urls": []
+    }
+  },
+  {
+    "label": "red-published-manifest-tamper",
+    "argv": [
+      "timeout",
+      "60",
+      "python3",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/worktree/.\u03b7\u03bc/verification/knoxx159-contract-runtime-planning/verify_preservation.py"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/worktree",
+    "exit": 0,
+    "at": "2026-10-07T09:22:39.457169+00:00",
+    "stdout": {
+      "path": "red-published-manifest-tamper.stdout.b64",
+      "bytes": 408,
+      "sha256": "21b44a861691298bddfb8ce524b60684fd330a23d09aa17541fcea843677a282",
+      "raw_bytes": 408,
+      "raw_sha256": "21b44a861691298bddfb8ce524b60684fd330a23d09aa17541fcea843677a282",
+      "structurally_withheld_urls": []
+    },
+    "stderr": {
+      "path": "red-published-manifest-tamper.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_bytes": 0,
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "structurally_withheld_urls": []
+    }
+  },
+  {
+    "label": "red-current-receipt-malformed",
+    "argv": [
+      "timeout",
+      "60",
+      "python3",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/worktree/.\u03b7\u03bc/verification/knoxx159-contract-runtime-planning/verify_preservation.py"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/worktree",
+    "exit": 0,
+    "at": "2026-10-07T09:22:48.395092+00:00",
+    "stdout": {
+      "path": "red-current-receipt-malformed.stdout.b64",
+      "bytes": 408,
+      "sha256": "21b44a861691298bddfb8ce524b60684fd330a23d09aa17541fcea843677a282",
+      "raw_bytes": 408,
+      "raw_sha256": "21b44a861691298bddfb8ce524b60684fd330a23d09aa17541fcea843677a282",
+      "structurally_withheld_urls": []
+    },
+    "stderr": {
+      "path": "red-current-receipt-malformed.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_bytes": 0,
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "structurally_withheld_urls": []
+    }
+  },
+  {
+    "label": "green-consumer-baseline",
+    "argv": [
+      "timeout",
+      "30",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/runtime/bin/node",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/runtime/node_modules/nbb/cli.js",
+      "-cp",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/runtime/receipt-owner/src/cljs",
+      ".\u03b7\u03bc/verification/knoxx159-contract-runtime-planning/owning_receipt_consumer.cljs",
+      "file",
+      ".\u03b7\u03bc/receipts.edn",
+      "16"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/worktree",
+    "exit": 0,
+    "at": "2026-10-07T09:25:26.221499+00:00",
+    "stdout": {
+      "path": "green-consumer-baseline.stdout.b64",
+      "bytes": 2654,
+      "sha256": "3ca4059ebb2a4b8ff149bf46d13172c5ac40608ae9ba136693c1691744c17990",
+      "raw_bytes": 2654,
+      "raw_sha256": "3ca4059ebb2a4b8ff149bf46d13172c5ac40608ae9ba136693c1691744c17990",
+      "structurally_withheld_urls": []
+    },
+    "stderr": {
+      "path": "green-consumer-baseline.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_bytes": 0,
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "structurally_withheld_urls": []
+    }
+  },
+  {
+    "label": "private-ruff-preparation",
+    "argv": [
+      "timeout",
+      "60",
+      "env",
+      "PIP_CACHE_DIR=/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/cache/pip",
+      "python3",
+      "-m",
+      "pip",
+      "install",
+      "--target",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/runtime/python",
+      "ruff==0.16.7"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/worktree",
+    "exit": 0,
+    "at": "2026-10-07T09:25:43.612723+00:00",
+    "stdout": {
+      "path": "private-ruff-preparation.stdout.b64",
+      "bytes": 442,
+      "sha256": "15e7ed98bc1d0466f5e98ec116174f8c02a0d2f71c672f5f276b56fbae405d23",
+      "raw_bytes": 442,
+      "raw_sha256": "15e7ed98bc1d0466f5e98ec116174f8c02a0d2f71c672f5f276b56fbae405d23",
+      "structurally_withheld_urls": []
+    },
+    "stderr": {
+      "path": "private-ruff-preparation.stderr.b64",
+      "bytes": 210,
+      "sha256": "45a95a60d65748a1cc2243f5c1fa0fba861993aae131d4ff743954c503ec7bc2",
+      "raw_bytes": 210,
+      "raw_sha256": "45a95a60d65748a1cc2243f5c1fa0fba861993aae131d4ff743954c503ec7bc2",
+      "structurally_withheld_urls": []
+    }
+  },
+  {
+    "label": "green-full-verifier-baseline",
+    "argv": [
+      "timeout",
+      "60",
+      "python3",
+      ".\u03b7\u03bc/verification/knoxx159-contract-runtime-planning/verify_preservation.py"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/worktree",
+    "exit": 0,
+    "at": "2026-10-07T09:25:47.080711+00:00",
+    "stdout": {
+      "path": "green-full-verifier-baseline.stdout.b64",
+      "bytes": 466,
+      "sha256": "fe4690359fa851c8cbc91070c8837b0aeaf2659d986a8a1bc8491d5cd7b48a14",
+      "raw_bytes": 466,
+      "raw_sha256": "fe4690359fa851c8cbc91070c8837b0aeaf2659d986a8a1bc8491d5cd7b48a14",
+      "structurally_withheld_urls": []
+    },
+    "stderr": {
+      "path": "green-full-verifier-baseline.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_bytes": 0,
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "structurally_withheld_urls": []
+    }
+  },
+  {
+    "label": "receipt-control-preparation",
+    "argv": [
+      "timeout",
+      "20",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/runtime/bin/node",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/runtime/node_modules/nbb/cli.js",
+      "-cp",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/runtime/receipt-owner/src/cljs",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/prepare_receipt_controls.cljs",
+      ".\u03b7\u03bc/receipts.edn",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/controls"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/worktree",
+    "exit": 0,
+    "at": "2026-10-07T09:26:40.192579+00:00",
+    "stdout": {
+      "path": "receipt-control-preparation.stdout.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_bytes": 0,
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "structurally_withheld_urls": []
+    },
+    "stderr": {
+      "path": "receipt-control-preparation.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_bytes": 0,
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "structurally_withheld_urls": []
+    }
+  },
+  {
+    "label": "green-adversarial-matrix",
+    "argv": [
+      "timeout",
+      "90",
+      "python3",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/run_green_diagnostics.py"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/worktree",
+    "exit": 0,
+    "at": "2026-10-07T09:27:35.342461+00:00",
+    "stdout": {
+      "path": "green-adversarial-matrix.stdout.b64",
+      "bytes": 78047,
+      "sha256": "500efa5bbd020f065dc13b036df2caab0a36c78e59692922d5d67d6f43bcec46",
+      "raw_bytes": 78047,
+      "raw_sha256": "500efa5bbd020f065dc13b036df2caab0a36c78e59692922d5d67d6f43bcec46",
+      "structurally_withheld_urls": []
+    },
+    "stderr": {
+      "path": "green-adversarial-matrix.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_bytes": 0,
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "structurally_withheld_urls": []
+    }
+  },
+  {
+    "label": "current-receipt-owner-head",
+    "argv": [
+      "timeout",
+      "30",
+      "env",
+      "-u",
+      "GH_TOKEN",
+      "-u",
+      "GITHUB_TOKEN",
+      "gh",
+      "api",
+      "repos/open-hax/receipt-river/git/ref/heads/main"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/worktree",
+    "exit": 0,
+    "at": "2026-10-07T09:27:47.853263+00:00",
+    "stdout": {
+      "path": "current-receipt-owner-head.stdout.b64",
+      "bytes": 342,
+      "sha256": "24008fc550226f57b3a51d92b73f89fc01c50038d160c2ab8e3b85277fb4232d",
+      "raw_bytes": 342,
+      "raw_sha256": "24008fc550226f57b3a51d92b73f89fc01c50038d160c2ab8e3b85277fb4232d",
+      "structurally_withheld_urls": []
+    },
+    "stderr": {
+      "path": "current-receipt-owner-head.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_bytes": 0,
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "structurally_withheld_urls": []
+    }
+  },
+  {
+    "label": "corrected-python-ruff",
+    "argv": [
+      "timeout",
+      "30",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/runtime/python/bin/ruff",
+      "check",
+      "--no-cache",
+      ".\u03b7\u03bc/verification/knoxx159-contract-runtime-planning/verify_preservation.py"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/worktree",
+    "exit": 1,
+    "at": "2026-10-07T09:29:21.351890+00:00",
+    "stdout": {
+      "path": "corrected-python-ruff.stdout.b64",
+      "bytes": 1244,
+      "sha256": "3cb8e7a011935e601d1cfb7f9319c2244eea075a2ef99bbac87bacb083aeec27",
+      "raw_bytes": 1244,
+      "raw_sha256": "3cb8e7a011935e601d1cfb7f9319c2244eea075a2ef99bbac87bacb083aeec27",
+      "structurally_withheld_urls": []
+    },
+    "stderr": {
+      "path": "corrected-python-ruff.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_bytes": 0,
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "structurally_withheld_urls": []
+    }
+  },
+  {
+    "label": "corrected-consumer-kondo",
+    "argv": [
+      "timeout",
+      "30",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/runtime/bin/clj-kondo",
+      "--cache-dir",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/cache/kondo",
+      "--lint",
+      ".\u03b7\u03bc/verification/knoxx159-contract-runtime-planning/owning_receipt_consumer.cljs"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/worktree",
+    "exit": 0,
+    "at": "2026-10-07T09:29:21.444342+00:00",
+    "stdout": {
+      "path": "corrected-consumer-kondo.stdout.b64",
+      "bytes": 42,
+      "sha256": "d362520d6efb2e7d68bc9d349dd42ccd9f0e600dbf17c3de993b0b9d4c3d878a",
+      "raw_bytes": 42,
+      "raw_sha256": "d362520d6efb2e7d68bc9d349dd42ccd9f0e600dbf17c3de993b0b9d4c3d878a",
+      "structurally_withheld_urls": []
+    },
+    "stderr": {
+      "path": "corrected-consumer-kondo.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_bytes": 0,
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "structurally_withheld_urls": []
+    }
+  },
+  {
+    "label": "corrected-python-ruff-final",
+    "argv": [
+      "timeout",
+      "30",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/runtime/python/bin/ruff",
+      "check",
+      "--no-cache",
+      ".\u03b7\u03bc/verification/knoxx159-contract-runtime-planning/verify_preservation.py"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/worktree",
+    "exit": 0,
+    "at": "2026-10-07T09:29:56.989056+00:00",
+    "stdout": {
+      "path": "corrected-python-ruff-final.stdout.b64",
+      "bytes": 19,
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+      "raw_bytes": 19,
+      "raw_sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+      "structurally_withheld_urls": []
+    },
+    "stderr": {
+      "path": "corrected-python-ruff-final.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_bytes": 0,
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "structurally_withheld_urls": []
+    }
+  },
+  {
+    "label": "green-argument-and-git-controls",
+    "argv": [
+      "timeout",
+      "60",
+      "python3",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/run_argument_controls.py"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/worktree",
+    "exit": 0,
+    "at": "2026-10-07T09:30:00.408458+00:00",
+    "stdout": {
+      "path": "green-argument-and-git-controls.stdout.b64",
+      "bytes": 26999,
+      "sha256": "2ed4565a49b0916c4e86fbc8b4c8bcd2ac4a260198df4956e6e91a2d6aa33ebf",
+      "raw_bytes": 26999,
+      "raw_sha256": "2ed4565a49b0916c4e86fbc8b4c8bcd2ac4a260198df4956e6e91a2d6aa33ebf",
+      "structurally_withheld_urls": []
+    },
+    "stderr": {
+      "path": "green-argument-and-git-controls.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_bytes": 0,
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "structurally_withheld_urls": []
+    }
+  },
+  {
+    "label": "green-manifest-number-types",
+    "argv": [
+      "timeout",
+      "30",
+      "python3",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/run_manifest_type_control.py"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/worktree",
+    "exit": 0,
+    "at": "2026-10-07T09:31:29.980914+00:00",
+    "stdout": {
+      "path": "green-manifest-number-types.stdout.b64",
+      "bytes": 260,
+      "sha256": "f3db6fc2f8e94e7430f7f6bd863753682865c63989075c01a4a819875754a56a",
+      "raw_bytes": 260,
+      "raw_sha256": "f3db6fc2f8e94e7430f7f6bd863753682865c63989075c01a4a819875754a56a",
+      "structurally_withheld_urls": []
+    },
+    "stderr": {
+      "path": "green-manifest-number-types.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_bytes": 0,
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "structurally_withheld_urls": []
+    }
+  },
+  {
+    "label": "append-corrective-declared-receipt",
+    "argv": [
+      "timeout",
+      "30",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/runtime/bin/node",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/runtime/node_modules/nbb/cli.js",
+      "-cp",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/runtime/receipt-owner/src/cljs",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/corrective_receipt.cljs",
+      ".\u03b7\u03bc/receipts.edn"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/worktree",
+    "exit": 0,
+    "at": "2026-10-07T09:32:46.744549+00:00",
+    "stdout": {
+      "path": "append-corrective-declared-receipt.stdout.b64",
+      "bytes": 123,
+      "sha256": "111e6d25d0e428fac124771270e305ae4820be7843adbb798c89aa84b3839e37",
+      "raw_bytes": 123,
+      "raw_sha256": "111e6d25d0e428fac124771270e305ae4820be7843adbb798c89aa84b3839e37",
+      "structurally_withheld_urls": []
+    },
+    "stderr": {
+      "path": "append-corrective-declared-receipt.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_bytes": 0,
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "structurally_withheld_urls": []
+    }
+  },
+  {
+    "label": "canonical-final-reflection",
+    "argv": [
+      "timeout",
+      "20",
+      "env",
+      "-i",
+      "PATH=/usr/bin:/bin",
+      "HOME=/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/userhome",
+      "XDG_CACHE_HOME=/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/cache",
+      "TMPDIR=/tmp",
+      "bwrap",
+      "--ro-bind",
+      "/",
+      "/",
+      "--dev",
+      "/dev",
+      "--proc",
+      "/proc",
+      "--bind",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/worktree",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/worktree",
+      "--bind",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/tmp",
+      "/tmp",
+      "--bind",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/cache",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/cache",
+      "--unshare-net",
+      "--die-with-parent",
+      "--chdir",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/worktree",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/runtime/bin/bb",
+      "--config",
+      "/dev/null",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/runtime/canonical-session-mycology/sm-log.bb",
+      "--task",
+      "Knoxx12 three native verification-helper corrections verified locally",
+      "--efficiency",
+      ".95",
+      "--friction",
+      ".05",
+      "--candidate",
+      "0",
+      "--receipt-refs",
+      ".\u03b7\u03bc/receipts.edn",
+      "--note",
+      "Preserved predecessor red and all nine/seven planning products. Current source-bound fixture validation and actual receipt suffix API replace unchecked manifest/stale result.38 hostile controls plus argument/Git/type controls, private Ruff0/kondo0. One declared row18 appended;16 historical refusals remain. Local preparation only; independent peer and root publication still required."
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/worktree",
+    "exit": 0,
+    "at": "2026-10-07T09:32:46.890354+00:00",
+    "stdout": {
+      "path": "canonical-final-reflection.stdout.b64",
+      "bytes": 122,
+      "sha256": "53d70b97270753c31a36548dff5d10cf45d68e96f5ff9cb8b413333d36982507",
+      "raw_bytes": 122,
+      "raw_sha256": "53d70b97270753c31a36548dff5d10cf45d68e96f5ff9cb8b413333d36982507",
+      "structurally_withheld_urls": []
+    },
+    "stderr": {
+      "path": "canonical-final-reflection.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_bytes": 0,
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "structurally_withheld_urls": []
+    }
+  },
+  {
+    "label": "final-python-ruff",
+    "argv": [
+      "timeout",
+      "30",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/runtime/python/bin/ruff",
+      "check",
+      "--no-cache",
+      ".\u03b7\u03bc/verification/knoxx159-contract-runtime-planning/verify_preservation.py"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/worktree",
+    "exit": 0,
+    "at": "2026-10-07T09:35:07.981713+00:00",
+    "stdout": {
+      "path": "final-python-ruff.stdout.b64",
+      "bytes": 19,
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+      "raw_bytes": 19,
+      "raw_sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+      "structurally_withheld_urls": []
+    },
+    "stderr": {
+      "path": "final-python-ruff.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_bytes": 0,
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "structurally_withheld_urls": []
+    }
+  },
+  {
+    "label": "final-consumer-kondo",
+    "argv": [
+      "timeout",
+      "30",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/runtime/bin/clj-kondo",
+      "--cache-dir",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/cache/kondo",
+      "--lint",
+      ".\u03b7\u03bc/verification/knoxx159-contract-runtime-planning/owning_receipt_consumer.cljs"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/worktree",
+    "exit": 0,
+    "at": "2026-10-07T09:35:08.167684+00:00",
+    "stdout": {
+      "path": "final-consumer-kondo.stdout.b64",
+      "bytes": 42,
+      "sha256": "8031802354a18a2bf04a3a1e594859932332dca5760aa0216845f97504b55f8d",
+      "raw_bytes": 42,
+      "raw_sha256": "8031802354a18a2bf04a3a1e594859932332dca5760aa0216845f97504b55f8d",
+      "structurally_withheld_urls": []
+    },
+    "stderr": {
+      "path": "final-consumer-kondo.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_bytes": 0,
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "structurally_withheld_urls": []
+    }
+  },
+  {
+    "label": "final-current-owned-row18",
+    "argv": [
+      "timeout",
+      "30",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/runtime/bin/node",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/runtime/node_modules/nbb/cli.js",
+      "-cp",
+      "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/runtime/receipt-owner/src/cljs",
+      ".\u03b7\u03bc/verification/knoxx159-contract-runtime-planning/owning_receipt_consumer.cljs",
+      "file",
+      ".\u03b7\u03bc/receipts.edn",
+      "17"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/worktree",
+    "exit": 0,
+    "at": "2026-10-07T09:35:08.680863+00:00",
+    "stdout": {
+      "path": "final-current-owned-row18.stdout.b64",
+      "bytes": 2762,
+      "sha256": "2e42288b8936bfc9d038fd257519bdec5a61312b8509c4fde1dcafb0e36d1085",
+      "raw_bytes": 2762,
+      "raw_sha256": "2e42288b8936bfc9d038fd257519bdec5a61312b8509c4fde1dcafb0e36d1085",
+      "structurally_withheld_urls": []
+    },
+    "stderr": {
+      "path": "final-current-owned-row18.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_bytes": 0,
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "structurally_withheld_urls": []
+    }
+  },
+  {
+    "label": "final-full-current-verifier",
+    "argv": [
+      "timeout",
+      "60",
+      "python3",
+      ".\u03b7\u03bc/verification/knoxx159-contract-runtime-planning/verify_preservation.py"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/knoxx12-verification-repair-n3o_0zmz/worktree",
+    "exit": 0,
+    "at": "2026-10-07T09:35:18.103142+00:00",
+    "stdout": {
+      "path": "final-full-current-verifier.stdout.b64",
+      "bytes": 525,
+      "sha256": "070c024d4deee9fa03032aa26223234ce69143bd2d0911c31904d4a3db8ca664",
+      "raw_bytes": 525,
+      "raw_sha256": "070c024d4deee9fa03032aa26223234ce69143bd2d0911c31904d4a3db8ca664",
+      "structurally_withheld_urls": []
+    },
+    "stderr": {
+      "path": "final-full-current-verifier.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_bytes": 0,
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "structurally_withheld_urls": []
+    }
+  }
+]
