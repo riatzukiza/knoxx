@@ -259,11 +259,13 @@
                  (swap! calls* conj [actual-config payload])
                  {:run/id "owned-fixture-run"})]
     (with-redefs [tooling/resolve-agent-contract
-                  (fn [_config _agent-id _actor-id]
-                    {:actor-id "fixture-actor" :model "fixture-model"})
+                  (fn
+                    ([_config _agent-id] {:actor-id "fixture-actor" :model "fixture-model"})
+                    ([_config _agent-id _actor-id] {:actor-id "fixture-actor" :model "fixture-model"}))
                   agents-runner/spawn-direct!
-                  (fn [& _args]
-                    (throw (ex-info "The global runner must not be called" {})))]
+                  (fn
+                    ([_config _payload] (throw (ex-info "The global runner must not be called" {})))
+                    ([_runtime _config _payload] (throw (ex-info "The global runner must not be called" {}))))]
       (is (= {:run/id "owned-fixture-run"}
              (action-registry/run-action!
               {:config config :spawn-agent! spawn!
@@ -281,9 +283,13 @@
     (let [resolved* (atom 0)
           spawned* (atom 0)]
       (with-redefs [tooling/resolve-agent-contract
-                    (fn [& _args] (swap! resolved* inc) {:actor-id "fixture-actor"})
+                    (fn
+                      ([_config _agent-id] (swap! resolved* inc) {:actor-id "fixture-actor"})
+                      ([_config _agent-id _actor-id] (swap! resolved* inc) {:actor-id "fixture-actor"}))
                     agents-runner/spawn-direct!
-                    (fn [& _args] (swap! spawned* inc) {:ok true})]
+                    (fn
+                      ([_config _payload] (swap! spawned* inc) {:ok true})
+                      ([_runtime _config _payload] (swap! spawned* inc) {:ok true}))]
         (try
           (action-registry/run-action!
            {:config {} :spawn-agent! capability

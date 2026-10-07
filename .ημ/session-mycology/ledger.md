@@ -196,3 +196,7 @@
 ## Knoxx161 RED
 
 Friction 2/5: explicit namespace override did not constrain the compiled suite; retain full actual scope and counters, not intended scope or compiler exit. Dependency transport setup corrections are private and preserved. No spore promotion.
+
+## Fixture correction
+
+Friction 3/5: independent raw review showed static CLJS multi-arity fixture mismatch. Match original arities before interpreting effect counters. Retain original error capture; corrected RED directly observes poisoned global runner and non-refusing effects.
