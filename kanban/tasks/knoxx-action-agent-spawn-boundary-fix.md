@@ -1,7 +1,7 @@
 ---
 category: "tasks"
 labels: ["tasks", "3sp"]
-write-id: "1791337458752-0.l82rjuflqelnq3hfw1p"
+write-id: "1791340548639-0.8t70gqpqwojr1fh4dus"
 points: "3"
 source: "epics/events-agent-runtime-separation.md"
 title: "Fix domain/action/start-agent-session domain-to-infra boundary crossing"
@@ -53,4 +53,10 @@ The actor context map `ctx` already carries `:config`, `:event`, `:trigger`. Add
 
 ---
 Triage 2026-05-29: Freshly-split epic subtask with a concrete 3-file scope — remove the direct infra require from `domain/action/start_agent_session.cljs`, inject `:spawn-agent!` via the actor context map at the dispatch layer, and verify with clj-kondo + typecheck + smoke test. No external blockers; DoD is fully specified and workable today. Verdict: accepted (P2). --tasks-dir /home/err/devel/orgs/open-hax/openplanner/packages/agents/knoxx/kanban
+
+HOLD completion of knoxx-action-agent-spawn-boundary-fix: the full spawn capability implementation is prepared locally, but the required zero-warning lint gate is unsatisfied. The accepted required `pnpm -C backend lint` command exits3 with8errors/288warnings; the exact accepted-sync base5670338 independently yields the same8errors/288warnings. Existing issue181 (zero-warning gate) and epic182 (lint/coverage/architecture remediation) own this dependency; no duplicate repair scope is created.
+
+Actual guarded compiled tests1854/9152 pass with0failures/0errors and exit0; JavaScript75/75, production server typecheck0warnings/exit0 and boundarycheck pass. The private HTTP smoke proves401without admission and202with one matched trigger, actual runner/Clio run and thread admission plus active agent session; provider construction/hydration/prompt remain local fixtures. This does not qualify a paid provider or deployed authentication.
+
+All original issue161 acceptance/checklist obligations remain. This HOLD comment does not transition the task, change its estimate or mark its checklist complete. Local card remains in_progress until an authorized lawful transition exists and all required gates qualify. Original/corrected RED and all failed preparation attempts remain append-only evidence. The captured production Discord message and voice callback tests now pass after an additional RED1test/18assertions/4failures/0errors demonstrated the missing outer-config injection. No live Discord connection was opened.
 ---
