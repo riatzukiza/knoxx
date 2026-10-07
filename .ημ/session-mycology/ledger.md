@@ -247,3 +247,10 @@
 - Scores: efficiency0.82, friction0.25, skill-candidate0.30.
 - Lesson: preserve the real native failure before dependent artifact I/O; execute compiled asynchronous test fixtures with the existing error guard so early process exit cannot hide rejection. The initial unguarded probe failed its expected-output assertion and supplied no proof.
 - Actual normal synthesis and guarded negative-output probes passed their distinct expectations; live deployment and review convergence remain unqualified. No spore incubated or promoted.
+
+## 2026-10-07 — cephalon-personal-native-image-missing-alsa
+
+- Evidence: same-named receipt, actual red imagea8827a01 and retained raw native probe.
+- Scores: efficiency0.87, friction0.22, skill-candidate0.34.
+- Lesson: a real source engine and passing functional CI do not establish OS dependencies in the final image. Run the packaged native engine with its actual non-root identity and code hashes. Preserve expensive image layers when adding a small runtime library, and keep proof containers isolated from gateways and production mounts.
+- No spore incubated or promoted; exact fixed-image GREEN is still pending.

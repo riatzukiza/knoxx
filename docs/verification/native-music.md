@@ -6,6 +6,48 @@ JSON in **stdout**. The native engine remains
 `backend/scripts/synthesize-music.mjs`. The backend Docker context now copies
 that existing file into `/app/scripts/synthesize-music.mjs`.
 
+## Packaged engine proof
+
+Compile the production backend from the committed checkout, then build and
+exercise a separate image:
+
+```bash
+pnpm -C backend run build
+pnpm -C backend exec nbb ../scripts/verify_native_music_image.cljs --build knoxx-native-music-verify
+```
+
+The NBB adapter copies only the Dockerfile's declared inputs and the compiled
+artifact into a unique temporary build context. It refuses symlinks and special
+files, labels the candidate with the full checkout revision and checks the
+actual packaged engine and server hashes. The recipe and native source must be
+committed. No environment file, provider credential, runtime volume or Docker
+socket is mounted into the proof container.
+
+The engine runs as UID/GID 1000 with networking disabled, a read-only root
+filesystem and bounded memory, CPU and process count. Its only writable bind
+mount is the unique proof directory. The adapter requires real half-second
+stereo 44.1 kHz metadata, a matching 88,244-byte RIFF/WAVE file and nonzero PCM.
+It prints the image ID and artifact hashes, and removes only its owned temporary
+directories in `finally`. Docker absence, build errors, engine errors and cleanup
+errors fail the check. An already built, correctly labelled candidate can be
+checked with `--image IMAGE`.
+
+The existing backend/frontend CI job runs this proof after its production
+release. It starts only the synthesis process: no backend server, gateway,
+clock, agent, publication or deployment is started. Passing it establishes
+packaged engine execution; the separate authenticated live MCP proof below
+still establishes the served tool contract after deployment. Image execution
+does not establish artistic quality, availability or reproducible dependency
+resolution.
+
+The original fresh image on personal head `dba3898` built successfully but its
+native engine failed at load with `ERR_DLOPEN_FAILED`: `libasound.so.2` was absent.
+The actual Linux x64 addon's `ldd` output independently confirmed that missing
+library. `libasound2` is now installed as a runtime dependency in the Dockerfile;
+the application still declares `USER 1000`. The native engine source is unchanged.
+The original failing image ID and exact code hashes are retained with the review
+evidence; source-suite success alone did not cover this packaging defect.
+
 ## Source proof
 
 From the checkout under review, with backend dependencies installed:
