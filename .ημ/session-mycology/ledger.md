@@ -210,3 +210,12 @@
   spore: none
   receipt-refs: row18,review5447302044,4211086091,4211086102
   note: Request ownership is distinct from implemented FSM capability. Preserve historical HOLD/event; root canonical comment coalesces existing fourth section rather than creating a fifth. Explicit owned cwd discovery; read-only fixture mode faithful; no global writes or promotion.
+- ts: 2026-10-07T20:36:37.172261855Z
+  session: /home/err/.codex/parallel-goal/knoxx13-readme-complete-spacing-2qma_ud_/worktree
+  task: Knoxx13 residual README finding correction
+  p-efficiency: 0.9
+  p-friction: 0.1
+  p-skill-candidate: 0.0
+  spore: none
+  receipt-refs: row19,review5447937114,4211623516
+  note: Scan the entire target README for the same joined prose defect while preserving technical IDs and historical captures. Existing Rheos issue 4 requests a capability not yet available. Card and event history remain exact; no new native comment, transition or approval.
