@@ -192,3 +192,30 @@
   p-skill-candidate: 0.2
   receipt-refs: 2026-10-06T14:28:52.198143Z
   note: Keep accepted source synchronization separate from unmerged feature migration. An inherited ready-triggered merge job makes draft preparation necessary until reviewed base enforcement. No spore warranted.
+- ts: 2026-10-07T18:37:50.753175214Z
+  session: /home/err/.codex/parallel-goal/knoxx164-current-routing-docs-gqonyjm7/worktree
+  task: Knoxx164 current documentation routing and exact native external HOLD
+  p-efficiency: 0.72
+  p-friction: 0.44
+  p-skill-candidate: 0.0
+  spore: none
+  receipt-refs: Knoxx164:owned-record17,event1791397522998
+  note: Preserve original parsed card sections and metadata through native serialization rather than promising raw-prefix identity. Inspect each create/push/PR workflow and pinned receiving command; draft guards cover selected jobs only. Read-only events EROFS and external OpenPlanner hold stay visible. No spore, transition, publication, deployment or review credit.
+- ts: 2026-10-07T19:47:27.059168537Z
+  session: /home/err/.codex/parallel-goal/knoxx13-docs-correction-fiw80jol/worktree
+  task: Knoxx13 two documentation findings and additive native capability clarification
+  p-efficiency: 0.8
+  p-friction: 0.25
+  p-skill-candidate: 0.0
+  spore: none
+  receipt-refs: row18,review5447302044,4211086091,4211086102
+  note: Request ownership is distinct from implemented FSM capability. Preserve historical HOLD/event; root canonical comment coalesces existing fourth section rather than creating a fifth. Explicit owned cwd discovery; read-only fixture mode faithful; no global writes or promotion.
+- ts: 2026-10-07T20:36:37.172261855Z
+  session: /home/err/.codex/parallel-goal/knoxx13-readme-complete-spacing-2qma_ud_/worktree
+  task: Knoxx13 residual README finding correction
+  p-efficiency: 0.9
+  p-friction: 0.1
+  p-skill-candidate: 0.0
+  spore: none
+  receipt-refs: row19,review5447937114,4211623516
+  note: Scan the entire target README for the same joined prose defect while preserving technical IDs and historical captures. Existing Rheos issue 4 requests a capability not yet available. Card and event history remain exact; no new native comment, transition or approval.
