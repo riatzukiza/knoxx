@@ -192,3 +192,12 @@
   p-skill-candidate: 0.2
   receipt-refs: 2026-10-06T14:28:52.198143Z
   note: Keep accepted source synchronization separate from unmerged feature migration. An inherited ready-triggered merge job makes draft preparation necessary until reviewed base enforcement. No spore warranted.
+
+## Knoxx 160 planning refinement — isolated author review
+
+- Context: root/issues; p-efficiency 0.70, p-friction 0.38, p-skill-candidate 0.42.
+- Evidence: one declared Receipt River decision appended after 16 byte-preserved historical rows; actual current owning source `154440f3c997aa9208194bba59b5edbef3654f78` validates the new row. Native owning Rheos readback retains Ready / 3 points and complete original card, without transition or approval.
+- Lesson: retain literal original DoD while making the stale effectful-domain placement an explicit review decision. Real HTTP composition and trusted capability ownership need compatibility fixtures, not inferred coverage from a status helper. The earlier 3-personal-PR snapshot predates later owned PRs 4–6; current overlapping 161 implementation requires fresh merge/overlap guards before generator work.
+- Operator correction: copied CLI initially omitted its external dependency; exit 1 and diagnostic retained. Copying existing dependencies into the independent private runtime enabled a distinct successful read, without global install or policy changes.
+- Better path: pin complete source and native scopes first; propose the full amendment, error ownership and user verification artifact; validate with owning API and immutable full-tip proof. No implementation, suite, live backend/provider, board write, reviewer request, remote publication or promotion occurred.
+- No spore promotion or global learning-channel mutation.

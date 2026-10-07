@@ -1,0 +1,17 @@
+{
+  "number": 160,
+  "title": "Create domain/generator/runtime.cljs and wire into event-runtime lifecycle",
+  "body": "<!-- openhax-kanban-sync uuid=\"knoxx-generator-runtime-create\" -->\n<!-- This section is managed by eta-mu kanban sync github. -->\n\n## Kanban metadata\n\n- UUID: `knoxx-generator-runtime-create`\n- Status: `ready`\n- Priority: `P2`\n- Source: `/home/runner/work/knoxx/knoxx/kanban/tasks/knoxx-generator-runtime-create.md`\n- Labels: `tasks`, `3sp`\n\n---\n# Create domain/generator/runtime.cljs and wire into event-runtime lifecycle\n\n> Parent epic: `knoxx-events-agent-runtime-separation`\n\n## Context\n\nGenerator resources are fully defined in the contract schema (`law/contracts.cljs` lines 203-210: `:generator/kind`, `:generator/driver`, `:generator/emits`) and validated in `domain/control/catalog.cljs` (`generator-violations` function at line 197). However `domain/generator/runtime.cljs` does not exist, and `infra/event_runtime.cljs` never starts or stops a generator runtime. Generator resources loaded from disk are catalogued but never activated.\n\n## Work\n\n1. Create `backend/src/cljs/knoxx/backend/domain/generator/runtime.cljs`\n   - Follow the same lifecycle pattern as `domain/schedule/runtime.cljs`: `running?*` atom, `start! [config]`, `stop! []`, `status [config]`\n   - `start!` loads generator resources via `resources/list-resource-ids-sync config :generator` and logs each, delegating to the driver registry if applicable\n   - `stop!` resets state atoms\n   - `status` returns `{:running @running?* :generators [...]}`\n\n2. Require and wire in `infra/event_runtime.cljs`:\n   - Add `[knoxx.backend.domain.generator.runtime :as generator-runtime]` to `:require`\n   - Call `(generator-runtime/start! config)` in `start!` after `source-runtime/start!`\n   - Call `(generator-runtime/stop!)` in `stop!`\n   - Add `:generators (generator-runtime/status config)` to `status` return map\n\n## Affected files\n\n- `backend/src/cljs/knoxx/backend/domain/generator/runtime.cljs` (new file)\n- `backend/src/cljs/knoxx/backend/infra/event_runtime.cljs` (add require + 3 call sites)\n\n## Definition of Done\n\n- `domain/generator/runtime.cljs` exists with `start!`, `stop!`, `status` arities matching `domain/schedule/runtime`\n- `infra/event_runtime.cljs` requires and calls generator-runtime in `start!`, `stop!`, and `status`\n- `pnpm -C backend run typecheck` exits 0 (shadow-cljs compile server)\n- `pnpm -C backend lint` exits 0 (clj-kondo)\n- `GET /api/admin/config/events` response includes `:generators` key in status map\n\n---\nTriage 2026-05-29: Freshly-split epic subtask (3sp) with fully specified work \u2014 new domain/generator/runtime.cljs modeled on existing domain/schedule/runtime.cljs pattern, plus three explicit call sites in infra/event_runtime.cljs; DoD is concrete and verifiable with lint/typecheck commands. No blockers. Verdict: accepted (P2). --tasks-dir /home/err/devel/orgs/open-hax/openplanner/packages/agents/knoxx/kanban\n---\n",
+  "state": "open",
+  "created_at": "2026-06-10T10:17:53Z",
+  "updated_at": "2026-06-22T15:37:00Z",
+  "writer": "github-actions[bot]",
+  "labels": [
+    "kanban",
+    "priority:P2",
+    "tasks",
+    "3sp",
+    "status:ready"
+  ],
+  "source_raw_sha256": "f528085c11d70d7f7cc76c77b42374ee91d37cdff5480060ed1dd38d0669bbd4"
+}

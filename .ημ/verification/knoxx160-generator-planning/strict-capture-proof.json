@@ -1,0 +1,102 @@
+{
+  "streams": [
+    {
+      "path": ".\u03b7\u03bc/verification/knoxx160-generator-planning/native-task-current.stdout.b64",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "strict": true
+    },
+    {
+      "path": ".\u03b7\u03bc/verification/knoxx160-generator-planning/native-task-current.stderr.b64",
+      "size": 1199,
+      "sha256": "916451a637930d86fc0ac5ebf257f6a0a7ebe7409d873dda50e9c2ededec9025",
+      "strict": true
+    },
+    {
+      "path": ".\u03b7\u03bc/verification/knoxx160-generator-planning/native-task-with-owned-dependencies.stdout.b64",
+      "size": 3251,
+      "sha256": "0d0bd882e930ee36e6937504519a25abec1b62da76e0b1d253f91ea1ad55afbc",
+      "strict": true
+    },
+    {
+      "path": ".\u03b7\u03bc/verification/knoxx160-generator-planning/native-task-with-owned-dependencies.stderr.b64",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "strict": true
+    },
+    {
+      "path": ".\u03b7\u03bc/verification/knoxx160-generator-planning/node-version.stdout.b64",
+      "size": 9,
+      "sha256": "50956a2c27b1a442408131f86103ff1df8a7f4a29502df81d216ba19e2c2f4a6",
+      "strict": true
+    },
+    {
+      "path": ".\u03b7\u03bc/verification/knoxx160-generator-planning/node-version.stderr.b64",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "strict": true
+    },
+    {
+      "path": ".\u03b7\u03bc/verification/knoxx160-generator-planning/nbb-version.stdout.b64",
+      "size": 13,
+      "sha256": "38b95fbb6e11ca118066fc0b51518a91ec5548e61c9ce31d86d15f9fb2195500",
+      "strict": true
+    },
+    {
+      "path": ".\u03b7\u03bc/verification/knoxx160-generator-planning/nbb-version.stderr.b64",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "strict": true
+    },
+    {
+      "path": ".\u03b7\u03bc/verification/knoxx160-generator-planning/knoxx-all-open-PR-heads.stdout.b64",
+      "size": 5031,
+      "sha256": "6b5adabedfaa0d1c6512b31db16e98d8f20efa27a146539d7ef37f9836515aee",
+      "strict": true
+    },
+    {
+      "path": ".\u03b7\u03bc/verification/knoxx160-generator-planning/knoxx-all-open-PR-heads.stderr.b64",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "strict": true
+    },
+    {
+      "path": ".\u03b7\u03bc/verification/knoxx160-generator-planning/knoxx-personal-sync567.stdout.b64",
+      "size": 413,
+      "sha256": "b3f2fe37439161f583ddbd59eda488901de583837d352513d678cadbedcb9888",
+      "strict": true
+    },
+    {
+      "path": ".\u03b7\u03bc/verification/knoxx160-generator-planning/knoxx-personal-sync567.stderr.b64",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "strict": true
+    },
+    {
+      "path": ".\u03b7\u03bc/verification/knoxx160-generator-planning/personal-current-open-heads.stdout.b64",
+      "size": 1303,
+      "sha256": "77b9916a168408806181bf6f8c58da3d28e1493d99ee264a62ede4844aec8edf",
+      "strict": true
+    },
+    {
+      "path": ".\u03b7\u03bc/verification/knoxx160-generator-planning/personal-current-open-heads.stderr.b64",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "strict": true
+    },
+    {
+      "path": ".\u03b7\u03bc/verification/knoxx160-generator-planning/receipt-builder-owning-api.stdout.b64",
+      "size": 132,
+      "sha256": "d6f8cdc15bfe73d51b084f139a8512a9dea622a49255c41cd581fdb64e7d8d31",
+      "strict": true
+    },
+    {
+      "path": ".\u03b7\u03bc/verification/knoxx160-generator-planning/receipt-builder-owning-api.stderr.b64",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "strict": true
+    }
+  ],
+  "count": 16,
+  "all_exact": true
+}

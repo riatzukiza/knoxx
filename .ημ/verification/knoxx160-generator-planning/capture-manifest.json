@@ -1,0 +1,157 @@
+[
+  {
+    "name": "native-task-current",
+    "argv": [
+      "/home/err/.volta/tools/image/node/24.14.1/bin/node",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx160-generator-planning-2cd1a6b620/runtime/rheos-cli.cjs",
+      "read-task",
+      "knoxx-generator-runtime-create",
+      "--config",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx160-generator-planning-2cd1a6b620/worktree/kanban/openhax.kanban.json"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx160-generator-planning-2cd1a6b620/worktree",
+    "exit": 1,
+    "recovered_after_local_assertion": true,
+    "stdout": {
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "size": 1199,
+      "sha256": "916451a637930d86fc0ac5ebf257f6a0a7ebe7409d873dda50e9c2ededec9025"
+    }
+  },
+  {
+    "name": "native-task-with-owned-dependencies",
+    "argv": [
+      "/home/err/.volta/tools/image/node/24.14.1/bin/node",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx160-generator-planning-2cd1a6b620/runtime/rheos-cli.cjs",
+      "read-task",
+      "knoxx-generator-runtime-create",
+      "--config",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx160-generator-planning-2cd1a6b620/worktree/kanban/openhax.kanban.json"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx160-generator-planning-2cd1a6b620/worktree",
+    "exit": 0,
+    "stdout": {
+      "size": 3251,
+      "sha256": "0d0bd882e930ee36e6937504519a25abec1b62da76e0b1d253f91ea1ad55afbc"
+    },
+    "stderr": {
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "name": "node-version",
+    "argv": [
+      "/home/err/.volta/tools/image/node/24.14.1/bin/node",
+      "--version"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx160-generator-planning-2cd1a6b620/worktree",
+    "exit": 0,
+    "stdout": {
+      "size": 9,
+      "sha256": "50956a2c27b1a442408131f86103ff1df8a7f4a29502df81d216ba19e2c2f4a6"
+    },
+    "stderr": {
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "name": "nbb-version",
+    "argv": [
+      "/home/err/.volta/tools/image/node/24.14.1/bin/node",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx160-generator-planning-2cd1a6b620/runtime/nbb/cli.js",
+      "--version"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx160-generator-planning-2cd1a6b620/worktree",
+    "exit": 0,
+    "stdout": {
+      "size": 13,
+      "sha256": "38b95fbb6e11ca118066fc0b51518a91ec5548e61c9ce31d86d15f9fb2195500"
+    },
+    "stderr": {
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "name": "knoxx-all-open-PR-heads",
+    "command": [
+      "gh",
+      "api",
+      "graphql",
+      "-f",
+      "query=query { repository(owner:\"open-hax\",name:\"knoxx\") { pullRequests(first:100,states:OPEN) { pageInfo { hasNextPage } nodes { number headRefOid baseRefOid title } } } }"
+    ],
+    "exit": 0,
+    "stdout": {
+      "size": 5031,
+      "sha256": "6b5adabedfaa0d1c6512b31db16e98d8f20efa27a146539d7ef37f9836515aee"
+    },
+    "stderr": {
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "name": "knoxx-personal-sync567",
+    "command": [
+      "gh",
+      "api",
+      "repos/riatzukiza/knoxx/git/ref/heads/codex/sync-knoxx-origin-main"
+    ],
+    "exit": 0,
+    "stdout": {
+      "size": 413,
+      "sha256": "b3f2fe37439161f583ddbd59eda488901de583837d352513d678cadbedcb9888"
+    },
+    "stderr": {
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "name": "personal-current-open-heads",
+    "argv": [
+      "gh",
+      "api",
+      "repos/riatzukiza/knoxx/pulls?state=open&per_page=100",
+      "--jq",
+      "map({number,title,head:.head.sha,base:.base.sha,draft,state})"
+    ],
+    "exit": 0,
+    "stdout": {
+      "size": 1303,
+      "sha256": "77b9916a168408806181bf6f8c58da3d28e1493d99ee264a62ede4844aec8edf"
+    },
+    "stderr": {
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "name": "receipt-builder-owning-api",
+    "argv": [
+      "/home/err/.volta/tools/image/node/24.14.1/bin/node",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx160-generator-planning-2cd1a6b620/runtime/nbb/cli.js",
+      "-cp",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx160-generator-planning-2cd1a6b620/runtime/receipt-river/src/cljs",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx160-generator-planning-2cd1a6b620/consumer.cljs",
+      "append",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx160-generator-planning-2cd1a6b620/worktree/.\u03b7\u03bc/receipts.edn"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx160-generator-planning-2cd1a6b620",
+    "exit": 0,
+    "stdout": {
+      "size": 132,
+      "sha256": "d6f8cdc15bfe73d51b084f139a8512a9dea622a49255c41cd581fdb64e7d8d31"
+    },
+    "stderr": {
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  }
+]
