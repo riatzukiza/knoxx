@@ -1,0 +1,4046 @@
+[
+  {
+    "label": "before",
+    "root": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx158-provenance-planning-8cbb1e7535/native-before",
+    "files": [
+      {
+        "path": "kanban/.eta-mu",
+        "bytes": 5,
+        "sha256": "379ed8a4b23477b35cacc90d48d113079662bfda27af29b9451b57783461cf3a"
+      },
+      {
+        "path": "kanban/.events/ledger.edn",
+        "bytes": 48340,
+        "sha256": "52ebe376ff4148211bf71e906d6cdfede4790d38bc59b47edf852c23db264b5b"
+      },
+      {
+        "path": "kanban/README.md",
+        "bytes": 2773,
+        "sha256": "983a3d2a36f93103bd1cfe1f6916254a0c905e6be3274116dcb39f71a15d4353"
+      },
+      {
+        "path": "kanban/epics/action-scope-and-pipeline-collapse.md",
+        "bytes": 5170,
+        "sha256": "bddaff0942aa0e5f00a2aefda504cd04e0b4d373566ae0ae9e31064c418e8063"
+      },
+      {
+        "path": "kanban/epics/broadcast-studio-playlist-publication-and-block-cms.md",
+        "bytes": 3429,
+        "sha256": "03780665553e9bad5a112468478aee551b6004c44363b54862b719d550a866e8"
+      },
+      {
+        "path": "kanban/epics/contract-runtime-merge-proposal.md",
+        "bytes": 1705,
+        "sha256": "7acc1cfba86be967e17503f28948667a0258d72236ed540cc4928c2b8bd54ba2"
+      },
+      {
+        "path": "kanban/epics/events-agent-runtime-separation.md",
+        "bytes": 3568,
+        "sha256": "eb7a664eea1178283c2e0c2765ea41cf4f092d09776e0e8738556fbf7e5f8cc5"
+      },
+      {
+        "path": "kanban/epics/folder-backed-visual-cms-design-spec.md",
+        "bytes": 1461,
+        "sha256": "0997c34e973fa6e315c86a1382ad834def92baf2de312c2b6b7611964507bbb0"
+      },
+      {
+        "path": "kanban/epics/frontend-helix-migration-vite-retirement.md",
+        "bytes": 3471,
+        "sha256": "298bdb20649e267c5fefb22febd5083371109f74f9565ee6a24a13c4d0ad666c"
+      },
+      {
+        "path": "kanban/epics/garden-cms-playlist-chat-and-label-provenance.md",
+        "bytes": 786,
+        "sha256": "ad025baf966b2d8c09164e4c431656ab90f7e3d0db78ba8eee24d6f575b042b6"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-adaptive-expand-policy-hook.md",
+        "bytes": 1608,
+        "sha256": "ba8b85b924cef62c390ff3152ee1bdc5dff5a15449b1bdd5d94d8ce5cad4d40c"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-adaptive-web-frontier-and-multiscale-backbone.md",
+        "bytes": 2849,
+        "sha256": "41a1e3b6215c55c558cf9d0f6c0cefe02c05fab75b43655644d9d27d2254bc1e"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-architecture-migration.md",
+        "bytes": 1744,
+        "sha256": "0cb1648b5fa3a52d44b289948f0486b651a8f17f23dec9dba7f1832819174462"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-chat-ui-library.md",
+        "bytes": 1810,
+        "sha256": "23e4ce3498314cd1b562ffc8effa838f9a24605a76fbc8246b70b15660565b1b"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-chat-widget-layers.md",
+        "bytes": 1711,
+        "sha256": "5a493b5a56734c0cfd6b580b0e38c825514450063259aff92503ec6514a81661"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-clojure-backend-migration.md",
+        "bytes": 1515,
+        "sha256": "22628d6a47ce00e4e0b3d36df029168d75e5ec56e7f3f066c342d4947929fc50"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-cms-data-model.md",
+        "bytes": 2029,
+        "sha256": "5672147984166ce4f3be11268a2fcff9eacbd01ef032dea49e7082f3c946aa11"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-consistency-review.md",
+        "bytes": 670,
+        "sha256": "a58f4b4b95b4fa96947669352506800039ee4f9a29b52d67a20773d4bb6b927f"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-contract-runtime-dod-restructure.md",
+        "bytes": 1983,
+        "sha256": "c129331860d6a53cb2fdac8b096c27e249db358ec3afbd3d688cabcf962049ca"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-deploy-aws.md",
+        "bytes": 1629,
+        "sha256": "c02534dbafae119eeedc80e715883d50902118974b7cd0a0e6e03aac1bd17b7b"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-deploy-azure.md",
+        "bytes": 1109,
+        "sha256": "6fa6423071de8b844a400c2957eee2dab10f92f0524deb7b3fbd30c7dc0ab01f"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-deploy-self-hosted.md",
+        "bytes": 1122,
+        "sha256": "dad7cdaafdd829866cbac2368b839132332d800fe50175aa2d7e8ac4f9966825"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-exposure-monitor.md",
+        "bytes": 1403,
+        "sha256": "b977583d74a3d1dfa92dae8f4bb9a2340d4416eec8719148cc038f13a705225a"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-federated-lakes.md",
+        "bytes": 922,
+        "sha256": "9811516f6ad0ca735b7bc142f7b31e707e7025976b8b45fbfc49c90709fbcf95"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-full-roadmap.md",
+        "bytes": 712,
+        "sha256": "1a40af569df4801b796124143418b97869e0330438f98ab3d05c56e8b84c4831"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-gardens.md",
+        "bytes": 762,
+        "sha256": "f424b586bb968019d75af14cb3007cfb0d2a5c621313703cd3f4b339537343e3"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-graph-memory-reconciliation.md",
+        "bytes": 1538,
+        "sha256": "527eb7113846929ae002544e2cf924a93d00cce1ffe35309d5997cc7bacb20f1"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-graph-memory-roadmap.md",
+        "bytes": 879,
+        "sha256": "24fce019f38841e01d485039dfbb56c38e4c9aa315b129815da72618f1158f87"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-ingestion-architecture.md",
+        "bytes": 1304,
+        "sha256": "af0810da8995a016ce98da427ea52f605e2538ec77e41b983466a288cde92596"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-ingestion-pipeline.md",
+        "bytes": 5587,
+        "sha256": "5560782e127cf27e19cc89f5de26ed17533136d99ffd1b5df24da6e0f87ca001"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-kms-query.md",
+        "bytes": 1746,
+        "sha256": "4b9ee132418adf36b53b3c41acf24b8f63694869b0fe8e1014e4f5fb6a0645aa"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-knoxx-opinionated-distribution.md",
+        "bytes": 892,
+        "sha256": "c0f455c92d602aeb4e02bc46934744536d9695a5f20bf07710abab78375726c0"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-mongodb-vector-unification.md",
+        "bytes": 1196,
+        "sha256": "047768a10c3665567a7ccb8137d4b6ef3b812f89ab85594aa00ff07f94f04226"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-multi-provider-epic.md",
+        "bytes": 937,
+        "sha256": "2951aeea955fcb1e146d1a6388d28ce6686efbe61596de5351d7ed102dcfbe40"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-multi-tenant-control-plane.md",
+        "bytes": 1245,
+        "sha256": "df6fa2337806633f0343f571aa36ddba52f42cd6da6c34a9a8de06a3c7c07997"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-mvp-phase1-epics.md",
+        "bytes": 2930,
+        "sha256": "20beb97467cb2c2ee52df979f7d3caa480439d5ee1b960f51481c036a9bc998a"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-pii-handling-protocol.md",
+        "bytes": 2693,
+        "sha256": "32e54b60324275c4783afd5b1e76aff8781f062ecec3f93313d1a05957005f12"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-product-line.md",
+        "bytes": 1030,
+        "sha256": "457b12f68e9e3d6e781ef24d97b32afa6be9ae2f55d06d92c6e4acf2f3565c10"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-provider-abstraction.md",
+        "bytes": 1070,
+        "sha256": "f7810b2b7822a762330a2ce45bf7675cfec01c37767c801ecb7e34354e9db59a"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-roadmap-status.md",
+        "bytes": 1313,
+        "sha256": "e035194796239536ed65b398492d440efe880a3aeec8e595c51b65c3e44c9b66"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-role-scoped-lakes.md",
+        "bytes": 1461,
+        "sha256": "c82606891a861d9a445f86d59cc59965cd9602b7e3c1f7cb6a0220f4067ad9bd"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-shibboleth-lite-labeling.md",
+        "bytes": 2148,
+        "sha256": "d12a519193e3b97ec4626189808976ef8a58057e61d8d56385b75c4d0d743b28"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-source-lakes-cross-lake-graph.md",
+        "bytes": 1791,
+        "sha256": "5ca798a1df9fcfb38d0964a59610094efc12b1565c22cee63d644196885ef982"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-translation-review-epic.md",
+        "bytes": 1750,
+        "sha256": "67e535a4e477b26086773c9d4c1fbc4dcda7decc94bda004dd99255a9bd99c2e"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-ui-design-system.md",
+        "bytes": 903,
+        "sha256": "ab260d908c85ac80200b1bd6c790fcb71ca8dd94f95e4e9ec977bd87ea7bac9b"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-workbench-ui.md",
+        "bytes": 1555,
+        "sha256": "c5682bd067beee0a75108264657ef92f7b00bc53f2431c2e087ac051ede833f3"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-workbench-ux-breakdown.md",
+        "bytes": 1185,
+        "sha256": "96b92fcaacd6e5e12b98b032b982a64548770692590332c81cd3470b0f0ad442"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-workbench-ux-v1.md",
+        "bytes": 1543,
+        "sha256": "1470729c0f69604c064cbbd73081d8000f7bdea52d0ddc444112421e5d5f0a27"
+      },
+      {
+        "path": "kanban/epics/knoxx-backend-cljs-lint-remediation.md",
+        "bytes": 1190,
+        "sha256": "96644d6b91734ad6c52a158a0d7670b298b045b61a6e75f9f628630db3df2d5b"
+      },
+      {
+        "path": "kanban/epics/knoxx-backend-law-shape-domain-epic.md",
+        "bytes": 849,
+        "sha256": "15d45457b699e97cca566bfe0b60ae7036bdbc4eeb5eeb9d69c58c540f5cf5ad"
+      },
+      {
+        "path": "kanban/epics/knoxx-contract-owned-publication-pipeline.md",
+        "bytes": 8953,
+        "sha256": "d52c2334f5adc0cf01d91c151caa4d1f419a7e37ff472aa2487486659bac5f74"
+      },
+      {
+        "path": "kanban/epics/knoxx-contract-runtime-deployment.md",
+        "bytes": 1931,
+        "sha256": "82dd740c5677c9632c3b6d52810432c39bdcf4037af6e6b00f472654b204d000"
+      },
+      {
+        "path": "kanban/epics/knoxx-decouple-into-katamorph-contracts.md",
+        "bytes": 5578,
+        "sha256": "875227f32e49f963e72c70351f8d55d0ad56853116eff22438a1553470fcf034"
+      },
+      {
+        "path": "kanban/epics/knoxx-evaluation-review-system.md",
+        "bytes": 4880,
+        "sha256": "f167afc801b1db60355ae87d9746bc72c6486939c84dfcaf4ec18854a4bf9a43"
+      },
+      {
+        "path": "kanban/epics/knoxx-publication-runtime-follow-up.md",
+        "bytes": 1843,
+        "sha256": "a9134c5c51a7ad2b51e39213cec12fa2c5e311beec1ccc6aaf04716a2a8d933e"
+      },
+      {
+        "path": "kanban/epics/knoxx-representation-output-boundary.md",
+        "bytes": 3390,
+        "sha256": "7cef12d544b8d63bc450b0ac517b65923d74c174b23b4a551c5637577f601398"
+      },
+      {
+        "path": "kanban/epics/knoxx-resource-repository-cms.md",
+        "bytes": 4617,
+        "sha256": "7c2c78f573ab02f4bb86e438f10fc59abe2197c7d0c09e49fa8cd9bfad9443b1"
+      },
+      {
+        "path": "kanban/epics/knoxx-session-lake-graph-and-memory.md",
+        "bytes": 1572,
+        "sha256": "1450f0954ab7e3d40f71ed51f7826107fd7c3b47b8de4e0c55ac96901b205e09"
+      },
+      {
+        "path": "kanban/epics/knoxx-transduction-provider-pipeline.md",
+        "bytes": 4815,
+        "sha256": "fa6396f5617ee8701281d40bafbd2eb968d4b6a9cadc7f1689c814bc1db7fd8c"
+      },
+      {
+        "path": "kanban/epics/translated-publication-to-website.md",
+        "bytes": 4812,
+        "sha256": "3e97e3d16121bfa9834e5ffe508ff49d040906b44dfbc44449e428e9fbe94467"
+      },
+      {
+        "path": "kanban/epics/unified-workplace-pattern.md",
+        "bytes": 668,
+        "sha256": "4d4d1aae9c477f953f525f339e2fd337a32e43fc1c7878b32d24220bc6bcc59b"
+      },
+      {
+        "path": "kanban/openhax.kanban.json",
+        "bytes": 82,
+        "sha256": "3ecac8aed4429710c83bd88c714a849c3303d52a7fa8b0ba287a8ffb4989eeff"
+      },
+      {
+        "path": "kanban/tasks/.publication-followup-split-marker.md",
+        "bytes": 95,
+        "sha256": "c14ce5e407e4d6566b9f5c98be6062e39e149ac82eb831b45eb4e1aa06494589"
+      },
+      {
+        "path": "kanban/tasks/ingestion/ingestion-bulk-import-api.md",
+        "bytes": 3862,
+        "sha256": "78d4037766c629bc138ff1f13cf6825a62e9df6af9d6154ae5e5cc85f906f722"
+      },
+      {
+        "path": "kanban/tasks/ingestion/ingestion-dashboard-ui.md",
+        "bytes": 3480,
+        "sha256": "1bfd50d51ecbc8794e1ed87b56eaa5584203a34944ae423106518d2b52192a8e"
+      },
+      {
+        "path": "kanban/tasks/ingestion/ingestion-file-upload-api.md",
+        "bytes": 2909,
+        "sha256": "5a9fd4b3cae180360bbe6a36a6e55c1155ebafbf49fb6cd2317d4866f49df037"
+      },
+      {
+        "path": "kanban/tasks/ingestion/ingestion-github-driver.md",
+        "bytes": 4141,
+        "sha256": "25ae467b4766fea873acd2e403bade6f36f0c500b6ca27cbc52647faa8a52f3d"
+      },
+      {
+        "path": "kanban/tasks/ingestion/ingestion-google-drive-driver.md",
+        "bytes": 2086,
+        "sha256": "864dfbc877ae8a9a420a1cc2401c888e5b3a3fd5f009ea34218d1f15b536ef7d"
+      },
+      {
+        "path": "kanban/tasks/ingestion/ingestion-progress-streaming.md",
+        "bytes": 5175,
+        "sha256": "86b2893cbcc7c06fe737d920f0af3c08e14ae3f99ef16646f7ef8cdf37066f64"
+      },
+      {
+        "path": "kanban/tasks/knowledge-lake-azure-aws-provider-stubs.md",
+        "bytes": 2138,
+        "sha256": "cb169206ae73c50b03c49cd9c42dbddf0f089d5a418284a6df301e41038fba06"
+      },
+      {
+        "path": "kanban/tasks/knowledge-lake-domain-logic-layer.md",
+        "bytes": 2619,
+        "sha256": "80df980bcb6d59fec36a2ea870852fcdba58acc5011f85cb9f397d9dcf4cb7b4"
+      },
+      {
+        "path": "kanban/tasks/knowledge-lake-local-dev-provider-and-factory-wiring.md",
+        "bytes": 2484,
+        "sha256": "6c6ff4d06b6a83c1c2691ff6e5d40f447f5e861238b49a077803d2b48868dad9"
+      },
+      {
+        "path": "kanban/tasks/knowledge-lake-package-scaffold-and-core-interfaces.md",
+        "bytes": 2266,
+        "sha256": "d38e72813a7580f120b3f818a97a5d97c9742a50d770df74cf6a1b47ee87fa00"
+      },
+      {
+        "path": "kanban/tasks/knowledge-lake-self-hosted-provider-implementations.md",
+        "bytes": 2607,
+        "sha256": "42179547a4b25c76c099bacd251993763017e54136981f3f0b0f832c59ec562c"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-adaptive-expand-policy-seam.md",
+        "bytes": 3357,
+        "sha256": "c5c072a39eba7c3ae59f4c7b8250bc5eeb880a06edc008a3e4e7b20a58f1ee4b"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-adaptive-expand-policy-telemetry.md",
+        "bytes": 3269,
+        "sha256": "39acb6a5daed27008877c635efad9f9898ba6b6ba2a2ecf2dd4a41ed7b3c586f"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-adaptive-web-frontier-umbrella-spec-authoring.md",
+        "bytes": 2389,
+        "sha256": "d1b5c6ed579d2c9f255fe9eda1cf1197de769cb48f02e814a482cdddb77d0540"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-demo-seed.md",
+        "bytes": 7562,
+        "sha256": "fd7badc5fe8adb899dd7b2e887fb3e90ec649db294e5ca40de6aa54b1e153a6d"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-docs-source-of-truth-normalization.md",
+        "bytes": 2858,
+        "sha256": "04191933182fe82e20157e5714e5c97f890d24ec7525ed86db96e1fc6e66ba7c"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-gardens-page-bugfixes.md",
+        "bytes": 3616,
+        "sha256": "ee39e11de02f5557edf6ef4d9f40cfadbaf330f9dfb81b55c52f78cb362cfe5e"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-graph-memory-runtime-smoke-e2e.md",
+        "bytes": 2176,
+        "sha256": "a67ecf93021391bf6139a03ba9ca46febf22a6fcf47d934a71c545fc3ac8fe11"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-graph-weaver-live-sync-truth.md",
+        "bytes": 2547,
+        "sha256": "7599074ef079b49ddf22b4af14783287ae1ff66d29337be9a8c0cfd6f7875c24"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-kms-openplanner-ingest-arity-fix.md",
+        "bytes": 1455,
+        "sha256": "dd88f2199c1b6bfaf6aa76c098e1fd50b031f3b72a0e774583341e637383d37f"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-knoxx-graph-query-contract-v1.md",
+        "bytes": 2604,
+        "sha256": "ba2caf5c690c037983f88022cabd75043534d6e45dec733b8042172bb1ca3a0f"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-knoxx-health-route-coherence.md",
+        "bytes": 3481,
+        "sha256": "0403d0aed69163329f5d51769b1ac4a7db7b303dd95683d79c5ffcf3e6950996"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-myrmex-openplanner-write-recovery.md",
+        "bytes": 2373,
+        "sha256": "285619c286ac53abbd80b3f52b8cfc8c549729938d5e66eef49b71620562263b"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-openplanner-derived-edge-projections-slice.md",
+        "bytes": 2439,
+        "sha256": "dcb9281104b20700927a6e943b589fe045e4280c554620a6990b8cfcf0558f83"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-openplanner-gardens-backend-fixes.md",
+        "bytes": 4600,
+        "sha256": "39fecf9aad251bc34aa8b604c0c2b91166da8554f8dc09e7c7134d91f42961cb"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-openplanner-graph-population-smoke.md",
+        "bytes": 3469,
+        "sha256": "1b9ab30206af509d87f7e1d4a591837b23ae7ac0e37c7a2ad0e69472e00f7d34"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-openplanner-salience-backbone-materialization.md",
+        "bytes": 3133,
+        "sha256": "69e16c79254e9710dbd31df98e1a1a35383698dcac6f1206ebd3a995e90f27e0"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-pass1-path-canonicalization.md",
+        "bytes": 1178,
+        "sha256": "524391ae4f823bb87ef8235ff625b5f04254707b9e6a6a959a3df909ddf9aa10"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-pass2-status-tagging.md",
+        "bytes": 1141,
+        "sha256": "000aba70e2aee12d461a9dc297be269426dbbb4745bfd03854a679c780d8abae"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-pass3-storage-runtime-labeling.md",
+        "bytes": 1410,
+        "sha256": "fc54cbbad3e1de8b43e9252299598cf8c862f519df1afc044d359d70ddd6a707"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-pass4-ui-vocabulary.md",
+        "bytes": 1218,
+        "sha256": "175eded76ba55a469b9c81ac5227e0b2a50da6250adeaa58470f849fb0656cfd"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-pass5-rbac-refresh.md",
+        "bytes": 1516,
+        "sha256": "1f020555f5afc6a5b8952d4dc94be58329a7613b9e26a4afea9df7e59e4b838c"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-product-line-cross-link-roadmap.md",
+        "bytes": 1888,
+        "sha256": "c2e4962de50ee79dc5d15cd0bd0c320bf66a4bd26bac0186f8add557af760f9b"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-product-line-exposure-monitor-specs.md",
+        "bytes": 1773,
+        "sha256": "2cc1fa6c1826fd65d6abdbb0311ac0afca29555c5c1eddbaf9d40b01d3b67184"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-product-line-kanban-grooming.md",
+        "bytes": 1619,
+        "sha256": "125f991ce53377c164b6d37885c5555a59ce568e06aa7887a831ed129a4307dc"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-product-line-shared-infra-scaffold.md",
+        "bytes": 1953,
+        "sha256": "be4f796b9700e7f051b7b883c9ab39d3e49c634731b33405e593b3ec723b0fba"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-translation-document-review-v2.md",
+        "bytes": 8743,
+        "sha256": "e206ff6bab0ab02049c5193fa77a9693feca1ac570b25503305ad96989c81ab1"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-translation-export.md",
+        "bytes": 1046,
+        "sha256": "0e3ccff8bb58144c3e68c2fdb106d14ea91647ba2d995a33c1573afd134cfaa1"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-translation-mt-pipeline.md",
+        "bytes": 1571,
+        "sha256": "b390164deabbdd4c9667bfeda4bb448fc7884c664918ef696c84aaedf3555c1a"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-translation-routes.md",
+        "bytes": 2527,
+        "sha256": "be42c187722ba3e860405d3b87da204e6cf488d5332f2a6db42b51753a40abeb"
+      },
+      {
+        "path": "kanban/tasks/knoxx-action-agent-spawn-boundary-fix.md",
+        "bytes": 3267,
+        "sha256": "4f2bc991aad60c03cef5f9ff745d5ad329bb1c9566226ce03221a9605623c639"
+      },
+      {
+        "path": "kanban/tasks/knoxx-action-scope-injection.md",
+        "bytes": 3308,
+        "sha256": "e4f1cd746ded62a2b8e87463a0d4b739a49273fb1809c9fb9322db9e33c9efc5"
+      },
+      {
+        "path": "kanban/tasks/knoxx-anonymous-actions.md",
+        "bytes": 972,
+        "sha256": "6169669e307df62b95c5240edb2af88a7588e6d1a1b1ead04d78448cf14333c4"
+      },
+      {
+        "path": "kanban/tasks/knoxx-anonymous-agent-facet.md",
+        "bytes": 1449,
+        "sha256": "3daec5c3ce56e1ccb0d37639568e9832e6549351b07377ab2329c3f27f1f581d"
+      },
+      {
+        "path": "kanban/tasks/knoxx-arch-migration-cephalon-proxx-client.md",
+        "bytes": 1889,
+        "sha256": "3cffcf803e1ab4252fc32eb0e34005e1542ef0fcd7775ef00f2d011028a103dc"
+      },
+      {
+        "path": "kanban/tasks/knoxx-arch-migration-cms-routes-retirement.md",
+        "bytes": 1731,
+        "sha256": "1080170b55649472891b341a9d51aee8db744dff1288e12d936e5b03b06e3fc2"
+      },
+      {
+        "path": "kanban/tasks/knoxx-arch-migration-devel-smoke-verification.md",
+        "bytes": 1803,
+        "sha256": "3f3b1003596022d8d406c6ae4726bcaf89f371f4288e1c4bcf51e9dea8112346"
+      },
+      {
+        "path": "kanban/tasks/knoxx-arch-migration-ragussy-ui-sunset.md",
+        "bytes": 1873,
+        "sha256": "682374c86f4997823b16b7d9384902033d4bc313e458811f68b9708476b779f2"
+      },
+      {
+        "path": "kanban/tasks/knoxx-backend-data-shapes-review.md",
+        "bytes": 1926,
+        "sha256": "4c0f59c70fd4702aa834d72e4fef164b431f1f76b5a150b6daf81f134d71ab57"
+      },
+      {
+        "path": "kanban/tasks/knoxx-backend-lint-async-workflows-src.md",
+        "bytes": 16435,
+        "sha256": "86ded65aa9f505ff4647281d1c01bc16c9e6b072aa1f978b1070747ae872ec54"
+      },
+      {
+        "path": "kanban/tasks/knoxx-backend-lint-coverage-characterization.md",
+        "bytes": 1235,
+        "sha256": "29c4f59c0347dd7bbe1755f51e81969f59e8d33ca61d3088349f6701c9a649a1"
+      },
+      {
+        "path": "kanban/tasks/knoxx-backend-lint-function-length-extractions.md",
+        "bytes": 2612,
+        "sha256": "43a595700730b3b0b4bd3e2e3b9630f1a9b3bd5285c8d483b7c362a481b2a6eb"
+      },
+      {
+        "path": "kanban/tasks/knoxx-backend-lint-hard-error-first-pass.md",
+        "bytes": 1548,
+        "sha256": "a808693c12d95b2c19ce67f73600b6c0f9e14d3492c496235873e2c004409e1b"
+      },
+      {
+        "path": "kanban/tasks/knoxx-backend-lint-route-helper-symbols.md",
+        "bytes": 2784,
+        "sha256": "7176c650adc55ad5762db9a6add792bf7fbcaf72a61a838f65d2bb5bf96e0029"
+      },
+      {
+        "path": "kanban/tasks/knoxx-backend-lint-test-boundaries.md",
+        "bytes": 966,
+        "sha256": "eac86d2bee688dff73827fd6b1e9fe7314285cdba65ccf75179f3314de011d0d"
+      },
+      {
+        "path": "kanban/tasks/knoxx-backend-lint-unused-and-final-warnings.md",
+        "bytes": 1001,
+        "sha256": "cdc547c2b32f01ee29ee4150d205c4d38ded0754f534d9d7bbc3f1fbd8893614"
+      },
+      {
+        "path": "kanban/tasks/knoxx-backend-lint-zero-warning-gate.md",
+        "bytes": 926,
+        "sha256": "fb592fc9e9724285b5864a2e16eb00a8fa00ff14251a09a0191c7f31196f46f3"
+      },
+      {
+        "path": "kanban/tasks/knoxx-canvas-tool-backend-handler.md",
+        "bytes": 1305,
+        "sha256": "630cc61ec8ad5779ec49bb94dbea158e9f5adca97ca0b0d3428fb7c2a0097561"
+      },
+      {
+        "path": "kanban/tasks/knoxx-chat-ui-core-components.md",
+        "bytes": 1671,
+        "sha256": "4c9b18dcb737a87463629f33925eef11b96cb2441448a836d5738b7c1cca3b74"
+      },
+      {
+        "path": "kanban/tasks/knoxx-chat-ui-hooks-and-utils.md",
+        "bytes": 1471,
+        "sha256": "a58947c73ff9eb11cb77d4fd8ff1d7f71c6ba6ae879d8c55f346cb1e3d17bcba"
+      },
+      {
+        "path": "kanban/tasks/knoxx-chat-ui-package-scaffold-and-types.md",
+        "bytes": 1698,
+        "sha256": "4bac8391cc509bf148ed60f89dfa44f3c06bbf0761fa7cb2cf962eea8082cfe7"
+      },
+      {
+        "path": "kanban/tasks/knoxx-chat-ui-test-and-typecheck-gate.md",
+        "bytes": 1570,
+        "sha256": "62e1d72eccb09c62a454aa9fd5e2685c79a1f683aac13e9996199f77073f99f8"
+      },
+      {
+        "path": "kanban/tasks/knoxx-cms-ai-draft-route.md",
+        "bytes": 1560,
+        "sha256": "15304c182798f988ff13e7b867d1a513ae1d27b637e52b91742253ace53e89d0"
+      },
+      {
+        "path": "kanban/tasks/knoxx-cms-backend-routes.md",
+        "bytes": 1452,
+        "sha256": "7c8941dca28ba9cbd98bb7f049d5ee1fe99dde427ec47755012d90a5911cb61f"
+      },
+      {
+        "path": "kanban/tasks/knoxx-cms-contract-validation.md",
+        "bytes": 18396,
+        "sha256": "c18af1a9888d0165539d36aa3d9bdfbe4960e5962030bc3c32051fca11fd1550"
+      },
+      {
+        "path": "kanban/tasks/knoxx-cms-resource-backed-publication-ui.md",
+        "bytes": 18707,
+        "sha256": "47ed80df8d991ec02abd1514b7db09170195e384721a71f110b39f43d0482a6e"
+      },
+      {
+        "path": "kanban/tasks/knoxx-cms-typebox-shapes.md",
+        "bytes": 1528,
+        "sha256": "1ec952bc6c2f9ee82a000d7aa05a7e85516edbe71a4230c2ca6fee49a89bd328"
+      },
+      {
+        "path": "kanban/tasks/knoxx-composite-resource-parsing.md",
+        "bytes": 1143,
+        "sha256": "3dcd0420bc37c9742207799318051b4521538ff26224d663c0f31c77cb4037b3"
+      },
+      {
+        "path": "kanban/tasks/knoxx-contract-publication-e2e.md",
+        "bytes": 9710,
+        "sha256": "3bcd51df17d3103fd54349883b8c7f8dca002be3618443f265c253370a57521d"
+      },
+      {
+        "path": "kanban/tasks/knoxx-contract-runtime-extraction.md",
+        "bytes": 1478,
+        "sha256": "44b80183d6f939280ed1bd6afce58e6d8b341dca9c8e2f257b15cb22cc1e8bce"
+      },
+      {
+        "path": "kanban/tasks/knoxx-dead-field-cleanup.md",
+        "bytes": 1351,
+        "sha256": "95c291de205e6ebf7dda25d5615fcb0672ac747f826179b1a6b4d86de9e6e7d3"
+      },
+      {
+        "path": "kanban/tasks/knoxx-deploy-actor-owning-local-credentials.md",
+        "bytes": 3770,
+        "sha256": "6fefa7a0091435ab2709d89913291cc99856d51f28c872342d18e38e755ccf1c"
+      },
+      {
+        "path": "kanban/tasks/knoxx-editor-agent-context-loop.md",
+        "bytes": 1460,
+        "sha256": "1cd8d31db0802c32e95ea6bb6e59a7e7ac9b99db1b2b7d82da9ffe4478ed3dfe"
+      },
+      {
+        "path": "kanban/tasks/knoxx-error-log-redaction.md",
+        "bytes": 3534,
+        "sha256": "ced4eedf6dd4096554c8872e53d2e7d866d6aba487461cd28ad6d68736f20b2e"
+      },
+      {
+        "path": "kanban/tasks/knoxx-evaluation-case-contracts.md",
+        "bytes": 22906,
+        "sha256": "a569265be5184655eeb5da10ca1586d85ea4217933f1dd848836c1daa412d4e8"
+      },
+      {
+        "path": "kanban/tasks/knoxx-evaluation-mcp-review-flow.md",
+        "bytes": 14141,
+        "sha256": "6bd89a2dadbae76608614fc8253eaacfb5a018a6a6f02aff15fda41bca5964af"
+      },
+      {
+        "path": "kanban/tasks/knoxx-event-runtime-boot-coupling.md",
+        "bytes": 5180,
+        "sha256": "728ecb7c9927bce9544ec5a673977d3a99e0662bfc511b117c1d93acd4ab4f65"
+      },
+      {
+        "path": "kanban/tasks/knoxx-event-runtime-generator-catalog-route.md",
+        "bytes": 2889,
+        "sha256": "e279012a009cb989e9d632749c1d6e3033cdd1b7746b606bc1d13b844fe8751f"
+      },
+      {
+        "path": "kanban/tasks/knoxx-file-resource-repository-provider.md",
+        "bytes": 9900,
+        "sha256": "a5bd185b4d3c8e3cc58bcf4373a9e6ccc8f315887000d8077543e844172dcf1e"
+      },
+      {
+        "path": "kanban/tasks/knoxx-frontend-app-bridge-retirement.md",
+        "bytes": 11639,
+        "sha256": "a4977d6d73d07915095f71170fbdc7ea51c206b008500023ae2db4a1b35ef313"
+      },
+      {
+        "path": "kanban/tasks/knoxx-frontend-chat-workspace-decomposition.md",
+        "bytes": 2695,
+        "sha256": "7c431e22c0a8e9cfff06547192889206da84e9abd3758b5e3bed4be6ab6c4ad5"
+      },
+      {
+        "path": "kanban/tasks/knoxx-frontend-helix-component-test-harness.md",
+        "bytes": 3167,
+        "sha256": "09ea3f06713a5425394791debfd10d74ee431d43cb2cfaaca4d4203bc1f3bf57"
+      },
+      {
+        "path": "kanban/tasks/knoxx-frontend-keyboard-mode-wiring.md",
+        "bytes": 1753,
+        "sha256": "ba39eb5f9b3e984df148df031edb72a7ec3154515d39471671354c96f3bdb761"
+      },
+      {
+        "path": "kanban/tasks/knoxx-frontend-uxx-helix-native.md",
+        "bytes": 2155,
+        "sha256": "e5fda3b2c65c2f86cb70651859987c7a6a0ea995a7b91e483984e5f4d3300bfa"
+      },
+      {
+        "path": "kanban/tasks/knoxx-frontend-vitest-retirement.md",
+        "bytes": 1977,
+        "sha256": "aeaf9c518c4c27ee4062c821e50e71293ca596a0ef56e2e556b2b229c19fbbb0"
+      },
+      {
+        "path": "kanban/tasks/knoxx-futuresight-kms-chat-widget.md",
+        "bytes": 1996,
+        "sha256": "4c5ec37372a6f5dc24132fecf1957527f9ff6a6c5fbc9725710318971b6de8fb"
+      },
+      {
+        "path": "kanban/tasks/knoxx-futuresight-kms-cms-python-backend.md",
+        "bytes": 2431,
+        "sha256": "edc69ef668db7551ae7562acccbd4b87e04d085674379e280095b0f971be1f6b"
+      },
+      {
+        "path": "kanban/tasks/knoxx-futuresight-kms-cms-react-ui.md",
+        "bytes": 2381,
+        "sha256": "de14f7130f63bed3c89f99a17e6d402b09789fc3d887c43cbb288bb90e95ff1b"
+      },
+      {
+        "path": "kanban/tasks/knoxx-futuresight-kms-sync-public-collection.md",
+        "bytes": 2126,
+        "sha256": "f31ea01d7de76e2b80f14113d716dc5d16b9b35081d1c1f74b099d8a79f4ee71"
+      },
+      {
+        "path": "kanban/tasks/knoxx-gardens-dep-truth-live-link.md",
+        "bytes": 1558,
+        "sha256": "52abeec236988562b73444c1878f16586e2f0004fdf41083b5fa294e29f45a53"
+      },
+      {
+        "path": "kanban/tasks/knoxx-gardens-openplanner-rest-decoupling.md",
+        "bytes": 1649,
+        "sha256": "0df1a5c182e411bcbbe5e83091f26bf52227d08f2a2aa8c1564b7b74c2a5a480"
+      },
+      {
+        "path": "kanban/tasks/knoxx-gardens-tab-wire-events-page.md",
+        "bytes": 1314,
+        "sha256": "2af65cfcfe10a7fc1df07c101a429e30e2ef5d523752ae064fb54b5f51049840"
+      },
+      {
+        "path": "kanban/tasks/knoxx-generator-runtime-create.md",
+        "bytes": 2787,
+        "sha256": "71f7b8a98b801d27009cd2ea59778708f66184ff4a9efee2d817cf515fb8e323"
+      },
+      {
+        "path": "kanban/tasks/knoxx-http-event-runtime-lifecycle-separation.md",
+        "bytes": 1571,
+        "sha256": "f23cc74cb6ff5f2a8f4ed3df926b34342cb918b39563d957e6d5e6c675ae01ef"
+      },
+      {
+        "path": "kanban/tasks/knoxx-kms-cms-clojure-service.md",
+        "bytes": 1946,
+        "sha256": "db9c3e985d9e4693d66dfbff5baec840d3edf3f48cac96de04d3a8c088f321cd"
+      },
+      {
+        "path": "kanban/tasks/knoxx-knowledge-labeler-ui-queue-wiring.md",
+        "bytes": 1319,
+        "sha256": "05822cfe0e2f126d5c7b7b78e9609ce6f2643ed1ce535e418d6195785646d628"
+      },
+      {
+        "path": "kanban/tasks/knoxx-knowledge-ops-docker-compose-self-hosted.md",
+        "bytes": 1727,
+        "sha256": "55907f02276b15c39fc1d4fe6f925dea677789b7b032b5be3432ca7a3cdb4537"
+      },
+      {
+        "path": "kanban/tasks/knoxx-knowledge-ops-filesystem-blob-store.md",
+        "bytes": 1422,
+        "sha256": "9d41a865389a5dcd96e91c65ed3ccf6242eba44108673b95ca3c0399fb465e8d"
+      },
+      {
+        "path": "kanban/tasks/knoxx-knowledge-ops-jsonl-queue-provider.md",
+        "bytes": 1461,
+        "sha256": "fdb92899367bed1be9ef8be0ddf7338992783bcca904a3fdb4366dac56cc1fb1"
+      },
+      {
+        "path": "kanban/tasks/knoxx-knowledge-ops-mongodb-storage-sink.md",
+        "bytes": 1406,
+        "sha256": "a6e1ad8eaf22cda1842fdb5ac13f26cc9fe324b5d92f7e29f89e1590ac0822d0"
+      },
+      {
+        "path": "kanban/tasks/knoxx-knowledge-ops-ollama-embedding-provider.md",
+        "bytes": 1414,
+        "sha256": "48070006b31b8f564096ea561ca33cedd6de34dc198547374ebe0b927c022fdc"
+      },
+      {
+        "path": "kanban/tasks/knoxx-knowledge-workbench-query-ui.md",
+        "bytes": 1460,
+        "sha256": "31ac863a867caad7a5c84932d9a534db8fe7d078c3129d7b7b6c3da6dbe340f2"
+      },
+      {
+        "path": "kanban/tasks/knoxx-lake-local-embedding-search.md",
+        "bytes": 1805,
+        "sha256": "7d7701065d0909a2ba5120521ba92869ae9b787b555cb570fd6b4b07acb20c38"
+      },
+      {
+        "path": "kanban/tasks/knoxx-lake-local-storage-blob-queue.md",
+        "bytes": 2048,
+        "sha256": "a1a15e225087bb30aa416174bcead47e304189f54366847f958f6ed9e185ffbd"
+      },
+      {
+        "path": "kanban/tasks/knoxx-lake-package-scaffold.md",
+        "bytes": 1534,
+        "sha256": "422b4a808bc1be0fc56120a45c7b7667200056f284e4ad71f998ce0cbffe267a"
+      },
+      {
+        "path": "kanban/tasks/knoxx-lake-provider-factory.md",
+        "bytes": 1701,
+        "sha256": "fdc47e52a739458abe15cf835bf2c245e52def796c93b86de73fe8d20387a3dc"
+      },
+      {
+        "path": "kanban/tasks/knoxx-layer-enforcement-gate.md",
+        "bytes": 5302,
+        "sha256": "d7ef95cd8249672d49728ae00c6b4b516c18be6434dd8477f96f8e055184e537"
+      },
+      {
+        "path": "kanban/tasks/knoxx-mcp-actor-ascription.md",
+        "bytes": 5121,
+        "sha256": "d42bfc73414214d50e9ff532d6b8b92355571092afe6b0bcc75fd6664727cd77"
+      },
+      {
+        "path": "kanban/tasks/knoxx-mcp-consent-permission-groups.md",
+        "bytes": 3496,
+        "sha256": "44d3db9e08208a3e1e6bee7e8098eddc2afad16225416629f6ee21433b9639ef"
+      },
+      {
+        "path": "kanban/tasks/knoxx-mcp-consent-server-side-state.md",
+        "bytes": 3833,
+        "sha256": "81a751fcd3ec40d8ec783bc4e495f70920be67e63f7aa4d75903890bf4cfb5b1"
+      },
+      {
+        "path": "kanban/tasks/knoxx-mongodb-docker-compose-decommission.md",
+        "bytes": 1735,
+        "sha256": "b8662c07b4cc22d7a403dadbe52bb2f20f87895e552a105777bb39b1a114cfbb"
+      },
+      {
+        "path": "kanban/tasks/knoxx-mongodb-migration-script.md",
+        "bytes": 2141,
+        "sha256": "c546fa8262cb84e6c91242d614d28bd9534c8938f263865a11ed2e1effd3039d"
+      },
+      {
+        "path": "kanban/tasks/knoxx-multi-tenant-migrations-prod-runbook.md",
+        "bytes": 1610,
+        "sha256": "bfb754ead71705922aadde5faf886bca0efd9ed30de31335a81df6fd7ae596f6"
+      },
+      {
+        "path": "kanban/tasks/knoxx-multi-tenant-rate-limit-policy-hook.md",
+        "bytes": 1483,
+        "sha256": "0c3abc217c096d214529d5d45356eb7782f222650551b64187a93e01eb40a9b4"
+      },
+      {
+        "path": "kanban/tasks/knoxx-multi-tenant-review-workflow-queue.md",
+        "bytes": 1457,
+        "sha256": "7ed741817bb2a1dac6bc1321c56c7a5f96e150e29fac184ae1fdcd790bdc19a4"
+      },
+      {
+        "path": "kanban/tasks/knoxx-namespace-manifest-migration.md",
+        "bytes": 1613,
+        "sha256": "296d42b242e19af2805d50e052783bebe566227ee1f9eefb187c3a11ffdc6bab"
+      },
+      {
+        "path": "kanban/tasks/knoxx-namespace-resource-loader.md",
+        "bytes": 1337,
+        "sha256": "c376222e3f9fe9e0e13907b6ad2a8ffae932c94f21a6137c1e51e26077ffb4e1"
+      },
+      {
+        "path": "kanban/tasks/knoxx-openplanner-mcp-integration.md",
+        "bytes": 765,
+        "sha256": "a249d165069c1f00cd63fca573384b7026533f0e02c6e4b35102e9ea4f323503"
+      },
+      {
+        "path": "kanban/tasks/knoxx-openplanner-publication-state-migration.md",
+        "bytes": 22499,
+        "sha256": "e374e2eca9f00b065e462cf343d8d811d591e0c923960890cfe4d0321fadbce2"
+      },
+      {
+        "path": "kanban/tasks/knoxx-openplanner-rest-retirement.md",
+        "bytes": 8759,
+        "sha256": "7afd450dda9e88268b6b08490a3ec78bfe4fcc1b5cdd693e9e41e396ac43690d"
+      },
+      {
+        "path": "kanban/tasks/knoxx-pipeline-to-action-migration.md",
+        "bytes": 4381,
+        "sha256": "d96eb5185a59b0500e31ce56adfe5bac6792dea24e7c8eb554678c7dbe41b4ec"
+      },
+      {
+        "path": "kanban/tasks/knoxx-playlist-publication-label-provenance.md",
+        "bytes": 2756,
+        "sha256": "0f89c833a34c9424b6028c2d10b0a46441745a9240244f5df88202bb17ba3696"
+      },
+      {
+        "path": "kanban/tasks/knoxx-publication-adapter-boundary.md",
+        "bytes": 3560,
+        "sha256": "fa3c6028d6e5f2d5755d13cb049ecd8172afea79999e82eb636526a48aa649ba"
+      },
+      {
+        "path": "kanban/tasks/knoxx-publication-adapter-effects-idempotency.md",
+        "bytes": 6964,
+        "sha256": "20c0b6f84bcfea91c67965973c9ed472bb7f6f9171f0f7308277324fc6003ecf"
+      },
+      {
+        "path": "kanban/tasks/knoxx-publication-duplicate-identity.md",
+        "bytes": 5876,
+        "sha256": "3650a4450d97c12fbed0d1fcf1425f7435be4aab7ae6631f995a0da9d77977cb"
+      },
+      {
+        "path": "kanban/tasks/knoxx-publication-intent-resolver.md",
+        "bytes": 20085,
+        "sha256": "3a7dcaf88e12ff941365686220cf62dadaeeeaf6d6d912596f5c50159277a2f3"
+      },
+      {
+        "path": "kanban/tasks/knoxx-publication-live-verification-contract.md",
+        "bytes": 1744,
+        "sha256": "d156212aaed665ff16187ee62aac7222e855f34f727c38c69e91999afcbf040a"
+      },
+      {
+        "path": "kanban/tasks/knoxx-publication-locale-catalog.md",
+        "bytes": 1942,
+        "sha256": "4961aaf5b6d5cab78bfb65096d09cc705630622e81176392802825e0ac26c908"
+      },
+      {
+        "path": "kanban/tasks/knoxx-publication-lossless-edn-state-edits.md",
+        "bytes": 1337,
+        "sha256": "7ebff923aab120b4512e1cf29cfb61197d4d26dd94f57fa320e03b0f56968b22"
+      },
+      {
+        "path": "kanban/tasks/knoxx-publication-receipts-fake-adapter-proof.md",
+        "bytes": 9898,
+        "sha256": "d07f63fc241e93a22566633d57dc847774bdefb336fc66980edfff3acbbc6f23"
+      },
+      {
+        "path": "kanban/tasks/knoxx-publication-reconcile-plan-laws.md",
+        "bytes": 8236,
+        "sha256": "d3baf9cd44ea3396e6857caccd7a594a1424b9b3a8f04a64e7d194808774f4f2"
+      },
+      {
+        "path": "kanban/tasks/knoxx-publication-reconciler-runtime.md",
+        "bytes": 2264,
+        "sha256": "3d6e6aa97f878dede11d369cc5d24f357dd2dc85e987606d66c5daf870753f93"
+      },
+      {
+        "path": "kanban/tasks/knoxx-publication-resource-contracts.md",
+        "bytes": 13244,
+        "sha256": "dd3ec7debeca8ecbcb3e5a28030a9b16e3834f2f33b6b8b40c5303a07fd6f248"
+      },
+      {
+        "path": "kanban/tasks/knoxx-publication-stack-relink.md",
+        "bytes": 4939,
+        "sha256": "daf9641d3c3b46c130a03505c02bd515af00c22e7279c3ebc5264f5080a32c05"
+      },
+      {
+        "path": "kanban/tasks/knoxx-publication-static-site-target.md",
+        "bytes": 3818,
+        "sha256": "c67c714daa051acc37f0339cc25d8cef1d36744b5cf2f2d31248fb9676491301"
+      },
+      {
+        "path": "kanban/tasks/knoxx-publication-target-registry.md",
+        "bytes": 2508,
+        "sha256": "c71cbfde03f4ff7545e3b2ce405218a797ebf9fdafd4820fb55f463922f6e2bd"
+      },
+      {
+        "path": "kanban/tasks/knoxx-published-garden-broadcast-viewer-route.md",
+        "bytes": 3279,
+        "sha256": "555d6e33a03b29937a489c8f7b0d34a82468fecb984c579e49d54a441b22f207"
+      },
+      {
+        "path": "kanban/tasks/knoxx-qualified-id-resolution.md",
+        "bytes": 1288,
+        "sha256": "785dcb3dfabff90a7301c6035692f5317c4889c2d90acb7907a81da7d4992bad"
+      },
+      {
+        "path": "kanban/tasks/knoxx-ragussy-kms-handoff-route.md",
+        "bytes": 1466,
+        "sha256": "6f40bc3c0dfca51accee6a3e2206f4ba8130c37dd966406ebec6ce124ccb9276"
+      },
+      {
+        "path": "kanban/tasks/knoxx-react-ssr-representation-provider.md",
+        "bytes": 3999,
+        "sha256": "906ea39c4fdc9c15c823c9ac19b5686177239b9c6216d932a02ecfc0f55074f5"
+      },
+      {
+        "path": "kanban/tasks/knoxx-resource-repository-snapshot-observation.md",
+        "bytes": 11650,
+        "sha256": "11c2bf504f1c918dfc2b5fd88421fcc0cb64508e5dfaa75d7368a74ce2b1841a"
+      },
+      {
+        "path": "kanban/tasks/knoxx-resource-route-qualified-id-addressing.md",
+        "bytes": 2958,
+        "sha256": "abf8a78e468bf9a2c3b73df82fb272187415338b28d027011001be23769066cc"
+      },
+      {
+        "path": "kanban/tasks/knoxx-rich-action-registry.md",
+        "bytes": 7096,
+        "sha256": "8361ff33e288102f751bef4bf305f87992e36c0ce894a825cbea6d2948606845"
+      },
+      {
+        "path": "kanban/tasks/knoxx-role-scoped-lakes-backend-preset-resolver.md",
+        "bytes": 2087,
+        "sha256": "3a578e7b16ec0e8448ca191dba7f288b5f2a1383e91c4c39ffd3c7835a96e4bf"
+      },
+      {
+        "path": "kanban/tasks/knoxx-role-scoped-lakes-frontend-preset-ui.md",
+        "bytes": 1932,
+        "sha256": "54cbdc8897af81d24144fe2fb2dbd47e252ab5ca2cf5c8a60512d19cfb3b47ad"
+      },
+      {
+        "path": "kanban/tasks/knoxx-role-scoped-lakes-ingestion-routing.md",
+        "bytes": 1933,
+        "sha256": "6aecf86ba75627bdc8a89f3c85c5164784e0bfcd82d50905cb08f0c901200e6a"
+      },
+      {
+        "path": "kanban/tasks/knoxx-run-steps-action.md",
+        "bytes": 3638,
+        "sha256": "9761d8e7ea655f39b39a8629bdd3e5026f251dd6fed952b312e00a68f94fe262"
+      },
+      {
+        "path": "kanban/tasks/knoxx-runtime-decomposition-inventory.md",
+        "bytes": 1381,
+        "sha256": "cbb9aadd7c767aa458bb9af7841b96f95940456d017eb5419b2037e07703f63b"
+      },
+      {
+        "path": "kanban/tasks/knoxx-scope-expansion.md",
+        "bytes": 1279,
+        "sha256": "b9fec5623462a86a8f28b21b152bb479201d3576617f84bf19f9c2cafeda844f"
+      },
+      {
+        "path": "kanban/tasks/knoxx-shibboleth-dsl-corporate-qa-macros.md",
+        "bytes": 1494,
+        "sha256": "4108a9a44456155ba3462a9c6eb25b8238d50779b0f33d49ec2864c6bf89bc93"
+      },
+      {
+        "path": "kanban/tasks/knoxx-store-protocol.md",
+        "bytes": 1161,
+        "sha256": "fa19791bbf05525e61b4ce2b10f88064069dc44ea81514caebb870d2355b5620"
+      },
+      {
+        "path": "kanban/tasks/knoxx-streaming-behavior-action-args.md",
+        "bytes": 5324,
+        "sha256": "def938af0715f4e5e54f6dfd78342444212675044390f80d75725d0103078788"
+      },
+      {
+        "path": "kanban/tasks/knoxx-studio-publication-e2e-smoke.md",
+        "bytes": 2807,
+        "sha256": "ae79a7c63156911a4aa49c31f4dbff9458d6284e8a6bef31ca297cc545ab443e"
+      },
+      {
+        "path": "kanban/tasks/knoxx-system-prompt-audit-visibility.md",
+        "bytes": 3360,
+        "sha256": "99e2a337c6be9c501298aa96853c93915b1f6f3bd2bba61062089301b02fd168"
+      },
+      {
+        "path": "kanban/tasks/knoxx-tenant-cross-org-denial-e2e.md",
+        "bytes": 2036,
+        "sha256": "1f246ee8c19c3c67ada8e6b9ae4f36fbba58d3d82000958e3001a4f15b1c6dfe"
+      },
+      {
+        "path": "kanban/tasks/knoxx-tenant-fail-closed-route-guard.md",
+        "bytes": 2261,
+        "sha256": "1d40baf6aa889602a42f22d557d8c3bd5a94b6e09389bbf0599a9306242723e4"
+      },
+      {
+        "path": "kanban/tasks/knoxx-tenant-org-scope-runs-memory.md",
+        "bytes": 2015,
+        "sha256": "872c3e6aa9e91648ccb4079662e257de01b8f5638fa26125566010f37fce15d8"
+      },
+      {
+        "path": "kanban/tasks/knoxx-tenant-policy-backed-tool-authz.md",
+        "bytes": 2056,
+        "sha256": "5ffb7edd231be69eaa1746c042def95561ecd55990aed2dd6f2114667017a1cf"
+      },
+      {
+        "path": "kanban/tasks/knoxx-tool-namespace-boundary-audit.md",
+        "bytes": 4267,
+        "sha256": "3c764caa8aa05744afb7446d92474d807929122df26893d3b4b85de5b979028d"
+      },
+      {
+        "path": "kanban/tasks/knoxx-tool-vocabulary-rename.md",
+        "bytes": 2338,
+        "sha256": "5272b4f787b1eacdacee3ab623a5c16c428336a79c2b0e2176e41ae8135c8ea1"
+      },
+      {
+        "path": "kanban/tasks/knoxx-translation-agent-actor-composition.md",
+        "bytes": 7536,
+        "sha256": "26dc0523eeee685025e1cdfae92dc587456b210b3d72f5d1b30e10dcf758e14f"
+      },
+      {
+        "path": "kanban/tasks/knoxx-translation-approval-surface.md",
+        "bytes": 6055,
+        "sha256": "26d62d7a187a8e537c6c27d597d82ddec1bf22e0876cb1da46aa62601db87acc"
+      },
+      {
+        "path": "kanban/tasks/knoxx-translation-config-publication-dependency-removal.md",
+        "bytes": 4375,
+        "sha256": "471034b70908e4c31462267e1deb669dc1c015235b3d374447eb837f2b420b90"
+      },
+      {
+        "path": "kanban/tasks/knoxx-translation-config-trusted-auth-context.md",
+        "bytes": 3940,
+        "sha256": "4486cfb56b3ac4c8eab673614ec7f02a6352c6579dc8df6b8ef7b8f59ece3c00"
+      },
+      {
+        "path": "kanban/tasks/knoxx-translation-pipeline-config-resource.md",
+        "bytes": 16062,
+        "sha256": "7c7f6e470a99abb0bf62bb0ed919781ff4de4c834e5e741caf5013ab2d60adc0"
+      },
+      {
+        "path": "kanban/tasks/knoxx-translation-pipeline-validation.md",
+        "bytes": 13645,
+        "sha256": "7137df6bf8214d52222a48c1a7ec4636f2cf7d5094fbd5469a0e04b728e89090"
+      },
+      {
+        "path": "kanban/tasks/knoxx-translation-publication-gate.md",
+        "bytes": 13728,
+        "sha256": "f65cc7bc2031c5a0f993391b2d24eecea7749d71fdfed29b4dd823b7182d0463"
+      },
+      {
+        "path": "kanban/tasks/knoxx-translation-review-chat-panel.md",
+        "bytes": 3605,
+        "sha256": "b493a22d0a70ac34107711414f63bbc2037f9db765331329e3488f32c4793123"
+      },
+      {
+        "path": "kanban/tasks/knoxx-translation-split-memory-feedback.md",
+        "bytes": 7507,
+        "sha256": "a0bdc786348368f062b532af16ada2db3ed3419e3f217fe958a12d70827bcc78"
+      },
+      {
+        "path": "kanban/tasks/knoxx-translation-transduction-boundary.md",
+        "bytes": 5131,
+        "sha256": "62f4908c084dbaf27654e88a5eb247aa70b8d1d20038bfcc3290c53f84249b01"
+      },
+      {
+        "path": "kanban/tasks/knoxx-translation-work-dispatch.md",
+        "bytes": 8160,
+        "sha256": "9a063c4dda37c2b4a4006d3a94296906d2345ef85f704b8c87f30de1bc74a3ba"
+      },
+      {
+        "path": "kanban/tasks/knoxx-translations-event-sourced.md",
+        "bytes": 23485,
+        "sha256": "472ee5a824c63a6ce0a7fe55521e0cbb5245ed9323197f0974ea0def081e7012"
+      },
+      {
+        "path": "kanban/tasks/knoxx-trigger-action-task-prompt-migration.md",
+        "bytes": 9714,
+        "sha256": "0f8689d2c899112f3807ebac4ef434c36865b1f97d72f7a2adfdd48390a64e69"
+      },
+      {
+        "path": "kanban/tasks/knoxx-trigger-runner-facade-delete.md",
+        "bytes": 2222,
+        "sha256": "fefe3faa58b0c6c7c11598b7b2948d713c9ad40d5b46eff017add0c6a4a04e29"
+      },
+      {
+        "path": "kanban/tasks/knoxx-trigger-with-sole-mechanism.md",
+        "bytes": 1496,
+        "sha256": "211c4909abab1fb8eb721584b1af28ea042a8a8382751821dc24e99dc0cc3dee"
+      },
+      {
+        "path": "kanban/tasks/knoxx-uxx-button-chord-prop.md",
+        "bytes": 1370,
+        "sha256": "07a45289c1b45687b4e04aa5cbd1f2640288e4bbabaf591d767c6943d8edc104"
+      },
+      {
+        "path": "kanban/tasks/knoxx-uxx-chord-overlay-composite.md",
+        "bytes": 1733,
+        "sha256": "2781f1c23ea156ed2ce77be0ad61d3baaa44f4a5925857e677b23921fc38bc15"
+      },
+      {
+        "path": "kanban/tasks/knoxx-uxx-export-editor-statusbar-toolbar.md",
+        "bytes": 1458,
+        "sha256": "a787912bc009d62da8b2f6faa6b3e5403c8d17070fc6eb24a9dd336dd651ca09"
+      },
+      {
+        "path": "kanban/tasks/knoxx-uxx-mode-indicator-primitive.md",
+        "bytes": 1454,
+        "sha256": "b960ca77d58f6cf6a7207a0fd7a0def52f457435245694b519a5b50ce761fd21"
+      },
+      {
+        "path": "kanban/tasks/knoxx-versioned-resolved-translation-config.md",
+        "bytes": 41157,
+        "sha256": "7cf860f63d2cb3e248e3bedb97190f14ef2404493df2d7840514bbd0383195c4"
+      },
+      {
+        "path": "kanban/tasks/knoxx-voice-tools-remote-transport.md",
+        "bytes": 1949,
+        "sha256": "3ad9046ad070b1a924c20f36166415567d7b6708295b3c4d48d206341144408c"
+      },
+      {
+        "path": "kanban/tasks/knoxx-website-publication-live-verification.md",
+        "bytes": 2692,
+        "sha256": "08645dbb6f9efbd5c1727ed148a5cf5daa9acd1f4f8d31ca17c5367d536475f8"
+      },
+      {
+        "path": "kanban/tasks/openplanner-mcp-server.md",
+        "bytes": 745,
+        "sha256": "335556f90f65e9ba9228536c2ce5744e45497a26cd354e4726d14ae05d363f7f"
+      },
+      {
+        "path": "kanban/tasks/personal-fork-main-synchronization.md",
+        "bytes": 2796,
+        "sha256": "f64d7c8086ddd3275f1d9256cfaef5103137a73b4b9f981803d86e105d81e9ab"
+      },
+      {
+        "path": "kanban/tasks/pii-classification-schema-ingestion-hook.md",
+        "bytes": 1853,
+        "sha256": "037a1d3e30b3e83c491cb2f91e7d8135947b8061cf14c9c5e28b844b0d6e5aaa"
+      },
+      {
+        "path": "kanban/tasks/pii-deletion-retention-protocol.md",
+        "bytes": 1869,
+        "sha256": "28746733e88d92d13a36e1830f12b52ab08d1317fe9d5dda81eb688ceee9d59a"
+      },
+      {
+        "path": "kanban/tasks/pii-redaction-logs-training-export.md",
+        "bytes": 1676,
+        "sha256": "0d621eec5b34834fb156394ea895724b12bc8fab4ba98cc346ba71dcb817b915"
+      },
+      {
+        "path": "kanban/tasks/pii-tenant-isolation-retrieval-guard.md",
+        "bytes": 1698,
+        "sha256": "e37d07e6dc2c5911121f33db9579f502b576253a7ea2f469b39d99be67a8b081"
+      },
+      {
+        "path": "kanban/tasks/services-caddy-hostname-scale-decision.md",
+        "bytes": 2985,
+        "sha256": "7b639d71b4513e48bd32dfc127b928605692a4665a9f2384535819f924c50446"
+      },
+      {
+        "path": "kanban/tasks/services-knoxx-staging-migration.md",
+        "bytes": 3620,
+        "sha256": "0affb9a447109c23b4f0a6d6f7af56f950ec1fbf12881ece476aa4d5137811cb"
+      },
+      {
+        "path": "kanban/tasks/services-proxx-staging-migration.md",
+        "bytes": 4219,
+        "sha256": "aad33e2b4ea56351c9aea082e6b7547caa9a2058e640ec0bc8490ea02ebb27d0"
+      },
+      {
+        "path": "kanban/tasks/services-staging-slot-pattern.md",
+        "bytes": 6329,
+        "sha256": "a8e54ec45be3b34d9fef0e05bfc4038fe07bd3508996c6006dbe031f48e2bd26"
+      },
+      {
+        "path": "kanban/tasks/uxx-shared-markup-html-helix-renderers.md",
+        "bytes": 7487,
+        "sha256": "637f1a8846a15d6d0b17b5c0d4cb004e165156b90ef42cac8db644456f902c3b"
+      },
+      {
+        "path": "kanban/tasks/uxx-svg-document-shell-network-guard.md",
+        "bytes": 4091,
+        "sha256": "78e6ef77e978527d49bdc48fe348588765c7da291e1ebd02a049d031417fa254"
+      },
+      {
+        "path": "kanban/workbench/1.2-dashboard-agent-runs.md",
+        "bytes": 1556,
+        "sha256": "1d58bdbc8da2a920db8743091af90668b91d1374a512e55ff67497a7a148e5cb"
+      },
+      {
+        "path": "kanban/workbench/1.3-dashboard-memory-activity.md",
+        "bytes": 1425,
+        "sha256": "ddd4ff43c599c45e1963287954d22fe235721d9fa54fd455141ad5374f0b715f"
+      },
+      {
+        "path": "kanban/workbench/2.2-content-editor-ai-suggestions.md",
+        "bytes": 2463,
+        "sha256": "b3b503994df84469ac3bcfe3a5bcb706d5513347e550c13728bd53748a9826c9"
+      },
+      {
+        "path": "kanban/workbench/2.3-content-editor-provenance.md",
+        "bytes": 3528,
+        "sha256": "625b7fef58016f4ef5a940154e37bbf61ada79d29815f95b0a4bb2b30b3e9840"
+      },
+      {
+        "path": "kanban/workbench/3.3-review-correction-writeback.md",
+        "bytes": 2700,
+        "sha256": "0379b016816c3197ce362c51016f58f51e7420c6e9340c81279c199f98fc1071"
+      },
+      {
+        "path": "kanban/workbench/4.1-memory-search.md",
+        "bytes": 1009,
+        "sha256": "17b974c867d3d477d71f2914edba439c25ace99d505ad88a51aa1d7ff9c07799"
+      },
+      {
+        "path": "kanban/workbench/4.2-memory-focal-node.md",
+        "bytes": 996,
+        "sha256": "7fb6e5d99cff0d970bd757f5e52884e2ff940acd5d47fa3c09387a74244fe742"
+      },
+      {
+        "path": "kanban/workbench/4.3-memory-history-slider.md",
+        "bytes": 955,
+        "sha256": "0d1a154a8e4a20f861917940f2d90b86b3cbbbd89b88081fca76073092c44dc0"
+      },
+      {
+        "path": "kanban/workbench/5.1-agent-run-list.md",
+        "bytes": 3193,
+        "sha256": "4231007e327052a76f8a82d28b9694fe8d6f18b83148da901300259ab2d6b04c"
+      },
+      {
+        "path": "kanban/workbench/5.2-agent-run-detail.md",
+        "bytes": 1167,
+        "sha256": "167d1842ec22409d72557d9c7716caf778a04695455d35f9783d6656c51bac29"
+      },
+      {
+        "path": "kanban/workbench/5.3-agent-scratchpad.md",
+        "bytes": 1368,
+        "sha256": "f9d0b5a33f1c296602f45a6ec4b04baf8f637e5561e51cfe0982b79e1b7c1b63"
+      }
+    ],
+    "unchanged_after_native_reads": true,
+    "no_extra_files": true
+  },
+  {
+    "label": "after",
+    "root": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx158-provenance-planning-8cbb1e7535/native-after",
+    "files": [
+      {
+        "path": "kanban/.eta-mu",
+        "bytes": 5,
+        "sha256": "379ed8a4b23477b35cacc90d48d113079662bfda27af29b9451b57783461cf3a"
+      },
+      {
+        "path": "kanban/.events/ledger.edn",
+        "bytes": 48340,
+        "sha256": "52ebe376ff4148211bf71e906d6cdfede4790d38bc59b47edf852c23db264b5b"
+      },
+      {
+        "path": "kanban/README.md",
+        "bytes": 2773,
+        "sha256": "983a3d2a36f93103bd1cfe1f6916254a0c905e6be3274116dcb39f71a15d4353"
+      },
+      {
+        "path": "kanban/epics/action-scope-and-pipeline-collapse.md",
+        "bytes": 5170,
+        "sha256": "bddaff0942aa0e5f00a2aefda504cd04e0b4d373566ae0ae9e31064c418e8063"
+      },
+      {
+        "path": "kanban/epics/broadcast-studio-playlist-publication-and-block-cms.md",
+        "bytes": 3429,
+        "sha256": "03780665553e9bad5a112468478aee551b6004c44363b54862b719d550a866e8"
+      },
+      {
+        "path": "kanban/epics/contract-runtime-merge-proposal.md",
+        "bytes": 1705,
+        "sha256": "7acc1cfba86be967e17503f28948667a0258d72236ed540cc4928c2b8bd54ba2"
+      },
+      {
+        "path": "kanban/epics/events-agent-runtime-separation.md",
+        "bytes": 3568,
+        "sha256": "eb7a664eea1178283c2e0c2765ea41cf4f092d09776e0e8738556fbf7e5f8cc5"
+      },
+      {
+        "path": "kanban/epics/folder-backed-visual-cms-design-spec.md",
+        "bytes": 1461,
+        "sha256": "0997c34e973fa6e315c86a1382ad834def92baf2de312c2b6b7611964507bbb0"
+      },
+      {
+        "path": "kanban/epics/frontend-helix-migration-vite-retirement.md",
+        "bytes": 3471,
+        "sha256": "298bdb20649e267c5fefb22febd5083371109f74f9565ee6a24a13c4d0ad666c"
+      },
+      {
+        "path": "kanban/epics/garden-cms-playlist-chat-and-label-provenance.md",
+        "bytes": 786,
+        "sha256": "ad025baf966b2d8c09164e4c431656ab90f7e3d0db78ba8eee24d6f575b042b6"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-adaptive-expand-policy-hook.md",
+        "bytes": 1608,
+        "sha256": "ba8b85b924cef62c390ff3152ee1bdc5dff5a15449b1bdd5d94d8ce5cad4d40c"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-adaptive-web-frontier-and-multiscale-backbone.md",
+        "bytes": 2849,
+        "sha256": "41a1e3b6215c55c558cf9d0f6c0cefe02c05fab75b43655644d9d27d2254bc1e"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-architecture-migration.md",
+        "bytes": 1744,
+        "sha256": "0cb1648b5fa3a52d44b289948f0486b651a8f17f23dec9dba7f1832819174462"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-chat-ui-library.md",
+        "bytes": 1810,
+        "sha256": "23e4ce3498314cd1b562ffc8effa838f9a24605a76fbc8246b70b15660565b1b"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-chat-widget-layers.md",
+        "bytes": 1711,
+        "sha256": "5a493b5a56734c0cfd6b580b0e38c825514450063259aff92503ec6514a81661"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-clojure-backend-migration.md",
+        "bytes": 1515,
+        "sha256": "22628d6a47ce00e4e0b3d36df029168d75e5ec56e7f3f066c342d4947929fc50"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-cms-data-model.md",
+        "bytes": 2029,
+        "sha256": "5672147984166ce4f3be11268a2fcff9eacbd01ef032dea49e7082f3c946aa11"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-consistency-review.md",
+        "bytes": 670,
+        "sha256": "a58f4b4b95b4fa96947669352506800039ee4f9a29b52d67a20773d4bb6b927f"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-contract-runtime-dod-restructure.md",
+        "bytes": 1983,
+        "sha256": "c129331860d6a53cb2fdac8b096c27e249db358ec3afbd3d688cabcf962049ca"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-deploy-aws.md",
+        "bytes": 1629,
+        "sha256": "c02534dbafae119eeedc80e715883d50902118974b7cd0a0e6e03aac1bd17b7b"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-deploy-azure.md",
+        "bytes": 1109,
+        "sha256": "6fa6423071de8b844a400c2957eee2dab10f92f0524deb7b3fbd30c7dc0ab01f"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-deploy-self-hosted.md",
+        "bytes": 1122,
+        "sha256": "dad7cdaafdd829866cbac2368b839132332d800fe50175aa2d7e8ac4f9966825"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-exposure-monitor.md",
+        "bytes": 1403,
+        "sha256": "b977583d74a3d1dfa92dae8f4bb9a2340d4416eec8719148cc038f13a705225a"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-federated-lakes.md",
+        "bytes": 922,
+        "sha256": "9811516f6ad0ca735b7bc142f7b31e707e7025976b8b45fbfc49c90709fbcf95"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-full-roadmap.md",
+        "bytes": 712,
+        "sha256": "1a40af569df4801b796124143418b97869e0330438f98ab3d05c56e8b84c4831"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-gardens.md",
+        "bytes": 762,
+        "sha256": "f424b586bb968019d75af14cb3007cfb0d2a5c621313703cd3f4b339537343e3"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-graph-memory-reconciliation.md",
+        "bytes": 1538,
+        "sha256": "527eb7113846929ae002544e2cf924a93d00cce1ffe35309d5997cc7bacb20f1"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-graph-memory-roadmap.md",
+        "bytes": 879,
+        "sha256": "24fce019f38841e01d485039dfbb56c38e4c9aa315b129815da72618f1158f87"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-ingestion-architecture.md",
+        "bytes": 1304,
+        "sha256": "af0810da8995a016ce98da427ea52f605e2538ec77e41b983466a288cde92596"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-ingestion-pipeline.md",
+        "bytes": 5587,
+        "sha256": "5560782e127cf27e19cc89f5de26ed17533136d99ffd1b5df24da6e0f87ca001"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-kms-query.md",
+        "bytes": 1746,
+        "sha256": "4b9ee132418adf36b53b3c41acf24b8f63694869b0fe8e1014e4f5fb6a0645aa"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-knoxx-opinionated-distribution.md",
+        "bytes": 892,
+        "sha256": "c0f455c92d602aeb4e02bc46934744536d9695a5f20bf07710abab78375726c0"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-mongodb-vector-unification.md",
+        "bytes": 1196,
+        "sha256": "047768a10c3665567a7ccb8137d4b6ef3b812f89ab85594aa00ff07f94f04226"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-multi-provider-epic.md",
+        "bytes": 937,
+        "sha256": "2951aeea955fcb1e146d1a6388d28ce6686efbe61596de5351d7ed102dcfbe40"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-multi-tenant-control-plane.md",
+        "bytes": 1245,
+        "sha256": "df6fa2337806633f0343f571aa36ddba52f42cd6da6c34a9a8de06a3c7c07997"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-mvp-phase1-epics.md",
+        "bytes": 2930,
+        "sha256": "20beb97467cb2c2ee52df979f7d3caa480439d5ee1b960f51481c036a9bc998a"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-pii-handling-protocol.md",
+        "bytes": 2693,
+        "sha256": "32e54b60324275c4783afd5b1e76aff8781f062ecec3f93313d1a05957005f12"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-product-line.md",
+        "bytes": 1030,
+        "sha256": "457b12f68e9e3d6e781ef24d97b32afa6be9ae2f55d06d92c6e4acf2f3565c10"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-provider-abstraction.md",
+        "bytes": 1070,
+        "sha256": "f7810b2b7822a762330a2ce45bf7675cfec01c37767c801ecb7e34354e9db59a"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-roadmap-status.md",
+        "bytes": 1313,
+        "sha256": "e035194796239536ed65b398492d440efe880a3aeec8e595c51b65c3e44c9b66"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-role-scoped-lakes.md",
+        "bytes": 1461,
+        "sha256": "c82606891a861d9a445f86d59cc59965cd9602b7e3c1f7cb6a0220f4067ad9bd"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-shibboleth-lite-labeling.md",
+        "bytes": 2148,
+        "sha256": "d12a519193e3b97ec4626189808976ef8a58057e61d8d56385b75c4d0d743b28"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-source-lakes-cross-lake-graph.md",
+        "bytes": 1791,
+        "sha256": "5ca798a1df9fcfb38d0964a59610094efc12b1565c22cee63d644196885ef982"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-translation-review-epic.md",
+        "bytes": 1750,
+        "sha256": "67e535a4e477b26086773c9d4c1fbc4dcda7decc94bda004dd99255a9bd99c2e"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-ui-design-system.md",
+        "bytes": 903,
+        "sha256": "ab260d908c85ac80200b1bd6c790fcb71ca8dd94f95e4e9ec977bd87ea7bac9b"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-workbench-ui.md",
+        "bytes": 1555,
+        "sha256": "c5682bd067beee0a75108264657ef92f7b00bc53f2431c2e087ac051ede833f3"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-workbench-ux-breakdown.md",
+        "bytes": 1185,
+        "sha256": "96b92fcaacd6e5e12b98b032b982a64548770692590332c81cd3470b0f0ad442"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-workbench-ux-v1.md",
+        "bytes": 1543,
+        "sha256": "1470729c0f69604c064cbbd73081d8000f7bdea52d0ddc444112421e5d5f0a27"
+      },
+      {
+        "path": "kanban/epics/knoxx-backend-cljs-lint-remediation.md",
+        "bytes": 1190,
+        "sha256": "96644d6b91734ad6c52a158a0d7670b298b045b61a6e75f9f628630db3df2d5b"
+      },
+      {
+        "path": "kanban/epics/knoxx-backend-law-shape-domain-epic.md",
+        "bytes": 849,
+        "sha256": "15d45457b699e97cca566bfe0b60ae7036bdbc4eeb5eeb9d69c58c540f5cf5ad"
+      },
+      {
+        "path": "kanban/epics/knoxx-contract-owned-publication-pipeline.md",
+        "bytes": 8953,
+        "sha256": "d52c2334f5adc0cf01d91c151caa4d1f419a7e37ff472aa2487486659bac5f74"
+      },
+      {
+        "path": "kanban/epics/knoxx-contract-runtime-deployment.md",
+        "bytes": 1931,
+        "sha256": "82dd740c5677c9632c3b6d52810432c39bdcf4037af6e6b00f472654b204d000"
+      },
+      {
+        "path": "kanban/epics/knoxx-decouple-into-katamorph-contracts.md",
+        "bytes": 5578,
+        "sha256": "875227f32e49f963e72c70351f8d55d0ad56853116eff22438a1553470fcf034"
+      },
+      {
+        "path": "kanban/epics/knoxx-evaluation-review-system.md",
+        "bytes": 4880,
+        "sha256": "f167afc801b1db60355ae87d9746bc72c6486939c84dfcaf4ec18854a4bf9a43"
+      },
+      {
+        "path": "kanban/epics/knoxx-publication-runtime-follow-up.md",
+        "bytes": 1843,
+        "sha256": "a9134c5c51a7ad2b51e39213cec12fa2c5e311beec1ccc6aaf04716a2a8d933e"
+      },
+      {
+        "path": "kanban/epics/knoxx-representation-output-boundary.md",
+        "bytes": 3390,
+        "sha256": "7cef12d544b8d63bc450b0ac517b65923d74c174b23b4a551c5637577f601398"
+      },
+      {
+        "path": "kanban/epics/knoxx-resource-repository-cms.md",
+        "bytes": 4617,
+        "sha256": "7c2c78f573ab02f4bb86e438f10fc59abe2197c7d0c09e49fa8cd9bfad9443b1"
+      },
+      {
+        "path": "kanban/epics/knoxx-session-lake-graph-and-memory.md",
+        "bytes": 1572,
+        "sha256": "1450f0954ab7e3d40f71ed51f7826107fd7c3b47b8de4e0c55ac96901b205e09"
+      },
+      {
+        "path": "kanban/epics/knoxx-transduction-provider-pipeline.md",
+        "bytes": 4815,
+        "sha256": "fa6396f5617ee8701281d40bafbd2eb968d4b6a9cadc7f1689c814bc1db7fd8c"
+      },
+      {
+        "path": "kanban/epics/translated-publication-to-website.md",
+        "bytes": 4812,
+        "sha256": "3e97e3d16121bfa9834e5ffe508ff49d040906b44dfbc44449e428e9fbe94467"
+      },
+      {
+        "path": "kanban/epics/unified-workplace-pattern.md",
+        "bytes": 668,
+        "sha256": "4d4d1aae9c477f953f525f339e2fd337a32e43fc1c7878b32d24220bc6bcc59b"
+      },
+      {
+        "path": "kanban/openhax.kanban.json",
+        "bytes": 82,
+        "sha256": "3ecac8aed4429710c83bd88c714a849c3303d52a7fa8b0ba287a8ffb4989eeff"
+      },
+      {
+        "path": "kanban/tasks/.publication-followup-split-marker.md",
+        "bytes": 95,
+        "sha256": "c14ce5e407e4d6566b9f5c98be6062e39e149ac82eb831b45eb4e1aa06494589"
+      },
+      {
+        "path": "kanban/tasks/ingestion/ingestion-bulk-import-api.md",
+        "bytes": 3862,
+        "sha256": "78d4037766c629bc138ff1f13cf6825a62e9df6af9d6154ae5e5cc85f906f722"
+      },
+      {
+        "path": "kanban/tasks/ingestion/ingestion-dashboard-ui.md",
+        "bytes": 3480,
+        "sha256": "1bfd50d51ecbc8794e1ed87b56eaa5584203a34944ae423106518d2b52192a8e"
+      },
+      {
+        "path": "kanban/tasks/ingestion/ingestion-file-upload-api.md",
+        "bytes": 2909,
+        "sha256": "5a9fd4b3cae180360bbe6a36a6e55c1155ebafbf49fb6cd2317d4866f49df037"
+      },
+      {
+        "path": "kanban/tasks/ingestion/ingestion-github-driver.md",
+        "bytes": 4141,
+        "sha256": "25ae467b4766fea873acd2e403bade6f36f0c500b6ca27cbc52647faa8a52f3d"
+      },
+      {
+        "path": "kanban/tasks/ingestion/ingestion-google-drive-driver.md",
+        "bytes": 2086,
+        "sha256": "864dfbc877ae8a9a420a1cc2401c888e5b3a3fd5f009ea34218d1f15b536ef7d"
+      },
+      {
+        "path": "kanban/tasks/ingestion/ingestion-progress-streaming.md",
+        "bytes": 5175,
+        "sha256": "86b2893cbcc7c06fe737d920f0af3c08e14ae3f99ef16646f7ef8cdf37066f64"
+      },
+      {
+        "path": "kanban/tasks/knowledge-lake-azure-aws-provider-stubs.md",
+        "bytes": 2138,
+        "sha256": "cb169206ae73c50b03c49cd9c42dbddf0f089d5a418284a6df301e41038fba06"
+      },
+      {
+        "path": "kanban/tasks/knowledge-lake-domain-logic-layer.md",
+        "bytes": 2619,
+        "sha256": "80df980bcb6d59fec36a2ea870852fcdba58acc5011f85cb9f397d9dcf4cb7b4"
+      },
+      {
+        "path": "kanban/tasks/knowledge-lake-local-dev-provider-and-factory-wiring.md",
+        "bytes": 2484,
+        "sha256": "6c6ff4d06b6a83c1c2691ff6e5d40f447f5e861238b49a077803d2b48868dad9"
+      },
+      {
+        "path": "kanban/tasks/knowledge-lake-package-scaffold-and-core-interfaces.md",
+        "bytes": 2266,
+        "sha256": "d38e72813a7580f120b3f818a97a5d97c9742a50d770df74cf6a1b47ee87fa00"
+      },
+      {
+        "path": "kanban/tasks/knowledge-lake-self-hosted-provider-implementations.md",
+        "bytes": 2607,
+        "sha256": "42179547a4b25c76c099bacd251993763017e54136981f3f0b0f832c59ec562c"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-adaptive-expand-policy-seam.md",
+        "bytes": 3357,
+        "sha256": "c5c072a39eba7c3ae59f4c7b8250bc5eeb880a06edc008a3e4e7b20a58f1ee4b"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-adaptive-expand-policy-telemetry.md",
+        "bytes": 3269,
+        "sha256": "39acb6a5daed27008877c635efad9f9898ba6b6ba2a2ecf2dd4a41ed7b3c586f"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-adaptive-web-frontier-umbrella-spec-authoring.md",
+        "bytes": 2389,
+        "sha256": "d1b5c6ed579d2c9f255fe9eda1cf1197de769cb48f02e814a482cdddb77d0540"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-demo-seed.md",
+        "bytes": 7562,
+        "sha256": "fd7badc5fe8adb899dd7b2e887fb3e90ec649db294e5ca40de6aa54b1e153a6d"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-docs-source-of-truth-normalization.md",
+        "bytes": 2858,
+        "sha256": "04191933182fe82e20157e5714e5c97f890d24ec7525ed86db96e1fc6e66ba7c"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-gardens-page-bugfixes.md",
+        "bytes": 3616,
+        "sha256": "ee39e11de02f5557edf6ef4d9f40cfadbaf330f9dfb81b55c52f78cb362cfe5e"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-graph-memory-runtime-smoke-e2e.md",
+        "bytes": 2176,
+        "sha256": "a67ecf93021391bf6139a03ba9ca46febf22a6fcf47d934a71c545fc3ac8fe11"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-graph-weaver-live-sync-truth.md",
+        "bytes": 2547,
+        "sha256": "7599074ef079b49ddf22b4af14783287ae1ff66d29337be9a8c0cfd6f7875c24"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-kms-openplanner-ingest-arity-fix.md",
+        "bytes": 1455,
+        "sha256": "dd88f2199c1b6bfaf6aa76c098e1fd50b031f3b72a0e774583341e637383d37f"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-knoxx-graph-query-contract-v1.md",
+        "bytes": 2604,
+        "sha256": "ba2caf5c690c037983f88022cabd75043534d6e45dec733b8042172bb1ca3a0f"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-knoxx-health-route-coherence.md",
+        "bytes": 3481,
+        "sha256": "0403d0aed69163329f5d51769b1ac4a7db7b303dd95683d79c5ffcf3e6950996"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-myrmex-openplanner-write-recovery.md",
+        "bytes": 2373,
+        "sha256": "285619c286ac53abbd80b3f52b8cfc8c549729938d5e66eef49b71620562263b"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-openplanner-derived-edge-projections-slice.md",
+        "bytes": 2439,
+        "sha256": "dcb9281104b20700927a6e943b589fe045e4280c554620a6990b8cfcf0558f83"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-openplanner-gardens-backend-fixes.md",
+        "bytes": 4600,
+        "sha256": "39fecf9aad251bc34aa8b604c0c2b91166da8554f8dc09e7c7134d91f42961cb"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-openplanner-graph-population-smoke.md",
+        "bytes": 3469,
+        "sha256": "1b9ab30206af509d87f7e1d4a591837b23ae7ac0e37c7a2ad0e69472e00f7d34"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-openplanner-salience-backbone-materialization.md",
+        "bytes": 3133,
+        "sha256": "69e16c79254e9710dbd31df98e1a1a35383698dcac6f1206ebd3a995e90f27e0"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-pass1-path-canonicalization.md",
+        "bytes": 1178,
+        "sha256": "524391ae4f823bb87ef8235ff625b5f04254707b9e6a6a959a3df909ddf9aa10"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-pass2-status-tagging.md",
+        "bytes": 1141,
+        "sha256": "000aba70e2aee12d461a9dc297be269426dbbb4745bfd03854a679c780d8abae"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-pass3-storage-runtime-labeling.md",
+        "bytes": 1410,
+        "sha256": "fc54cbbad3e1de8b43e9252299598cf8c862f519df1afc044d359d70ddd6a707"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-pass4-ui-vocabulary.md",
+        "bytes": 1218,
+        "sha256": "175eded76ba55a469b9c81ac5227e0b2a50da6250adeaa58470f849fb0656cfd"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-pass5-rbac-refresh.md",
+        "bytes": 1516,
+        "sha256": "1f020555f5afc6a5b8952d4dc94be58329a7613b9e26a4afea9df7e59e4b838c"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-product-line-cross-link-roadmap.md",
+        "bytes": 1888,
+        "sha256": "c2e4962de50ee79dc5d15cd0bd0c320bf66a4bd26bac0186f8add557af760f9b"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-product-line-exposure-monitor-specs.md",
+        "bytes": 1773,
+        "sha256": "2cc1fa6c1826fd65d6abdbb0311ac0afca29555c5c1eddbaf9d40b01d3b67184"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-product-line-kanban-grooming.md",
+        "bytes": 1619,
+        "sha256": "125f991ce53377c164b6d37885c5555a59ce568e06aa7887a831ed129a4307dc"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-product-line-shared-infra-scaffold.md",
+        "bytes": 1953,
+        "sha256": "be4f796b9700e7f051b7b883c9ab39d3e49c634731b33405e593b3ec723b0fba"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-translation-document-review-v2.md",
+        "bytes": 8743,
+        "sha256": "e206ff6bab0ab02049c5193fa77a9693feca1ac570b25503305ad96989c81ab1"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-translation-export.md",
+        "bytes": 1046,
+        "sha256": "0e3ccff8bb58144c3e68c2fdb106d14ea91647ba2d995a33c1573afd134cfaa1"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-translation-mt-pipeline.md",
+        "bytes": 1571,
+        "sha256": "b390164deabbdd4c9667bfeda4bb448fc7884c664918ef696c84aaedf3555c1a"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-translation-routes.md",
+        "bytes": 2527,
+        "sha256": "be42c187722ba3e860405d3b87da204e6cf488d5332f2a6db42b51753a40abeb"
+      },
+      {
+        "path": "kanban/tasks/knoxx-action-agent-spawn-boundary-fix.md",
+        "bytes": 3267,
+        "sha256": "4f2bc991aad60c03cef5f9ff745d5ad329bb1c9566226ce03221a9605623c639"
+      },
+      {
+        "path": "kanban/tasks/knoxx-action-scope-injection.md",
+        "bytes": 3308,
+        "sha256": "e4f1cd746ded62a2b8e87463a0d4b739a49273fb1809c9fb9322db9e33c9efc5"
+      },
+      {
+        "path": "kanban/tasks/knoxx-anonymous-actions.md",
+        "bytes": 972,
+        "sha256": "6169669e307df62b95c5240edb2af88a7588e6d1a1b1ead04d78448cf14333c4"
+      },
+      {
+        "path": "kanban/tasks/knoxx-anonymous-agent-facet.md",
+        "bytes": 1449,
+        "sha256": "3daec5c3ce56e1ccb0d37639568e9832e6549351b07377ab2329c3f27f1f581d"
+      },
+      {
+        "path": "kanban/tasks/knoxx-arch-migration-cephalon-proxx-client.md",
+        "bytes": 1889,
+        "sha256": "3cffcf803e1ab4252fc32eb0e34005e1542ef0fcd7775ef00f2d011028a103dc"
+      },
+      {
+        "path": "kanban/tasks/knoxx-arch-migration-cms-routes-retirement.md",
+        "bytes": 1731,
+        "sha256": "1080170b55649472891b341a9d51aee8db744dff1288e12d936e5b03b06e3fc2"
+      },
+      {
+        "path": "kanban/tasks/knoxx-arch-migration-devel-smoke-verification.md",
+        "bytes": 1803,
+        "sha256": "3f3b1003596022d8d406c6ae4726bcaf89f371f4288e1c4bcf51e9dea8112346"
+      },
+      {
+        "path": "kanban/tasks/knoxx-arch-migration-ragussy-ui-sunset.md",
+        "bytes": 1873,
+        "sha256": "682374c86f4997823b16b7d9384902033d4bc313e458811f68b9708476b779f2"
+      },
+      {
+        "path": "kanban/tasks/knoxx-backend-data-shapes-review.md",
+        "bytes": 1926,
+        "sha256": "4c0f59c70fd4702aa834d72e4fef164b431f1f76b5a150b6daf81f134d71ab57"
+      },
+      {
+        "path": "kanban/tasks/knoxx-backend-lint-async-workflows-src.md",
+        "bytes": 16435,
+        "sha256": "86ded65aa9f505ff4647281d1c01bc16c9e6b072aa1f978b1070747ae872ec54"
+      },
+      {
+        "path": "kanban/tasks/knoxx-backend-lint-coverage-characterization.md",
+        "bytes": 1235,
+        "sha256": "29c4f59c0347dd7bbe1755f51e81969f59e8d33ca61d3088349f6701c9a649a1"
+      },
+      {
+        "path": "kanban/tasks/knoxx-backend-lint-function-length-extractions.md",
+        "bytes": 2612,
+        "sha256": "43a595700730b3b0b4bd3e2e3b9630f1a9b3bd5285c8d483b7c362a481b2a6eb"
+      },
+      {
+        "path": "kanban/tasks/knoxx-backend-lint-hard-error-first-pass.md",
+        "bytes": 1548,
+        "sha256": "a808693c12d95b2c19ce67f73600b6c0f9e14d3492c496235873e2c004409e1b"
+      },
+      {
+        "path": "kanban/tasks/knoxx-backend-lint-route-helper-symbols.md",
+        "bytes": 2784,
+        "sha256": "7176c650adc55ad5762db9a6add792bf7fbcaf72a61a838f65d2bb5bf96e0029"
+      },
+      {
+        "path": "kanban/tasks/knoxx-backend-lint-test-boundaries.md",
+        "bytes": 966,
+        "sha256": "eac86d2bee688dff73827fd6b1e9fe7314285cdba65ccf75179f3314de011d0d"
+      },
+      {
+        "path": "kanban/tasks/knoxx-backend-lint-unused-and-final-warnings.md",
+        "bytes": 1001,
+        "sha256": "cdc547c2b32f01ee29ee4150d205c4d38ded0754f534d9d7bbc3f1fbd8893614"
+      },
+      {
+        "path": "kanban/tasks/knoxx-backend-lint-zero-warning-gate.md",
+        "bytes": 926,
+        "sha256": "fb592fc9e9724285b5864a2e16eb00a8fa00ff14251a09a0191c7f31196f46f3"
+      },
+      {
+        "path": "kanban/tasks/knoxx-canvas-tool-backend-handler.md",
+        "bytes": 1305,
+        "sha256": "630cc61ec8ad5779ec49bb94dbea158e9f5adca97ca0b0d3428fb7c2a0097561"
+      },
+      {
+        "path": "kanban/tasks/knoxx-chat-ui-core-components.md",
+        "bytes": 1671,
+        "sha256": "4c9b18dcb737a87463629f33925eef11b96cb2441448a836d5738b7c1cca3b74"
+      },
+      {
+        "path": "kanban/tasks/knoxx-chat-ui-hooks-and-utils.md",
+        "bytes": 1471,
+        "sha256": "a58947c73ff9eb11cb77d4fd8ff1d7f71c6ba6ae879d8c55f346cb1e3d17bcba"
+      },
+      {
+        "path": "kanban/tasks/knoxx-chat-ui-package-scaffold-and-types.md",
+        "bytes": 1698,
+        "sha256": "4bac8391cc509bf148ed60f89dfa44f3c06bbf0761fa7cb2cf962eea8082cfe7"
+      },
+      {
+        "path": "kanban/tasks/knoxx-chat-ui-test-and-typecheck-gate.md",
+        "bytes": 1570,
+        "sha256": "62e1d72eccb09c62a454aa9fd5e2685c79a1f683aac13e9996199f77073f99f8"
+      },
+      {
+        "path": "kanban/tasks/knoxx-cms-ai-draft-route.md",
+        "bytes": 1560,
+        "sha256": "15304c182798f988ff13e7b867d1a513ae1d27b637e52b91742253ace53e89d0"
+      },
+      {
+        "path": "kanban/tasks/knoxx-cms-backend-routes.md",
+        "bytes": 1452,
+        "sha256": "7c8941dca28ba9cbd98bb7f049d5ee1fe99dde427ec47755012d90a5911cb61f"
+      },
+      {
+        "path": "kanban/tasks/knoxx-cms-contract-validation.md",
+        "bytes": 18396,
+        "sha256": "c18af1a9888d0165539d36aa3d9bdfbe4960e5962030bc3c32051fca11fd1550"
+      },
+      {
+        "path": "kanban/tasks/knoxx-cms-resource-backed-publication-ui.md",
+        "bytes": 18707,
+        "sha256": "47ed80df8d991ec02abd1514b7db09170195e384721a71f110b39f43d0482a6e"
+      },
+      {
+        "path": "kanban/tasks/knoxx-cms-typebox-shapes.md",
+        "bytes": 1528,
+        "sha256": "1ec952bc6c2f9ee82a000d7aa05a7e85516edbe71a4230c2ca6fee49a89bd328"
+      },
+      {
+        "path": "kanban/tasks/knoxx-composite-resource-parsing.md",
+        "bytes": 1143,
+        "sha256": "3dcd0420bc37c9742207799318051b4521538ff26224d663c0f31c77cb4037b3"
+      },
+      {
+        "path": "kanban/tasks/knoxx-contract-publication-e2e.md",
+        "bytes": 9710,
+        "sha256": "3bcd51df17d3103fd54349883b8c7f8dca002be3618443f265c253370a57521d"
+      },
+      {
+        "path": "kanban/tasks/knoxx-contract-runtime-extraction.md",
+        "bytes": 1478,
+        "sha256": "44b80183d6f939280ed1bd6afce58e6d8b341dca9c8e2f257b15cb22cc1e8bce"
+      },
+      {
+        "path": "kanban/tasks/knoxx-dead-field-cleanup.md",
+        "bytes": 1351,
+        "sha256": "95c291de205e6ebf7dda25d5615fcb0672ac747f826179b1a6b4d86de9e6e7d3"
+      },
+      {
+        "path": "kanban/tasks/knoxx-deploy-actor-owning-local-credentials.md",
+        "bytes": 3770,
+        "sha256": "6fefa7a0091435ab2709d89913291cc99856d51f28c872342d18e38e755ccf1c"
+      },
+      {
+        "path": "kanban/tasks/knoxx-editor-agent-context-loop.md",
+        "bytes": 1460,
+        "sha256": "1cd8d31db0802c32e95ea6bb6e59a7e7ac9b99db1b2b7d82da9ffe4478ed3dfe"
+      },
+      {
+        "path": "kanban/tasks/knoxx-error-log-redaction.md",
+        "bytes": 3534,
+        "sha256": "ced4eedf6dd4096554c8872e53d2e7d866d6aba487461cd28ad6d68736f20b2e"
+      },
+      {
+        "path": "kanban/tasks/knoxx-evaluation-case-contracts.md",
+        "bytes": 22906,
+        "sha256": "a569265be5184655eeb5da10ca1586d85ea4217933f1dd848836c1daa412d4e8"
+      },
+      {
+        "path": "kanban/tasks/knoxx-evaluation-mcp-review-flow.md",
+        "bytes": 14141,
+        "sha256": "6bd89a2dadbae76608614fc8253eaacfb5a018a6a6f02aff15fda41bca5964af"
+      },
+      {
+        "path": "kanban/tasks/knoxx-event-runtime-boot-coupling.md",
+        "bytes": 5180,
+        "sha256": "728ecb7c9927bce9544ec5a673977d3a99e0662bfc511b117c1d93acd4ab4f65"
+      },
+      {
+        "path": "kanban/tasks/knoxx-event-runtime-generator-catalog-route.md",
+        "bytes": 2889,
+        "sha256": "e279012a009cb989e9d632749c1d6e3033cdd1b7746b606bc1d13b844fe8751f"
+      },
+      {
+        "path": "kanban/tasks/knoxx-file-resource-repository-provider.md",
+        "bytes": 9900,
+        "sha256": "a5bd185b4d3c8e3cc58bcf4373a9e6ccc8f315887000d8077543e844172dcf1e"
+      },
+      {
+        "path": "kanban/tasks/knoxx-frontend-app-bridge-retirement.md",
+        "bytes": 11639,
+        "sha256": "a4977d6d73d07915095f71170fbdc7ea51c206b008500023ae2db4a1b35ef313"
+      },
+      {
+        "path": "kanban/tasks/knoxx-frontend-chat-workspace-decomposition.md",
+        "bytes": 2695,
+        "sha256": "7c431e22c0a8e9cfff06547192889206da84e9abd3758b5e3bed4be6ab6c4ad5"
+      },
+      {
+        "path": "kanban/tasks/knoxx-frontend-helix-component-test-harness.md",
+        "bytes": 3167,
+        "sha256": "09ea3f06713a5425394791debfd10d74ee431d43cb2cfaaca4d4203bc1f3bf57"
+      },
+      {
+        "path": "kanban/tasks/knoxx-frontend-keyboard-mode-wiring.md",
+        "bytes": 1753,
+        "sha256": "ba39eb5f9b3e984df148df031edb72a7ec3154515d39471671354c96f3bdb761"
+      },
+      {
+        "path": "kanban/tasks/knoxx-frontend-uxx-helix-native.md",
+        "bytes": 2155,
+        "sha256": "e5fda3b2c65c2f86cb70651859987c7a6a0ea995a7b91e483984e5f4d3300bfa"
+      },
+      {
+        "path": "kanban/tasks/knoxx-frontend-vitest-retirement.md",
+        "bytes": 1977,
+        "sha256": "aeaf9c518c4c27ee4062c821e50e71293ca596a0ef56e2e556b2b229c19fbbb0"
+      },
+      {
+        "path": "kanban/tasks/knoxx-futuresight-kms-chat-widget.md",
+        "bytes": 1996,
+        "sha256": "4c5ec37372a6f5dc24132fecf1957527f9ff6a6c5fbc9725710318971b6de8fb"
+      },
+      {
+        "path": "kanban/tasks/knoxx-futuresight-kms-cms-python-backend.md",
+        "bytes": 2431,
+        "sha256": "edc69ef668db7551ae7562acccbd4b87e04d085674379e280095b0f971be1f6b"
+      },
+      {
+        "path": "kanban/tasks/knoxx-futuresight-kms-cms-react-ui.md",
+        "bytes": 2381,
+        "sha256": "de14f7130f63bed3c89f99a17e6d402b09789fc3d887c43cbb288bb90e95ff1b"
+      },
+      {
+        "path": "kanban/tasks/knoxx-futuresight-kms-sync-public-collection.md",
+        "bytes": 2126,
+        "sha256": "f31ea01d7de76e2b80f14113d716dc5d16b9b35081d1c1f74b099d8a79f4ee71"
+      },
+      {
+        "path": "kanban/tasks/knoxx-gardens-dep-truth-live-link.md",
+        "bytes": 1558,
+        "sha256": "52abeec236988562b73444c1878f16586e2f0004fdf41083b5fa294e29f45a53"
+      },
+      {
+        "path": "kanban/tasks/knoxx-gardens-openplanner-rest-decoupling.md",
+        "bytes": 1649,
+        "sha256": "0df1a5c182e411bcbbe5e83091f26bf52227d08f2a2aa8c1564b7b74c2a5a480"
+      },
+      {
+        "path": "kanban/tasks/knoxx-gardens-tab-wire-events-page.md",
+        "bytes": 1314,
+        "sha256": "2af65cfcfe10a7fc1df07c101a429e30e2ef5d523752ae064fb54b5f51049840"
+      },
+      {
+        "path": "kanban/tasks/knoxx-generator-runtime-create.md",
+        "bytes": 2787,
+        "sha256": "71f7b8a98b801d27009cd2ea59778708f66184ff4a9efee2d817cf515fb8e323"
+      },
+      {
+        "path": "kanban/tasks/knoxx-http-event-runtime-lifecycle-separation.md",
+        "bytes": 1571,
+        "sha256": "f23cc74cb6ff5f2a8f4ed3df926b34342cb918b39563d957e6d5e6c675ae01ef"
+      },
+      {
+        "path": "kanban/tasks/knoxx-kms-cms-clojure-service.md",
+        "bytes": 1946,
+        "sha256": "db9c3e985d9e4693d66dfbff5baec840d3edf3f48cac96de04d3a8c088f321cd"
+      },
+      {
+        "path": "kanban/tasks/knoxx-knowledge-labeler-ui-queue-wiring.md",
+        "bytes": 1319,
+        "sha256": "05822cfe0e2f126d5c7b7b78e9609ce6f2643ed1ce535e418d6195785646d628"
+      },
+      {
+        "path": "kanban/tasks/knoxx-knowledge-ops-docker-compose-self-hosted.md",
+        "bytes": 1727,
+        "sha256": "55907f02276b15c39fc1d4fe6f925dea677789b7b032b5be3432ca7a3cdb4537"
+      },
+      {
+        "path": "kanban/tasks/knoxx-knowledge-ops-filesystem-blob-store.md",
+        "bytes": 1422,
+        "sha256": "9d41a865389a5dcd96e91c65ed3ccf6242eba44108673b95ca3c0399fb465e8d"
+      },
+      {
+        "path": "kanban/tasks/knoxx-knowledge-ops-jsonl-queue-provider.md",
+        "bytes": 1461,
+        "sha256": "fdb92899367bed1be9ef8be0ddf7338992783bcca904a3fdb4366dac56cc1fb1"
+      },
+      {
+        "path": "kanban/tasks/knoxx-knowledge-ops-mongodb-storage-sink.md",
+        "bytes": 1406,
+        "sha256": "a6e1ad8eaf22cda1842fdb5ac13f26cc9fe324b5d92f7e29f89e1590ac0822d0"
+      },
+      {
+        "path": "kanban/tasks/knoxx-knowledge-ops-ollama-embedding-provider.md",
+        "bytes": 1414,
+        "sha256": "48070006b31b8f564096ea561ca33cedd6de34dc198547374ebe0b927c022fdc"
+      },
+      {
+        "path": "kanban/tasks/knoxx-knowledge-workbench-query-ui.md",
+        "bytes": 1460,
+        "sha256": "31ac863a867caad7a5c84932d9a534db8fe7d078c3129d7b7b6c3da6dbe340f2"
+      },
+      {
+        "path": "kanban/tasks/knoxx-lake-local-embedding-search.md",
+        "bytes": 1805,
+        "sha256": "7d7701065d0909a2ba5120521ba92869ae9b787b555cb570fd6b4b07acb20c38"
+      },
+      {
+        "path": "kanban/tasks/knoxx-lake-local-storage-blob-queue.md",
+        "bytes": 2048,
+        "sha256": "a1a15e225087bb30aa416174bcead47e304189f54366847f958f6ed9e185ffbd"
+      },
+      {
+        "path": "kanban/tasks/knoxx-lake-package-scaffold.md",
+        "bytes": 1534,
+        "sha256": "422b4a808bc1be0fc56120a45c7b7667200056f284e4ad71f998ce0cbffe267a"
+      },
+      {
+        "path": "kanban/tasks/knoxx-lake-provider-factory.md",
+        "bytes": 1701,
+        "sha256": "fdc47e52a739458abe15cf835bf2c245e52def796c93b86de73fe8d20387a3dc"
+      },
+      {
+        "path": "kanban/tasks/knoxx-layer-enforcement-gate.md",
+        "bytes": 5302,
+        "sha256": "d7ef95cd8249672d49728ae00c6b4b516c18be6434dd8477f96f8e055184e537"
+      },
+      {
+        "path": "kanban/tasks/knoxx-mcp-actor-ascription.md",
+        "bytes": 5121,
+        "sha256": "d42bfc73414214d50e9ff532d6b8b92355571092afe6b0bcc75fd6664727cd77"
+      },
+      {
+        "path": "kanban/tasks/knoxx-mcp-consent-permission-groups.md",
+        "bytes": 3496,
+        "sha256": "44d3db9e08208a3e1e6bee7e8098eddc2afad16225416629f6ee21433b9639ef"
+      },
+      {
+        "path": "kanban/tasks/knoxx-mcp-consent-server-side-state.md",
+        "bytes": 3833,
+        "sha256": "81a751fcd3ec40d8ec783bc4e495f70920be67e63f7aa4d75903890bf4cfb5b1"
+      },
+      {
+        "path": "kanban/tasks/knoxx-mongodb-docker-compose-decommission.md",
+        "bytes": 1735,
+        "sha256": "b8662c07b4cc22d7a403dadbe52bb2f20f87895e552a105777bb39b1a114cfbb"
+      },
+      {
+        "path": "kanban/tasks/knoxx-mongodb-migration-script.md",
+        "bytes": 2141,
+        "sha256": "c546fa8262cb84e6c91242d614d28bd9534c8938f263865a11ed2e1effd3039d"
+      },
+      {
+        "path": "kanban/tasks/knoxx-multi-tenant-migrations-prod-runbook.md",
+        "bytes": 1610,
+        "sha256": "bfb754ead71705922aadde5faf886bca0efd9ed30de31335a81df6fd7ae596f6"
+      },
+      {
+        "path": "kanban/tasks/knoxx-multi-tenant-rate-limit-policy-hook.md",
+        "bytes": 1483,
+        "sha256": "0c3abc217c096d214529d5d45356eb7782f222650551b64187a93e01eb40a9b4"
+      },
+      {
+        "path": "kanban/tasks/knoxx-multi-tenant-review-workflow-queue.md",
+        "bytes": 1457,
+        "sha256": "7ed741817bb2a1dac6bc1321c56c7a5f96e150e29fac184ae1fdcd790bdc19a4"
+      },
+      {
+        "path": "kanban/tasks/knoxx-namespace-manifest-migration.md",
+        "bytes": 1613,
+        "sha256": "296d42b242e19af2805d50e052783bebe566227ee1f9eefb187c3a11ffdc6bab"
+      },
+      {
+        "path": "kanban/tasks/knoxx-namespace-resource-loader.md",
+        "bytes": 1337,
+        "sha256": "c376222e3f9fe9e0e13907b6ad2a8ffae932c94f21a6137c1e51e26077ffb4e1"
+      },
+      {
+        "path": "kanban/tasks/knoxx-openplanner-mcp-integration.md",
+        "bytes": 765,
+        "sha256": "a249d165069c1f00cd63fca573384b7026533f0e02c6e4b35102e9ea4f323503"
+      },
+      {
+        "path": "kanban/tasks/knoxx-openplanner-publication-state-migration.md",
+        "bytes": 22499,
+        "sha256": "e374e2eca9f00b065e462cf343d8d811d591e0c923960890cfe4d0321fadbce2"
+      },
+      {
+        "path": "kanban/tasks/knoxx-openplanner-rest-retirement.md",
+        "bytes": 8759,
+        "sha256": "7afd450dda9e88268b6b08490a3ec78bfe4fcc1b5cdd693e9e41e396ac43690d"
+      },
+      {
+        "path": "kanban/tasks/knoxx-pipeline-to-action-migration.md",
+        "bytes": 4381,
+        "sha256": "d96eb5185a59b0500e31ce56adfe5bac6792dea24e7c8eb554678c7dbe41b4ec"
+      },
+      {
+        "path": "kanban/tasks/knoxx-playlist-publication-label-provenance.md",
+        "bytes": 2756,
+        "sha256": "0f89c833a34c9424b6028c2d10b0a46441745a9240244f5df88202bb17ba3696"
+      },
+      {
+        "path": "kanban/tasks/knoxx-publication-adapter-boundary.md",
+        "bytes": 3560,
+        "sha256": "fa3c6028d6e5f2d5755d13cb049ecd8172afea79999e82eb636526a48aa649ba"
+      },
+      {
+        "path": "kanban/tasks/knoxx-publication-adapter-effects-idempotency.md",
+        "bytes": 6964,
+        "sha256": "20c0b6f84bcfea91c67965973c9ed472bb7f6f9171f0f7308277324fc6003ecf"
+      },
+      {
+        "path": "kanban/tasks/knoxx-publication-duplicate-identity.md",
+        "bytes": 5876,
+        "sha256": "3650a4450d97c12fbed0d1fcf1425f7435be4aab7ae6631f995a0da9d77977cb"
+      },
+      {
+        "path": "kanban/tasks/knoxx-publication-intent-resolver.md",
+        "bytes": 20085,
+        "sha256": "3a7dcaf88e12ff941365686220cf62dadaeeeaf6d6d912596f5c50159277a2f3"
+      },
+      {
+        "path": "kanban/tasks/knoxx-publication-live-verification-contract.md",
+        "bytes": 1744,
+        "sha256": "d156212aaed665ff16187ee62aac7222e855f34f727c38c69e91999afcbf040a"
+      },
+      {
+        "path": "kanban/tasks/knoxx-publication-locale-catalog.md",
+        "bytes": 1942,
+        "sha256": "4961aaf5b6d5cab78bfb65096d09cc705630622e81176392802825e0ac26c908"
+      },
+      {
+        "path": "kanban/tasks/knoxx-publication-lossless-edn-state-edits.md",
+        "bytes": 1337,
+        "sha256": "7ebff923aab120b4512e1cf29cfb61197d4d26dd94f57fa320e03b0f56968b22"
+      },
+      {
+        "path": "kanban/tasks/knoxx-publication-receipts-fake-adapter-proof.md",
+        "bytes": 9898,
+        "sha256": "d07f63fc241e93a22566633d57dc847774bdefb336fc66980edfff3acbbc6f23"
+      },
+      {
+        "path": "kanban/tasks/knoxx-publication-reconcile-plan-laws.md",
+        "bytes": 8236,
+        "sha256": "d3baf9cd44ea3396e6857caccd7a594a1424b9b3a8f04a64e7d194808774f4f2"
+      },
+      {
+        "path": "kanban/tasks/knoxx-publication-reconciler-runtime.md",
+        "bytes": 2264,
+        "sha256": "3d6e6aa97f878dede11d369cc5d24f357dd2dc85e987606d66c5daf870753f93"
+      },
+      {
+        "path": "kanban/tasks/knoxx-publication-resource-contracts.md",
+        "bytes": 13244,
+        "sha256": "dd3ec7debeca8ecbcb3e5a28030a9b16e3834f2f33b6b8b40c5303a07fd6f248"
+      },
+      {
+        "path": "kanban/tasks/knoxx-publication-stack-relink.md",
+        "bytes": 4939,
+        "sha256": "daf9641d3c3b46c130a03505c02bd515af00c22e7279c3ebc5264f5080a32c05"
+      },
+      {
+        "path": "kanban/tasks/knoxx-publication-static-site-target.md",
+        "bytes": 3818,
+        "sha256": "c67c714daa051acc37f0339cc25d8cef1d36744b5cf2f2d31248fb9676491301"
+      },
+      {
+        "path": "kanban/tasks/knoxx-publication-target-registry.md",
+        "bytes": 2508,
+        "sha256": "c71cbfde03f4ff7545e3b2ce405218a797ebf9fdafd4820fb55f463922f6e2bd"
+      },
+      {
+        "path": "kanban/tasks/knoxx-published-garden-broadcast-viewer-route.md",
+        "bytes": 3279,
+        "sha256": "555d6e33a03b29937a489c8f7b0d34a82468fecb984c579e49d54a441b22f207"
+      },
+      {
+        "path": "kanban/tasks/knoxx-qualified-id-resolution.md",
+        "bytes": 1288,
+        "sha256": "785dcb3dfabff90a7301c6035692f5317c4889c2d90acb7907a81da7d4992bad"
+      },
+      {
+        "path": "kanban/tasks/knoxx-ragussy-kms-handoff-route.md",
+        "bytes": 1466,
+        "sha256": "6f40bc3c0dfca51accee6a3e2206f4ba8130c37dd966406ebec6ce124ccb9276"
+      },
+      {
+        "path": "kanban/tasks/knoxx-react-ssr-representation-provider.md",
+        "bytes": 3999,
+        "sha256": "906ea39c4fdc9c15c823c9ac19b5686177239b9c6216d932a02ecfc0f55074f5"
+      },
+      {
+        "path": "kanban/tasks/knoxx-resource-repository-snapshot-observation.md",
+        "bytes": 11650,
+        "sha256": "11c2bf504f1c918dfc2b5fd88421fcc0cb64508e5dfaa75d7368a74ce2b1841a"
+      },
+      {
+        "path": "kanban/tasks/knoxx-resource-route-qualified-id-addressing.md",
+        "bytes": 2958,
+        "sha256": "abf8a78e468bf9a2c3b73df82fb272187415338b28d027011001be23769066cc"
+      },
+      {
+        "path": "kanban/tasks/knoxx-rich-action-registry.md",
+        "bytes": 7096,
+        "sha256": "8361ff33e288102f751bef4bf305f87992e36c0ce894a825cbea6d2948606845"
+      },
+      {
+        "path": "kanban/tasks/knoxx-role-scoped-lakes-backend-preset-resolver.md",
+        "bytes": 2087,
+        "sha256": "3a578e7b16ec0e8448ca191dba7f288b5f2a1383e91c4c39ffd3c7835a96e4bf"
+      },
+      {
+        "path": "kanban/tasks/knoxx-role-scoped-lakes-frontend-preset-ui.md",
+        "bytes": 1932,
+        "sha256": "54cbdc8897af81d24144fe2fb2dbd47e252ab5ca2cf5c8a60512d19cfb3b47ad"
+      },
+      {
+        "path": "kanban/tasks/knoxx-role-scoped-lakes-ingestion-routing.md",
+        "bytes": 1933,
+        "sha256": "6aecf86ba75627bdc8a89f3c85c5164784e0bfcd82d50905cb08f0c901200e6a"
+      },
+      {
+        "path": "kanban/tasks/knoxx-run-steps-action.md",
+        "bytes": 3638,
+        "sha256": "9761d8e7ea655f39b39a8629bdd3e5026f251dd6fed952b312e00a68f94fe262"
+      },
+      {
+        "path": "kanban/tasks/knoxx-runtime-decomposition-inventory.md",
+        "bytes": 1381,
+        "sha256": "cbb9aadd7c767aa458bb9af7841b96f95940456d017eb5419b2037e07703f63b"
+      },
+      {
+        "path": "kanban/tasks/knoxx-scope-expansion.md",
+        "bytes": 1279,
+        "sha256": "b9fec5623462a86a8f28b21b152bb479201d3576617f84bf19f9c2cafeda844f"
+      },
+      {
+        "path": "kanban/tasks/knoxx-shibboleth-dsl-corporate-qa-macros.md",
+        "bytes": 1494,
+        "sha256": "4108a9a44456155ba3462a9c6eb25b8238d50779b0f33d49ec2864c6bf89bc93"
+      },
+      {
+        "path": "kanban/tasks/knoxx-store-protocol.md",
+        "bytes": 1161,
+        "sha256": "fa19791bbf05525e61b4ce2b10f88064069dc44ea81514caebb870d2355b5620"
+      },
+      {
+        "path": "kanban/tasks/knoxx-streaming-behavior-action-args.md",
+        "bytes": 5324,
+        "sha256": "def938af0715f4e5e54f6dfd78342444212675044390f80d75725d0103078788"
+      },
+      {
+        "path": "kanban/tasks/knoxx-studio-publication-e2e-smoke.md",
+        "bytes": 2807,
+        "sha256": "ae79a7c63156911a4aa49c31f4dbff9458d6284e8a6bef31ca297cc545ab443e"
+      },
+      {
+        "path": "kanban/tasks/knoxx-system-prompt-audit-visibility.md",
+        "bytes": 3360,
+        "sha256": "99e2a337c6be9c501298aa96853c93915b1f6f3bd2bba61062089301b02fd168"
+      },
+      {
+        "path": "kanban/tasks/knoxx-tenant-cross-org-denial-e2e.md",
+        "bytes": 2036,
+        "sha256": "1f246ee8c19c3c67ada8e6b9ae4f36fbba58d3d82000958e3001a4f15b1c6dfe"
+      },
+      {
+        "path": "kanban/tasks/knoxx-tenant-fail-closed-route-guard.md",
+        "bytes": 2261,
+        "sha256": "1d40baf6aa889602a42f22d557d8c3bd5a94b6e09389bbf0599a9306242723e4"
+      },
+      {
+        "path": "kanban/tasks/knoxx-tenant-org-scope-runs-memory.md",
+        "bytes": 2015,
+        "sha256": "872c3e6aa9e91648ccb4079662e257de01b8f5638fa26125566010f37fce15d8"
+      },
+      {
+        "path": "kanban/tasks/knoxx-tenant-policy-backed-tool-authz.md",
+        "bytes": 2056,
+        "sha256": "5ffb7edd231be69eaa1746c042def95561ecd55990aed2dd6f2114667017a1cf"
+      },
+      {
+        "path": "kanban/tasks/knoxx-tool-namespace-boundary-audit.md",
+        "bytes": 4267,
+        "sha256": "3c764caa8aa05744afb7446d92474d807929122df26893d3b4b85de5b979028d"
+      },
+      {
+        "path": "kanban/tasks/knoxx-tool-vocabulary-rename.md",
+        "bytes": 2338,
+        "sha256": "5272b4f787b1eacdacee3ab623a5c16c428336a79c2b0e2176e41ae8135c8ea1"
+      },
+      {
+        "path": "kanban/tasks/knoxx-translation-agent-actor-composition.md",
+        "bytes": 7536,
+        "sha256": "26dc0523eeee685025e1cdfae92dc587456b210b3d72f5d1b30e10dcf758e14f"
+      },
+      {
+        "path": "kanban/tasks/knoxx-translation-approval-surface.md",
+        "bytes": 6055,
+        "sha256": "26d62d7a187a8e537c6c27d597d82ddec1bf22e0876cb1da46aa62601db87acc"
+      },
+      {
+        "path": "kanban/tasks/knoxx-translation-config-publication-dependency-removal.md",
+        "bytes": 4375,
+        "sha256": "471034b70908e4c31462267e1deb669dc1c015235b3d374447eb837f2b420b90"
+      },
+      {
+        "path": "kanban/tasks/knoxx-translation-config-trusted-auth-context.md",
+        "bytes": 3940,
+        "sha256": "4486cfb56b3ac4c8eab673614ec7f02a6352c6579dc8df6b8ef7b8f59ece3c00"
+      },
+      {
+        "path": "kanban/tasks/knoxx-translation-pipeline-config-resource.md",
+        "bytes": 16062,
+        "sha256": "7c7f6e470a99abb0bf62bb0ed919781ff4de4c834e5e741caf5013ab2d60adc0"
+      },
+      {
+        "path": "kanban/tasks/knoxx-translation-pipeline-validation.md",
+        "bytes": 13645,
+        "sha256": "7137df6bf8214d52222a48c1a7ec4636f2cf7d5094fbd5469a0e04b728e89090"
+      },
+      {
+        "path": "kanban/tasks/knoxx-translation-publication-gate.md",
+        "bytes": 13728,
+        "sha256": "f65cc7bc2031c5a0f993391b2d24eecea7749d71fdfed29b4dd823b7182d0463"
+      },
+      {
+        "path": "kanban/tasks/knoxx-translation-review-chat-panel.md",
+        "bytes": 3605,
+        "sha256": "b493a22d0a70ac34107711414f63bbc2037f9db765331329e3488f32c4793123"
+      },
+      {
+        "path": "kanban/tasks/knoxx-translation-split-memory-feedback.md",
+        "bytes": 7507,
+        "sha256": "a0bdc786348368f062b532af16ada2db3ed3419e3f217fe958a12d70827bcc78"
+      },
+      {
+        "path": "kanban/tasks/knoxx-translation-transduction-boundary.md",
+        "bytes": 5131,
+        "sha256": "62f4908c084dbaf27654e88a5eb247aa70b8d1d20038bfcc3290c53f84249b01"
+      },
+      {
+        "path": "kanban/tasks/knoxx-translation-work-dispatch.md",
+        "bytes": 8160,
+        "sha256": "9a063c4dda37c2b4a4006d3a94296906d2345ef85f704b8c87f30de1bc74a3ba"
+      },
+      {
+        "path": "kanban/tasks/knoxx-translations-event-sourced.md",
+        "bytes": 23485,
+        "sha256": "472ee5a824c63a6ce0a7fe55521e0cbb5245ed9323197f0974ea0def081e7012"
+      },
+      {
+        "path": "kanban/tasks/knoxx-trigger-action-task-prompt-migration.md",
+        "bytes": 9714,
+        "sha256": "0f8689d2c899112f3807ebac4ef434c36865b1f97d72f7a2adfdd48390a64e69"
+      },
+      {
+        "path": "kanban/tasks/knoxx-trigger-runner-facade-delete.md",
+        "bytes": 2222,
+        "sha256": "fefe3faa58b0c6c7c11598b7b2948d713c9ad40d5b46eff017add0c6a4a04e29"
+      },
+      {
+        "path": "kanban/tasks/knoxx-trigger-with-sole-mechanism.md",
+        "bytes": 1496,
+        "sha256": "211c4909abab1fb8eb721584b1af28ea042a8a8382751821dc24e99dc0cc3dee"
+      },
+      {
+        "path": "kanban/tasks/knoxx-uxx-button-chord-prop.md",
+        "bytes": 1370,
+        "sha256": "07a45289c1b45687b4e04aa5cbd1f2640288e4bbabaf591d767c6943d8edc104"
+      },
+      {
+        "path": "kanban/tasks/knoxx-uxx-chord-overlay-composite.md",
+        "bytes": 1733,
+        "sha256": "2781f1c23ea156ed2ce77be0ad61d3baaa44f4a5925857e677b23921fc38bc15"
+      },
+      {
+        "path": "kanban/tasks/knoxx-uxx-export-editor-statusbar-toolbar.md",
+        "bytes": 1458,
+        "sha256": "a787912bc009d62da8b2f6faa6b3e5403c8d17070fc6eb24a9dd336dd651ca09"
+      },
+      {
+        "path": "kanban/tasks/knoxx-uxx-mode-indicator-primitive.md",
+        "bytes": 1454,
+        "sha256": "b960ca77d58f6cf6a7207a0fd7a0def52f457435245694b519a5b50ce761fd21"
+      },
+      {
+        "path": "kanban/tasks/knoxx-versioned-resolved-translation-config.md",
+        "bytes": 41157,
+        "sha256": "7cf860f63d2cb3e248e3bedb97190f14ef2404493df2d7840514bbd0383195c4"
+      },
+      {
+        "path": "kanban/tasks/knoxx-voice-tools-remote-transport.md",
+        "bytes": 1949,
+        "sha256": "3ad9046ad070b1a924c20f36166415567d7b6708295b3c4d48d206341144408c"
+      },
+      {
+        "path": "kanban/tasks/knoxx-website-publication-live-verification.md",
+        "bytes": 2692,
+        "sha256": "08645dbb6f9efbd5c1727ed148a5cf5daa9acd1f4f8d31ca17c5367d536475f8"
+      },
+      {
+        "path": "kanban/tasks/openplanner-mcp-server.md",
+        "bytes": 745,
+        "sha256": "335556f90f65e9ba9228536c2ce5744e45497a26cd354e4726d14ae05d363f7f"
+      },
+      {
+        "path": "kanban/tasks/personal-fork-main-synchronization.md",
+        "bytes": 2796,
+        "sha256": "f64d7c8086ddd3275f1d9256cfaef5103137a73b4b9f981803d86e105d81e9ab"
+      },
+      {
+        "path": "kanban/tasks/pii-classification-schema-ingestion-hook.md",
+        "bytes": 1853,
+        "sha256": "037a1d3e30b3e83c491cb2f91e7d8135947b8061cf14c9c5e28b844b0d6e5aaa"
+      },
+      {
+        "path": "kanban/tasks/pii-deletion-retention-protocol.md",
+        "bytes": 1869,
+        "sha256": "28746733e88d92d13a36e1830f12b52ab08d1317fe9d5dda81eb688ceee9d59a"
+      },
+      {
+        "path": "kanban/tasks/pii-redaction-logs-training-export.md",
+        "bytes": 1676,
+        "sha256": "0d621eec5b34834fb156394ea895724b12bc8fab4ba98cc346ba71dcb817b915"
+      },
+      {
+        "path": "kanban/tasks/pii-tenant-isolation-retrieval-guard.md",
+        "bytes": 1698,
+        "sha256": "e37d07e6dc2c5911121f33db9579f502b576253a7ea2f469b39d99be67a8b081"
+      },
+      {
+        "path": "kanban/tasks/services-caddy-hostname-scale-decision.md",
+        "bytes": 2985,
+        "sha256": "7b639d71b4513e48bd32dfc127b928605692a4665a9f2384535819f924c50446"
+      },
+      {
+        "path": "kanban/tasks/services-knoxx-staging-migration.md",
+        "bytes": 3620,
+        "sha256": "0affb9a447109c23b4f0a6d6f7af56f950ec1fbf12881ece476aa4d5137811cb"
+      },
+      {
+        "path": "kanban/tasks/services-proxx-staging-migration.md",
+        "bytes": 4219,
+        "sha256": "aad33e2b4ea56351c9aea082e6b7547caa9a2058e640ec0bc8490ea02ebb27d0"
+      },
+      {
+        "path": "kanban/tasks/services-staging-slot-pattern.md",
+        "bytes": 6329,
+        "sha256": "a8e54ec45be3b34d9fef0e05bfc4038fe07bd3508996c6006dbe031f48e2bd26"
+      },
+      {
+        "path": "kanban/tasks/uxx-shared-markup-html-helix-renderers.md",
+        "bytes": 7487,
+        "sha256": "637f1a8846a15d6d0b17b5c0d4cb004e165156b90ef42cac8db644456f902c3b"
+      },
+      {
+        "path": "kanban/tasks/uxx-svg-document-shell-network-guard.md",
+        "bytes": 4091,
+        "sha256": "78e6ef77e978527d49bdc48fe348588765c7da291e1ebd02a049d031417fa254"
+      },
+      {
+        "path": "kanban/workbench/1.2-dashboard-agent-runs.md",
+        "bytes": 1556,
+        "sha256": "1d58bdbc8da2a920db8743091af90668b91d1374a512e55ff67497a7a148e5cb"
+      },
+      {
+        "path": "kanban/workbench/1.3-dashboard-memory-activity.md",
+        "bytes": 1425,
+        "sha256": "ddd4ff43c599c45e1963287954d22fe235721d9fa54fd455141ad5374f0b715f"
+      },
+      {
+        "path": "kanban/workbench/2.2-content-editor-ai-suggestions.md",
+        "bytes": 2463,
+        "sha256": "b3b503994df84469ac3bcfe3a5bcb706d5513347e550c13728bd53748a9826c9"
+      },
+      {
+        "path": "kanban/workbench/2.3-content-editor-provenance.md",
+        "bytes": 10005,
+        "sha256": "ad8be9fc24338f7b9cb8b43268f6d1f4593d1a36acfd0910847dbe93602998f5"
+      },
+      {
+        "path": "kanban/workbench/3.3-review-correction-writeback.md",
+        "bytes": 2700,
+        "sha256": "0379b016816c3197ce362c51016f58f51e7420c6e9340c81279c199f98fc1071"
+      },
+      {
+        "path": "kanban/workbench/4.1-memory-search.md",
+        "bytes": 1009,
+        "sha256": "17b974c867d3d477d71f2914edba439c25ace99d505ad88a51aa1d7ff9c07799"
+      },
+      {
+        "path": "kanban/workbench/4.2-memory-focal-node.md",
+        "bytes": 996,
+        "sha256": "7fb6e5d99cff0d970bd757f5e52884e2ff940acd5d47fa3c09387a74244fe742"
+      },
+      {
+        "path": "kanban/workbench/4.3-memory-history-slider.md",
+        "bytes": 955,
+        "sha256": "0d1a154a8e4a20f861917940f2d90b86b3cbbbd89b88081fca76073092c44dc0"
+      },
+      {
+        "path": "kanban/workbench/5.1-agent-run-list.md",
+        "bytes": 3193,
+        "sha256": "4231007e327052a76f8a82d28b9694fe8d6f18b83148da901300259ab2d6b04c"
+      },
+      {
+        "path": "kanban/workbench/5.2-agent-run-detail.md",
+        "bytes": 1167,
+        "sha256": "167d1842ec22409d72557d9c7716caf778a04695455d35f9783d6656c51bac29"
+      },
+      {
+        "path": "kanban/workbench/5.3-agent-scratchpad.md",
+        "bytes": 1368,
+        "sha256": "f9d0b5a33f1c296602f45a6ec4b04baf8f637e5561e51cfe0982b79e1b7c1b63"
+      }
+    ],
+    "unchanged_after_native_reads": true,
+    "no_extra_files": true
+  },
+  {
+    "label": "final-after",
+    "root": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx158-provenance-planning-8cbb1e7535/native-final-after",
+    "files": [
+      {
+        "path": "kanban/.eta-mu",
+        "bytes": 5,
+        "sha256": "379ed8a4b23477b35cacc90d48d113079662bfda27af29b9451b57783461cf3a"
+      },
+      {
+        "path": "kanban/.events/ledger.edn",
+        "bytes": 48340,
+        "sha256": "52ebe376ff4148211bf71e906d6cdfede4790d38bc59b47edf852c23db264b5b"
+      },
+      {
+        "path": "kanban/README.md",
+        "bytes": 2773,
+        "sha256": "983a3d2a36f93103bd1cfe1f6916254a0c905e6be3274116dcb39f71a15d4353"
+      },
+      {
+        "path": "kanban/epics/action-scope-and-pipeline-collapse.md",
+        "bytes": 5170,
+        "sha256": "bddaff0942aa0e5f00a2aefda504cd04e0b4d373566ae0ae9e31064c418e8063"
+      },
+      {
+        "path": "kanban/epics/broadcast-studio-playlist-publication-and-block-cms.md",
+        "bytes": 3429,
+        "sha256": "03780665553e9bad5a112468478aee551b6004c44363b54862b719d550a866e8"
+      },
+      {
+        "path": "kanban/epics/contract-runtime-merge-proposal.md",
+        "bytes": 1705,
+        "sha256": "7acc1cfba86be967e17503f28948667a0258d72236ed540cc4928c2b8bd54ba2"
+      },
+      {
+        "path": "kanban/epics/events-agent-runtime-separation.md",
+        "bytes": 3568,
+        "sha256": "eb7a664eea1178283c2e0c2765ea41cf4f092d09776e0e8738556fbf7e5f8cc5"
+      },
+      {
+        "path": "kanban/epics/folder-backed-visual-cms-design-spec.md",
+        "bytes": 1461,
+        "sha256": "0997c34e973fa6e315c86a1382ad834def92baf2de312c2b6b7611964507bbb0"
+      },
+      {
+        "path": "kanban/epics/frontend-helix-migration-vite-retirement.md",
+        "bytes": 3471,
+        "sha256": "298bdb20649e267c5fefb22febd5083371109f74f9565ee6a24a13c4d0ad666c"
+      },
+      {
+        "path": "kanban/epics/garden-cms-playlist-chat-and-label-provenance.md",
+        "bytes": 786,
+        "sha256": "ad025baf966b2d8c09164e4c431656ab90f7e3d0db78ba8eee24d6f575b042b6"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-adaptive-expand-policy-hook.md",
+        "bytes": 1608,
+        "sha256": "ba8b85b924cef62c390ff3152ee1bdc5dff5a15449b1bdd5d94d8ce5cad4d40c"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-adaptive-web-frontier-and-multiscale-backbone.md",
+        "bytes": 2849,
+        "sha256": "41a1e3b6215c55c558cf9d0f6c0cefe02c05fab75b43655644d9d27d2254bc1e"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-architecture-migration.md",
+        "bytes": 1744,
+        "sha256": "0cb1648b5fa3a52d44b289948f0486b651a8f17f23dec9dba7f1832819174462"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-chat-ui-library.md",
+        "bytes": 1810,
+        "sha256": "23e4ce3498314cd1b562ffc8effa838f9a24605a76fbc8246b70b15660565b1b"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-chat-widget-layers.md",
+        "bytes": 1711,
+        "sha256": "5a493b5a56734c0cfd6b580b0e38c825514450063259aff92503ec6514a81661"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-clojure-backend-migration.md",
+        "bytes": 1515,
+        "sha256": "22628d6a47ce00e4e0b3d36df029168d75e5ec56e7f3f066c342d4947929fc50"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-cms-data-model.md",
+        "bytes": 2029,
+        "sha256": "5672147984166ce4f3be11268a2fcff9eacbd01ef032dea49e7082f3c946aa11"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-consistency-review.md",
+        "bytes": 670,
+        "sha256": "a58f4b4b95b4fa96947669352506800039ee4f9a29b52d67a20773d4bb6b927f"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-contract-runtime-dod-restructure.md",
+        "bytes": 1983,
+        "sha256": "c129331860d6a53cb2fdac8b096c27e249db358ec3afbd3d688cabcf962049ca"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-deploy-aws.md",
+        "bytes": 1629,
+        "sha256": "c02534dbafae119eeedc80e715883d50902118974b7cd0a0e6e03aac1bd17b7b"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-deploy-azure.md",
+        "bytes": 1109,
+        "sha256": "6fa6423071de8b844a400c2957eee2dab10f92f0524deb7b3fbd30c7dc0ab01f"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-deploy-self-hosted.md",
+        "bytes": 1122,
+        "sha256": "dad7cdaafdd829866cbac2368b839132332d800fe50175aa2d7e8ac4f9966825"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-exposure-monitor.md",
+        "bytes": 1403,
+        "sha256": "b977583d74a3d1dfa92dae8f4bb9a2340d4416eec8719148cc038f13a705225a"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-federated-lakes.md",
+        "bytes": 922,
+        "sha256": "9811516f6ad0ca735b7bc142f7b31e707e7025976b8b45fbfc49c90709fbcf95"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-full-roadmap.md",
+        "bytes": 712,
+        "sha256": "1a40af569df4801b796124143418b97869e0330438f98ab3d05c56e8b84c4831"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-gardens.md",
+        "bytes": 762,
+        "sha256": "f424b586bb968019d75af14cb3007cfb0d2a5c621313703cd3f4b339537343e3"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-graph-memory-reconciliation.md",
+        "bytes": 1538,
+        "sha256": "527eb7113846929ae002544e2cf924a93d00cce1ffe35309d5997cc7bacb20f1"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-graph-memory-roadmap.md",
+        "bytes": 879,
+        "sha256": "24fce019f38841e01d485039dfbb56c38e4c9aa315b129815da72618f1158f87"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-ingestion-architecture.md",
+        "bytes": 1304,
+        "sha256": "af0810da8995a016ce98da427ea52f605e2538ec77e41b983466a288cde92596"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-ingestion-pipeline.md",
+        "bytes": 5587,
+        "sha256": "5560782e127cf27e19cc89f5de26ed17533136d99ffd1b5df24da6e0f87ca001"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-kms-query.md",
+        "bytes": 1746,
+        "sha256": "4b9ee132418adf36b53b3c41acf24b8f63694869b0fe8e1014e4f5fb6a0645aa"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-knoxx-opinionated-distribution.md",
+        "bytes": 892,
+        "sha256": "c0f455c92d602aeb4e02bc46934744536d9695a5f20bf07710abab78375726c0"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-mongodb-vector-unification.md",
+        "bytes": 1196,
+        "sha256": "047768a10c3665567a7ccb8137d4b6ef3b812f89ab85594aa00ff07f94f04226"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-multi-provider-epic.md",
+        "bytes": 937,
+        "sha256": "2951aeea955fcb1e146d1a6388d28ce6686efbe61596de5351d7ed102dcfbe40"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-multi-tenant-control-plane.md",
+        "bytes": 1245,
+        "sha256": "df6fa2337806633f0343f571aa36ddba52f42cd6da6c34a9a8de06a3c7c07997"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-mvp-phase1-epics.md",
+        "bytes": 2930,
+        "sha256": "20beb97467cb2c2ee52df979f7d3caa480439d5ee1b960f51481c036a9bc998a"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-pii-handling-protocol.md",
+        "bytes": 2693,
+        "sha256": "32e54b60324275c4783afd5b1e76aff8781f062ecec3f93313d1a05957005f12"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-product-line.md",
+        "bytes": 1030,
+        "sha256": "457b12f68e9e3d6e781ef24d97b32afa6be9ae2f55d06d92c6e4acf2f3565c10"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-provider-abstraction.md",
+        "bytes": 1070,
+        "sha256": "f7810b2b7822a762330a2ce45bf7675cfec01c37767c801ecb7e34354e9db59a"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-roadmap-status.md",
+        "bytes": 1313,
+        "sha256": "e035194796239536ed65b398492d440efe880a3aeec8e595c51b65c3e44c9b66"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-role-scoped-lakes.md",
+        "bytes": 1461,
+        "sha256": "c82606891a861d9a445f86d59cc59965cd9602b7e3c1f7cb6a0220f4067ad9bd"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-shibboleth-lite-labeling.md",
+        "bytes": 2148,
+        "sha256": "d12a519193e3b97ec4626189808976ef8a58057e61d8d56385b75c4d0d743b28"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-source-lakes-cross-lake-graph.md",
+        "bytes": 1791,
+        "sha256": "5ca798a1df9fcfb38d0964a59610094efc12b1565c22cee63d644196885ef982"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-translation-review-epic.md",
+        "bytes": 1750,
+        "sha256": "67e535a4e477b26086773c9d4c1fbc4dcda7decc94bda004dd99255a9bd99c2e"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-ui-design-system.md",
+        "bytes": 903,
+        "sha256": "ab260d908c85ac80200b1bd6c790fcb71ca8dd94f95e4e9ec977bd87ea7bac9b"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-workbench-ui.md",
+        "bytes": 1555,
+        "sha256": "c5682bd067beee0a75108264657ef92f7b00bc53f2431c2e087ac051ede833f3"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-workbench-ux-breakdown.md",
+        "bytes": 1185,
+        "sha256": "96b92fcaacd6e5e12b98b032b982a64548770692590332c81cd3470b0f0ad442"
+      },
+      {
+        "path": "kanban/epics/knowledge-ops-workbench-ux-v1.md",
+        "bytes": 1543,
+        "sha256": "1470729c0f69604c064cbbd73081d8000f7bdea52d0ddc444112421e5d5f0a27"
+      },
+      {
+        "path": "kanban/epics/knoxx-backend-cljs-lint-remediation.md",
+        "bytes": 1190,
+        "sha256": "96644d6b91734ad6c52a158a0d7670b298b045b61a6e75f9f628630db3df2d5b"
+      },
+      {
+        "path": "kanban/epics/knoxx-backend-law-shape-domain-epic.md",
+        "bytes": 849,
+        "sha256": "15d45457b699e97cca566bfe0b60ae7036bdbc4eeb5eeb9d69c58c540f5cf5ad"
+      },
+      {
+        "path": "kanban/epics/knoxx-contract-owned-publication-pipeline.md",
+        "bytes": 8953,
+        "sha256": "d52c2334f5adc0cf01d91c151caa4d1f419a7e37ff472aa2487486659bac5f74"
+      },
+      {
+        "path": "kanban/epics/knoxx-contract-runtime-deployment.md",
+        "bytes": 1931,
+        "sha256": "82dd740c5677c9632c3b6d52810432c39bdcf4037af6e6b00f472654b204d000"
+      },
+      {
+        "path": "kanban/epics/knoxx-decouple-into-katamorph-contracts.md",
+        "bytes": 5578,
+        "sha256": "875227f32e49f963e72c70351f8d55d0ad56853116eff22438a1553470fcf034"
+      },
+      {
+        "path": "kanban/epics/knoxx-evaluation-review-system.md",
+        "bytes": 4880,
+        "sha256": "f167afc801b1db60355ae87d9746bc72c6486939c84dfcaf4ec18854a4bf9a43"
+      },
+      {
+        "path": "kanban/epics/knoxx-publication-runtime-follow-up.md",
+        "bytes": 1843,
+        "sha256": "a9134c5c51a7ad2b51e39213cec12fa2c5e311beec1ccc6aaf04716a2a8d933e"
+      },
+      {
+        "path": "kanban/epics/knoxx-representation-output-boundary.md",
+        "bytes": 3390,
+        "sha256": "7cef12d544b8d63bc450b0ac517b65923d74c174b23b4a551c5637577f601398"
+      },
+      {
+        "path": "kanban/epics/knoxx-resource-repository-cms.md",
+        "bytes": 4617,
+        "sha256": "7c2c78f573ab02f4bb86e438f10fc59abe2197c7d0c09e49fa8cd9bfad9443b1"
+      },
+      {
+        "path": "kanban/epics/knoxx-session-lake-graph-and-memory.md",
+        "bytes": 1572,
+        "sha256": "1450f0954ab7e3d40f71ed51f7826107fd7c3b47b8de4e0c55ac96901b205e09"
+      },
+      {
+        "path": "kanban/epics/knoxx-transduction-provider-pipeline.md",
+        "bytes": 4815,
+        "sha256": "fa6396f5617ee8701281d40bafbd2eb968d4b6a9cadc7f1689c814bc1db7fd8c"
+      },
+      {
+        "path": "kanban/epics/translated-publication-to-website.md",
+        "bytes": 4812,
+        "sha256": "3e97e3d16121bfa9834e5ffe508ff49d040906b44dfbc44449e428e9fbe94467"
+      },
+      {
+        "path": "kanban/epics/unified-workplace-pattern.md",
+        "bytes": 668,
+        "sha256": "4d4d1aae9c477f953f525f339e2fd337a32e43fc1c7878b32d24220bc6bcc59b"
+      },
+      {
+        "path": "kanban/openhax.kanban.json",
+        "bytes": 82,
+        "sha256": "3ecac8aed4429710c83bd88c714a849c3303d52a7fa8b0ba287a8ffb4989eeff"
+      },
+      {
+        "path": "kanban/tasks/.publication-followup-split-marker.md",
+        "bytes": 95,
+        "sha256": "c14ce5e407e4d6566b9f5c98be6062e39e149ac82eb831b45eb4e1aa06494589"
+      },
+      {
+        "path": "kanban/tasks/ingestion/ingestion-bulk-import-api.md",
+        "bytes": 3862,
+        "sha256": "78d4037766c629bc138ff1f13cf6825a62e9df6af9d6154ae5e5cc85f906f722"
+      },
+      {
+        "path": "kanban/tasks/ingestion/ingestion-dashboard-ui.md",
+        "bytes": 3480,
+        "sha256": "1bfd50d51ecbc8794e1ed87b56eaa5584203a34944ae423106518d2b52192a8e"
+      },
+      {
+        "path": "kanban/tasks/ingestion/ingestion-file-upload-api.md",
+        "bytes": 2909,
+        "sha256": "5a9fd4b3cae180360bbe6a36a6e55c1155ebafbf49fb6cd2317d4866f49df037"
+      },
+      {
+        "path": "kanban/tasks/ingestion/ingestion-github-driver.md",
+        "bytes": 4141,
+        "sha256": "25ae467b4766fea873acd2e403bade6f36f0c500b6ca27cbc52647faa8a52f3d"
+      },
+      {
+        "path": "kanban/tasks/ingestion/ingestion-google-drive-driver.md",
+        "bytes": 2086,
+        "sha256": "864dfbc877ae8a9a420a1cc2401c888e5b3a3fd5f009ea34218d1f15b536ef7d"
+      },
+      {
+        "path": "kanban/tasks/ingestion/ingestion-progress-streaming.md",
+        "bytes": 5175,
+        "sha256": "86b2893cbcc7c06fe737d920f0af3c08e14ae3f99ef16646f7ef8cdf37066f64"
+      },
+      {
+        "path": "kanban/tasks/knowledge-lake-azure-aws-provider-stubs.md",
+        "bytes": 2138,
+        "sha256": "cb169206ae73c50b03c49cd9c42dbddf0f089d5a418284a6df301e41038fba06"
+      },
+      {
+        "path": "kanban/tasks/knowledge-lake-domain-logic-layer.md",
+        "bytes": 2619,
+        "sha256": "80df980bcb6d59fec36a2ea870852fcdba58acc5011f85cb9f397d9dcf4cb7b4"
+      },
+      {
+        "path": "kanban/tasks/knowledge-lake-local-dev-provider-and-factory-wiring.md",
+        "bytes": 2484,
+        "sha256": "6c6ff4d06b6a83c1c2691ff6e5d40f447f5e861238b49a077803d2b48868dad9"
+      },
+      {
+        "path": "kanban/tasks/knowledge-lake-package-scaffold-and-core-interfaces.md",
+        "bytes": 2266,
+        "sha256": "d38e72813a7580f120b3f818a97a5d97c9742a50d770df74cf6a1b47ee87fa00"
+      },
+      {
+        "path": "kanban/tasks/knowledge-lake-self-hosted-provider-implementations.md",
+        "bytes": 2607,
+        "sha256": "42179547a4b25c76c099bacd251993763017e54136981f3f0b0f832c59ec562c"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-adaptive-expand-policy-seam.md",
+        "bytes": 3357,
+        "sha256": "c5c072a39eba7c3ae59f4c7b8250bc5eeb880a06edc008a3e4e7b20a58f1ee4b"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-adaptive-expand-policy-telemetry.md",
+        "bytes": 3269,
+        "sha256": "39acb6a5daed27008877c635efad9f9898ba6b6ba2a2ecf2dd4a41ed7b3c586f"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-adaptive-web-frontier-umbrella-spec-authoring.md",
+        "bytes": 2389,
+        "sha256": "d1b5c6ed579d2c9f255fe9eda1cf1197de769cb48f02e814a482cdddb77d0540"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-demo-seed.md",
+        "bytes": 7562,
+        "sha256": "fd7badc5fe8adb899dd7b2e887fb3e90ec649db294e5ca40de6aa54b1e153a6d"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-docs-source-of-truth-normalization.md",
+        "bytes": 2858,
+        "sha256": "04191933182fe82e20157e5714e5c97f890d24ec7525ed86db96e1fc6e66ba7c"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-gardens-page-bugfixes.md",
+        "bytes": 3616,
+        "sha256": "ee39e11de02f5557edf6ef4d9f40cfadbaf330f9dfb81b55c52f78cb362cfe5e"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-graph-memory-runtime-smoke-e2e.md",
+        "bytes": 2176,
+        "sha256": "a67ecf93021391bf6139a03ba9ca46febf22a6fcf47d934a71c545fc3ac8fe11"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-graph-weaver-live-sync-truth.md",
+        "bytes": 2547,
+        "sha256": "7599074ef079b49ddf22b4af14783287ae1ff66d29337be9a8c0cfd6f7875c24"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-kms-openplanner-ingest-arity-fix.md",
+        "bytes": 1455,
+        "sha256": "dd88f2199c1b6bfaf6aa76c098e1fd50b031f3b72a0e774583341e637383d37f"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-knoxx-graph-query-contract-v1.md",
+        "bytes": 2604,
+        "sha256": "ba2caf5c690c037983f88022cabd75043534d6e45dec733b8042172bb1ca3a0f"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-knoxx-health-route-coherence.md",
+        "bytes": 3481,
+        "sha256": "0403d0aed69163329f5d51769b1ac4a7db7b303dd95683d79c5ffcf3e6950996"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-myrmex-openplanner-write-recovery.md",
+        "bytes": 2373,
+        "sha256": "285619c286ac53abbd80b3f52b8cfc8c549729938d5e66eef49b71620562263b"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-openplanner-derived-edge-projections-slice.md",
+        "bytes": 2439,
+        "sha256": "dcb9281104b20700927a6e943b589fe045e4280c554620a6990b8cfcf0558f83"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-openplanner-gardens-backend-fixes.md",
+        "bytes": 4600,
+        "sha256": "39fecf9aad251bc34aa8b604c0c2b91166da8554f8dc09e7c7134d91f42961cb"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-openplanner-graph-population-smoke.md",
+        "bytes": 3469,
+        "sha256": "1b9ab30206af509d87f7e1d4a591837b23ae7ac0e37c7a2ad0e69472e00f7d34"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-openplanner-salience-backbone-materialization.md",
+        "bytes": 3133,
+        "sha256": "69e16c79254e9710dbd31df98e1a1a35383698dcac6f1206ebd3a995e90f27e0"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-pass1-path-canonicalization.md",
+        "bytes": 1178,
+        "sha256": "524391ae4f823bb87ef8235ff625b5f04254707b9e6a6a959a3df909ddf9aa10"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-pass2-status-tagging.md",
+        "bytes": 1141,
+        "sha256": "000aba70e2aee12d461a9dc297be269426dbbb4745bfd03854a679c780d8abae"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-pass3-storage-runtime-labeling.md",
+        "bytes": 1410,
+        "sha256": "fc54cbbad3e1de8b43e9252299598cf8c862f519df1afc044d359d70ddd6a707"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-pass4-ui-vocabulary.md",
+        "bytes": 1218,
+        "sha256": "175eded76ba55a469b9c81ac5227e0b2a50da6250adeaa58470f849fb0656cfd"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-pass5-rbac-refresh.md",
+        "bytes": 1516,
+        "sha256": "1f020555f5afc6a5b8952d4dc94be58329a7613b9e26a4afea9df7e59e4b838c"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-product-line-cross-link-roadmap.md",
+        "bytes": 1888,
+        "sha256": "c2e4962de50ee79dc5d15cd0bd0c320bf66a4bd26bac0186f8add557af760f9b"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-product-line-exposure-monitor-specs.md",
+        "bytes": 1773,
+        "sha256": "2cc1fa6c1826fd65d6abdbb0311ac0afca29555c5c1eddbaf9d40b01d3b67184"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-product-line-kanban-grooming.md",
+        "bytes": 1619,
+        "sha256": "125f991ce53377c164b6d37885c5555a59ce568e06aa7887a831ed129a4307dc"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-product-line-shared-infra-scaffold.md",
+        "bytes": 1953,
+        "sha256": "be4f796b9700e7f051b7b883c9ab39d3e49c634731b33405e593b3ec723b0fba"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-translation-document-review-v2.md",
+        "bytes": 8743,
+        "sha256": "e206ff6bab0ab02049c5193fa77a9693feca1ac570b25503305ad96989c81ab1"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-translation-export.md",
+        "bytes": 1046,
+        "sha256": "0e3ccff8bb58144c3e68c2fdb106d14ea91647ba2d995a33c1573afd134cfaa1"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-translation-mt-pipeline.md",
+        "bytes": 1571,
+        "sha256": "b390164deabbdd4c9667bfeda4bb448fc7884c664918ef696c84aaedf3555c1a"
+      },
+      {
+        "path": "kanban/tasks/knowledge-ops-translation-routes.md",
+        "bytes": 2527,
+        "sha256": "be42c187722ba3e860405d3b87da204e6cf488d5332f2a6db42b51753a40abeb"
+      },
+      {
+        "path": "kanban/tasks/knoxx-action-agent-spawn-boundary-fix.md",
+        "bytes": 3267,
+        "sha256": "4f2bc991aad60c03cef5f9ff745d5ad329bb1c9566226ce03221a9605623c639"
+      },
+      {
+        "path": "kanban/tasks/knoxx-action-scope-injection.md",
+        "bytes": 3308,
+        "sha256": "e4f1cd746ded62a2b8e87463a0d4b739a49273fb1809c9fb9322db9e33c9efc5"
+      },
+      {
+        "path": "kanban/tasks/knoxx-anonymous-actions.md",
+        "bytes": 972,
+        "sha256": "6169669e307df62b95c5240edb2af88a7588e6d1a1b1ead04d78448cf14333c4"
+      },
+      {
+        "path": "kanban/tasks/knoxx-anonymous-agent-facet.md",
+        "bytes": 1449,
+        "sha256": "3daec5c3ce56e1ccb0d37639568e9832e6549351b07377ab2329c3f27f1f581d"
+      },
+      {
+        "path": "kanban/tasks/knoxx-arch-migration-cephalon-proxx-client.md",
+        "bytes": 1889,
+        "sha256": "3cffcf803e1ab4252fc32eb0e34005e1542ef0fcd7775ef00f2d011028a103dc"
+      },
+      {
+        "path": "kanban/tasks/knoxx-arch-migration-cms-routes-retirement.md",
+        "bytes": 1731,
+        "sha256": "1080170b55649472891b341a9d51aee8db744dff1288e12d936e5b03b06e3fc2"
+      },
+      {
+        "path": "kanban/tasks/knoxx-arch-migration-devel-smoke-verification.md",
+        "bytes": 1803,
+        "sha256": "3f3b1003596022d8d406c6ae4726bcaf89f371f4288e1c4bcf51e9dea8112346"
+      },
+      {
+        "path": "kanban/tasks/knoxx-arch-migration-ragussy-ui-sunset.md",
+        "bytes": 1873,
+        "sha256": "682374c86f4997823b16b7d9384902033d4bc313e458811f68b9708476b779f2"
+      },
+      {
+        "path": "kanban/tasks/knoxx-backend-data-shapes-review.md",
+        "bytes": 1926,
+        "sha256": "4c0f59c70fd4702aa834d72e4fef164b431f1f76b5a150b6daf81f134d71ab57"
+      },
+      {
+        "path": "kanban/tasks/knoxx-backend-lint-async-workflows-src.md",
+        "bytes": 16435,
+        "sha256": "86ded65aa9f505ff4647281d1c01bc16c9e6b072aa1f978b1070747ae872ec54"
+      },
+      {
+        "path": "kanban/tasks/knoxx-backend-lint-coverage-characterization.md",
+        "bytes": 1235,
+        "sha256": "29c4f59c0347dd7bbe1755f51e81969f59e8d33ca61d3088349f6701c9a649a1"
+      },
+      {
+        "path": "kanban/tasks/knoxx-backend-lint-function-length-extractions.md",
+        "bytes": 2612,
+        "sha256": "43a595700730b3b0b4bd3e2e3b9630f1a9b3bd5285c8d483b7c362a481b2a6eb"
+      },
+      {
+        "path": "kanban/tasks/knoxx-backend-lint-hard-error-first-pass.md",
+        "bytes": 1548,
+        "sha256": "a808693c12d95b2c19ce67f73600b6c0f9e14d3492c496235873e2c004409e1b"
+      },
+      {
+        "path": "kanban/tasks/knoxx-backend-lint-route-helper-symbols.md",
+        "bytes": 2784,
+        "sha256": "7176c650adc55ad5762db9a6add792bf7fbcaf72a61a838f65d2bb5bf96e0029"
+      },
+      {
+        "path": "kanban/tasks/knoxx-backend-lint-test-boundaries.md",
+        "bytes": 966,
+        "sha256": "eac86d2bee688dff73827fd6b1e9fe7314285cdba65ccf75179f3314de011d0d"
+      },
+      {
+        "path": "kanban/tasks/knoxx-backend-lint-unused-and-final-warnings.md",
+        "bytes": 1001,
+        "sha256": "cdc547c2b32f01ee29ee4150d205c4d38ded0754f534d9d7bbc3f1fbd8893614"
+      },
+      {
+        "path": "kanban/tasks/knoxx-backend-lint-zero-warning-gate.md",
+        "bytes": 926,
+        "sha256": "fb592fc9e9724285b5864a2e16eb00a8fa00ff14251a09a0191c7f31196f46f3"
+      },
+      {
+        "path": "kanban/tasks/knoxx-canvas-tool-backend-handler.md",
+        "bytes": 1305,
+        "sha256": "630cc61ec8ad5779ec49bb94dbea158e9f5adca97ca0b0d3428fb7c2a0097561"
+      },
+      {
+        "path": "kanban/tasks/knoxx-chat-ui-core-components.md",
+        "bytes": 1671,
+        "sha256": "4c9b18dcb737a87463629f33925eef11b96cb2441448a836d5738b7c1cca3b74"
+      },
+      {
+        "path": "kanban/tasks/knoxx-chat-ui-hooks-and-utils.md",
+        "bytes": 1471,
+        "sha256": "a58947c73ff9eb11cb77d4fd8ff1d7f71c6ba6ae879d8c55f346cb1e3d17bcba"
+      },
+      {
+        "path": "kanban/tasks/knoxx-chat-ui-package-scaffold-and-types.md",
+        "bytes": 1698,
+        "sha256": "4bac8391cc509bf148ed60f89dfa44f3c06bbf0761fa7cb2cf962eea8082cfe7"
+      },
+      {
+        "path": "kanban/tasks/knoxx-chat-ui-test-and-typecheck-gate.md",
+        "bytes": 1570,
+        "sha256": "62e1d72eccb09c62a454aa9fd5e2685c79a1f683aac13e9996199f77073f99f8"
+      },
+      {
+        "path": "kanban/tasks/knoxx-cms-ai-draft-route.md",
+        "bytes": 1560,
+        "sha256": "15304c182798f988ff13e7b867d1a513ae1d27b637e52b91742253ace53e89d0"
+      },
+      {
+        "path": "kanban/tasks/knoxx-cms-backend-routes.md",
+        "bytes": 1452,
+        "sha256": "7c8941dca28ba9cbd98bb7f049d5ee1fe99dde427ec47755012d90a5911cb61f"
+      },
+      {
+        "path": "kanban/tasks/knoxx-cms-contract-validation.md",
+        "bytes": 18396,
+        "sha256": "c18af1a9888d0165539d36aa3d9bdfbe4960e5962030bc3c32051fca11fd1550"
+      },
+      {
+        "path": "kanban/tasks/knoxx-cms-resource-backed-publication-ui.md",
+        "bytes": 18707,
+        "sha256": "47ed80df8d991ec02abd1514b7db09170195e384721a71f110b39f43d0482a6e"
+      },
+      {
+        "path": "kanban/tasks/knoxx-cms-typebox-shapes.md",
+        "bytes": 1528,
+        "sha256": "1ec952bc6c2f9ee82a000d7aa05a7e85516edbe71a4230c2ca6fee49a89bd328"
+      },
+      {
+        "path": "kanban/tasks/knoxx-composite-resource-parsing.md",
+        "bytes": 1143,
+        "sha256": "3dcd0420bc37c9742207799318051b4521538ff26224d663c0f31c77cb4037b3"
+      },
+      {
+        "path": "kanban/tasks/knoxx-contract-publication-e2e.md",
+        "bytes": 9710,
+        "sha256": "3bcd51df17d3103fd54349883b8c7f8dca002be3618443f265c253370a57521d"
+      },
+      {
+        "path": "kanban/tasks/knoxx-contract-runtime-extraction.md",
+        "bytes": 1478,
+        "sha256": "44b80183d6f939280ed1bd6afce58e6d8b341dca9c8e2f257b15cb22cc1e8bce"
+      },
+      {
+        "path": "kanban/tasks/knoxx-dead-field-cleanup.md",
+        "bytes": 1351,
+        "sha256": "95c291de205e6ebf7dda25d5615fcb0672ac747f826179b1a6b4d86de9e6e7d3"
+      },
+      {
+        "path": "kanban/tasks/knoxx-deploy-actor-owning-local-credentials.md",
+        "bytes": 3770,
+        "sha256": "6fefa7a0091435ab2709d89913291cc99856d51f28c872342d18e38e755ccf1c"
+      },
+      {
+        "path": "kanban/tasks/knoxx-editor-agent-context-loop.md",
+        "bytes": 1460,
+        "sha256": "1cd8d31db0802c32e95ea6bb6e59a7e7ac9b99db1b2b7d82da9ffe4478ed3dfe"
+      },
+      {
+        "path": "kanban/tasks/knoxx-error-log-redaction.md",
+        "bytes": 3534,
+        "sha256": "ced4eedf6dd4096554c8872e53d2e7d866d6aba487461cd28ad6d68736f20b2e"
+      },
+      {
+        "path": "kanban/tasks/knoxx-evaluation-case-contracts.md",
+        "bytes": 22906,
+        "sha256": "a569265be5184655eeb5da10ca1586d85ea4217933f1dd848836c1daa412d4e8"
+      },
+      {
+        "path": "kanban/tasks/knoxx-evaluation-mcp-review-flow.md",
+        "bytes": 14141,
+        "sha256": "6bd89a2dadbae76608614fc8253eaacfb5a018a6a6f02aff15fda41bca5964af"
+      },
+      {
+        "path": "kanban/tasks/knoxx-event-runtime-boot-coupling.md",
+        "bytes": 5180,
+        "sha256": "728ecb7c9927bce9544ec5a673977d3a99e0662bfc511b117c1d93acd4ab4f65"
+      },
+      {
+        "path": "kanban/tasks/knoxx-event-runtime-generator-catalog-route.md",
+        "bytes": 2889,
+        "sha256": "e279012a009cb989e9d632749c1d6e3033cdd1b7746b606bc1d13b844fe8751f"
+      },
+      {
+        "path": "kanban/tasks/knoxx-file-resource-repository-provider.md",
+        "bytes": 9900,
+        "sha256": "a5bd185b4d3c8e3cc58bcf4373a9e6ccc8f315887000d8077543e844172dcf1e"
+      },
+      {
+        "path": "kanban/tasks/knoxx-frontend-app-bridge-retirement.md",
+        "bytes": 11639,
+        "sha256": "a4977d6d73d07915095f71170fbdc7ea51c206b008500023ae2db4a1b35ef313"
+      },
+      {
+        "path": "kanban/tasks/knoxx-frontend-chat-workspace-decomposition.md",
+        "bytes": 2695,
+        "sha256": "7c431e22c0a8e9cfff06547192889206da84e9abd3758b5e3bed4be6ab6c4ad5"
+      },
+      {
+        "path": "kanban/tasks/knoxx-frontend-helix-component-test-harness.md",
+        "bytes": 3167,
+        "sha256": "09ea3f06713a5425394791debfd10d74ee431d43cb2cfaaca4d4203bc1f3bf57"
+      },
+      {
+        "path": "kanban/tasks/knoxx-frontend-keyboard-mode-wiring.md",
+        "bytes": 1753,
+        "sha256": "ba39eb5f9b3e984df148df031edb72a7ec3154515d39471671354c96f3bdb761"
+      },
+      {
+        "path": "kanban/tasks/knoxx-frontend-uxx-helix-native.md",
+        "bytes": 2155,
+        "sha256": "e5fda3b2c65c2f86cb70651859987c7a6a0ea995a7b91e483984e5f4d3300bfa"
+      },
+      {
+        "path": "kanban/tasks/knoxx-frontend-vitest-retirement.md",
+        "bytes": 1977,
+        "sha256": "aeaf9c518c4c27ee4062c821e50e71293ca596a0ef56e2e556b2b229c19fbbb0"
+      },
+      {
+        "path": "kanban/tasks/knoxx-futuresight-kms-chat-widget.md",
+        "bytes": 1996,
+        "sha256": "4c5ec37372a6f5dc24132fecf1957527f9ff6a6c5fbc9725710318971b6de8fb"
+      },
+      {
+        "path": "kanban/tasks/knoxx-futuresight-kms-cms-python-backend.md",
+        "bytes": 2431,
+        "sha256": "edc69ef668db7551ae7562acccbd4b87e04d085674379e280095b0f971be1f6b"
+      },
+      {
+        "path": "kanban/tasks/knoxx-futuresight-kms-cms-react-ui.md",
+        "bytes": 2381,
+        "sha256": "de14f7130f63bed3c89f99a17e6d402b09789fc3d887c43cbb288bb90e95ff1b"
+      },
+      {
+        "path": "kanban/tasks/knoxx-futuresight-kms-sync-public-collection.md",
+        "bytes": 2126,
+        "sha256": "f31ea01d7de76e2b80f14113d716dc5d16b9b35081d1c1f74b099d8a79f4ee71"
+      },
+      {
+        "path": "kanban/tasks/knoxx-gardens-dep-truth-live-link.md",
+        "bytes": 1558,
+        "sha256": "52abeec236988562b73444c1878f16586e2f0004fdf41083b5fa294e29f45a53"
+      },
+      {
+        "path": "kanban/tasks/knoxx-gardens-openplanner-rest-decoupling.md",
+        "bytes": 1649,
+        "sha256": "0df1a5c182e411bcbbe5e83091f26bf52227d08f2a2aa8c1564b7b74c2a5a480"
+      },
+      {
+        "path": "kanban/tasks/knoxx-gardens-tab-wire-events-page.md",
+        "bytes": 1314,
+        "sha256": "2af65cfcfe10a7fc1df07c101a429e30e2ef5d523752ae064fb54b5f51049840"
+      },
+      {
+        "path": "kanban/tasks/knoxx-generator-runtime-create.md",
+        "bytes": 2787,
+        "sha256": "71f7b8a98b801d27009cd2ea59778708f66184ff4a9efee2d817cf515fb8e323"
+      },
+      {
+        "path": "kanban/tasks/knoxx-http-event-runtime-lifecycle-separation.md",
+        "bytes": 1571,
+        "sha256": "f23cc74cb6ff5f2a8f4ed3df926b34342cb918b39563d957e6d5e6c675ae01ef"
+      },
+      {
+        "path": "kanban/tasks/knoxx-kms-cms-clojure-service.md",
+        "bytes": 1946,
+        "sha256": "db9c3e985d9e4693d66dfbff5baec840d3edf3f48cac96de04d3a8c088f321cd"
+      },
+      {
+        "path": "kanban/tasks/knoxx-knowledge-labeler-ui-queue-wiring.md",
+        "bytes": 1319,
+        "sha256": "05822cfe0e2f126d5c7b7b78e9609ce6f2643ed1ce535e418d6195785646d628"
+      },
+      {
+        "path": "kanban/tasks/knoxx-knowledge-ops-docker-compose-self-hosted.md",
+        "bytes": 1727,
+        "sha256": "55907f02276b15c39fc1d4fe6f925dea677789b7b032b5be3432ca7a3cdb4537"
+      },
+      {
+        "path": "kanban/tasks/knoxx-knowledge-ops-filesystem-blob-store.md",
+        "bytes": 1422,
+        "sha256": "9d41a865389a5dcd96e91c65ed3ccf6242eba44108673b95ca3c0399fb465e8d"
+      },
+      {
+        "path": "kanban/tasks/knoxx-knowledge-ops-jsonl-queue-provider.md",
+        "bytes": 1461,
+        "sha256": "fdb92899367bed1be9ef8be0ddf7338992783bcca904a3fdb4366dac56cc1fb1"
+      },
+      {
+        "path": "kanban/tasks/knoxx-knowledge-ops-mongodb-storage-sink.md",
+        "bytes": 1406,
+        "sha256": "a6e1ad8eaf22cda1842fdb5ac13f26cc9fe324b5d92f7e29f89e1590ac0822d0"
+      },
+      {
+        "path": "kanban/tasks/knoxx-knowledge-ops-ollama-embedding-provider.md",
+        "bytes": 1414,
+        "sha256": "48070006b31b8f564096ea561ca33cedd6de34dc198547374ebe0b927c022fdc"
+      },
+      {
+        "path": "kanban/tasks/knoxx-knowledge-workbench-query-ui.md",
+        "bytes": 1460,
+        "sha256": "31ac863a867caad7a5c84932d9a534db8fe7d078c3129d7b7b6c3da6dbe340f2"
+      },
+      {
+        "path": "kanban/tasks/knoxx-lake-local-embedding-search.md",
+        "bytes": 1805,
+        "sha256": "7d7701065d0909a2ba5120521ba92869ae9b787b555cb570fd6b4b07acb20c38"
+      },
+      {
+        "path": "kanban/tasks/knoxx-lake-local-storage-blob-queue.md",
+        "bytes": 2048,
+        "sha256": "a1a15e225087bb30aa416174bcead47e304189f54366847f958f6ed9e185ffbd"
+      },
+      {
+        "path": "kanban/tasks/knoxx-lake-package-scaffold.md",
+        "bytes": 1534,
+        "sha256": "422b4a808bc1be0fc56120a45c7b7667200056f284e4ad71f998ce0cbffe267a"
+      },
+      {
+        "path": "kanban/tasks/knoxx-lake-provider-factory.md",
+        "bytes": 1701,
+        "sha256": "fdc47e52a739458abe15cf835bf2c245e52def796c93b86de73fe8d20387a3dc"
+      },
+      {
+        "path": "kanban/tasks/knoxx-layer-enforcement-gate.md",
+        "bytes": 5302,
+        "sha256": "d7ef95cd8249672d49728ae00c6b4b516c18be6434dd8477f96f8e055184e537"
+      },
+      {
+        "path": "kanban/tasks/knoxx-mcp-actor-ascription.md",
+        "bytes": 5121,
+        "sha256": "d42bfc73414214d50e9ff532d6b8b92355571092afe6b0bcc75fd6664727cd77"
+      },
+      {
+        "path": "kanban/tasks/knoxx-mcp-consent-permission-groups.md",
+        "bytes": 3496,
+        "sha256": "44d3db9e08208a3e1e6bee7e8098eddc2afad16225416629f6ee21433b9639ef"
+      },
+      {
+        "path": "kanban/tasks/knoxx-mcp-consent-server-side-state.md",
+        "bytes": 3833,
+        "sha256": "81a751fcd3ec40d8ec783bc4e495f70920be67e63f7aa4d75903890bf4cfb5b1"
+      },
+      {
+        "path": "kanban/tasks/knoxx-mongodb-docker-compose-decommission.md",
+        "bytes": 1735,
+        "sha256": "b8662c07b4cc22d7a403dadbe52bb2f20f87895e552a105777bb39b1a114cfbb"
+      },
+      {
+        "path": "kanban/tasks/knoxx-mongodb-migration-script.md",
+        "bytes": 2141,
+        "sha256": "c546fa8262cb84e6c91242d614d28bd9534c8938f263865a11ed2e1effd3039d"
+      },
+      {
+        "path": "kanban/tasks/knoxx-multi-tenant-migrations-prod-runbook.md",
+        "bytes": 1610,
+        "sha256": "bfb754ead71705922aadde5faf886bca0efd9ed30de31335a81df6fd7ae596f6"
+      },
+      {
+        "path": "kanban/tasks/knoxx-multi-tenant-rate-limit-policy-hook.md",
+        "bytes": 1483,
+        "sha256": "0c3abc217c096d214529d5d45356eb7782f222650551b64187a93e01eb40a9b4"
+      },
+      {
+        "path": "kanban/tasks/knoxx-multi-tenant-review-workflow-queue.md",
+        "bytes": 1457,
+        "sha256": "7ed741817bb2a1dac6bc1321c56c7a5f96e150e29fac184ae1fdcd790bdc19a4"
+      },
+      {
+        "path": "kanban/tasks/knoxx-namespace-manifest-migration.md",
+        "bytes": 1613,
+        "sha256": "296d42b242e19af2805d50e052783bebe566227ee1f9eefb187c3a11ffdc6bab"
+      },
+      {
+        "path": "kanban/tasks/knoxx-namespace-resource-loader.md",
+        "bytes": 1337,
+        "sha256": "c376222e3f9fe9e0e13907b6ad2a8ffae932c94f21a6137c1e51e26077ffb4e1"
+      },
+      {
+        "path": "kanban/tasks/knoxx-openplanner-mcp-integration.md",
+        "bytes": 765,
+        "sha256": "a249d165069c1f00cd63fca573384b7026533f0e02c6e4b35102e9ea4f323503"
+      },
+      {
+        "path": "kanban/tasks/knoxx-openplanner-publication-state-migration.md",
+        "bytes": 22499,
+        "sha256": "e374e2eca9f00b065e462cf343d8d811d591e0c923960890cfe4d0321fadbce2"
+      },
+      {
+        "path": "kanban/tasks/knoxx-openplanner-rest-retirement.md",
+        "bytes": 8759,
+        "sha256": "7afd450dda9e88268b6b08490a3ec78bfe4fcc1b5cdd693e9e41e396ac43690d"
+      },
+      {
+        "path": "kanban/tasks/knoxx-pipeline-to-action-migration.md",
+        "bytes": 4381,
+        "sha256": "d96eb5185a59b0500e31ce56adfe5bac6792dea24e7c8eb554678c7dbe41b4ec"
+      },
+      {
+        "path": "kanban/tasks/knoxx-playlist-publication-label-provenance.md",
+        "bytes": 2756,
+        "sha256": "0f89c833a34c9424b6028c2d10b0a46441745a9240244f5df88202bb17ba3696"
+      },
+      {
+        "path": "kanban/tasks/knoxx-publication-adapter-boundary.md",
+        "bytes": 3560,
+        "sha256": "fa3c6028d6e5f2d5755d13cb049ecd8172afea79999e82eb636526a48aa649ba"
+      },
+      {
+        "path": "kanban/tasks/knoxx-publication-adapter-effects-idempotency.md",
+        "bytes": 6964,
+        "sha256": "20c0b6f84bcfea91c67965973c9ed472bb7f6f9171f0f7308277324fc6003ecf"
+      },
+      {
+        "path": "kanban/tasks/knoxx-publication-duplicate-identity.md",
+        "bytes": 5876,
+        "sha256": "3650a4450d97c12fbed0d1fcf1425f7435be4aab7ae6631f995a0da9d77977cb"
+      },
+      {
+        "path": "kanban/tasks/knoxx-publication-intent-resolver.md",
+        "bytes": 20085,
+        "sha256": "3a7dcaf88e12ff941365686220cf62dadaeeeaf6d6d912596f5c50159277a2f3"
+      },
+      {
+        "path": "kanban/tasks/knoxx-publication-live-verification-contract.md",
+        "bytes": 1744,
+        "sha256": "d156212aaed665ff16187ee62aac7222e855f34f727c38c69e91999afcbf040a"
+      },
+      {
+        "path": "kanban/tasks/knoxx-publication-locale-catalog.md",
+        "bytes": 1942,
+        "sha256": "4961aaf5b6d5cab78bfb65096d09cc705630622e81176392802825e0ac26c908"
+      },
+      {
+        "path": "kanban/tasks/knoxx-publication-lossless-edn-state-edits.md",
+        "bytes": 1337,
+        "sha256": "7ebff923aab120b4512e1cf29cfb61197d4d26dd94f57fa320e03b0f56968b22"
+      },
+      {
+        "path": "kanban/tasks/knoxx-publication-receipts-fake-adapter-proof.md",
+        "bytes": 9898,
+        "sha256": "d07f63fc241e93a22566633d57dc847774bdefb336fc66980edfff3acbbc6f23"
+      },
+      {
+        "path": "kanban/tasks/knoxx-publication-reconcile-plan-laws.md",
+        "bytes": 8236,
+        "sha256": "d3baf9cd44ea3396e6857caccd7a594a1424b9b3a8f04a64e7d194808774f4f2"
+      },
+      {
+        "path": "kanban/tasks/knoxx-publication-reconciler-runtime.md",
+        "bytes": 2264,
+        "sha256": "3d6e6aa97f878dede11d369cc5d24f357dd2dc85e987606d66c5daf870753f93"
+      },
+      {
+        "path": "kanban/tasks/knoxx-publication-resource-contracts.md",
+        "bytes": 13244,
+        "sha256": "dd3ec7debeca8ecbcb3e5a28030a9b16e3834f2f33b6b8b40c5303a07fd6f248"
+      },
+      {
+        "path": "kanban/tasks/knoxx-publication-stack-relink.md",
+        "bytes": 4939,
+        "sha256": "daf9641d3c3b46c130a03505c02bd515af00c22e7279c3ebc5264f5080a32c05"
+      },
+      {
+        "path": "kanban/tasks/knoxx-publication-static-site-target.md",
+        "bytes": 3818,
+        "sha256": "c67c714daa051acc37f0339cc25d8cef1d36744b5cf2f2d31248fb9676491301"
+      },
+      {
+        "path": "kanban/tasks/knoxx-publication-target-registry.md",
+        "bytes": 2508,
+        "sha256": "c71cbfde03f4ff7545e3b2ce405218a797ebf9fdafd4820fb55f463922f6e2bd"
+      },
+      {
+        "path": "kanban/tasks/knoxx-published-garden-broadcast-viewer-route.md",
+        "bytes": 3279,
+        "sha256": "555d6e33a03b29937a489c8f7b0d34a82468fecb984c579e49d54a441b22f207"
+      },
+      {
+        "path": "kanban/tasks/knoxx-qualified-id-resolution.md",
+        "bytes": 1288,
+        "sha256": "785dcb3dfabff90a7301c6035692f5317c4889c2d90acb7907a81da7d4992bad"
+      },
+      {
+        "path": "kanban/tasks/knoxx-ragussy-kms-handoff-route.md",
+        "bytes": 1466,
+        "sha256": "6f40bc3c0dfca51accee6a3e2206f4ba8130c37dd966406ebec6ce124ccb9276"
+      },
+      {
+        "path": "kanban/tasks/knoxx-react-ssr-representation-provider.md",
+        "bytes": 3999,
+        "sha256": "906ea39c4fdc9c15c823c9ac19b5686177239b9c6216d932a02ecfc0f55074f5"
+      },
+      {
+        "path": "kanban/tasks/knoxx-resource-repository-snapshot-observation.md",
+        "bytes": 11650,
+        "sha256": "11c2bf504f1c918dfc2b5fd88421fcc0cb64508e5dfaa75d7368a74ce2b1841a"
+      },
+      {
+        "path": "kanban/tasks/knoxx-resource-route-qualified-id-addressing.md",
+        "bytes": 2958,
+        "sha256": "abf8a78e468bf9a2c3b73df82fb272187415338b28d027011001be23769066cc"
+      },
+      {
+        "path": "kanban/tasks/knoxx-rich-action-registry.md",
+        "bytes": 7096,
+        "sha256": "8361ff33e288102f751bef4bf305f87992e36c0ce894a825cbea6d2948606845"
+      },
+      {
+        "path": "kanban/tasks/knoxx-role-scoped-lakes-backend-preset-resolver.md",
+        "bytes": 2087,
+        "sha256": "3a578e7b16ec0e8448ca191dba7f288b5f2a1383e91c4c39ffd3c7835a96e4bf"
+      },
+      {
+        "path": "kanban/tasks/knoxx-role-scoped-lakes-frontend-preset-ui.md",
+        "bytes": 1932,
+        "sha256": "54cbdc8897af81d24144fe2fb2dbd47e252ab5ca2cf5c8a60512d19cfb3b47ad"
+      },
+      {
+        "path": "kanban/tasks/knoxx-role-scoped-lakes-ingestion-routing.md",
+        "bytes": 1933,
+        "sha256": "6aecf86ba75627bdc8a89f3c85c5164784e0bfcd82d50905cb08f0c901200e6a"
+      },
+      {
+        "path": "kanban/tasks/knoxx-run-steps-action.md",
+        "bytes": 3638,
+        "sha256": "9761d8e7ea655f39b39a8629bdd3e5026f251dd6fed952b312e00a68f94fe262"
+      },
+      {
+        "path": "kanban/tasks/knoxx-runtime-decomposition-inventory.md",
+        "bytes": 1381,
+        "sha256": "cbb9aadd7c767aa458bb9af7841b96f95940456d017eb5419b2037e07703f63b"
+      },
+      {
+        "path": "kanban/tasks/knoxx-scope-expansion.md",
+        "bytes": 1279,
+        "sha256": "b9fec5623462a86a8f28b21b152bb479201d3576617f84bf19f9c2cafeda844f"
+      },
+      {
+        "path": "kanban/tasks/knoxx-shibboleth-dsl-corporate-qa-macros.md",
+        "bytes": 1494,
+        "sha256": "4108a9a44456155ba3462a9c6eb25b8238d50779b0f33d49ec2864c6bf89bc93"
+      },
+      {
+        "path": "kanban/tasks/knoxx-store-protocol.md",
+        "bytes": 1161,
+        "sha256": "fa19791bbf05525e61b4ce2b10f88064069dc44ea81514caebb870d2355b5620"
+      },
+      {
+        "path": "kanban/tasks/knoxx-streaming-behavior-action-args.md",
+        "bytes": 5324,
+        "sha256": "def938af0715f4e5e54f6dfd78342444212675044390f80d75725d0103078788"
+      },
+      {
+        "path": "kanban/tasks/knoxx-studio-publication-e2e-smoke.md",
+        "bytes": 2807,
+        "sha256": "ae79a7c63156911a4aa49c31f4dbff9458d6284e8a6bef31ca297cc545ab443e"
+      },
+      {
+        "path": "kanban/tasks/knoxx-system-prompt-audit-visibility.md",
+        "bytes": 3360,
+        "sha256": "99e2a337c6be9c501298aa96853c93915b1f6f3bd2bba61062089301b02fd168"
+      },
+      {
+        "path": "kanban/tasks/knoxx-tenant-cross-org-denial-e2e.md",
+        "bytes": 2036,
+        "sha256": "1f246ee8c19c3c67ada8e6b9ae4f36fbba58d3d82000958e3001a4f15b1c6dfe"
+      },
+      {
+        "path": "kanban/tasks/knoxx-tenant-fail-closed-route-guard.md",
+        "bytes": 2261,
+        "sha256": "1d40baf6aa889602a42f22d557d8c3bd5a94b6e09389bbf0599a9306242723e4"
+      },
+      {
+        "path": "kanban/tasks/knoxx-tenant-org-scope-runs-memory.md",
+        "bytes": 2015,
+        "sha256": "872c3e6aa9e91648ccb4079662e257de01b8f5638fa26125566010f37fce15d8"
+      },
+      {
+        "path": "kanban/tasks/knoxx-tenant-policy-backed-tool-authz.md",
+        "bytes": 2056,
+        "sha256": "5ffb7edd231be69eaa1746c042def95561ecd55990aed2dd6f2114667017a1cf"
+      },
+      {
+        "path": "kanban/tasks/knoxx-tool-namespace-boundary-audit.md",
+        "bytes": 4267,
+        "sha256": "3c764caa8aa05744afb7446d92474d807929122df26893d3b4b85de5b979028d"
+      },
+      {
+        "path": "kanban/tasks/knoxx-tool-vocabulary-rename.md",
+        "bytes": 2338,
+        "sha256": "5272b4f787b1eacdacee3ab623a5c16c428336a79c2b0e2176e41ae8135c8ea1"
+      },
+      {
+        "path": "kanban/tasks/knoxx-translation-agent-actor-composition.md",
+        "bytes": 7536,
+        "sha256": "26dc0523eeee685025e1cdfae92dc587456b210b3d72f5d1b30e10dcf758e14f"
+      },
+      {
+        "path": "kanban/tasks/knoxx-translation-approval-surface.md",
+        "bytes": 6055,
+        "sha256": "26d62d7a187a8e537c6c27d597d82ddec1bf22e0876cb1da46aa62601db87acc"
+      },
+      {
+        "path": "kanban/tasks/knoxx-translation-config-publication-dependency-removal.md",
+        "bytes": 4375,
+        "sha256": "471034b70908e4c31462267e1deb669dc1c015235b3d374447eb837f2b420b90"
+      },
+      {
+        "path": "kanban/tasks/knoxx-translation-config-trusted-auth-context.md",
+        "bytes": 3940,
+        "sha256": "4486cfb56b3ac4c8eab673614ec7f02a6352c6579dc8df6b8ef7b8f59ece3c00"
+      },
+      {
+        "path": "kanban/tasks/knoxx-translation-pipeline-config-resource.md",
+        "bytes": 16062,
+        "sha256": "7c7f6e470a99abb0bf62bb0ed919781ff4de4c834e5e741caf5013ab2d60adc0"
+      },
+      {
+        "path": "kanban/tasks/knoxx-translation-pipeline-validation.md",
+        "bytes": 13645,
+        "sha256": "7137df6bf8214d52222a48c1a7ec4636f2cf7d5094fbd5469a0e04b728e89090"
+      },
+      {
+        "path": "kanban/tasks/knoxx-translation-publication-gate.md",
+        "bytes": 13728,
+        "sha256": "f65cc7bc2031c5a0f993391b2d24eecea7749d71fdfed29b4dd823b7182d0463"
+      },
+      {
+        "path": "kanban/tasks/knoxx-translation-review-chat-panel.md",
+        "bytes": 3605,
+        "sha256": "b493a22d0a70ac34107711414f63bbc2037f9db765331329e3488f32c4793123"
+      },
+      {
+        "path": "kanban/tasks/knoxx-translation-split-memory-feedback.md",
+        "bytes": 7507,
+        "sha256": "a0bdc786348368f062b532af16ada2db3ed3419e3f217fe958a12d70827bcc78"
+      },
+      {
+        "path": "kanban/tasks/knoxx-translation-transduction-boundary.md",
+        "bytes": 5131,
+        "sha256": "62f4908c084dbaf27654e88a5eb247aa70b8d1d20038bfcc3290c53f84249b01"
+      },
+      {
+        "path": "kanban/tasks/knoxx-translation-work-dispatch.md",
+        "bytes": 8160,
+        "sha256": "9a063c4dda37c2b4a4006d3a94296906d2345ef85f704b8c87f30de1bc74a3ba"
+      },
+      {
+        "path": "kanban/tasks/knoxx-translations-event-sourced.md",
+        "bytes": 23485,
+        "sha256": "472ee5a824c63a6ce0a7fe55521e0cbb5245ed9323197f0974ea0def081e7012"
+      },
+      {
+        "path": "kanban/tasks/knoxx-trigger-action-task-prompt-migration.md",
+        "bytes": 9714,
+        "sha256": "0f8689d2c899112f3807ebac4ef434c36865b1f97d72f7a2adfdd48390a64e69"
+      },
+      {
+        "path": "kanban/tasks/knoxx-trigger-runner-facade-delete.md",
+        "bytes": 2222,
+        "sha256": "fefe3faa58b0c6c7c11598b7b2948d713c9ad40d5b46eff017add0c6a4a04e29"
+      },
+      {
+        "path": "kanban/tasks/knoxx-trigger-with-sole-mechanism.md",
+        "bytes": 1496,
+        "sha256": "211c4909abab1fb8eb721584b1af28ea042a8a8382751821dc24e99dc0cc3dee"
+      },
+      {
+        "path": "kanban/tasks/knoxx-uxx-button-chord-prop.md",
+        "bytes": 1370,
+        "sha256": "07a45289c1b45687b4e04aa5cbd1f2640288e4bbabaf591d767c6943d8edc104"
+      },
+      {
+        "path": "kanban/tasks/knoxx-uxx-chord-overlay-composite.md",
+        "bytes": 1733,
+        "sha256": "2781f1c23ea156ed2ce77be0ad61d3baaa44f4a5925857e677b23921fc38bc15"
+      },
+      {
+        "path": "kanban/tasks/knoxx-uxx-export-editor-statusbar-toolbar.md",
+        "bytes": 1458,
+        "sha256": "a787912bc009d62da8b2f6faa6b3e5403c8d17070fc6eb24a9dd336dd651ca09"
+      },
+      {
+        "path": "kanban/tasks/knoxx-uxx-mode-indicator-primitive.md",
+        "bytes": 1454,
+        "sha256": "b960ca77d58f6cf6a7207a0fd7a0def52f457435245694b519a5b50ce761fd21"
+      },
+      {
+        "path": "kanban/tasks/knoxx-versioned-resolved-translation-config.md",
+        "bytes": 41157,
+        "sha256": "7cf860f63d2cb3e248e3bedb97190f14ef2404493df2d7840514bbd0383195c4"
+      },
+      {
+        "path": "kanban/tasks/knoxx-voice-tools-remote-transport.md",
+        "bytes": 1949,
+        "sha256": "3ad9046ad070b1a924c20f36166415567d7b6708295b3c4d48d206341144408c"
+      },
+      {
+        "path": "kanban/tasks/knoxx-website-publication-live-verification.md",
+        "bytes": 2692,
+        "sha256": "08645dbb6f9efbd5c1727ed148a5cf5daa9acd1f4f8d31ca17c5367d536475f8"
+      },
+      {
+        "path": "kanban/tasks/openplanner-mcp-server.md",
+        "bytes": 745,
+        "sha256": "335556f90f65e9ba9228536c2ce5744e45497a26cd354e4726d14ae05d363f7f"
+      },
+      {
+        "path": "kanban/tasks/personal-fork-main-synchronization.md",
+        "bytes": 2796,
+        "sha256": "f64d7c8086ddd3275f1d9256cfaef5103137a73b4b9f981803d86e105d81e9ab"
+      },
+      {
+        "path": "kanban/tasks/pii-classification-schema-ingestion-hook.md",
+        "bytes": 1853,
+        "sha256": "037a1d3e30b3e83c491cb2f91e7d8135947b8061cf14c9c5e28b844b0d6e5aaa"
+      },
+      {
+        "path": "kanban/tasks/pii-deletion-retention-protocol.md",
+        "bytes": 1869,
+        "sha256": "28746733e88d92d13a36e1830f12b52ab08d1317fe9d5dda81eb688ceee9d59a"
+      },
+      {
+        "path": "kanban/tasks/pii-redaction-logs-training-export.md",
+        "bytes": 1676,
+        "sha256": "0d621eec5b34834fb156394ea895724b12bc8fab4ba98cc346ba71dcb817b915"
+      },
+      {
+        "path": "kanban/tasks/pii-tenant-isolation-retrieval-guard.md",
+        "bytes": 1698,
+        "sha256": "e37d07e6dc2c5911121f33db9579f502b576253a7ea2f469b39d99be67a8b081"
+      },
+      {
+        "path": "kanban/tasks/services-caddy-hostname-scale-decision.md",
+        "bytes": 2985,
+        "sha256": "7b639d71b4513e48bd32dfc127b928605692a4665a9f2384535819f924c50446"
+      },
+      {
+        "path": "kanban/tasks/services-knoxx-staging-migration.md",
+        "bytes": 3620,
+        "sha256": "0affb9a447109c23b4f0a6d6f7af56f950ec1fbf12881ece476aa4d5137811cb"
+      },
+      {
+        "path": "kanban/tasks/services-proxx-staging-migration.md",
+        "bytes": 4219,
+        "sha256": "aad33e2b4ea56351c9aea082e6b7547caa9a2058e640ec0bc8490ea02ebb27d0"
+      },
+      {
+        "path": "kanban/tasks/services-staging-slot-pattern.md",
+        "bytes": 6329,
+        "sha256": "a8e54ec45be3b34d9fef0e05bfc4038fe07bd3508996c6006dbe031f48e2bd26"
+      },
+      {
+        "path": "kanban/tasks/uxx-shared-markup-html-helix-renderers.md",
+        "bytes": 7487,
+        "sha256": "637f1a8846a15d6d0b17b5c0d4cb004e165156b90ef42cac8db644456f902c3b"
+      },
+      {
+        "path": "kanban/tasks/uxx-svg-document-shell-network-guard.md",
+        "bytes": 4091,
+        "sha256": "78e6ef77e978527d49bdc48fe348588765c7da291e1ebd02a049d031417fa254"
+      },
+      {
+        "path": "kanban/workbench/1.2-dashboard-agent-runs.md",
+        "bytes": 1556,
+        "sha256": "1d58bdbc8da2a920db8743091af90668b91d1374a512e55ff67497a7a148e5cb"
+      },
+      {
+        "path": "kanban/workbench/1.3-dashboard-memory-activity.md",
+        "bytes": 1425,
+        "sha256": "ddd4ff43c599c45e1963287954d22fe235721d9fa54fd455141ad5374f0b715f"
+      },
+      {
+        "path": "kanban/workbench/2.2-content-editor-ai-suggestions.md",
+        "bytes": 2463,
+        "sha256": "b3b503994df84469ac3bcfe3a5bcb706d5513347e550c13728bd53748a9826c9"
+      },
+      {
+        "path": "kanban/workbench/2.3-content-editor-provenance.md",
+        "bytes": 10962,
+        "sha256": "5c31f09f5a17af89451ca99e806698d40afe2555b1720fed310d3e36adca0651"
+      },
+      {
+        "path": "kanban/workbench/3.3-review-correction-writeback.md",
+        "bytes": 2700,
+        "sha256": "0379b016816c3197ce362c51016f58f51e7420c6e9340c81279c199f98fc1071"
+      },
+      {
+        "path": "kanban/workbench/4.1-memory-search.md",
+        "bytes": 1009,
+        "sha256": "17b974c867d3d477d71f2914edba439c25ace99d505ad88a51aa1d7ff9c07799"
+      },
+      {
+        "path": "kanban/workbench/4.2-memory-focal-node.md",
+        "bytes": 996,
+        "sha256": "7fb6e5d99cff0d970bd757f5e52884e2ff940acd5d47fa3c09387a74244fe742"
+      },
+      {
+        "path": "kanban/workbench/4.3-memory-history-slider.md",
+        "bytes": 955,
+        "sha256": "0d1a154a8e4a20f861917940f2d90b86b3cbbbd89b88081fca76073092c44dc0"
+      },
+      {
+        "path": "kanban/workbench/5.1-agent-run-list.md",
+        "bytes": 3193,
+        "sha256": "4231007e327052a76f8a82d28b9694fe8d6f18b83148da901300259ab2d6b04c"
+      },
+      {
+        "path": "kanban/workbench/5.2-agent-run-detail.md",
+        "bytes": 1167,
+        "sha256": "167d1842ec22409d72557d9c7716caf778a04695455d35f9783d6656c51bac29"
+      },
+      {
+        "path": "kanban/workbench/5.3-agent-scratchpad.md",
+        "bytes": 1368,
+        "sha256": "f9d0b5a33f1c296602f45a6ec4b04baf8f637e5561e51cfe0982b79e1b7c1b63"
+      }
+    ],
+    "unchanged_after_native_reads": true,
+    "no_extra_files": true
+  }
+]

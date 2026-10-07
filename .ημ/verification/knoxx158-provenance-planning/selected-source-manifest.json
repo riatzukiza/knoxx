@@ -1,0 +1,121 @@
+[
+  {
+    "source_path": "AGENTS.md",
+    "transport_path": ".\u03b7\u03bc/verification/knoxx158-provenance-planning/source/AGENTS.md.b64",
+    "bytes": 13198,
+    "sha256": "a9aae6e9cc829df7319b267c8b93fa188abcc52a2c7e6e87c56846173f29701e",
+    "gitblob": "f7a0e2edcc4714f9780cdd8625acc52cf818fecb"
+  },
+  {
+    "source_path": "frontend/src/cljs/knoxx/frontend/app.cljs",
+    "transport_path": ".\u03b7\u03bc/verification/knoxx158-provenance-planning/source/frontend/src/cljs/knoxx/frontend/app.cljs.b64",
+    "bytes": 10657,
+    "sha256": "b98845537012315693220acea64537ca6d4c65d959e69c6833d02f0912cfea15",
+    "gitblob": "e08672d0722a27c0f614fdd70b07d48b3d1faaf2"
+  },
+  {
+    "source_path": "frontend/src/cljs/knoxx/frontend/app_routes.cljs",
+    "transport_path": ".\u03b7\u03bc/verification/knoxx158-provenance-planning/source/frontend/src/cljs/knoxx/frontend/app_routes.cljs.b64",
+    "bytes": 2291,
+    "sha256": "53e32f415d66a5f00d2136ba7df40f87c7bfe31ba569964f0546796f2718a95e",
+    "gitblob": "21dabb0407f1f1acbfcf75e4c06f7678279e4ee8"
+  },
+  {
+    "source_path": "frontend/src/cljs/knoxx/frontend/pages/source_doc/view.cljs",
+    "transport_path": ".\u03b7\u03bc/verification/knoxx158-provenance-planning/source/frontend/src/cljs/knoxx/frontend/pages/source_doc/view.cljs.b64",
+    "bytes": 19660,
+    "sha256": "77d4ca991d8d67802fdaa6b0800da2890ac87ee8033e013219fb213183b4a414",
+    "gitblob": "2d396318db619c33efaf5407047973b753d28cba"
+  },
+  {
+    "source_path": "frontend/src/bridge/app.ts",
+    "transport_path": ".\u03b7\u03bc/verification/knoxx158-provenance-planning/source/frontend/src/bridge/app.ts.b64",
+    "bytes": 1761,
+    "sha256": "1bb286c2c447f1322f56644f9f57729246217fdaa1db2a4fa82fb4f66006e4e5",
+    "gitblob": "736f72da91a3dcd8a889ae22d7ffb07de2bbf64f"
+  },
+  {
+    "source_path": "frontend/src/bridge/index.ts",
+    "transport_path": ".\u03b7\u03bc/verification/knoxx158-provenance-planning/source/frontend/src/bridge/index.ts.b64",
+    "bytes": 1304,
+    "sha256": "f37663321a2acbfdb684e3688899a0272d0ba366a57f51a733d295b65a0ae821",
+    "gitblob": "716a8b8d3470be4392a6eff8a1174e591e1b60a7"
+  },
+  {
+    "source_path": "frontend/src/components/MemorySignalChip.tsx",
+    "transport_path": ".\u03b7\u03bc/verification/knoxx158-provenance-planning/source/frontend/src/components/MemorySignalChip.tsx.b64",
+    "bytes": 2892,
+    "sha256": "d48dc484f81de68634f278b1fe2cbb94b8af66abc29e8ef0559fe2f52bf58590",
+    "gitblob": "93e52d606cb522177c7943c9c1ba73b3a610e46f"
+  },
+  {
+    "source_path": "frontend/src/components/editor/DocumentFields.tsx",
+    "transport_path": ".\u03b7\u03bc/verification/knoxx158-provenance-planning/source/frontend/src/components/editor/DocumentFields.tsx.b64",
+    "bytes": 3024,
+    "sha256": "126ab84bb4fbfe1927c31ae5607c4459f0cc1e2f3b8522efa93ff2cf6d45e780",
+    "gitblob": "bdee1985f14f8d4a9028c4ba3a229989765a75d3"
+  },
+  {
+    "source_path": "frontend/src/components/editor/editor-types.ts",
+    "transport_path": ".\u03b7\u03bc/verification/knoxx158-provenance-planning/source/frontend/src/components/editor/editor-types.ts.b64",
+    "bytes": 2590,
+    "sha256": "b4fbd24b19e6e5eac4fee29b899065971ce23f636e7a73f5ad1751dcc87b25a6",
+    "gitblob": "28d2534f842e0edd4f915c0ae4bb89c49ca7e13c"
+  },
+  {
+    "source_path": "frontend/src/pages/ContentEditorPage.tsx",
+    "transport_path": ".\u03b7\u03bc/verification/knoxx158-provenance-planning/source/frontend/src/pages/ContentEditorPage.tsx.b64",
+    "bytes": 4210,
+    "sha256": "646b182df215cad896616831a8ef58aadd38e431853d9ad6b99a5f0aefbbd5d3",
+    "gitblob": "fb7cad10f1c334d148c525a6f95c7a22f9ec43b5"
+  },
+  {
+    "source_path": "frontend/src/pages/OpsRoot.tsx",
+    "transport_path": ".\u03b7\u03bc/verification/knoxx158-provenance-planning/source/frontend/src/pages/OpsRoot.tsx.b64",
+    "bytes": 4897,
+    "sha256": "73bcd3701cfec7e6a5c0f43d481e33e922fda17a6c498a31cf467740e4f2d78f",
+    "gitblob": "34fc117299e7386281293e6b861b5cffe3d7c15c"
+  },
+  {
+    "source_path": "frontend/shadow-cljs.edn",
+    "transport_path": ".\u03b7\u03bc/verification/knoxx158-provenance-planning/source/frontend/shadow-cljs.edn.b64",
+    "bytes": 3842,
+    "sha256": "1dc8970e09b40c07faf6259966f14662fb32fae54856e46af210d564b9e7e9ae",
+    "gitblob": "ac4706da2a183af53851af0c6987cce0b1a1804b"
+  },
+  {
+    "source_path": "frontend/package.json",
+    "transport_path": ".\u03b7\u03bc/verification/knoxx158-provenance-planning/source/frontend/package.json.b64",
+    "bytes": 4193,
+    "sha256": "4ffba812f25172ab14f93e38ec5ba776ff7b9c735106eff05a5ceea761f4e9db",
+    "gitblob": "49933987b40e1c491867d19ba009417434543c12"
+  },
+  {
+    "source_path": "frontend/tsconfig.json",
+    "transport_path": ".\u03b7\u03bc/verification/knoxx158-provenance-planning/source/frontend/tsconfig.json.b64",
+    "bytes": 493,
+    "sha256": "42b4694477ca38ba940885235938d49197dc383626ad88af538e31bbab3b45c6",
+    "gitblob": "e42d12f6c14f484455d406193939e279e72958c6"
+  },
+  {
+    "source_path": "frontend/vitest.config.ts",
+    "transport_path": ".\u03b7\u03bc/verification/knoxx158-provenance-planning/source/frontend/vitest.config.ts.b64",
+    "bytes": 382,
+    "sha256": "e1093f9b4707d72ac887f21c8a5b57c35a464cf2f9cbd1c41a5521efa05ceea3",
+    "gitblob": "c281a39e3fc1b727c3515c46e977723d121da48b"
+  },
+  {
+    "source_path": ".github/workflows/ci.yml",
+    "transport_path": ".\u03b7\u03bc/verification/knoxx158-provenance-planning/source/.github/workflows/ci.yml.b64",
+    "bytes": 9206,
+    "sha256": "416fc1909e23b72db7d7ea79234ba44350ada50e7f966e6fab16474494e1b230",
+    "gitblob": "b1a5dca0f22fb46648188aef0f48b03f0b8a0711"
+  },
+  {
+    "source_path": ".github/workflows/auto-merge.yml",
+    "transport_path": ".\u03b7\u03bc/verification/knoxx158-provenance-planning/source/.github/workflows/auto-merge.yml.b64",
+    "bytes": 660,
+    "sha256": "689deb88a61470c18ad7d2e540c6ea81be6812166611f23b552d98ad458af313",
+    "gitblob": "bd4b945f5b4442d175144a430dcbf5b2c81506e5"
+  }
+]
