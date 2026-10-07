@@ -197,3 +197,23 @@ a real worktree-local `node_modules` using the existing cache. The manifest's
 sibling link to the existing built SDK at
 `/home/err/spaces/foresight/openplanner`, matching the layout used by CI. No
 package manifest, lockfile, original source, or SDK source was rewritten.
+
+
+## October 7 packaged engine result
+
+The corrected Docker recipe was built from committed personal head
+`4ba4cb51c0d6f67a0ffd9be63406e49c1eff6787`. Its isolated image smoke check
+exited0 and produced a real 0.5-second stereo 44.1 kHz WAV:22,050 frames,
+88,244 bytes, 16-bit PCM and nonzero audio. The exact image was
+`sha256:3f7b72567d963c3739a3edadfcabbc0182b88efabe1255520c50142abd14a40a`.
+The WAV SHA-256 was
+`8ba0b38320e1472df1a57be13c78ca017193db6d3adb83a7ee3864bfacdd1190`.
+
+The actual runtime UID/GID was1000/1000. Engine and server hashes matched the
+unchanged local production artifacts. The ALSA layer installed libasound2
+1.2.8-1+b1 and libasound2-data1.2.8-1; no audio service or hardware was required
+for this offline render. A faithful tool-output transcription and separate
+original failing probe are retained under `.ημ/review-evidence/knoxx-pr3/`.
+The smoke adapter removed its unique fixture and build context. This is actual
+image execution evidence; the served cephalon is still the older2644fc6 image
+and the authenticated live MCP proof remains unverified.

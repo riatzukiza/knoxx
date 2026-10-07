@@ -1,0 +1,24 @@
+{
+  "evidence_kind": "observed_tool_output_transcription",
+  "source": "completed unified exec session51760 / nbb scripts/verify_native_music_image.cljs --build knoxx-backend:verify-native-music",
+  "revision": "4ba4cb51c0d6f67a0ffd9be63406e49c1eff6787",
+  "image_id": "sha256:3f7b72567d963c3739a3edadfcabbc0182b88efabe1255520c50142abd14a40a",
+  "image_user": "1000",
+  "uid": 1000,
+  "gid": 1000,
+  "server_sha256": "115076b2407cadcc829c0dca2058023d5bf249ecba0ea4e4c29810d910cf138f",
+  "engine_sha256": "24935357c402fe8ea89c7a7ddbc6e44770aa446dd7099576f0f2a596037d5d87",
+  "wav_sha256": "8ba0b38320e1472df1a57be13c78ca017193db6d3adb83a7ee3864bfacdd1190",
+  "wav_bytes": 88244,
+  "metadata": {
+    "ok": true,
+    "outputPath": "/proof/render.wav",
+    "durationSec": 0.5,
+    "sampleRate": 44100,
+    "channels": 2,
+    "samples": 22050
+  },
+  "verified": "RIFF/WAVE, 16-bit stereo PCM matching metadata and nonzero samples",
+  "exit": 0,
+  "scope": "packaged engine execution; not live MCP, deployment, availability, artistic quality or dependency reproducibility"
+}

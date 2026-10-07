@@ -261,3 +261,10 @@
 - Scores: efficiency0.91, friction0.15, skill-candidate0.29.
 - Lesson: materialize committed Docker inputs with Git file modes to bind source identity, exclude private untracked files and keep cache behavior consistent across checkout umasks. Distinguish cancelled candidate builds from production makers and actual engine RED.
 - No spore incubated or promoted.
+
+## 2026-10-07 — cephalon-personal-native-image-alsa-green
+
+- Evidence: same-named receipt, actual image3f7b7256 and clearly labelled tool-output transcription.
+- Scores: efficiency0.93, friction0.08, skill-candidate0.25.
+- Lesson: pair source and package tests with actual image identity and artifact hashes; preserving a missing-library RED then non-root WAV GREEN makes the infrastructure change independently reviewable. Distinguish packaged engine success from served MCP and creative guarantees.
+- No spore incubated or promoted.
