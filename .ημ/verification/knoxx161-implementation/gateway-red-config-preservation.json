@@ -1,0 +1,6 @@
+{
+  "original_sha256": "b182a2993c1e818a36dc9e39c011a8dd830cb097e0b624d95986ea3563165dcd",
+  "diagnostic_sha256": "73ef22a471205400290ba2ff457a25118816775707b41ed16945bcd4d4e5b3e7",
+  "restored_exact": true,
+  "external_diagnostic_override_only": true
+}

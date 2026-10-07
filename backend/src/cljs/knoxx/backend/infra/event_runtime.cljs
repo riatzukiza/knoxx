@@ -8,6 +8,7 @@
             [knoxx.backend.domain.schedule.runtime :as schedule-runtime]
             [knoxx.backend.domain.source.runtime :as source-runtime]
             [knoxx.backend.domain.trigger.runtime :as trigger-runtime]
+            [knoxx.backend.infra.agent.action-capabilities :as capabilities]
             [knoxx.backend.infra.config :as runtime-config]))
 
 (defonce running?* (atom false))
@@ -44,11 +45,11 @@
 
      :else
      (do (reset! running?* true)
-         (trigger-runtime/start! config)
-         (schedule-runtime/start! config)
+         (trigger-runtime/start! (capabilities/attach config))
+         (schedule-runtime/start! (capabilities/attach config))
          (errors/observe-promise! :event-runtime/source-start
                                   {}
-                                  (source-runtime/start! config))
+                                  (source-runtime/start! (capabilities/attach config)))
          :started))))
 
 (defn stop!
@@ -95,19 +96,19 @@
 
 (defn fire-trigger!
   ([trigger-id]
-   (trigger-runtime/fire! (cfg) trigger-id))
+   (trigger-runtime/fire! (capabilities/attach (cfg)) trigger-id))
   ([config trigger-id]
-   (trigger-runtime/fire! config trigger-id)))
+   (trigger-runtime/fire! (capabilities/attach config) trigger-id)))
 
 (defn fire-trigger-external!
   [config trigger-id]
-  (trigger-runtime/fire-external! config trigger-id))
+  (trigger-runtime/fire-external! (capabilities/attach config) trigger-id))
 
 (defn fire!
   ([trigger-id]
    (fire-trigger! trigger-id))
   ([trigger-id payload]
-   (trigger-runtime/fire! (cfg) trigger-id payload)))
+   (trigger-runtime/fire! (capabilities/attach (cfg)) trigger-id payload)))
 
 (defn status
   ([]

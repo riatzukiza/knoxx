@@ -38,6 +38,7 @@
 (defn- draft-context
   [trusted?]
   {:config {}
+   :spawn-agent! agent-runner/spawn-direct!
    :event/trusted? trusted?
    :trigger {:trigger/id "publication/craft-post-from-indexed-document"
              :trigger/emitter "knoxx-publication"}

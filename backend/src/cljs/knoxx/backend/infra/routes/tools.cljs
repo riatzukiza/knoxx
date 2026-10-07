@@ -1,6 +1,7 @@
 (ns knoxx.backend.infra.routes.tools
   (:require [clojure.string :as str]
             [knoxx.backend.domain.event.dispatch :as event-dispatch]
+            [knoxx.backend.infra.event-dispatch :as runtime-dispatch]
             [knoxx.backend.infra.clients.proxx :as proxx-client]
             [knoxx.backend.infra.http :as backend-http]
             [knoxx.backend.macros :refer-macros [defroute]]
@@ -404,7 +405,7 @@
     (ensure-permission! ctx "org.events.control")
     (let [body (js->clj (or (aget request "body") (js/Object.)) :keywordize-keys true)]
       (try
-        (let [result (await (event-dispatch/dispatch-external!
+        (let [result (await (runtime-dispatch/dispatch-external!
                              config (operator-dispatch-event ctx body)))
               failures (failed-trigger-results result)
               failed? (seq failures)]

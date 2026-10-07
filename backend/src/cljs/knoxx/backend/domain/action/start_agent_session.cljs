@@ -3,7 +3,7 @@
   (:require [clojure.string :as str]
             [knoxx.backend.domain.action.registry :refer [run-action!]]
             [knoxx.backend.domain.error-observatory :as errors]
-            [knoxx.backend.infra.agent.runner :as agents-runner]
+            [knoxx.backend.law.action-capabilities :as capabilities]
             [knoxx.backend.infra.agent.event-policy-authority :as event-policy-authority]
             [knoxx.backend.infra.tooling :as tooling]))
 
@@ -317,7 +317,8 @@
 (defmethod run-action! :actions/start-agent-session
   [{:keys [config event trigger] :as ctx} action]
   (assert-trusted-event-overlay! ctx action)
-  (let [agent-id (action-agent-id ctx action)
+  (let [spawn-agent! (capabilities/assert-spawn-agent! ctx)
+        agent-id (action-agent-id ctx action)
         resolved (tooling/resolve-agent-contract config agent-id (actor-id ctx nil))
         actor-id' (actor-id ctx resolved)
         ts (.now js/Date)
@@ -336,7 +337,7 @@
         :actor-id actor-id'
         :trigger-id (:trigger-id ids)
         :event-id (:event/id event)}))
-    (agents-runner/spawn-direct!
+    (spawn-agent!
      config
      {:conversation_id (:conversation-id ids)
       :session_id (:session-id ids)

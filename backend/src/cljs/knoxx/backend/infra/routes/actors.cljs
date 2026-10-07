@@ -2,7 +2,7 @@
   "HTTP routes for actor mailbox delivery projection operations."
   (:require [clojure.string :as str]
             [knoxx.backend.domain.actor.mailbox :as actor-mailbox]
-            [knoxx.backend.domain.event.dispatch :as event-dispatch]
+            [knoxx.backend.infra.event-dispatch :as runtime-dispatch]
             [knoxx.backend.macros :refer-macros [defroute]]))
 
 ;; TODO remove  this non sense. This makes  the api so messy, and  the code noisy. just accept on schema and validate against it everywhere
@@ -62,7 +62,7 @@
   (.all js/Promise
         (clj->js
          (mapv (fn [entry]
-                  (event-dispatch/dispatch! (actor-mailbox/retry-request-event entry)))
+                  (runtime-dispatch/dispatch! (actor-mailbox/retry-request-event entry)))
                entries))))
 
 (defroute actor-mailbox-list-route!

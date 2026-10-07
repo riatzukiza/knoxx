@@ -76,6 +76,7 @@
                                                  {:ok true}))]
       (action-registry/run-action!
        {:config {}
+        :spawn-agent! agents-runner/spawn-direct!
         :trigger {:trigger/id "translate-on-admission"}
         :event {:event/id "event-1"
                 :event/type :publication/translation-needed

@@ -8,6 +8,7 @@
   (:require [clojure.string :as str]
             [knoxx.backend.domain.document-admission :as admission]
             [knoxx.backend.domain.event.dispatch :as event-dispatch]
+            [knoxx.backend.infra.event-dispatch :as runtime-dispatch]
             [knoxx.backend.domain.node.crypto :as crypto]
             [knoxx.backend.domain.publication-resolver :as resolver]
             [knoxx.backend.extern.mongo :as extern-mongo]
@@ -446,7 +447,7 @@
       :persist-event! (or (:persist-event! deps)
                           (partial persist-openplanner-event! config client))
       :emit-indexed! (or (:emit-indexed! deps)
-                         (fn [event] (event-dispatch/dispatch! config event)))
+                         (fn [event] (runtime-dispatch/dispatch! config event)))
       :repair-translation-events! (:repair-translation-events! deps)
       :dispatch-document! (:dispatch-document! deps)}
      (draft-terminal-dependencies deps))))

@@ -1,0 +1,21 @@
+{
+  "base": "5670338fcf1db7d51a2690f388e4e4c5c409c48a",
+  "current_head": "18e93a5d8cf7677efb2b82b4c3ccac2f9c77f118",
+  "working_diff_paths": [
+    ".\u03b7\u03bc/receipts.edn",
+    ".\u03b7\u03bc/session-mycology/ledger.md",
+    "backend/src/cljs/knoxx/backend/domain/action/start_agent_session.cljs",
+    "backend/src/cljs/knoxx/backend/domain/event/dispatch.cljs",
+    "backend/src/cljs/knoxx/backend/extern/fastify/translation_dispatch.cljs",
+    "backend/src/cljs/knoxx/backend/infra/event_runtime.cljs",
+    "backend/src/cljs/knoxx/backend/infra/routes/actors.cljs",
+    "backend/src/cljs/knoxx/backend/infra/routes/document_admission.cljs",
+    "backend/src/cljs/knoxx/backend/infra/routes/tools.cljs",
+    "backend/test/cljs/knoxx/backend/actions/start_agent_session_test.cljs",
+    "backend/test/cljs/knoxx/backend/security/event_policy_authority_test.cljs",
+    "backend/test/cljs/knoxx/backend/triggers/fixture_contracts_dispatch_test.cljs",
+    "backend/test/cljs/knoxx/backend/triggers/production_scenario_test.cljs",
+    "backend/test/cljs/knoxx/backend/triggers/source_dispatch_test.cljs"
+  ],
+  "limitation": "Working checkpoint only; final committed tree/blob/prefix proof follows after all repairs. Earlier file-following diagnostic counted symlink destinations and is superseded by tree-object identities."
+}

@@ -1,0 +1,12 @@
+{
+  "disabled-contracts/synthetic-slang-ledger.edn": {
+    "prefix_exact": true,
+    "append_bytes": 0,
+    "newlines": 0
+  },
+  "kanban/.events/ledger.edn": {
+    "prefix_exact": true,
+    "append_bytes": 883,
+    "newlines": 2
+  }
+}

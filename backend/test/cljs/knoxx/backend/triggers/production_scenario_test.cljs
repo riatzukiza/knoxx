@@ -6,6 +6,7 @@
             [knoxx.backend.domain.event.dispatch :as event-dispatch]
             [knoxx.backend.domain.resources.loader :as resources]
             [knoxx.backend.domain.source.runtime :as source-runtime]
+            [knoxx.backend.infra.agent.action-capabilities :as capabilities]
             [knoxx.backend.domain.trigger.runtime :as trigger-runtime]))
 
 (def fixture-config
@@ -51,7 +52,7 @@
                  :event/payload msg}]
       (try
         (await (source-runtime/dispatch-driver-event!
-                fixture-config
+                (capabilities/attach fixture-config)
                 :driver/discord
                 "discord_automation"
                 event))
@@ -74,7 +75,7 @@
                  :event/payload msg}]
       (try
         (await (source-runtime/dispatch-driver-event!
-                fixture-config
+                (capabilities/attach fixture-config)
                 :driver/discord
                 "discord_automation"
                 event))
