@@ -251,3 +251,47 @@
     (is (str/includes? message "Action task prompt:"))
     (is (str/includes? message "Use the action-owned task."))
     (is (not (str/includes? message "Agent task prompt:")))))
+
+(deftest start-agent-session-uses-only-the-injected-spawn-capability
+  (let [calls* (atom [])
+        config {:fixture/id "spawn-capability-red"}
+        spawn! (fn [actual-config payload]
+                 (swap! calls* conj [actual-config payload])
+                 {:run/id "owned-fixture-run"})]
+    (with-redefs [tooling/resolve-agent-contract
+                  (fn [_config _agent-id _actor-id]
+                    {:actor-id "fixture-actor" :model "fixture-model"})
+                  agents-runner/spawn-direct!
+                  (fn [& _args]
+                    (throw (ex-info "The global runner must not be called" {})))]
+      (is (= {:run/id "owned-fixture-run"}
+             (action-registry/run-action!
+              {:config config :spawn-agent! spawn!
+               :trigger {:trigger/id "fixture-trigger"}
+               :event {:event/id "fixture-event" :event/payload {}}}
+              {:action/kind :actions/start-agent-session
+               :action/with {:agent-id "fixture-agent" :task "Fixture task"}})))
+      (is (= 1 (count @calls*)))
+      (is (= config (ffirst @calls*)))
+      (is (= "Fixture task" (get-in @calls* [0 1 :agent_spec :rendered_task_prompt])))
+      (is (= "fixture-model" (get-in @calls* [0 1 :model]))))))
+
+(deftest missing-or-noncallable-spawn-is-refused-before-effects
+  (doseq [capability [nil {} :candidate/capability "candidate-function"]]
+    (let [resolved* (atom 0)
+          spawned* (atom 0)]
+      (with-redefs [tooling/resolve-agent-contract
+                    (fn [& _args] (swap! resolved* inc) {:actor-id "fixture-actor"})
+                    agents-runner/spawn-direct!
+                    (fn [& _args] (swap! spawned* inc) {:ok true})]
+        (try
+          (action-registry/run-action!
+           {:config {} :spawn-agent! capability
+            :event {:event/id "fixture-event" :event/payload {}}}
+           {:action/kind :actions/start-agent-session
+            :action/with {:agent-id "fixture-agent" :task "Fixture task"}})
+          (is false "An absent/noncallable capability must refuse")
+          (catch :default error
+            (is (= :action/missing-capability (:refusal/type (ex-data error))))))
+        (is (zero? @resolved*) "Refusal precedes effectful contract resolution")
+        (is (zero? @spawned*) "Refusal precedes runner/provider admission")))))

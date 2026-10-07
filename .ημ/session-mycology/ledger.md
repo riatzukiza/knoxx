@@ -192,3 +192,7 @@
   p-skill-candidate: 0.2
   receipt-refs: 2026-10-06T14:28:52.198143Z
   note: Keep accepted source synchronization separate from unmerged feature migration. An inherited ready-triggered merge job makes draft preparation necessary until reviewed base enforcement. No spore warranted.
+
+## Knoxx161 RED
+
+Friction 2/5: explicit namespace override did not constrain the compiled suite; retain full actual scope and counters, not intended scope or compiler exit. Dependency transport setup corrections are private and preserved. No spore promotion.

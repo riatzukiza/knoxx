@@ -1,14 +1,16 @@
 ---
-uuid: "knoxx-action-agent-spawn-boundary-fix"
-title: "Fix domain/action/start-agent-session domain-to-infra boundary crossing"
-status: ready
-priority: "P2"
-labels: ["tasks", "3sp"]
-created_at: "2026-05-29T00:00:00Z"
-source: "epics/events-agent-runtime-separation.md"
-points: 3
 category: "tasks"
+labels: ["tasks", "3sp"]
+write-id: "1791337458752-0.l82rjuflqelnq3hfw1p"
+points: "3"
+source: "epics/events-agent-runtime-separation.md"
+title: "Fix domain/action/start-agent-session domain-to-infra boundary crossing"
+priority: "P2"
+status: "in_progress"
+uuid: "knoxx-action-agent-spawn-boundary-fix"
+created_at: "2026-05-29T00:00:00Z"
 ---
+
 # Fix domain/action/start-agent-session domain-to-infra boundary crossing
 
 > Parent epic: `knoxx-events-agent-runtime-separation`
