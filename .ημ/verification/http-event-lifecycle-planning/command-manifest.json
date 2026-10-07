@@ -1,0 +1,1095 @@
+[
+  {
+    "name": "native-full-http-lifecycle",
+    "argv": [
+      "/home/err/.volta/tools/image/node/22.20.0/bin/node",
+      "/home/err/.codex/parallel-goal/issues-20261006/Admitted-next-intake-3496822abc/runtime/rheos-cli.cjs",
+      "read-task",
+      "knoxx-http-event-runtime-lifecycle-separation",
+      "--config",
+      "/home/err/.codex/parallel-goal/issues-20261006/Admitted-next-intake-3496822abc/knoxx-fixture/kanban/openhax.kanban.json"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Admitted-next-intake-3496822abc/knoxx-fixture/kanban",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:12:36.412444+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/native-full-http-lifecycle.stdout.b64",
+      "bytes": 1923,
+      "sha256": "f337fb2f4d2291a3a5c81552f8e3317127c15aa0ea2baa64cdad375e78fc8895",
+      "original_native_bytes": 1923,
+      "original_native_sha256": "f337fb2f4d2291a3a5c81552f8e3317127c15aa0ea2baa64cdad375e78fc8895"
+    },
+    "stderr": {
+      "path": "captures/native-full-http-lifecycle.stderr.b64",
+      "bytes": 192,
+      "sha256": "f431afe38932ddd4952ad275ad3b16cad8c1f615bfd5774a0f5907ac81934773",
+      "original_native_bytes": 192,
+      "original_native_sha256": "f431afe38932ddd4952ad275ad3b16cad8c1f615bfd5774a0f5907ac81934773"
+    },
+    "provenance_context": "sealed-intake"
+  },
+  {
+    "name": "introduced-knoxx-http-event-runtime-lifecycle-separation",
+    "argv": [
+      "git",
+      "--git-dir=/home/err/.codex/parallel-goal/issues-20261006/Knoxx-lossless-planning-142bca4cee/source.git",
+      "log",
+      "--reverse",
+      "--format=%H %s",
+      "3409977bca4ba35e09967f9a99d50867a679a73c",
+      "--",
+      "kanban/tasks/knoxx-http-event-runtime-lifecycle-separation.md"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Admitted-next-intake-3496822abc",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:14:31.637637+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/introduced-knoxx-http-event-runtime-lifecycle-separation.stdout.b64",
+      "bytes": 96,
+      "sha256": "acdc4fd74311526bd2a83fd5e3e93ff999c77a2d49493555f73037deb526fa00",
+      "original_native_bytes": 96,
+      "original_native_sha256": "acdc4fd74311526bd2a83fd5e3e93ff999c77a2d49493555f73037deb526fa00"
+    },
+    "stderr": {
+      "path": "captures/introduced-knoxx-http-event-runtime-lifecycle-separation.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_native_bytes": 0,
+      "original_native_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "provenance_context": "sealed-intake"
+  },
+  {
+    "name": "native-planning-association-knoxx-http-event-runtime-lifecycle-separation",
+    "argv": [
+      "gh",
+      "api",
+      "repos/open-hax/knoxx/commits/861d57fa71a935088f899a843463e6b54ccbf8c5/pulls"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Admitted-next-intake-3496822abc",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:14:32.114830+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/native-planning-association-knoxx-http-event-runtime-lifecycle-separation.stdout.b64",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "original_native_bytes": 2,
+      "original_native_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "stderr": {
+      "path": "captures/native-planning-association-knoxx-http-event-runtime-lifecycle-separation.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_native_bytes": 0,
+      "original_native_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "provenance_context": "sealed-intake"
+  },
+  {
+    "name": "native-events-knoxx-http-event-runtime-lifecycle-separation",
+    "argv": [
+      "/home/err/.volta/tools/image/node/22.20.0/bin/node",
+      "/home/err/.codex/parallel-goal/issues-20261006/Admitted-next-intake-3496822abc/runtime/rheos-cli.cjs",
+      "events",
+      "knoxx-http-event-runtime-lifecycle-separation",
+      "--limit",
+      "100",
+      "--json",
+      "--config",
+      "/home/err/.codex/parallel-goal/issues-20261006/Admitted-next-intake-3496822abc/knoxx-fixture/kanban/openhax.kanban.json"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Admitted-next-intake-3496822abc/knoxx-fixture/kanban",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:14:33.917782+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/native-events-knoxx-http-event-runtime-lifecycle-separation.stdout.b64",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "original_native_bytes": 3,
+      "original_native_sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    "stderr": {
+      "path": "captures/native-events-knoxx-http-event-runtime-lifecycle-separation.stderr.b64",
+      "bytes": 192,
+      "sha256": "f431afe38932ddd4952ad275ad3b16cad8c1f615bfd5774a0f5907ac81934773",
+      "original_native_bytes": 192,
+      "original_native_sha256": "f431afe38932ddd4952ad275ad3b16cad8c1f615bfd5774a0f5907ac81934773"
+    },
+    "provenance_context": "sealed-intake"
+  },
+  {
+    "name": "canonical-FIRST-parent-sync1",
+    "argv": [
+      "/home/err/.volta/tools/image/node/22.20.0/bin/node",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a/runtime/nbb/cli.js",
+      "-cp",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a/runtime/pr-flow/scripts",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a/runtime/pr-flow/scripts/pr.cljs",
+      "status",
+      "riatzukiza/knoxx",
+      "1"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:46:08.517690+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/canonical-FIRST-parent-sync1.stdout.b64",
+      "bytes": 616,
+      "sha256": "623d777e9a3f455d4cb359a40299def0cab483379b52e53502ea6b970753d858",
+      "original_native_bytes": 616,
+      "original_native_sha256": "623d777e9a3f455d4cb359a40299def0cab483379b52e53502ea6b970753d858"
+    },
+    "stderr": {
+      "path": "captures/canonical-FIRST-parent-sync1.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_native_bytes": 0,
+      "original_native_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "fresh-fork",
+    "argv": [
+      "gh",
+      "api",
+      "--paginate",
+      "--slurp",
+      "repos/riatzukiza/knoxx"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:46:09.060018+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/fresh-fork.stdout.b64",
+      "bytes": 14487,
+      "sha256": "5c12b5e318eb48273b81a9ead143032852027cb6fafeb5ecf39ccb7ed2561fbb",
+      "original_native_bytes": 15882,
+      "original_native_sha256": "77520f9868a5450054227017f867557e23ae9e47402d6c2af294183b3f78bbc0"
+    },
+    "stderr": {
+      "path": "captures/fresh-fork.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_native_bytes": 0,
+      "original_native_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "fresh-origin-main",
+    "argv": [
+      "gh",
+      "api",
+      "--paginate",
+      "--slurp",
+      "repos/open-hax/knoxx/commits/main"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:46:09.489206+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/fresh-origin-main.stdout.b64",
+      "bytes": 12239,
+      "sha256": "e7c2d402d57ce5702b1929ec1182770432685a0b225bac321a3ec2678a771b8a",
+      "original_native_bytes": 12571,
+      "original_native_sha256": "d15cb20ad1ae4318d432f1bb2dbba9b6998ccf73cda111818c8f1f693a4edf70"
+    },
+    "stderr": {
+      "path": "captures/fresh-origin-main.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_native_bytes": 0,
+      "original_native_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "fresh-personal-main",
+    "argv": [
+      "gh",
+      "api",
+      "--paginate",
+      "--slurp",
+      "repos/riatzukiza/knoxx/commits/main"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:46:10.377458+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/fresh-personal-main.stdout.b64",
+      "bytes": 378224,
+      "sha256": "296b76b9297a02cd1ec6496a7557c557c205f8babf8602789c8b2d8b5cc47b97",
+      "original_native_bytes": 382813,
+      "original_native_sha256": "ab97663a969903fc55bd46345fc127ddbaede8c40a27c4f865c5f9e44aa5b132"
+    },
+    "stderr": {
+      "path": "captures/fresh-personal-main.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_native_bytes": 0,
+      "original_native_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "fresh-parent-sync1",
+    "argv": [
+      "gh",
+      "api",
+      "--paginate",
+      "--slurp",
+      "repos/riatzukiza/knoxx/pulls/1"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:46:11.041387+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/fresh-parent-sync1.stdout.b64",
+      "bytes": 16609,
+      "sha256": "c27a75ff4971bf4d061bd26740eb728d9d2eebae2cef80f6a97df7ab17316f84",
+      "original_native_bytes": 17451,
+      "original_native_sha256": "87154f89c77348c470face5a2ac9b5f4bad61ff52b9b89510dfac65476103719"
+    },
+    "stderr": {
+      "path": "captures/fresh-parent-sync1.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_native_bytes": 0,
+      "original_native_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "fresh-personal-openPRs",
+    "argv": [
+      "gh",
+      "api",
+      "--paginate",
+      "--slurp",
+      "repos/riatzukiza/knoxx/pulls?state=open&per_page=100"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:46:11.509100+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/fresh-personal-openPRs.stdout.b64",
+      "bytes": 194190,
+      "sha256": "8ba11564115843b1e3c291353bd579829236278880847f04d46632e05241e0ff",
+      "original_native_bytes": 195524,
+      "original_native_sha256": "6cb52dfd48be4a798840513567a1870f0bce593f6e37a5dbdfcadb53ee303203"
+    },
+    "stderr": {
+      "path": "captures/fresh-personal-openPRs.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_native_bytes": 0,
+      "original_native_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "new-complete-private-store",
+    "argv": [
+      "git",
+      "clone",
+      "--bare",
+      "--no-local",
+      "--no-hardlinks",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx158-provenance-planning-8cbb1e7535/source.git",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a/source.git"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:46:17.745085+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/new-complete-private-store.stdout.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_native_bytes": 0,
+      "original_native_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "captures/new-complete-private-store.stderr.b64",
+      "bytes": 124,
+      "sha256": "e5158cbd5377f67eca71225f8ab2137f84b4a00b8cf217f9b898afe2100a7b51",
+      "original_native_bytes": 124,
+      "original_native_sha256": "e5158cbd5377f67eca71225f8ab2137f84b4a00b8cf217f9b898afe2100a7b51"
+    },
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "fresh-own-sync-fetch",
+    "argv": [
+      "git",
+      "--git-dir=/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a/source.git",
+      "fetch",
+      "https://github.com/riatzukiza/knoxx.git",
+      "refs/heads/codex/sync-knoxx-origin-main"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:46:18.040277+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/fresh-own-sync-fetch.stdout.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_native_bytes": 0,
+      "original_native_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "captures/fresh-own-sync-fetch.stderr.b64",
+      "bytes": 107,
+      "sha256": "06a169210a9f403164c85dae15ec049a7a7734999eb1181461d2911e45ec6da3",
+      "original_native_bytes": 107,
+      "original_native_sha256": "06a169210a9f403164c85dae15ec049a7a7734999eb1181461d2911e45ec6da3"
+    },
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "new-dedicated-worktree",
+    "argv": [
+      "git",
+      "--git-dir=/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a/source.git",
+      "worktree",
+      "add",
+      "-b",
+      "codex/knoxx-http-event-lifecycle-planning",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a/worktree",
+      "5670338fcf1db7d51a2690f388e4e4c5c409c48a"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:46:18.393054+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/new-dedicated-worktree.stdout.b64",
+      "bytes": 82,
+      "sha256": "724f8eb2045f618b011e1d26ae9a1b9c1959f3caf78b8c4a80649239f4e0ea4e",
+      "original_native_bytes": 82,
+      "original_native_sha256": "724f8eb2045f618b011e1d26ae9a1b9c1959f3caf78b8c4a80649239f4e0ea4e"
+    },
+    "stderr": {
+      "path": "captures/new-dedicated-worktree.stderr.b64",
+      "bytes": 76,
+      "sha256": "295509ca4083ae556ccddcb2f69e14f3722d568c07f45e3a5ef5b05ff94ba30a",
+      "original_native_bytes": 76,
+      "original_native_sha256": "295509ca4083ae556ccddcb2f69e14f3722d568c07f45e3a5ef5b05ff94ba30a"
+    },
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "accepted-origin-ancestry",
+    "argv": [
+      "git",
+      "merge-base",
+      "--is-ancestor",
+      "3409977bca4ba35e09967f9a99d50867a679a73c",
+      "5670338fcf1db7d51a2690f388e4e4c5c409c48a"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a/worktree",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:46:22.957083+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/accepted-origin-ancestry.stdout.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_native_bytes": 0,
+      "original_native_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "captures/accepted-origin-ancestry.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_native_bytes": 0,
+      "original_native_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "canonical-FIRST-foreign353",
+    "argv": [
+      "/home/err/.volta/tools/image/node/22.20.0/bin/node",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a/runtime/nbb/cli.js",
+      "-cp",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a/runtime/pr-flow/scripts",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a/runtime/pr-flow/scripts/pr.cljs",
+      "status",
+      "open-hax/knoxx",
+      "353"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:47:25.948449+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/canonical-FIRST-foreign353.stdout.b64",
+      "bytes": 699,
+      "sha256": "c415c163b3c5e2f8f1c89ed056afac3f69614f2af76be531ba260174a333cdc9",
+      "original_native_bytes": 699,
+      "original_native_sha256": "c415c163b3c5e2f8f1c89ed056afac3f69614f2af76be531ba260174a333cdc9"
+    },
+    "stderr": {
+      "path": "captures/canonical-FIRST-foreign353.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_native_bytes": 0,
+      "original_native_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "fresh-foreign353-body",
+    "argv": [
+      "gh",
+      "api",
+      "--paginate",
+      "--slurp",
+      "repos/open-hax/knoxx/pulls/353"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:47:26.717625+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/fresh-foreign353-body.stdout.b64",
+      "bytes": 19773,
+      "sha256": "c4721aa30e39703ec10e7147c3b87e42d6ac765d20bdc5fc0804c194b3f0dfd5",
+      "original_native_bytes": 20305,
+      "original_native_sha256": "dceb0e81f19fb31aa8277512dcaf8536d33ce783a46cf0d1628dafbafdca1e2b"
+    },
+    "stderr": {
+      "path": "captures/fresh-foreign353-body.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_native_bytes": 0,
+      "original_native_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "fresh-foreign353-files",
+    "argv": [
+      "gh",
+      "api",
+      "--paginate",
+      "--slurp",
+      "repos/open-hax/knoxx/pulls/353/files?per_page=100"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:47:27.257917+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/fresh-foreign353-files.stdout.b64",
+      "bytes": 48599,
+      "sha256": "10ffea97e7f93a6a0952fb5145280405d0b5d1eb3d6d53e65cc91347fca25bc6",
+      "original_native_bytes": 49049,
+      "original_native_sha256": "2df2d1aaf788295df7cbba19f3540915e4f05c6018de97eef87e74404b693156"
+    },
+    "stderr": {
+      "path": "captures/fresh-foreign353-files.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_native_bytes": 0,
+      "original_native_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "canonical-FIRST-owned-generator7",
+    "argv": [
+      "/home/err/.volta/tools/image/node/22.20.0/bin/node",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a/runtime/nbb/cli.js",
+      "-cp",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a/runtime/pr-flow/scripts",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a/runtime/pr-flow/scripts/pr.cljs",
+      "status",
+      "riatzukiza/knoxx",
+      "7"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:47:35.790120+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/canonical-FIRST-owned-generator7.stdout.b64",
+      "bytes": 479,
+      "sha256": "9180fe63c6aa0907cf2efb116c3b03a2d799b6ce8262822c3720598e76cfc514",
+      "original_native_bytes": 479,
+      "original_native_sha256": "9180fe63c6aa0907cf2efb116c3b03a2d799b6ce8262822c3720598e76cfc514"
+    },
+    "stderr": {
+      "path": "captures/canonical-FIRST-owned-generator7.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_native_bytes": 0,
+      "original_native_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "fresh-owned-generator7-body",
+    "argv": [
+      "gh",
+      "api",
+      "--paginate",
+      "--slurp",
+      "repos/riatzukiza/knoxx/pulls/7"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:47:36.555379+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/fresh-owned-generator7-body.stdout.b64",
+      "bytes": 18168,
+      "sha256": "e9c98c7fca38edaaf24beb91f1cd80f06ba762a92ab8bcb37d921871fa93f3be",
+      "original_native_bytes": 18933,
+      "original_native_sha256": "eccffa9c7c27d805d0cb520aa9d279e3462bf3caf8ea99311bf3a1b47af252c9"
+    },
+    "stderr": {
+      "path": "captures/fresh-owned-generator7-body.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_native_bytes": 0,
+      "original_native_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "fresh-owned-generator7-files",
+    "argv": [
+      "gh",
+      "api",
+      "--paginate",
+      "--slurp",
+      "repos/riatzukiza/knoxx/pulls/7/files?per_page=100"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:47:37.135277+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/fresh-owned-generator7-files.stdout.b64",
+      "bytes": 88149,
+      "sha256": "a13efd4faf73a288de83ab5f30c47694d3321e3cb3a5133e23044ef1b8b4bb2b",
+      "original_native_bytes": 90184,
+      "original_native_sha256": "6b30470ed52961a687dc25d90c4780f61f531eb89a5f46713f9c0abf1c381eea"
+    },
+    "stderr": {
+      "path": "captures/fresh-owned-generator7-files.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_native_bytes": 0,
+      "original_native_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "canonical-FIRST-owned-spawn6",
+    "argv": [
+      "/home/err/.volta/tools/image/node/22.20.0/bin/node",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a/runtime/nbb/cli.js",
+      "-cp",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a/runtime/pr-flow/scripts",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a/runtime/pr-flow/scripts/pr.cljs",
+      "status",
+      "riatzukiza/knoxx",
+      "6"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:47:46.188470+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/canonical-FIRST-owned-spawn6.stdout.b64",
+      "bytes": 616,
+      "sha256": "da2e0650bb5f94561d64486af2b5dd799cad5612ec64aff293461b8ca0dddfc3",
+      "original_native_bytes": 616,
+      "original_native_sha256": "da2e0650bb5f94561d64486af2b5dd799cad5612ec64aff293461b8ca0dddfc3"
+    },
+    "stderr": {
+      "path": "captures/canonical-FIRST-owned-spawn6.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_native_bytes": 0,
+      "original_native_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "fresh-owned-spawn6-body",
+    "argv": [
+      "gh",
+      "api",
+      "--paginate",
+      "--slurp",
+      "repos/riatzukiza/knoxx/pulls/6"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:47:47.105194+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/fresh-owned-spawn6-body.stdout.b64",
+      "bytes": 18907,
+      "sha256": "581eca09e080f42b6017815b4b6db8caeaa4e5227b1896c07b4ea31a7c1ebd96",
+      "original_native_bytes": 19672,
+      "original_native_sha256": "eb0db826638cedd37409a83082c5a184d1402cb8fb47b5e04b1b30b23f3abfe0"
+    },
+    "stderr": {
+      "path": "captures/fresh-owned-spawn6-body.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_native_bytes": 0,
+      "original_native_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "fresh-owned-spawn6-files",
+    "argv": [
+      "gh",
+      "api",
+      "--paginate",
+      "--slurp",
+      "repos/riatzukiza/knoxx/pulls/6/files?per_page=100"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:47:47.679484+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/fresh-owned-spawn6-files.stdout.b64",
+      "bytes": 62517,
+      "sha256": "56f012cdde5c9f34a2d6a3c6592f787a73cfff348b13823a452b78be20906322",
+      "original_native_bytes": 63781,
+      "original_native_sha256": "0a7a81829b173aeb53e9c472fa9bd7f499b357e572bc8e77afee79b6e45e2606"
+    },
+    "stderr": {
+      "path": "captures/fresh-owned-spawn6-files.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_native_bytes": 0,
+      "original_native_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "fresh-origin-openPRs",
+    "argv": [
+      "gh",
+      "api",
+      "--paginate",
+      "--slurp",
+      "repos/open-hax/knoxx/pulls?state=open&per_page=100"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:47:48.397904+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/fresh-origin-openPRs.stdout.b64",
+      "bytes": 554257,
+      "sha256": "0fd6f2929b9e15279103b5a6322034e2718436bdf289d5deadd09f1f1b65b565",
+      "original_native_bytes": 552694,
+      "original_native_sha256": "1cca4af859252ee30cc991f611304e3a2a3a353def4c44d3dc718b84f6d4dedd"
+    },
+    "stderr": {
+      "path": "captures/fresh-origin-openPRs.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_native_bytes": 0,
+      "original_native_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "fresh-issue246",
+    "argv": [
+      "gh",
+      "api",
+      "--paginate",
+      "--slurp",
+      "repos/open-hax/knoxx/issues/246"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:47:48.960896+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/fresh-issue246.stdout.b64",
+      "bytes": 11987,
+      "sha256": "a0d73fa518d3f10f44db3bdeda4e9c4ee40a020c6d650bc58009a52c35d14fe0",
+      "original_native_bytes": 11571,
+      "original_native_sha256": "cb8aac8822c8ffe72950ae530c8948cc64c4837899f936145baab6b5a3d0f4dd"
+    },
+    "stderr": {
+      "path": "captures/fresh-issue246.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_native_bytes": 0,
+      "original_native_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "fresh-issue246-comments",
+    "argv": [
+      "gh",
+      "api",
+      "--paginate",
+      "--slurp",
+      "repos/open-hax/knoxx/issues/246/comments?per_page=100"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:47:49.313445+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/fresh-issue246-comments.stdout.b64",
+      "bytes": 9,
+      "sha256": "93a632246f28a39eedc6577fda8be826f662ca408592e96b1b2b26b4256eea3d",
+      "original_native_bytes": 4,
+      "original_native_sha256": "cf1cbb66a638b4860a516671fb74850e6ccf787fe6c4c8d29e9c04efe880bd05"
+    },
+    "stderr": {
+      "path": "captures/fresh-issue246-comments.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_native_bytes": 0,
+      "original_native_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "native-before-full-card",
+    "argv": [
+      "/home/err/.volta/tools/image/node/22.20.0/bin/node",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a/runtime/rheos-cli.cjs",
+      "read-task",
+      "knoxx-http-event-runtime-lifecycle-separation",
+      "--config",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a/native-before/kanban/openhax.kanban.json"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a/native-before/kanban",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:51:29.036509+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/native-before-full-card.stdout.b64",
+      "bytes": 1923,
+      "sha256": "5d221f45defe05c60e1c99b0af3d807880a9d9bbe0779f1f7d512b8838acf18f",
+      "original_native_bytes": 1923,
+      "original_native_sha256": "5d221f45defe05c60e1c99b0af3d807880a9d9bbe0779f1f7d512b8838acf18f"
+    },
+    "stderr": {
+      "path": "captures/native-before-full-card.stderr.b64",
+      "bytes": 192,
+      "sha256": "8cc6655fe374df56b0088483134b8141f201294c8617d898a794a8b55e65ff46",
+      "original_native_bytes": 192,
+      "original_native_sha256": "8cc6655fe374df56b0088483134b8141f201294c8617d898a794a8b55e65ff46"
+    },
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "native-before-events",
+    "argv": [
+      "/home/err/.volta/tools/image/node/22.20.0/bin/node",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a/runtime/rheos-cli.cjs",
+      "events",
+      "knoxx-http-event-runtime-lifecycle-separation",
+      "--limit",
+      "100",
+      "--json",
+      "--config",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a/native-before/kanban/openhax.kanban.json"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a/native-before/kanban",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:51:29.595926+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/native-before-events.stdout.b64",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "original_native_bytes": 3,
+      "original_native_sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    "stderr": {
+      "path": "captures/native-before-events.stderr.b64",
+      "bytes": 192,
+      "sha256": "8cc6655fe374df56b0088483134b8141f201294c8617d898a794a8b55e65ff46",
+      "original_native_bytes": 192,
+      "original_native_sha256": "8cc6655fe374df56b0088483134b8141f201294c8617d898a794a8b55e65ff46"
+    },
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "native-after-full-card",
+    "argv": [
+      "/home/err/.volta/tools/image/node/22.20.0/bin/node",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a/runtime/rheos-cli.cjs",
+      "read-task",
+      "knoxx-http-event-runtime-lifecycle-separation",
+      "--config",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a/native-after/kanban/openhax.kanban.json"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a/native-after/kanban",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:51:31.067967+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/native-after-full-card.stdout.b64",
+      "bytes": 11054,
+      "sha256": "02437a25fee8774c6aec290cafcbd30e1fe15a397d56582e41fe98d4ad9b4dce",
+      "original_native_bytes": 11054,
+      "original_native_sha256": "02437a25fee8774c6aec290cafcbd30e1fe15a397d56582e41fe98d4ad9b4dce"
+    },
+    "stderr": {
+      "path": "captures/native-after-full-card.stderr.b64",
+      "bytes": 191,
+      "sha256": "708ff469f3d75a4d44352fce0b687f08939b28bae5f20ae96a24bfd25e413267",
+      "original_native_bytes": 191,
+      "original_native_sha256": "708ff469f3d75a4d44352fce0b687f08939b28bae5f20ae96a24bfd25e413267"
+    },
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "native-after-events",
+    "argv": [
+      "/home/err/.volta/tools/image/node/22.20.0/bin/node",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a/runtime/rheos-cli.cjs",
+      "events",
+      "knoxx-http-event-runtime-lifecycle-separation",
+      "--limit",
+      "100",
+      "--json",
+      "--config",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a/native-after/kanban/openhax.kanban.json"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a/native-after/kanban",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:51:31.564073+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/native-after-events.stdout.b64",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "original_native_bytes": 3,
+      "original_native_sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    "stderr": {
+      "path": "captures/native-after-events.stderr.b64",
+      "bytes": 191,
+      "sha256": "708ff469f3d75a4d44352fce0b687f08939b28bae5f20ae96a24bfd25e413267",
+      "original_native_bytes": 191,
+      "original_native_sha256": "708ff469f3d75a4d44352fce0b687f08939b28bae5f20ae96a24bfd25e413267"
+    },
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "native-parent-knoxx-publication-runtime-follow-up",
+    "argv": [
+      "/home/err/.volta/tools/image/node/22.20.0/bin/node",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a/runtime/rheos-cli.cjs",
+      "read-task",
+      "knoxx-publication-runtime-follow-up",
+      "--config",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a/native-after/kanban/openhax.kanban.json"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a/native-after/kanban",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:51:32.179031+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/native-parent-knoxx-publication-runtime-follow-up.stdout.b64",
+      "bytes": 2199,
+      "sha256": "6beba0b95018a16645312c7c79977dd6a8f69205b3ee6b47a80d7af05effbf4f",
+      "original_native_bytes": 2199,
+      "original_native_sha256": "6beba0b95018a16645312c7c79977dd6a8f69205b3ee6b47a80d7af05effbf4f"
+    },
+    "stderr": {
+      "path": "captures/native-parent-knoxx-publication-runtime-follow-up.stderr.b64",
+      "bytes": 191,
+      "sha256": "708ff469f3d75a4d44352fce0b687f08939b28bae5f20ae96a24bfd25e413267",
+      "original_native_bytes": 191,
+      "original_native_sha256": "708ff469f3d75a4d44352fce0b687f08939b28bae5f20ae96a24bfd25e413267"
+    },
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "own-declared-decision-append",
+    "argv": [
+      "/home/err/.volta/tools/image/node/22.20.0/bin/node",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a/runtime/nbb/cli.js",
+      "-cp",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a/runtime/receipt-river/src/cljs",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a/worktree/.\u03b7\u03bc/verification/http-event-lifecycle-planning/owning-receipt-consumer.cljs",
+      "append",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a/worktree/.\u03b7\u03bc/receipts.edn"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a/worktree",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:51:32.587299+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/own-declared-decision-append.stdout.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_native_bytes": 0,
+      "original_native_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "captures/own-declared-decision-append.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_native_bytes": 0,
+      "original_native_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "own-current-receipt-consumer",
+    "argv": [
+      "/home/err/.volta/tools/image/node/22.20.0/bin/node",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a/runtime/nbb/cli.js",
+      "-cp",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a/runtime/receipt-river/src/cljs",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a/worktree/.\u03b7\u03bc/verification/http-event-lifecycle-planning/owning-receipt-consumer.cljs",
+      "check",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a/worktree/.\u03b7\u03bc/receipts.edn",
+      "16"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a/worktree",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:51:32.852862+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/own-current-receipt-consumer.stdout.b64",
+      "bytes": 4172,
+      "sha256": "1e574ef81cb3936e53f63a29b2a1b5928a0918fceab132325a9cfb8dd637140e",
+      "original_native_bytes": 2612,
+      "original_native_sha256": "b28eda4031bd81a6f65d2c4a501960e0a4ebc5ae34092a06f081bc75e2db145d"
+    },
+    "stderr": {
+      "path": "captures/own-current-receipt-consumer.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_native_bytes": 0,
+      "original_native_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "portable-reflection-append",
+    "argv": [
+      "/usr/local/bin/bb",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a/runtime/mycology/sm-log.bb",
+      "--task",
+      "Refine whole HTTP lifecycle story against actual boot paths and owned event effects",
+      "--efficiency",
+      "0.8",
+      "--friction",
+      "0.3",
+      "--candidate",
+      "0.0",
+      "--receipt-refs",
+      "527a4b2a27456630917ff0e8480fadcb00da28fbb7ca30d6f290add19dca8b31",
+      "--note",
+      "Preserve all six DoD and native Ready5; all actual startup paths, deferred effects and truthful partial/async lifecycle require review. Existing disabled reload repair retained. No backend/compiler/provider or foreign adoption; original body/metadata/history retained; no live event/spore."
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a/worktree",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:51:32.873465+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/portable-reflection-append.stdout.b64",
+      "bytes": 133,
+      "sha256": "661934ecb99df0ef104eda5e9011d9a4f8eb40407f225a1242028dc2b067650c",
+      "original_native_bytes": 133,
+      "original_native_sha256": "661934ecb99df0ef104eda5e9011d9a4f8eb40407f225a1242028dc2b067650c"
+    },
+    "stderr": {
+      "path": "captures/portable-reflection-append.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_native_bytes": 0,
+      "original_native_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "portable-reflection-reader",
+    "argv": [
+      "/usr/local/bin/bb",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a/runtime/mycology/sm-list.bb",
+      "--ledger-only",
+      "--limit",
+      "1"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a/worktree",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:51:32.888077+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/portable-reflection-reader.stdout.b64",
+      "bytes": 710,
+      "sha256": "84117afab2fa5627cd9bd14b4218b7b8dc86d89fe04ae16caeacd7f675ef7e37",
+      "original_native_bytes": 710,
+      "original_native_sha256": "84117afab2fa5627cd9bd14b4218b7b8dc86d89fe04ae16caeacd7f675ef7e37"
+    },
+    "stderr": {
+      "path": "captures/portable-reflection-reader.stderr.b64",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_native_bytes": 0,
+      "original_native_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "provenance_context": "candidate"
+  },
+  {
+    "name": "native-final-after-full-card",
+    "argv": [
+      "/home/err/.volta/tools/image/node/22.20.0/bin/node",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a/runtime/rheos-cli.cjs",
+      "read-task",
+      "knoxx-http-event-runtime-lifecycle-separation",
+      "--config",
+      "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a/native-final-after/kanban/openhax.kanban.json"
+    ],
+    "cwd": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a/native-final-after/kanban",
+    "exit": 0,
+    "captured_at": "2026-10-07T07:52:54.720878+00:00",
+    "structural_string_redaction_before_persistence": true,
+    "stdout": {
+      "path": "captures/native-final-after-full-card.stdout.b64",
+      "bytes": 11060,
+      "sha256": "ef7370143de5a1c844571b6aefc82acdf3c2e4931e6f9229b08e297660241971",
+      "original_native_bytes": 11060,
+      "original_native_sha256": "ef7370143de5a1c844571b6aefc82acdf3c2e4931e6f9229b08e297660241971"
+    },
+    "stderr": {
+      "path": "captures/native-final-after-full-card.stderr.b64",
+      "bytes": 197,
+      "sha256": "9b7697dc8c252f763b1602219bea898eda4b0b0cd2fb6c649ad000e7d97d856b",
+      "original_native_bytes": 197,
+      "original_native_sha256": "9b7697dc8c252f763b1602219bea898eda4b0b0cd2fb6c649ad000e7d97d856b"
+    },
+    "provenance_context": "candidate-final-body"
+  }
+]

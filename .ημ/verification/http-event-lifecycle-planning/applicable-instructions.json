@@ -1,0 +1,14 @@
+{
+  "applicable_target": [
+    "AGENTS.md"
+  ],
+  "other_instruction_paths": [
+    "AGENTS.md",
+    "contracts/AGENTS.md"
+  ],
+  "local_skill_paths": [
+    ".agents/skills/pr-review-to-merge/SKILL.md",
+    ".opencode/skill/pr-review-to-merge/SKILL.md"
+  ],
+  "scope": "docs/card targets; contracts/AGENTS not a target ancestor; local merger-only skill not invoked; global smallest planning/accountability pack read"
+}

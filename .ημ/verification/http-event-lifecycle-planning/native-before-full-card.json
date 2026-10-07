@@ -1,0 +1,18 @@
+{
+  "uuid": "knoxx-http-event-runtime-lifecycle-separation",
+  "frontmatter": {
+    "uuid": "knoxx-http-event-runtime-lifecycle-separation",
+    "title": "HTTP / Event Runtime Lifecycle Separation",
+    "status": "ready",
+    "priority": "P1",
+    "points": "5",
+    "labels": ""
+  },
+  "sections": [
+    {
+      "type": "body",
+      "content": "# HTTP / Event Runtime Lifecycle Separation\n\n> Parent epic: `knoxx-publication-runtime-follow-up`\n\n## Purpose\n\nMake backend HTTP startup independently usable for verification without connecting gateways, schedules, triggers, generators, or dispatching agent/event work.\n\n## Work\n\n- Identify the current boot seam where HTTP startup implicitly starts event runtimes.\n- Split HTTP server lifecycle from event-runtime lifecycle with an explicit composition point.\n- Define and test `start`, `stop`, `reset`, and `status` semantics, including repeated calls and disabled mode.\n- Preserve fail-closed behavior: disabled/failed lifecycle mutations cannot return false success.\n- Add an HTTP-only verification boot mode with zero Discord/gateway/schedule/trigger/generator/agent effects.\n- Once authoritative, retire or narrow `KNOXX_DISABLE_EVENT_RUNTIMES` so there is one lifecycle model rather than two competing controls.\n\n## Definition of Done\n\n- HTTP server can start and serve required routes without starting event runtimes.\n- Tests prove HTTP-only startup produces zero event effects.\n- Lifecycle operations have explicit tested idempotency/error semantics.\n- Disabled `start`/`reset` remain truthful failures rather than no-op success.\n- Existing full-runtime startup still starts intended event runtimes exactly once.\n- Backend test/lint/typecheck gates pass."
+    }
+  ],
+  "source-path": "/home/err/.codex/parallel-goal/issues-20261006/Knoxx-http5-planning-b0e9736c1a/native-before/kanban/tasks/knoxx-http-event-runtime-lifecycle-separation.md"
+}

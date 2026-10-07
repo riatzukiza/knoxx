@@ -1,0 +1,120 @@
+[
+  {
+    "sha": "3409977bca4ba35e09967f9a99d50867a679a73c",
+    "node_id": "C_kwDOR4ZK1NoAKDM0MDk5NzdiY2E0YmEzNWUwOTk2N2Y5YTk5ZDUwODY3YTY3OWE3M2M",
+    "commit": {
+      "author": {
+        "name": "Err",
+        "email": "foamy125@gmail.com",
+        "date": "2026-10-03T10:00:36Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2026-10-03T10:00:36Z"
+      },
+      "message": "Merge pull request #383 from open-hax/codex/consume-qualified-controller\n\nci(build): consume qualified controller clj-kondo toolchain",
+      "tree": {
+        "sha": "9169d385c9da552e1d2a6b9e19c6a0890b6055e6",
+        "url": "[private external reference]"
+      },
+      "url": "[private external reference]",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJqwNJECRC1aQ7uu5UhlAAAVaUQAFyTcURiruzVxrzPK2Vf4P8g\nrPakVk2Ak0fK+WHF8jCUhgMAN2Q3gEWkHjNfcARkRPVHoLk3A83hYd2xoFyeNIuA\nBiXOIoRgLiVgmz7wMg/Al3VwHaJB8jZQB/2kPmzzXjstXla07kpdg0SMZyCDfTAJ\nuMfGW/cy5YrI70A/zxJjILw94zlYMbUICgGdZlLgLXYYwjocC73ITlXS/7LXo+xx\nIzVCNYY0YYeY9zbhCzjq6fz9Q282SL/tn/Cyqkqi2bZp60MiPjqfF+84c5L2pLmB\nZW4Cd/Ta1Tw5Dq/BF+AIgdWZppr8U5MGsm7zFbgzfv7gopF9SM7TvRi7W2fhXO84\nQYL/FJbmjPAkjLY2QkmyoQ9H6uSrqA3M2O83XS317+2YugnMftV3i74iwbsuFkwh\nZo5JnXEMHcFKa72ILkfkiwY4mlySo0yQctfNUKd/bxUNDRGELdR4wTWhOYvAA8mI\n3r8z3LL4HI6VTSolub8IqWoAbLS8aIq+gx8B519QreCGLb799yy2O6g7zzdPYOET\npvt1v3CH4WmLyodhs7OBv8W9dOU/Rz8lfbHDuuMk1+XfPQ1mC40oNH7ArNRH0DLq\n0/+OxCSX07vRclJGLflkW91JDc+qc4uOZdq22967kbCtjV7yOOxDbxKgVKuO/X9N\n6Dn9UMqcFiKH4QsNCJNg\n=wLrF\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 9169d385c9da552e1d2a6b9e19c6a0890b6055e6\nparent 4754c7c3cd3d98179c302278b5bacdb573a4ec60\nparent e45f3a0ba050b3799e2bf18f6d5e12fb6a3ed6f3\nauthor Err <foamy125@gmail.com> 1791021636 -0500\ncommitter GitHub <noreply@github.com> 1791021636 -0500\n\nMerge pull request #383 from open-hax/codex/consume-qualified-controller\n\nci(build): consume qualified controller clj-kondo toolchain",
+        "verified_at": "2026-10-03T10:00:37Z"
+      }
+    },
+    "url": "[private external reference]",
+    "html_url": "https://github.com/open-hax/knoxx/commit/3409977bca4ba35e09967f9a99d50867a679a73c",
+    "comments_url": "[private external reference]",
+    "author": {
+      "login": "riatzukiza",
+      "id": 10676925,
+      "node_id": "MDQ6VXNlcjEwNjc2OTI1",
+      "avatar_url": "[private external reference]",
+      "gravatar_id": "",
+      "url": "[private external reference]",
+      "html_url": "https://github.com/riatzukiza",
+      "followers_url": "[private external reference]",
+      "following_url": "[private external reference]",
+      "gists_url": "[private external reference]",
+      "starred_url": "[private external reference]",
+      "subscriptions_url": "[private external reference]",
+      "organizations_url": "[private external reference]",
+      "repos_url": "[private external reference]",
+      "events_url": "[private external reference]",
+      "received_events_url": "[private external reference]",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "[private external reference]",
+      "gravatar_id": "",
+      "url": "[private external reference]",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "[private external reference]",
+      "following_url": "[private external reference]",
+      "gists_url": "[private external reference]",
+      "starred_url": "[private external reference]",
+      "subscriptions_url": "[private external reference]",
+      "organizations_url": "[private external reference]",
+      "repos_url": "[private external reference]",
+      "events_url": "[private external reference]",
+      "received_events_url": "[private external reference]",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "4754c7c3cd3d98179c302278b5bacdb573a4ec60",
+        "url": "[private external reference]",
+        "html_url": "https://github.com/open-hax/knoxx/commit/4754c7c3cd3d98179c302278b5bacdb573a4ec60"
+      },
+      {
+        "sha": "e45f3a0ba050b3799e2bf18f6d5e12fb6a3ed6f3",
+        "url": "[private external reference]",
+        "html_url": "https://github.com/open-hax/knoxx/commit/e45f3a0ba050b3799e2bf18f6d5e12fb6a3ed6f3"
+      }
+    ],
+    "stats": {
+      "total": 14,
+      "additions": 10,
+      "deletions": 4
+    },
+    "files": [
+      {
+        "sha": "943b853373cfde8a0b559e596f8d378238394c37",
+        "filename": ".github/workflows/environment-promotion.yml",
+        "status": "modified",
+        "additions": 8,
+        "deletions": 4,
+        "changes": 12,
+        "blob_url": "https://github.com/open-hax/knoxx/blob/3409977bca4ba35e09967f9a99d50867a679a73c/.github%2Fworkflows%2Fenvironment-promotion.yml",
+        "raw_url": "https://github.com/open-hax/knoxx/raw/3409977bca4ba35e09967f9a99d50867a679a73c/.github%2Fworkflows%2Fenvironment-promotion.yml",
+        "contents_url": "[private external reference]",
+        "patch": "@@ -3,6 +3,10 @@ on:\n   pull_request_target:\n     types: [labeled, synchronize, reopened, closed]\n     branches: [main]\n+    # Controller-pin/provenance maintenance does not change deployable application artifacts.\n+    paths-ignore:\n+      - '.github/workflows/environment-promotion.yml'\n+      - '.\u03b7\u03bc/**'\n permissions:\n   contents: read\n   pull-requests: read\n@@ -11,17 +15,17 @@ jobs:\n     if: >-\n       github.event.action != 'closed' &&\n       contains(github.event.pull_request.labels.*.name, 'testing')\n-    uses: open-hax/services/.github/workflows/deploy-service-environment.yml@f9bfe1724a662930fc10fcb9ba0f46eac78fbc52\n+    uses: open-hax/services/.github/workflows/deploy-service-environment.yml@bbbf0c2ab25d2a2cbadfbb69f7d18c984b3a285b\n     with:\n-      controller_sha: f9bfe1724a662930fc10fcb9ba0f46eac78fbc52\n+      controller_sha: bbbf0c2ab25d2a2cbadfbb69f7d18c984b3a285b\n       service: knoxx\n       environment: testing\n       pull_request: ${{ format('{0}', github.event.pull_request.number) }}\n   staging:\n     if: github.event.action == 'closed' && github.event.pull_request.merged == true\n-    uses: open-hax/services/.github/workflows/deploy-service-environment.yml@f9bfe1724a662930fc10fcb9ba0f46eac78fbc52\n+    uses: open-hax/services/.github/workflows/deploy-service-environment.yml@bbbf0c2ab25d2a2cbadfbb69f7d18c984b3a285b\n     with:\n-      controller_sha: f9bfe1724a662930fc10fcb9ba0f46eac78fbc52\n+      controller_sha: bbbf0c2ab25d2a2cbadfbb69f7d18c984b3a285b\n       service: knoxx\n       environment: staging\n       pull_request: ${{ format('{0}', github.event.pull_request.number) }}"
+      },
+      {
+        "sha": "9d74551f7463d33816ce594da743a99762f139f4",
+        "filename": ".\u03b7\u03bc/receipts.edn",
+        "status": "modified",
+        "additions": 2,
+        "deletions": 0,
+        "changes": 2,
+        "blob_url": "https://github.com/open-hax/knoxx/blob/3409977bca4ba35e09967f9a99d50867a679a73c/.%CE%B7%CE%BC%2Freceipts.edn",
+        "raw_url": "https://github.com/open-hax/knoxx/raw/3409977bca4ba35e09967f9a99d50867a679a73c/.%CE%B7%CE%BC%2Freceipts.edn",
+        "contents_url": "[private external reference]",
+        "patch": "@@ -11,3 +11,5 @@\n {:pi \"review-to-merge\", :tests \"actionlint both review workflows: pass; git diff --check: pass\", :refs [\"open-hax/knoxx#382\"], :dod \"Qualify restored MiMo and Kimi review workflows; exact-head reviews and coordinator prerequisites required before merge\", :manifest [], :note \"Workflow/comment-only repair; application code untouched; live current-head qualification still required.\", :ts \"2026-10-02T22:13:12.428430940Z\", :host \"local\", :kind :test-run, :origin \"knoxx-382-qualification\", :owner \"receipt-river\"}\n {:pi \"review-to-merge\", :refs [\"open-hax/knoxx#382\" \"6ad674da647e92c4532b5e0dc342691bcd41662e\"], :dod \"Restore receipt contract for PR-added records without rewriting base history\", :manifest [\".\u03b7\u03bc/receipts.edn\"], :note \"User authorized correction of newly proposed records. Preserved original timestamps, notes and base bytes. Kimi passed at previous head; MiMo pending without runner; CodeRabbit and Codex completion still absent. Auto-merge disabled; coordinator prerequisite hold remains.\", :ts \"2026-10-02T22:17:05.718657880Z\", :host \"local\", :kind :decision, :origin \"knoxx-382-receipt-contract\", :owner \"codex\"}\n {:pi \"review-to-merge\", :tests \"Base ledger bytes preserved; both origin references exist in parsed receipt records; git diff --check and workflow actionlint pass\", :refs [\"open-hax/knoxx#382\" \"4170289413\"], :dod \"Settle Kimi provenance finding without changing base history\", :manifest [\".\u03b7\u03bc/session-mycology/ledger.md\" \".\u03b7\u03bc/receipts.edn\"], :note \"Correct only PR-added reflection receipt links. Keep b5b28237 functional workflow pin intentional; coordinator prerequisite hold remains.\", :ts \"2026-10-02T22:21:55.786094285Z\", :host \"local\", :kind :decision, :origin \"knoxx-382-provenance-links\", :owner \"codex\"}\n+{:ts \"2026-10-03T09:26:41.171987+00:00\" :kind :repair :origin \"codex-desktop\" :owner \"codex\" :repo \"open-hax/knoxx\" :dod \"Consume qualified minimal controller toolchain repair without changing deployment controls\" :pi \"pr-flow/review-restoration\" :host \"local\" :manifest [\".github/workflows/environment-promotion.yml\"] :refs [\"https://github.com/open-hax/services/pull/91\" \"services:bbbf0c2ab25d2a2cbadfbb69f7d18c984b3a285b\" \"https://github.com/open-hax/services/actions/runs/35502252489\" \"https://github.com/open-hax/services/pull/91#issuecomment-5748937569\" \"https://github.com/open-hax/knoxx/actions/runs/37105709328\" \"/tmp/knoxx-controller-red.log\" \"/tmp/knoxx-controller-green.log\"] :tests [\"PASS reviewed Services91 exacte0365e4 full two-file no-actionable CR verdict and coveredCommitId marker\" \"PASS Services91 fresh deterministic validation and strict settlement\" \"RED missing clj-kondo current-source hook fixtures fivefail; GREEN pinned2025.07.28 fivepass\" \"PASS actionlint caller workflow and four identical immutable uses/controller pins\"] :note \"All four controller references move from f9bfe17 to actual qualified maintenance merge bbbf0c2. Only owning toolchain installation changes upstream. Source fixtures introduced71596a58 via327 before382. No unrelated Services history consumed; merge parents are f9bfe17/e0365e4. No deployment/restart or whole-image recovery claimed. Follow-up PR prepared for review; existing automatic closed-PR deployment hook means merge remains held under explicit user no-deploy constraint.\"}\n+{:ts \"2026-10-03T09:31:36.941973+00:00\" :kind :repair :origin \"codex-desktop\" :owner \"codex\" :repo \"open-hax/knoxx\" :dod \"Avoid unrelated deployment on reviewed controller-pin/provenance-only merge\" :pi \"pr-flow/review-restoration\" :host \"local\" :manifest [\".github/workflows/environment-promotion.yml\"] :refs [\"[private external reference]\" \"[private external reference]\" \"https://github.com/open-hax/knoxx/pull/383\"] :tests [\"PASS actionlint\" \"PASS exact proposed two-file diff matches paths-ignore exclusions with NUL-delimited Git paths\" \"PASS backend/frontend/build-script fixture paths remain outside exclusions\" \"PASS all four reviewed maintenance merge pins identical; existing event types/job gates unchanged\"] :note \"User explicitly requires no deployment on this tooling-only follow-up. Native GitHub path filter is limited to environment-promotion.yml and .\u03b7\u03bc provenance; ordinary CI/review triggers unchanged and no lint fixture skipped. Current GitHub pull_request_target workflow resolves latest default-branch commit; closed-event after merge evaluates merged filter. No workflow dispatch, environment configuration, deployment/restart or recovery result claimed. Confirm no promotion run after qualified merge; skipped execution is not CI recovery pass.\"}"
+      }
+    ]
+  }
+]
