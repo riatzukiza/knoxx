@@ -379,13 +379,17 @@
 
 (defn- hydrate-membership-row
   [roles-by-m tools-by-m {:keys [id user_id org_id actor_id org_name org_slug status is_default created_at updated_at]}]
-  (let [roles (or (get roles-by-m id) [])]
+  (let [roles (or (get roles-by-m id) [])
+        tool-policies (or (get tools-by-m id) [])]
     {:id id :userId user_id :orgId org_id
      :actorId (or (normalize-actor-id actor_id)
                   (default-membership-actor-id (map :slug roles)))
      :orgName org_name :orgSlug org_slug :status status :isDefault is_default
      :createdAt created_at :updatedAt updated_at
-     :roles roles :toolPolicies (or (get tools-by-m id) [])}))
+     :roles roles
+     ;; Request authority uses canonical kebab-case; retain the public API's
+     ;; camelCase field from the same trusted value so neither can drift.
+     :tool-policies tool-policies :toolPolicies tool-policies}))
 
 (defn ^:async hydrate-memberships
   [_pool memberships]
@@ -520,6 +524,25 @@
   (let [membership (first (await (hydrate-memberships pool [membership-row])))
         detailed-roles (await (detailed-membership-roles pool membership))]
     (request-context-map membership-row membership detailed-roles)))
+
+(defn ^:async resolve-agent-actor-context!
+  "Resolve a scheduled/scoped actor through CURRENT stored membership and roles.
+   Exact request membership/org narrow lookup; ambiguity and inactive bindings
+   are refused by the existing membership resolver/validator. No grants are
+   manufactured from a role slug or contract tool list."
+  [{:keys [actor-id org-id membership-id]}]
+  (when (str/blank? actor-id)
+    (throw (ex-info "Scoped actor identity is required" {:reason :missing-actor})))
+  (let [db (await (db!))
+        membership (await (mongo-actor-creds/resolve-actor-membership!
+                           db {:actor-id actor-id :org-id org-id :membership-id membership-id}))]
+    (when-not membership
+      (throw (ex-info "Actor has no stored membership" {:reason :missing-membership})))
+    (let [row (await (mongo-directory/find-membership-row-with-user-org! db (:membership_id membership)))
+          context (await (build-request-context nil row))]
+      (when (and org-id (not= org-id (get-in context [:org :id])))
+        (throw (ex-info "Actor organization differs from request scope" {:reason :actor-scope-mismatch})))
+      (assoc context :actorId actor-id))))
 
 ;; ---------------------------------------------------------------------------
 ;; Bootstrap & contract sync

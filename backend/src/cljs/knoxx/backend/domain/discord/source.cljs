@@ -72,6 +72,8 @@
      :authorIsBot (boolean (:bot author))
      :authorRoleIds (message-role-ids msg)
      :timestamp (or (:timestamp msg) "")
+     :reactions (vec (or (:reactions msg) []))
+     :stickers (vec (or (:sticker_items msg) (:stickers msg) []))
      :attachments (->> (or (:attachments msg) [])
                        (mapv (fn [attachment]
                                {:id (or (:id attachment) "")
@@ -83,7 +85,10 @@
                   (mapv (fn [embed]
                           {:title (:title embed)
                            :description (:description embed)
-                           :url (:url embed)})))}))
+                           :url (:url embed)
+                           :image (:image embed)
+                           :thumbnail (:thumbnail embed)
+                           :video (:video embed)})))}))
 
 (defn- sort-newest-first
   [messages]

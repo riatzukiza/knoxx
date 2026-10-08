@@ -356,6 +356,9 @@
                                   :sources (:sources resolved)
                                   :memory_hydration (:memory-hydration resolved)
                                   :context_policy (sticky-context-policy resolved source)
+                                  :tool_modes (:tool-modes resolved)
+                                  :character_context (:character-context resolved)
+                                  :character_encounters (:character-encounters resolved)
                                   :task_source (some-> (:task-source task-input) qualified-name)
                                   :rendered_task_prompt (:task task-input)
                                   :deprecated_agent_task_fallback (:deprecated-agent-task-fallback? task-input)}

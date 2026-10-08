@@ -1,5 +1,6 @@
 (ns knoxx.backend.infra.routes.users.admin
   (:require [clojure.string :as str]
+            [knoxx.backend.infra.auth.authz :as authz]
             [knoxx.backend.infra.db.policy :as db-policy]))
 
 (defn- body-map
@@ -229,7 +230,7 @@
                                                 body (body-map request)]
                                             (when-not membership
                                               (throw (http-error 404 "membership_not_found" "membership not found")))
-                                            (ensure-org-scope! ctx (:org-id membership) "org.user_policy.update")
+                                            (ensure-org-scope! ctx (authz/record-org-id membership) "org.user_policy.update")
                                             (db-policy/set-membership-tool-policies!
                                              (db-policy/context-pool db)
                                              membership-id

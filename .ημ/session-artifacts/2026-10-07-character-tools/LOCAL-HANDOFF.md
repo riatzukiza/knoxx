@@ -1,0 +1,65 @@
+# Local character successor
+
+License: GPL-3.0-or-later.
+
+The isolated source implements independent bounded Discord/Bluesky encounter
+intake, durable admission through existing OpenPlanner events, current canonical
+source/account/actor authorization, and refreshed quoted encounters before later
+maker and reply requests. A fixed capability menu and scoped dispatcher use the
+supported existing SDK. The character identity, supplied persistent projection,
+restored conversation, workspace-bound creation tools and publication controls
+survive that interface.
+
+`qualified-successor.json` records the exact owned source content, the compiled
+server digest, successful test/build counters and hashes of the retained local
+verification logs. `backend/dist` is the compiled local successor; it has not
+been started. The first human-wrapper failure remains recorded as a failure.
+Its narrow fixture corrections are covered by the subsequent green full run.
+
+The local implementation is reviewable. It is not deployed or formally reviewed.
+The host overlay and running maker/reply services remain unchanged. The existing
+formal review owner can package this local commit through the canonical workflow.
+The human walkthrough and proposed resource values live under
+`docs/verification/local-creator-loop.md` and its adjacent proposal directory.
+The separately prepared successor overlay and rollback recipe are operator
+artifacts outside this source commit; they must preserve the current overlay
+fingerprint and require a controlled, authorized activation.
+
+Current stored membership grants admit the existing Discord reads and scoped
+memory tools, but do not admit Bluesky, creation/media or delegation tools.
+The focused authority clamp correctly refuses them. Activation also requires
+the separately prepared minimum actor-specific membership override and exact
+rollback through existing policy operations. Resource shapes and contract
+ceilings do not substitute for that grant. No live grant was changed and no
+current Bluesky/production admission is claimed.
+
+The canonical membership hydrator now preserves stored member tool overrides
+in the internal policy field and its existing API alias. The supported member
+policy update route uses the existing organization codec, retaining the scoped
+operator permission, cross-organization refusal and existing system-admin
+handling. Pure injected-port regressions cover both compatibility boundaries;
+no live membership or global role was changed.
+
+The existing error-boundary gate still fails on its inherited inventory of 173
+sites. The source comparison introduced no new site identities; its baseline
+and allowlist were not rewritten. Full backend tests and production server
+compilation pass without compiler warnings.
+
+The feature retains source-provided emoji, reaction, sticker and media references
+without claiming visual interpretation. Direct encounter context uses a bounded
+recent window, prioritizes external observations by actual source time, and
+starts with distinct exact source scopes. Labeled self-output uses spare budget
+rather than crowding out available external experience. Related vector recall
+still retrieves authorized session/action
+memory; sessionless historical encounter retrieval, graph visibility and full
+physical-field evolution remain separate unfinished work. `graph_query` is not
+exposed by these modes. Empty default character projections mean no field state
+was loaded, rather than invented mood evolution.
+
+The native Turn Processor files in this directory are an unqualified inactive
+draft, retained after migration became conditional. No SDK defect requiring
+that migration was reproduced. They are outside all active compiler paths.
+
+The next step is formal review of the local successor and proposed activation
+delta, followed by the explicitly authorized cutover and natural observation
+walkthrough. A fixture PASS does not establish deployed creator behavior.

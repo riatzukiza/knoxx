@@ -323,12 +323,24 @@
                          (required-first-options model context options))))))
   raw-agent)
 
+(defn- ^:async session-resource-loader! [opts runtime-dir-value]
+  (if-let [system-prompt (:system-prompt opts)]
+    (let [ResourceLoader (resource-loader-class)
+          loader (ResourceLoader.
+                  #js {:cwd (:workspace-root opts) :agentDir runtime-dir-value
+                       :settingsManager (:settings-manager opts)
+                       :systemPromptOverride (fn [_discovered] system-prompt)})]
+      (await (.reload loader))
+      loader)
+    (:loader opts)))
+
 (defn ^:async create-session!
   "Create and wrap an eta-mu agent session from CLJS options. Returns a Promise
    because the eta-mu SDK creates sessions asynchronously."
   [opts]
   (let [create-agent-session (create-agent-session-fn)
         runtime-dir-value    (or (:runtime-dir opts) (runtime-dir))
+        session-loader       (await (session-resource-loader! opts runtime-dir-value))
         hook                 (when-let [materialize! (:materialize! opts)]
                                (media-materialize-hook materialize!))
         created (await (create-agent-session
@@ -336,7 +348,7 @@
                              :agentDir runtime-dir-value
                              :authStorage (:auth-storage opts)
                              :modelRegistry (:model-registry opts)
-                             :resourceLoader (:loader opts)
+                             :resourceLoader session-loader
                              :settingsManager (:settings-manager opts)
                              :sessionManager (:session-manager opts)
                              :model (:model opts)
@@ -346,3 +358,18 @@
         raw-session (aget created "session")]
     (configure-tools-choice! (aget raw-session "agent") (:tools-choice opts))
     (wrap-eta-mu-session raw-session hook)))
+
+(defn builtin-tool-closures
+  "Use the SDK's public cwd-bound factories for the names already authorized
+   by Knoxx. The small dispatcher must not drop the creator's file/shell tools.
+   Factory/schema absence refuses construction rather than reimplementing I/O."
+  [cwd tool-names]
+  (let [factory-names {"read" "createReadTool" "write" "createWriteTool"
+                       "edit" "createEditTool" "bash" "createBashTool"
+                       "find" "createFindTool" "grep" "createGrepTool" "ls" "createLsTool"}]
+    (into-array
+     (map (fn [tool-name]
+            (let [factory (some->> (get factory-names tool-name) (aget eta-mu))]
+              (when-not (fn? factory)
+                (throw (ex-info "SDK builtin factory is unavailable" {:reason :missing-builtin :tool tool-name})))
+              (factory cwd))) tool-names))))

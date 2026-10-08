@@ -102,6 +102,16 @@
       (some? rendered) (assoc :rendered-task-prompt rendered)
       deprecated? (assoc :deprecated-agent-task-fallback true))))
 
+(defn- normalized-character-fields
+  [spec]
+  (let [modes (or (:tool_modes spec) (:tool-modes spec) (:toolModes spec))
+        character (or (:character_context spec) (:character-context spec) (:characterContext spec))
+        encounters (or (:character_encounters spec) (:character-encounters spec) (:characterEncounters spec))]
+    (cond-> {}
+      modes (assoc :tool-modes modes)
+      character (assoc :character-context character)
+      encounters (assoc :character-encounters encounters))))
+
 (defn- normalized-runtime-fields
   [spec]
   (let [tool-policies (->> (or (:tool_policies spec) (:tool-policies spec)
@@ -123,7 +133,7 @@
                    (:memoryHydration spec))
         context (or (:context_policy spec) (:context-policy spec)
                     (:contextPolicy spec) (:context spec))]
-    (cond-> {}
+    (cond-> (normalized-character-fields spec)
       (seq tool-policies) (assoc :tool-policies tool-policies)
       tools-choice (assoc :tools-choice tools-choice)
       resources (assoc :resource-policies resources)

@@ -1,8 +1,13 @@
 (ns knoxx.backend.infra.agent.session
   (:require [clojure.string :as str]
+            [clojure.set :as set]
             [knoxx.backend.domain.models :refer [normalize-thinking-level effective-thinking-level resolve-model-contract]]
             [knoxx.backend.extern.eta-mu :as eta-mu-extern]
             [knoxx.backend.extern.extension :as extension-extern]
+            [knoxx.backend.extern.tools :as tools-extern]
+            [knoxx.backend.infra.character.authority :as character-authority]
+            [knoxx.backend.infra.character.mode-runtime :as mode-runtime]
+            [knoxx.backend.infra.actor.acting :as acting]
             [knoxx.backend.infra.agent.content-codec :as content-codec]
             [knoxx.backend.infra.agent.history :as history]
             [knoxx.backend.infra.agent.provider.eta-mu :as eta-mu-provider]
@@ -123,16 +128,49 @@
   [runtime config auth-context agent-spec]
   (tool-catalog/visible-session-signature runtime config auth-context agent-spec))
 
-(defn- session-provider-tools
+(defn- registered-focused-tool
+  [current-context tool]
+  (let [registered (tools-extern/registered-tool tool)
+        execute (:execute registered)
+        scope {:actor-id (:actorId current-context)
+               :org-id (get-in current-context [:org :id])
+               :membership-id (get-in current-context [:membership :id])}]
+    (assoc registered :execute
+           (fn [id args signal update!]
+             (acting/run-as! scope #(execute id args signal update!))))))
+
+(defn- ^:async refresh-focused-catalog!
+  [runtime config auth-context agent-spec allowed-tool-ids session-id conversation-id]
+  (let [current-context (await (character-authority/resolve-current! config auth-context agent-spec))
+        current-allowed (set/intersection allowed-tool-ids
+                                          (tool-catalog/focused-authorized-tool-ids config current-context agent-spec))
+        current-tool-context (tool-catalog/effective-tool-auth-context current-context current-allowed)
+        builtin (eta-mu-extern/builtin-tool-closures
+                 (:workspace-root config) (tool-catalog/builtin-tools runtime config current-tool-context agent-spec))
+        closures (wrap-custom-tools-with-agent-context!
+                  (tool-catalog/custom-tools runtime config current-tool-context agent-spec current-allowed)
+                  {:session-id session-id :conversation-id conversation-id :agent-spec agent-spec})]
+    {:allowed-ids current-allowed
+     ;; graph_query lacks per-memory visibility; do not newly expose it here.
+     :catalog (->> (concat (eta-mu-extern/tool-seq builtin) (eta-mu-extern/tool-seq closures))
+                   (map #(registered-focused-tool current-context %))
+                   (remove #(= "graph_query" (:id %))) vec)}))
+
+(defn- ^:async session-provider-tools
   [runtime config tool-auth-context agent-spec allowed-tool-ids _model-id session-id conversation-id]
-  (let [builtin-tools (tool-catalog/builtin-tools runtime config tool-auth-context agent-spec)
-        custom-tools (wrap-custom-tools-with-agent-context!
-                      (tool-catalog/custom-tools runtime config tool-auth-context agent-spec allowed-tool-ids)
-                      {:session-id session-id
-                       :conversation-id conversation-id
-                       :agent-spec agent-spec})]
-    {:custom-tools custom-tools
-     :tool-name-allowlist (tool-catalog/tool-runtime-names builtin-tools custom-tools)}))
+  (if-let [mode-configuration (:tool-modes agent-spec)]
+    (let [refresh! (partial refresh-focused-catalog! runtime config tool-auth-context agent-spec allowed-tool-ids session-id conversation-id)
+          controller (await (mode-runtime/make-controller! mode-configuration
+                                                          {:character (:character-context agent-spec)
+                                                           :conversation-id conversation-id :session-id session-id} refresh!))]
+      {:custom-tools (tools-extern/focused-tools controller)
+       :tool-name-allowlist ["capabilities" "invoke"] :mode-controller controller})
+    (let [builtin-tools (tool-catalog/builtin-tools runtime config tool-auth-context agent-spec)
+          custom-tools (wrap-custom-tools-with-agent-context!
+                        (tool-catalog/custom-tools runtime config tool-auth-context agent-spec allowed-tool-ids)
+                        {:session-id session-id :conversation-id conversation-id :agent-spec agent-spec})]
+      {:custom-tools custom-tools
+       :tool-name-allowlist (tool-catalog/tool-runtime-names builtin-tools custom-tools)})))
 
 (defn ^:async create-session-manager!
   ([runtime config conversation-id model-id] (create-session-manager! runtime config conversation-id model-id nil (:agent-thinking-level config)))
@@ -155,10 +193,12 @@
                                                model-provider-id
                                                model-id
                                                (:proxx-default-model config))
-          allowed-tool-ids (tool-catalog/allowed-tool-ids config auth-context agent-spec)
+          allowed-tool-ids (if (:tool-modes agent-spec)
+                             (tool-catalog/focused-authorized-tool-ids config auth-context agent-spec)
+                             (tool-catalog/allowed-tool-ids config auth-context agent-spec))
           tool-auth-context (tool-catalog/effective-tool-auth-context auth-context allowed-tool-ids)
-          {:keys [custom-tools tool-name-allowlist]} (session-provider-tools runtime config tool-auth-context agent-spec
-                                                                             allowed-tool-ids model-id session-id conversation-id)
+          {:keys [custom-tools tool-name-allowlist mode-controller]} (await (session-provider-tools runtime config tool-auth-context agent-spec
+                                                                                                  allowed-tool-ids model-id session-id conversation-id))
           preferred-session-id (some-> session-id str str/trim not-empty)
           message-source (->CompositeMessageSource
                            (->OpenPlannerMessageSource config)
@@ -183,9 +223,10 @@
                                 :tool-name-allowlist tool-name-allowlist
                                 :custom-tools custom-tools
                                 :tools-choice (:tools-choice agent-spec)
+                                :system-prompt (when mode-controller (:system-prompt agent-spec))
                                 :materialize! materialize!}))]
            (set-thinking-level! session thinking-level)
-           session))))))
+           (cond-> session mode-controller (assoc :mode-controller mode-controller))))))))
 
 (defn ^:async construct-session-and-ext-ctx!
   [runtime config conversation-id model-id auth-context thinking-level session-id agent-spec current-tool-signature life-cycle-event-name]

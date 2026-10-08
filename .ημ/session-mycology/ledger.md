@@ -147,3 +147,12 @@
   spore: none
   receipt-refs: 2026-08-30T00:57:53.346Z
   note: An installed logical decision is already-linearized history and must be compared and returned before current-head or quorum derivation; only an empty slot evaluates current evidence, while later head advancement forms a distinct unresolved conflict generation.
+- ts: 2026-10-07T23:31:16.913569382Z
+  session: /home/err/spaces/cephalon-local-character/knoxx
+  task: General authorized local character intake and progressive SDK capabilities
+  p-efficiency: 0.70
+  p-friction: 0.66
+  p-skill-candidate: 0.60
+  spore: none
+  receipt-refs: local-character-human-verifier,local-character-qualified-successor
+  note: Qualify actual supported SDK session/prompt/tool behavior before changing engines; keep native migration conditional. Current canonical grants must beat composed overrides at fetch, admission and reload. CLJS multi-arity test replacements must retain invocation arities; use one isolated human wrapper for the final full suite and compiler counter proof. No spore promoted or distributed in this session.

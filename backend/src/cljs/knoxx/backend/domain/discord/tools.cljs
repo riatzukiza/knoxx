@@ -41,7 +41,10 @@
        (mapv (fn [embed]
                {:title (:title embed)
                 :description (:description embed)
-                :url (:url embed)}))))
+                :url (:url embed)
+                :image (:image embed)
+                :thumbnail (:thumbnail embed)
+                :video (:video embed)}))))
 
 (defn- discord-message->map
   [message]
@@ -53,8 +56,10 @@
      :authorUsername (or (:username author) "unknown")
      :authorIsBot (boolean (:bot author))
      :timestamp (or (:timestamp message) "")
-   :attachments (discord-attachments message)
-     :embeds (discord-embeds message)}))
+     :attachments (discord-attachments message)
+     :embeds (discord-embeds message)
+     :reactions (vec (or (:reactions message) []))
+     :stickers (vec (or (:sticker_items message) (:stickers message) []))}))
 
 (defn- discord-message-line
   [message]
@@ -166,6 +171,7 @@
                       vec)]
     {:messages messages
      :count (count messages)
+     :rawCount (count messages)
      :channelId channel-id}))
 
 (defn ^:async discord-scroll-channel-messages!

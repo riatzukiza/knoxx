@@ -6,7 +6,8 @@
             [knoxx.backend.infra.core-memory :refer [filter-authorized-memory-hits!]]
             [knoxx.backend.domain.contracts.sources :as sources]
             [knoxx.backend.infra.clients.openplanner :as openplanner-client]
-            [knoxx.backend.infra.openplanner.memory :refer [openplanner-memory-search!]]
+            [knoxx.backend.infra.openplanner.memory :refer [openplanner-memory-search!
+                                                           limit-authorized-memory-result]]
             [knoxx.backend.infra.defaults :refer [default-settings]]
             [knoxx.backend.domain.text :refer [value->preview-text]]
             [knoxx.backend.domain.tools :as shared]
@@ -116,9 +117,9 @@
        (let [started-ms (.now js/Date)
              k (max 1 (min 12 (positive-int-or (or (:k opts) (:top-k opts) (:topK opts)) 6)))]
          (try
-           (let [result (await (openplanner-memory-search! config {:query message :k k}))
+           (let [result (await (openplanner-memory-search! config {:query message :k k :defer-limit? true}))
                  hits (await (filter-authorized-memory-hits! config auth-context (:hits result)))]
-             (assoc result :hits hits
+             (assoc (limit-authorized-memory-result result hits k)
                            :mode (or (passive-memory-hydration-mode opts) "triggered")
                            :elapsedMs (- (.now js/Date) started-ms)
                            :conversationId conversation-id))

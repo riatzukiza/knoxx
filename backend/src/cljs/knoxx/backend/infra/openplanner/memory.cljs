@@ -267,9 +267,9 @@
       [])))
 
 (defn ^:async openplanner-memory-search!
-  [config {:keys [query k session-id]}]
-  "Search OpenPlanner's indexed document corpus via vector similarity.
-   Returns {:query, :mode, :hits} where each hit has :id, :document, :metadata, :distance. "
+  "Search bounded quality-filtered candidates. Internal :defer-limit? delays
+   final k until authority/actor checks and is never forwarded to OpenPlanner."
+  [config {:keys [query k session-id defer-limit?]}]
   (let [query (str/trim (or query ""))
         {:keys [k fetch-k]} (expansion-policy/bounded-search-params
                              (policy-registry/get-policy)
@@ -284,7 +284,14 @@
                                                                                  :k fetch-k
                                                                                  :source "knoxx"
                                                                                  :project (:session-project-name config)}
-                                                                          (not (str/blank? session-id)) (assoc :session session-id)))))) k)})))
+                                                                          (not (str/blank? session-id)) (assoc :session session-id))))))
+                                 (if (true? defer-limit?) fetch-k k))})))
+
+(defn limit-authorized-memory-result
+  "Replace candidate hits with the bounded authorized projection, preserving quality order."
+  [result authorized-hits requested-k]
+  (let [{:keys [k]} (expansion-policy/bounded-search-params (policy-registry/get-policy) {:k requested-k})]
+    (assoc result :hits (vec (take k authorized-hits)))))
 
 (defn openplanner-graph-query!
   [config {:keys [query lake node-type limit edge-limit]}]

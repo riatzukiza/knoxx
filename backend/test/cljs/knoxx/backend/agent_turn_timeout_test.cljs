@@ -31,7 +31,7 @@
          (js/Promise.resolve nil))))))
 
 (defn- delayed-send-session
-  "A session whose send-user-message! resolves to `value` after `delay-ms`."
+  "Resolve after the specified delay, or immediately when the delay is nil."
   [value delay-ms]
   (reify agent-shape/IAgentSession
     (streaming? [_] true)
@@ -39,8 +39,10 @@
     (messages [_] [])
     (subscribe! [_ _handler] (fn [] nil))
     (send-user-message! [_ _content]
-      (js/Promise. (fn [resolve _reject]
-                     (js/setTimeout #(resolve value) delay-ms))))
+      (if (nil? delay-ms)
+        (js/Promise.resolve value)
+        (js/Promise. (fn [resolve _reject]
+                       (js/setTimeout #(resolve value) delay-ms)))))
     (follow-up! [_ _message] (js/Promise.resolve nil))
     (steer! [_ _message] (js/Promise.resolve nil))
     (set-thinking-level! [_ _level] nil)
@@ -59,9 +61,15 @@
 
 (deftest ^:async send-user-message-still-races-when-timeout-positive
   (testing "an explicit positive timeout still force-closes a turn that overruns it"
+    ;; Use a pending provider rather than competing short timers: a pause while
+    ;; constructing the wrapper can make the provider's earlier timer already
+    ;; due. The immediate control also proves positive timeouts permit success.
+    (is (= "agent-done"
+           (await (agent-turns/send-user-message-with-timeout!
+                   (delayed-send-session "agent-done" nil) "hello" 1))))
     (try
       (await (agent-turns/send-user-message-with-timeout!
-              (delayed-send-session "agent-done" 50) "hello" 1))
+              (pending-agent-session nil) "hello" 1))
       (is false "should have rejected on timeout")
       (catch :default err
         (is (re-find #"Agent turn timed out after 1ms" (.-message err)))))))
