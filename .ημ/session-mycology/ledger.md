@@ -272,3 +272,19 @@ Origin: `cephalon-character-automatic-scoped-graph-green-20261009`. p-efficiency
 - Evidence: .ημ/review-evidence/cephalon-character/native-review-regressions-green-20261009.json.
 - Scores: efficiency .83, friction .29, skill-candidate .19.
 - Outcome: complete actual backend1787/9278/0fail0error; production0warnings; sandbox failure identity retained. Parent-only independent inspection clean; not native approval. Fresh source review/CI and live links remain owed. No spore incubated or promoted.
+- ts: 2026-09-20T05:28:17.328696690Z
+  session: /tmp/knoxx-pr305-split/merge-workflow-docs
+  task: Persist authorized review-to-merge ownership
+  p-efficiency: 0.86
+  p-friction: 0.28
+  p-skill-candidate: 0.2
+  spore: none
+  receipt-refs: pr-review-to-merge
+  note: A review queue needs a merged-state completion gate and a continuation objective that still owns fixes, reviewers and merge. Direct user-requested skill authored; no additional spore or automatic distribution. Separate worktrees preserve concurrent global skill edits.
+
+## 2026-10-09T19:38:30.385813Z — personal main integration RED
+
+- Origin: cephalon-personal-main-integration-red-20261009; receipt33.
+- Evidence: .ημ/review-evidence/cephalon-character/personal-main-integration-red-20261009.json.
+- Scores: efficiency .77, friction .42, skill-candidate .19.
+- Outcome: exact parent ledgers unioned by immutable common prefix; recorded actual ninth-arity test crash and introduced800line lint severity before repairing. Corrected only the temporary baseline path layout, retaining original error output. No spore incubated or promoted; no live or approval claim.
