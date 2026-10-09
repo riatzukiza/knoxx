@@ -1,0 +1,19 @@
+{
+  "tier": "observed-command-output",
+  "ts": "2026-10-09T22:50:18.623978+00:00",
+  "command": [
+    "clj-kondo",
+    "--config-dir",
+    "backend/.clj-kondo",
+    "--lint",
+    "backend/src/cljs/knoxx/backend/infra/routes/app.cljs",
+    "backend/test/cljs/knoxx/backend/infra/routes/direct_start_authority_test.cljs"
+  ],
+  "exit_code": 3,
+  "stdout": "backend/src/cljs/knoxx/backend/infra/routes/app.cljs:201:1: warning: active-run-summary spans 40 lines (warning >=30)\nbackend/src/cljs/knoxx/backend/infra/routes/app.cljs:390:1: warning: file at least 405 lines (warning >=400)\nbackend/src/cljs/knoxx/backend/infra/routes/app.cljs:717:1: warning: handle-chat-start spans 57 lines (warning >=30)\nbackend/src/cljs/knoxx/backend/infra/routes/app.cljs:776:1: error: file at least 823 lines (error >=800)\nbackend/src/cljs/knoxx/backend/infra/routes/app.cljs:776:1: warning: handle-direct-start spans 47 lines (warning >=30)\nbackend/src/cljs/knoxx/backend/infra/routes/app.cljs:825:1: warning: handle-admin-abort spans 51 lines (warning >=30)\nbackend/src/cljs/knoxx/backend/infra/routes/app.cljs:895:1: warning: handle-session-status spans 51 lines (warning >=30)\nbackend/src/cljs/knoxx/backend/infra/routes/app.cljs:964:1: warning: config! spans 35 lines (warning >=30)\nbackend/src/cljs/knoxx/backend/infra/routes/app.cljs:1421:1: warning: api-knoxx-session-undo! spans 43 lines (warning >=30)\nbackend/src/cljs/knoxx/backend/infra/routes/app.cljs:1573:1: warning: register-admin-and-memory-routes! spans 42 lines (warning >=30)\nbackend/src/cljs/knoxx/backend/infra/routes/app.cljs:1662:1: warning: register-publication-surface-routes! spans 51 lines (warning >=30)\nbackend/src/cljs/knoxx/backend/infra/routes/app.cljs:1715:1: warning: register-resource-and-media-routes! spans 42 lines (warning >=30)\nlinting took 404ms, errors: 1, warnings: 11\n",
+  "stderr": "",
+  "inputs": {
+    "backend/src/cljs/knoxx/backend/infra/routes/app.cljs": "8a09ccd5028d310e37f973123277a915c01574b6f06fcde7526ea6061b9bd75f",
+    "backend/test/cljs/knoxx/backend/infra/routes/direct_start_authority_test.cljs": "2b6daa66bfe93777ba3087f8fd58cb311e990d061f911cb941f6b1e2aa478ccf"
+  }
+}

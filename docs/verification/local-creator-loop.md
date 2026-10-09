@@ -461,6 +461,7 @@ explicit later operator steps.
   `foresight/docs/verification/knoxx-local-social-restoration-20261006.md`.
   Its earlier preparation statements are historical; the fifteen-minute
   schedule was read directly from the current host overlay.
+
 ## Pinned owning recall source and query formatting
 
 The hosted CI and sandbox source checkout both pin personal OpenPlanner candidate
@@ -516,7 +517,7 @@ The sibling role-update route now consumes the canonical membership organization
 codec while preserving permission, cross-org, missing-member and admin controls.
 Its helper extraction clears the touched function-length warning. Sandbox source
 revision capture precedes dependency work; both actual extracted-step install
-and build failure probes retain the observed HEAD and still return exit25.
+and build failure probes retain the observed HEAD and still return exit 25.
 
 The isolated full backend suite passes 1,787 tests / 9,278 assertions with zero
 failures, errors or compiler warnings. Production compilation passes 506 files /
@@ -531,7 +532,7 @@ Exact outputs, hashes and the bounded independent parent-delta inspection are in
 `.ημ/review-evidence/cephalon-character/native-review-regressions-green-20261009.json`.
 That inspection did not inspect the agent’s own hydration/mode repairs and
 supplies no native approval. Current native full CI and new-head review remain
-required. Receipt27 corrects the rejected timestamp/kind of receipts25/26 by
+required. Receipt 27 corrects the rejected timestamp/kind of receipts 25/26 by
 append; both historical rejected originals remain and are not claimed valid.
 B1/B2/live B3, atomic fencing, source qualification and deployment remain unproved.
 
@@ -581,7 +582,7 @@ not qualify the integrated revision. Fresh hosted CI, latest-head native review,
 required conversation settlement, and source prerequisite qualification remain
 separate gates. The ledger union preserves the entire original feature prefix
 and appends the exact incoming main suffix after their literal common prefix.
-Original rejected receipts25/26 and the append correction27 remain unchanged;
+Original rejected receipts 25/26 and the append correction 27 remain unchanged;
 no whole-journal schema pass is claimed. B1/B2/live B3 remain unfinished.
 
 
@@ -644,8 +645,8 @@ rows, producing 1,964 tests / 11,036 assertions / four failures / zero errors.
 The raw fetch boundary now verifies every row's channel before retaining IDs or
 filtering. A rejected read writes no encounter or checkpoint.
 
-Receipt36 appends a precise correction to35: the initial supplemental label
-failure assertion had a stale compiled client fixture shape and did not reach
+Receipt 36 appends a precise correction to receipt 35: the initial supplemental
+label failure assertion had a stale compiled client fixture shape and did not reach
 label transport. Its corrected one/two-arity fixture now counts the actual
 failing label call once, and proves no durable writes. All earlier receipts and
 raw failed attempts remain unchanged. The native four finding regressions and
@@ -670,7 +671,7 @@ PR-triggered run on the repaired head must verify the actual declaration path.
 
 The final unchanged source's isolated retry passed **1,964 tests / 11,036
 assertions / zero failures / zero errors**, compiling 902 files / 901 compiled
-with zero warnings and passing all16 wrapper checks. Final production typecheck
+with zero warnings and passing all 16 wrapper checks. Final production typecheck
 passed 559 files / 520 compiled / zero warnings and both wrapper checks. All
 five actual workflow-finalizer cases passed. The dedicated snapshots were
 cleaned and owned command sessions reaped. The prior Chromium timeout remains
@@ -687,17 +688,17 @@ Native full review `5475471638` on `194f8b64` completed with two findings:
 oversized source text could reject a whole page, and requested identity could
 select an actor without the server's authenticated binding. Its COMMENTED
 state grants no approval. Existing PR CI `37990026033` first failed at Docker
-Hub429; its one failed-job retry failed at the OAuth token endpoint504. Neither
+Hub 429; its one failed-job retry failed at the OAuth token endpoint 504. Neither
 is a passing full functional result; no third blind retry was dispatched.
 
 Three ordinary RED checkpoints retain the original failures. The initial
 HTTP doubles had the wrong compiled function arity; the corrected causal RED
-and all original logs remain separate. Receipt39 corrects the RED commit's
+and all original logs remain separate. Receipt 39 corrects the RED commit's
 counter typo by append, without editing its message or proof. The supplementary
 real policy-resolver regression establishes a later cleared stored binding
 with stale actorId and unchanged user/org/member/grants.
 
-The repair omits source text above4000 UTF16 units without truncation, retaining
+The repair omits source text above 4000 UTF-16 units without truncation, retaining
 raw row identity/frontier, bounded media/reactions and later eligible records.
 HTTP actor selection now uses the server context, rejects missing/mismatched
 bindings before queue effects, and ignores parsed auth_context. Character
@@ -709,15 +710,16 @@ clock intake retain their server identity through every read/admission refresh.
 The first GREEN stopped at positive fixtures supplying nil context and had no
 final counters. The positive fixtures now supply canonical trusted contexts;
 all negative and held-revocation assertions remain. Final actual isolated
-backend: 1970tests/11235assertions/0fail0error;903files902compiled0warnings/16PASS0FAIL. Final production
-server compilation:559files520compiled0warnings/2PASS0FAIL. Owned snapshots are
-cleaned; no backend was started. Host Node22.18.0 is below declared22.19.0;
+backend: 1970 tests / 11235 assertions / 0 failures / 0 errors; 903 files /
+902 compiled / 0 warnings; 16 PASS / 0 FAIL. Final production server compilation:
+559 files / 520 compiled / 0 warnings; 2 PASS / 0 FAIL. Owned snapshots are
+cleaned; no backend was started. Host Node 22.18.0 is below declared 22.19.0;
 this notice is separate from zero compiler warnings.
 
 Thirteen-file scoped lint retains one inherited app file-length error and
 fourteen inherited warnings. Twelve warned function forms are byte-identical
 to committed c5f82; the edited turn principal function warning is removed,
-and the current authority file has0errors0warnings. This is no whole-lint pass.
+and the current authority file has 0 errors / 0 warnings. This is no whole-lint pass.
 
 The HTTP fixture calls the real direct-start handler with an owned queue port;
 it does not establish live registered-route authentication. The cleared-binding
@@ -728,3 +730,41 @@ Current native approval/CI, independent walkthrough settlement, prerequisite
 import choice, B1 physical field, B2 consumed mood, live B3 and deployment remain
 outstanding. Evidence:
 `.ημ/review-evidence/cephalon-character/194f-text-and-principal-green-20261009.json`.
+
+
+## Ordinary actor defaults review repair — 2026-10-09 UTC
+
+Full native CodeRabbit review `5475975132` completed on `642b393b` with two
+findings. It selected all 119 changed inputs and reported the ordinary default
+actor regression plus documentation spacing. Its COMMENTED state supplies no
+approval. The completed review supersedes the earlier pending request snapshot.
+
+All four chat/direct entry points now retain the normalized explicit actor ID
+before applying server defaults. Only that explicit value is checked against the
+authenticated binding. Omitted, null and blank actor values keep ordinary default
+configuration; forged payload authority and a top-level requested-actor marker
+do not supply a principal. Explicit matching bindings succeed, while missing,
+mismatched and cleared bindings are denied before queue or service effects.
+
+Ordinary RED commit `6ee36c20` retains unchanged production and the complete
+**1,972 tests / 11,303 assertions / 24 failures / zero errors** result. All
+failures belong to the omitted-actor cases across the four real registered
+callbacks. The first RED's 25th failure was an incomplete authored Fastify reply
+fixture; its raw output remains separate, and the corrected fixture exercises
+all explicit-actor assertions. No production behavior or assertion was weakened.
+
+Full GREEN passes **1,972 tests / 11,423 assertions / zero failures / zero
+errors**, compiling 903 files / 902 compiled / zero compiler warnings. Production
+typecheck compiles 559 files / 520 compiled / zero compiler warnings. Both owned
+snapshots were cleaned; no server was started. The application retains one
+inherited file-length lint error and eleven inherited length warnings, with
+unchanged diagnostic type/count versus reviewed `642b393b`; the new authority
+test has zero lint errors or warnings. This is not a whole-lint pass.
+
+The fixture exercises actual registered callbacks with owned context and effect
+ports. It does not establish live HTTP authentication or deployed recall.
+Current-head hosted CI, new review, independent walkthrough settlement and the
+OpenPlanner import scope remain separate gates. B1 physical field, B2 persisted
+consumed mood and live B3 are incomplete. Shared concurrent receipt/reflection
+appends are preserved and held uncommitted; they are not swept as owned work.
+Evidence: `.ημ/review-evidence/cephalon-character/642b-ordinary-actor-repair-green-20261009.json`.

@@ -169,7 +169,7 @@
 (defn- effective-auth-context
   [ctx parsed]
   (let [base ctx
-        requested-actor-id (some-> (get-in parsed [:agent-spec :actor-id]) str str/trim not-empty)
+        requested-actor-id (some-> (:requested-actor-id parsed) str str/trim not-empty)
         _ (when (and requested-actor-id
                      (not= requested-actor-id (ctx-actor-binding ctx)))
             (throw (ex-info "Actor-scoped requests require their authenticated server binding"
@@ -717,7 +717,9 @@
 (defn ^:async handle-chat-start [runtime config reply ctx request]
   (let [node-crypto crypto
         parsed0 (normalize-chat-body (request-body request))
-        parsed (assoc parsed0 :agent-spec (merged-agent-spec config parsed0))
+        parsed (assoc parsed0
+                      :requested-actor-id (get-in parsed0 [:agent-spec :actor-id])
+                      :agent-spec (merged-agent-spec config parsed0))
         agent-ctx (effective-auth-context ctx parsed)
         policy-model (or (:model parsed)
                          (get-in parsed [:agent-spec :model])
@@ -774,7 +776,9 @@
 (defn ^:async handle-direct-start [runtime config reply ctx request]
   (let [node-crypto crypto
         parsed0 (normalize-chat-body (request-body request))
-        parsed (assoc parsed0 :agent-spec (merged-agent-spec config parsed0))
+        parsed (assoc parsed0
+                      :requested-actor-id (get-in parsed0 [:agent-spec :actor-id])
+                      :agent-spec (merged-agent-spec config parsed0))
         agent-ctx (effective-auth-context ctx parsed)
         policy-model (or (:model parsed)
                          (get-in parsed [:agent-spec :model])
@@ -1325,7 +1329,9 @@
   "POST" "/api/knoxx/chat"
   (when ctx (ensure-permission! ctx "agent.chat.use"))
   (let [parsed0 (normalize-chat-body (request-body request))
-        parsed (assoc parsed0 :agent-spec (merged-agent-spec config parsed0))
+        parsed (assoc parsed0
+                      :requested-actor-id (get-in parsed0 [:agent-spec :actor-id])
+                      :agent-spec (merged-agent-spec config parsed0))
         agent-ctx (effective-auth-context ctx parsed)
         body (assoc parsed
                     :mode "rag"
@@ -1345,7 +1351,9 @@
   "POST" "/api/knoxx/direct"
   (when ctx (ensure-permission! ctx "agent.chat.use"))
   (let [parsed0 (normalize-chat-body (request-body request))
-        parsed (assoc parsed0 :agent-spec (merged-agent-spec config parsed0))
+        parsed (assoc parsed0
+                      :requested-actor-id (get-in parsed0 [:agent-spec :actor-id])
+                      :agent-spec (merged-agent-spec config parsed0))
         agent-ctx (effective-auth-context ctx parsed)
         body (assoc parsed
                     :mode "direct"
