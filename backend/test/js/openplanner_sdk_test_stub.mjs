@@ -7,6 +7,44 @@ const calls = __calls;
 const ingestedEvents = [];
 const hotVectorRows = [];
 let eventVectorMode = "valid";
+let scopedGraphFixture = null;
+
+// Held SDK collections only. The released owning graph adapter performs the
+// real ranking/traversal; this fixture does not implement graph selection.
+export function __setScopedGraphFixture(fixture) { scopedGraphFixture = fixture; }
+export function __clearScopedGraphFixture() { scopedGraphFixture = null; }
+
+function scopedGraphCollection(name) {
+  return {
+    find(filter) {
+      record(`${name}.find`, filter);
+      let maximum = Infinity;
+      return {
+        sort() { return this; },
+        limit(n) { maximum = n; return this; },
+        maxTimeMS() { return this; },
+        async toArray() {
+          if (scopedGraphFixture?.fail) throw new Error("PRIVATE graph transport fixture");
+          const { records = [], project, scope } = scopedGraphFixture ?? {};
+          const rows = name === "graphNodeEmbeddings"
+            ? records.map((row, i) => ({
+                _id: `${row.id}::stub-embedding-model::3::0`, node_id: row.id,
+                source_event_id: row.id, project, embedding_model: "stub-embedding-model",
+                embedding_dimensions: 3, embedding: i === 0 ? [1, 0, 0] : [0, 1, 0], chunk_index: 0,
+              }))
+            : records.length === 2 ? [{
+                _id: "held-edge:seed:neighbor", project,
+                source_node_id: records[0].id, target_node_id: records[1].id,
+                data: { scoped_recall: { version: 1, org_id: scope["org-id"], project,
+                  character_id: scope["actor-id"], provenance_event_ids: records.map(row => row.id), cost: 1 } },
+              }] : [];
+          // Narrow, explicit query profile. This is not live Mongo predicate proof.
+          return rows.filter(row => row.project === filter.project).slice(0, maximum);
+        },
+      };
+    },
+  };
+}
 
 // Production requires this setting for fail-closed read-your-writes checks.
 // Give the hermetic SDK stub a deliberately tiny vector contract unless the
@@ -129,6 +167,8 @@ export async function indexTextInMongoVectors(params) {
 
 const stubSdk = {
   mongo: {
+    graphNodeEmbeddings: scopedGraphCollection("graphNodeEmbeddings"),
+    graphEdges: scopedGraphCollection("graphEdges"),
     db: {
       admin() {
         return { command: async () => ({ ok: 1 }) };
@@ -164,6 +204,12 @@ const stubSdk = {
   },
   embeddingRuntime: {
     hot: {
+      getEmbeddingFunctionForModel(model) {
+        return { async generate(texts) {
+          record("scopedGraph.queryEmbedding", { model, texts });
+          return texts.map(() => [1, 0, 0]);
+        } };
+      },
       getModel() {
         return "stub-embedding-model";
       },

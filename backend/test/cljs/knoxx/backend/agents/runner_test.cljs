@@ -125,6 +125,19 @@
                            :tools_choice :required-first
                            :tool_policies [{:toolId "discord.read" :effect "allow"}]}}))))))
 
+(test/deftest direct-start-payload-keeps-trusted-character-configuration
+  (let [configuration {:sources [{:tool-id "discord.channel.messages"}]
+                       :context {:max-encounters 6}}
+        projection {:identity "actor" :persona "existing" :snapshot {} :evidence-ids []}
+        result (:agent-spec
+                (runner/direct-start-payload->turn-params
+                 {:message "Choose" :agent_spec {:character_encounters configuration
+                                                  :character_context projection
+                                                  :tool_modes {:initial "home" :core [] :modes {}}}}))]
+    (test/is (= configuration (:character-encounters result)))
+    (test/is (= projection (:character-context result)))
+    (test/is (= "home" (get-in result [:tool-modes :initial])))))
+
 (test/deftest direct-start-payload->turn-params-normalizes-trigger-audit-metadata
   (test/testing "triggered agent runs preserve audit metadata through the runner boundary"
     (test/is (= {:contract-id "ussyverse_social_creative"

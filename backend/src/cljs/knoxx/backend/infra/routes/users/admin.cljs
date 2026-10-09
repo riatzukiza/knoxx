@@ -1,5 +1,6 @@
 (ns knoxx.backend.infra.routes.users.admin
   (:require [clojure.string :as str]
+            [knoxx.backend.infra.auth.authz :as authz]
             [knoxx.backend.infra.db.policy :as db-policy]))
 
 (defn- body-map
@@ -182,6 +183,16 @@
                                           (credential-payload body provider))))))
                 (unavailable! json-response! reply))))))
 
+(defn- ^:async update-member-roles!
+  [db membership-id context request ensure-org-scope! http-error]
+  (let [result (await (db-policy/get-membership! (db-policy/context-pool db) membership-id))
+        membership (:membership result)]
+    (when-not membership
+      (throw (http-error 404 "membership_not_found" "membership not found")))
+    (ensure-org-scope! context (authz/record-org-id membership) "org.members.update")
+    (db-policy/set-membership-roles-for-context!
+     db membership-id (membership-roles-payload (body-map request)))))
+
 (defn- register-membership-routes!
   [app runtime {:keys [route! json-response! with-request-context! ensure-org-scope! policy-db policy-db-promise http-error]}]
   (route! app "GET" "/api/admin/orgs/:orgId/memberships"
@@ -202,16 +213,8 @@
                 (with-request-context! runtime request reply
                   (fn [ctx]
                     (policy-db-promise runtime reply 200
-                                       ((^:async fn []
-                                          (let [result (await (db-policy/get-membership! (db-policy/context-pool db) membership-id))
-                                                membership (:membership result)]
-                                            (when-not membership
-                                              (throw (http-error 404 "membership_not_found" "membership not found")))
-                                            (ensure-org-scope! ctx (:org-id membership) "org.members.update")
-                                            (db-policy/set-membership-roles-for-context!
-                                             db
-                                             membership-id
-                                             (membership-roles-payload (body-map request))))))))))
+                                       (update-member-roles! db membership-id ctx request
+                                                             ensure-org-scope! http-error)))))
               (unavailable! json-response! reply)))))
 
 (defn- register-membership-policy-routes!
@@ -229,7 +232,7 @@
                                                 body (body-map request)]
                                             (when-not membership
                                               (throw (http-error 404 "membership_not_found" "membership not found")))
-                                            (ensure-org-scope! ctx (:org-id membership) "org.user_policy.update")
+                                            (ensure-org-scope! ctx (authz/record-org-id membership) "org.user_policy.update")
                                             (db-policy/set-membership-tool-policies!
                                              (db-policy/context-pool db)
                                              membership-id

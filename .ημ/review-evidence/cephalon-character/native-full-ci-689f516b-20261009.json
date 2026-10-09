@@ -1,0 +1,38 @@
+{
+  "tier": "observed native REST and command-output evidence; not synthesized review",
+  "observed_at": "2026-10-09T17:28:24.167900Z",
+  "source_head": "689f516b6789ab0e4f77f19aa17c876ce8f7aeaa",
+  "summary": "Full exact689CI37964180585SUCCESS/every jobstep successful/12min7sec; backend1758tests8359assertions,e2e23/118,frontend456/2045 all0fail/0error; actualserver/test/app builds0warnings. Sandbox37962990776SUCCESS; nativebodywholebytesreadbackPASS",
+  "limits": "Hosted sourcefunctional execution is not reviewerapproval, sourceprerequisite integration, nativewalkthroughsettlement or liveB3. Complete87input independentreview pending; six author walkthroughs unresolved. B1field/B2mood unimplemented. Preserve all priorbytes/containingrepo attribution; no sourcecommit/push/runtime/maker/board/social/model/deployment change or spore; heartbeat remainspaused.",
+  "native_raw_and_log_manifest": [
+    {
+      "path": "/home/err/.local/share/codex/cephalon-review-artifacts/receipt-river-fixture-20261009/knoxx-full-ci-37964180585-final.json",
+      "bytes": 12361,
+      "sha256": "e48bdc1c157e013a082df0aaf648e8b13123003a01f4f7c0952fd577162b9081"
+    },
+    {
+      "path": "/home/err/.local/share/codex/cephalon-review-artifacts/receipt-river-fixture-20261009/knoxx-full-ci-37964180585-jobs-final.json",
+      "bytes": 8817,
+      "sha256": "79a869e56bdc9912d8c20409787541c8d88e08fe878ac332f35c7fec41a02234"
+    },
+    {
+      "path": "/home/err/.local/share/codex/cephalon-review-artifacts/receipt-river-fixture-20261009/knoxx-full-ci-37964180585.log",
+      "bytes": 2724568,
+      "sha256": "8e50d8ba53366c8092db2f104c01b84e710827ff58620988771b9f322b8c13be"
+    },
+    {
+      "path": "/home/err/.local/share/codex/cephalon-review-artifacts/receipt-river-fixture-20261009/knoxx-pr14-hosted-ci-body-readback.json",
+      "bytes": 27953,
+      "sha256": "9e8549f61e6149c82ebde4666e4a75b863da838d314c45d23709172c60738274"
+    }
+  ],
+  "original_receipt_prefix": {
+    "bytes": 26530,
+    "sha256": "f09b4f9c2096f4ea1e377d64d4a7fbcdee615be05cdb0fdee8c6be2cf9c93d91"
+  },
+  "original_reflection_prefix": {
+    "bytes": 11302,
+    "sha256": "a8ea12498b50d4f2da7222658b2b576b0055c0f3e1361a89b787de4ae51259a5"
+  },
+  "reviewed_head_not_advanced": true
+}

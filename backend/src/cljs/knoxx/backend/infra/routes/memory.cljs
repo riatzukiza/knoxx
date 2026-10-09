@@ -8,7 +8,8 @@
                                                session-matches-contract-filter?
                                                session-summary-scope-from-rows
                                                filter-authorized-memory-hits!]]
-            [knoxx.backend.infra.openplanner.memory :refer [openplanner-memory-search!]]
+            [knoxx.backend.infra.openplanner.memory :refer [openplanner-memory-search!
+                                                           limit-authorized-memory-result]]
             [knoxx.backend.domain.graph.expansion-policy :as expansion-policy]
             [knoxx.backend.domain.graph.policy-registry :as policy-registry]
             [knoxx.backend.domain.realtime :refer [broadcast-ws!]]
@@ -731,7 +732,8 @@
    {:keys [query bounded-k session-id actor-id exclude-actor-ids]}]
   (let [result (await (openplanner-memory-search! config {:query query
                                                           :k bounded-k
-                                                          :session-id session-id}))
+                                                          :session-id session-id
+                                                          :defer-limit? true}))
         hits (await (filter-authorized-memory-hits! config ctx (:hits result)))
         filtered-hits (await (filter-search-hits-by-actor! config
                                                            fetch-openplanner-session-rows!
@@ -739,7 +741,8 @@
                                                            actor-id
                                                            exclude-actor-ids
                                                            hits))]
-    (json-response! reply 200 (assoc result :ok true :hits filtered-hits))))
+    (json-response! reply 200 (assoc (limit-authorized-memory-result result filtered-hits bounded-k)
+                                    :ok true))))
 
 (defn- memory-search-request-options [request]
   (let [body (or (aget request "body") (js/Object.))

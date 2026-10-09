@@ -1,0 +1,188 @@
+(ns knoxx.backend.extern.turn-processor
+  "Knoxx-owned session/wire boundary for the canonical native Turn Processor.
+   GPL-3.0-or-later. Durable history remains in Knoxx's existing stores."
+  (:require [clojure.string :as str]
+            [eta-mu.turn-processor.shape.message :as native-message]
+            [knoxx.backend.shape.agent :as session]))
+
+(defn- ->part [part]
+  (let [part (if (map? part) part (js->clj part :keywordize-keys true))
+        kind (case (some-> (:type part) name)
+               "toolCall" :tool-call "image_url" :image
+               (some-> (:type part) name keyword))]
+    (cond-> (assoc part :type kind)
+      (:mimeType part) (assoc :mime-type (:mimeType part))
+      (:image_url part) (assoc :url (get-in part [:image_url :url])))))
+
+(defn wire->message [wire]
+  (let [message (if (map? wire) wire (js->clj wire :keywordize-keys true))
+        role (case (some-> (:role message) name)
+               "toolResult" :tool-result (some-> (:role message) name keyword))]
+    (cond-> (assoc message :role role)
+      (sequential? (:content message)) (update :content #(mapv ->part %))
+      (:toolCallId message) (assoc :tool-call-id (:toolCallId message))
+      (:toolName message) (assoc :tool-name (:toolName message))
+      (contains? message :isError) (assoc :is-error (:isError message))
+      (:stopReason message) (assoc :stop-reason (case (:stopReason message)
+                                                               "toolUse" :tool-use
+                                                               (keyword (:stopReason message))))
+      (:usage message) (update :usage #(assoc % :cache-read (or (:cacheRead %) 0)
+                                               :cache-write (or (:cacheWrite %) 0)
+                                               :total-tokens (or (:totalTokens %) 0))))))
+
+(defn message->wire [message]
+  (clj->js
+   (cond-> (assoc message :role (case (:role message) :tool-result "toolResult" (name (:role message))))
+     (vector? (:content message))
+     (update :content (fn [parts]
+                       (mapv #(cond-> (assoc % :type (case (:type %) :tool-call "toolCall" (name (:type %))))
+                                (:mime-type %) (assoc :mimeType (:mime-type %))) parts)))
+     (:tool-call-id message) (assoc :toolCallId (:tool-call-id message))
+     (:tool-name message) (assoc :toolName (:tool-name message))
+     (contains? message :is-error) (assoc :isError (:is-error message))
+     (:stop-reason message) (assoc :stopReason (case (:stop-reason message) :tool-use "toolUse" (name (:stop-reason message))))
+     (:usage message) (update :usage #(assoc % :cacheRead (or (:cache-read %) 0)
+                                               :cacheWrite (or (:cache-write %) 0)
+                                               :totalTokens (or (:total-tokens %) 0))))))
+
+(defn event->wire
+  "Preserve existing stream/transcript protocol without changing native events."
+  [event]
+  (let [wire (clj->js (assoc event :type (name (:type event))))]
+    (when (:message event) (aset wire "message" (message->wire (:message event))))
+    (when (:messages event) (aset wire "messages" (into-array (map message->wire (:messages event)))))
+    (when (:tool-results event) (aset wire "toolResults" (into-array (map message->wire (:tool-results event)))))
+    (doseq [[native wire-key] [[:tool-call-id "toolCallId"] [:tool-name "toolName"]
+                              [:is-error "isError"] [:partial-result "update"]]]
+      (when (contains? event native) (aset wire wire-key (clj->js (get event native)))))
+    (when-let [assistant-event (:assistant-message-event event)]
+      (let [partial (or (aget assistant-event "partial") (:message event))
+            kind (aget assistant-event "type")
+            snapshot (->> (:content partial) (filter #(= :text (:type %))) (map :text) (apply str))]
+        ;; Upstream transport uses cumulative partials, so route authoritative
+        ;; snapshots through the existing partial-message sync path, not deltas.
+        (aset wire "assistantMessageEvent"
+              #js {:type (if (= kind "text_delta") "text_end" kind)
+                   :partial (when partial (message->wire partial))
+                   :text snapshot})))
+    wire))
+
+(defn- media-part [part]
+  (case (:type part)
+    :text {:type "text" :text (:text part)}
+    :image (let [url (or (:url part)
+                         (when-let [data (:data part)]
+                           (if (str/starts-with? data "data:") data
+                               (str "data:" (or (:mime-type part) "image/png") ";base64," data))))]
+             (when-not url (throw (ex-info "Image input is missing data" {:reason :invalid-media})))
+             {:type "image_url" :image_url {:url url}})
+    :audio (let [format (case (:mime-type part) ("audio/wav" "audio/x-wav") "wav" ("audio/mp3" "audio/mpeg") "mp3" nil)]
+             (when-not (and format (:data part))
+               (throw (ex-info "Audio input must be materialized WAV or MP3" {:reason :unsupported-media})))
+             {:type "input_audio" :input_audio {:data (:data part) :format format}})
+    (throw (ex-info "Native provider does not support this input media" {:reason :unsupported-media :type (:type part)}))))
+
+(defn messages->llm
+  "Retain materialized image/audio inputs; never silently claim media was seen."
+  [messages]
+  (vec
+   (mapcat (fn [message]
+             (let [media? (and (vector? (:content message))
+                               (some #(contains? #{:image :audio :video :document} (:type %)) (:content message)))]
+               (cond
+                 (and media? (= :user (:role message)))
+                 [{:role "user" :content (mapv media-part (:content message))}]
+                 (and media? (= :tool-result (:role message)))
+                 [(native-message/message->openai (update message :content #(filterv (fn [part] (= :text (:type part))) %)))
+                  {:role "user" :content (into [{:type "text" :text "Media supplied by preceding tool result:"}]
+                                                  (map media-part (remove #(= :text (:type %)) (:content message))))}]
+                 :else [(native-message/message->openai message)]))) messages)))
+
+(defn- user-message [content]
+  (let [content (if (array? content) (vec (array-seq content)) content)]
+    {:role :user :content (if (vector? content) (mapv ->part content) content) :timestamp (.now js/Date)}))
+
+(defn- drain! [state* queue]
+  (let [messages (get @state* queue)]
+    (swap! state* assoc queue [])
+    messages))
+
+(defn- ^:async run-turn! [state* deps turn]
+  (let [controller (js/AbortController.)
+        context {:system-prompt ((:system-context! deps))
+                 :messages (conj (:messages @state*) (:message turn))
+                 :tools (:tools deps)}
+        config (merge (:provider-config deps)
+                      {:model (:model deps) :convert-to-llm messages->llm
+                       ;; Mode entry and dispatch in one assistant batch have a
+                       ;; deterministic order; caller authority is still rechecked.
+                       :tool-execution :sequential
+                       :abort-signal (.-signal controller)
+                       :get-steering-messages #(drain! state* :steering)
+                       :get-follow-up-messages #(drain! state* :follow-up)})]
+    (swap! state* assoc :controller controller :current-turn (:promise turn))
+    (let [new-messages (await ((:run-loop deps) context config
+                             (fn [event]
+                               (doseq [handler (:subscribers @state*)]
+                                 (try (handler (event->wire event))
+                                      ;; knoxx-lint/allow-silent-catch — subscriber failure cannot fail a turn.
+                                      (catch :default _ nil)))
+                               (js/Promise.resolve nil))
+                             (:stream-fn deps)))]
+      (swap! state* update :messages into (cons (:message turn) new-messages))
+      new-messages)))
+
+(defn- ^:async pump! [state* deps]
+  (loop []
+    (when-let [turn (first (:pending @state*))]
+      (swap! state* update :pending subvec 1)
+      (let [[kind value] (try [:resolve (await (run-turn! state* deps turn))]
+                             (catch :default error [:reject error]))]
+        (when-not (seq (:pending @state*))
+          (swap! state* assoc :streaming? false :current-turn nil :controller nil))
+        (swap! state* assoc :steering [] :follow-up [])
+        ((get turn kind) value)
+        (when (:streaming? @state*) (recur))))))
+
+(defn- enqueue! [state* deps message]
+  (let [callbacks* (atom {})
+        promise (js/Promise. (fn [resolve reject] (reset! callbacks* {:resolve resolve :reject reject})))
+        turn (merge @callbacks* {:promise promise :message message})
+        start? (not (:streaming? @state*))]
+    (swap! state* update :pending conj turn)
+    (when start?
+      (swap! state* assoc :streaming? true :current-turn promise)
+      (pump! state* deps))
+    promise))
+
+(defn- control! [state* deps queue content]
+  (if (:streaming? @state*)
+    (do (swap! state* update queue conj (user-message content)) (js/Promise.resolve nil))
+    (enqueue! state* deps (user-message content))))
+
+(defrecord NativeSession [state* deps]
+  session/IAgentSession
+  (streaming? [_] (boolean (:streaming? @state*)))
+  (current-turn [_] (:current-turn @state*))
+  (messages [_] (map message->wire (:messages @state*)))
+  (subscribe! [_ handler]
+    (swap! state* update :subscribers conj handler)
+    #(swap! state* update :subscribers disj handler))
+  (send-user-message! [_ content] (enqueue! state* deps (user-message content)))
+  (follow-up! [_ content] (control! state* deps :follow-up content))
+  (steer! [_ content] (control! state* deps :steering content))
+  (set-thinking-level! [_ level] (swap! state* assoc :thinking-level level) nil)
+  (abort! [_]
+    (when-let [controller (:controller @state*)] (.abort controller))
+    (js/Promise.resolve nil)))
+
+(defn make-session
+  "Host-owned serialized session around an injected canonical run-loop. Initial
+   messages have already been restored/pruned by the existing history adapter.
+   Exactly the supplied tool vector is exposed; an empty vector stays empty."
+  [{:keys [initial-messages] :as deps}]
+  (when-not (and (fn? (:system-context! deps)) (vector? (:tools deps)))
+    (throw (ex-info "Incomplete native session boundary" {:reason :invalid-session})))
+  (->NativeSession (atom {:messages (vec initial-messages) :pending [] :streaming? false
+                          :current-turn nil :controller nil :steering [] :follow-up [] :subscribers #{}})
+                   deps))

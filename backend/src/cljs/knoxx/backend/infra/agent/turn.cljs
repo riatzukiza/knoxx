@@ -1,21 +1,22 @@
 (ns knoxx.backend.infra.agent.turn
   "Main turn orchestrator: send-agent-turn! and supporting lifecycle functions."
-  (:require [knoxx.backend.infra.run-event-payload :as run-payload]
-            [clojure.string :as str]
+  (:require [clojure.string :as str]
+            [knoxx.backend.infra.run-event-payload :as run-payload]
             [knoxx.backend.infra.agent.initial-admission :as initial-admission]
-            [knoxx.backend.infra.agent.hydration :refer [settings-state* ensure-settings!
+            [knoxx.backend.infra.agent.turn-startup :as startup]
+            [knoxx.backend.infra.character.turn-context :as character-context]
+            [knoxx.backend.infra.agent.hydration :as hydration :refer [settings-state* ensure-settings!
                                                                 passive-hydration! passive-memory-hydration!
                                                                 build-agent-user-message
                                                                 hydration-sources]]
-            [knoxx.backend.infra.agent.session :refer [ensure-agent-session! prune-session-messages]]
+            [knoxx.backend.infra.agent.session :refer [ensure-agent-session!]]
             [knoxx.backend.infra.agent.message :as msg]
             [knoxx.backend.extern.agent-turn-media :as xturn-media]
             [knoxx.backend.extern.agent-turn-node :as xturn-node]
             [knoxx.backend.extern.agent-turn-prompt :as xturn-prompt]
             [knoxx.backend.extern.agent-turn-result :as xturn-result]
             [knoxx.backend.extern.promise :as xpromise]
-            [knoxx.backend.domain.agent.agent-templates :as templates]
-            [knoxx.backend.domain.agent.content :as content :refer [model-ready-content-parts merge-content-parts]]
+            [knoxx.backend.domain.agent.content :as content :refer [merge-content-parts]]
             [knoxx.backend.domain.error-observatory :as errors]
             [knoxx.backend.infra.agent.policy :as policy]
             [knoxx.backend.infra.agent.stream :as stream]
@@ -39,6 +40,7 @@
             [knoxx.backend.domain.text :refer [assistant-message-text assistant-message-reasoning-text]]
             [knoxx.backend.domain.voice.turn-control :as turn-control]
             [knoxx.backend.domain.agent.agent-context :as agent-ctx]
+            [knoxx.backend.domain.character.decision-input :as decision-input]
             [knoxx.backend.domain.time :refer [now-iso]]))
 
 (defonce conversation-access* (atom {}))
@@ -54,23 +56,10 @@
   (authz/remember-conversation-access! conversation-access* ctx conversation-id))
 
 (defn- auth-context-for-agent-turn
-  "The auth context a turn's tools see, synthesized from the agent spec when the
-   turn did not arrive on a request.
-
-   `:resourcePolicies` is carried for the same reason `:toolPolicies` and
-   `:roleSlugs` are, and its absence was a real hole rather than an omission of
-   convenience. `infra.agent.runner` accepts `resource_policies` on a spec and
-   `build-initial-run` records them on the run — but nothing put them where a
-   tool could read them, and `infra.openplanner.tools` has read
-   `:resourcePolicies` off the auth context since long before any of this. So a
-   session started with a pin got its pin written to telemetry and then ran
-   unpinned: `save_translation` fell through to the OpenPlanner segment path and
-   failed with `organization is required`, discarding a finished translation.
-
-   Only synthesized when the turn has no inbound context, matching its two
-   neighbours exactly. A request that already carries resource policies keeps
-   them; this adds a path for triggered sessions rather than changing one that
-   works."
+  "Preserve an inbound server principal and its caller-specific policies.
+   Only context-free legacy turns synthesize role/tool/resource ceilings from
+   the spec. That synthesized actor label cannot authorize character scope;
+   trusted scheduled character starts supply their own in-process context."
   [auth-context agent-spec]
   (let [agent-actor-id (some-> (:actor-id agent-spec) str str/trim not-empty)
         needs-context? (or auth-context
@@ -80,7 +69,9 @@
                            (:role agent-spec))]
     (when needs-context?
       (cond-> (or auth-context {})
-        agent-actor-id (assoc :actorId agent-actor-id)
+        ;; Preserve the inbound server principal, including a genuine event token.
+        ;; A requested spec cannot relabel that token as a different actor.
+        (and (nil? auth-context) agent-actor-id) (assoc :actorId agent-actor-id)
         (and (nil? auth-context) (seq (:tool-policies agent-spec)))
         (assoc :toolPolicies (vec (:tool-policies agent-spec)))
         (and (nil? auth-context) (seq (:resource-policies agent-spec)))
@@ -172,7 +163,7 @@
                (fn [run]
                  (let [resource-patch (cond-> {:sources sources}
                                         hydration (assoc :passiveHydration (select-keys hydration [:query :tokens :database :elapsedMs :results]))
-                                        memory-hydration (assoc :memoryHydration (select-keys memory-hydration [:query :mode :hits :elapsedMs :conversationId])))
+                                        memory-hydration (assoc :memoryHydration (hydration/memory-hydration-projection memory-hydration)))
                        merged-content-parts (merge-content-parts assistant-content-parts
                                                                  (content/reply-attachment-content-parts (:tool_receipts run)))]
                    (-> run
@@ -329,6 +320,10 @@
                 assistant-content-parts hydration memory-hydration
                 persisted-request-messages agent-spec completed-event (:event-stream-sink state)))))))
 
+(defn- fail-turn-record! [run-id payload passive memory]
+  (when (finalization/fail-run! run-id payload nil nil)
+    (update-run! run-id #(update % :resources merge (character-context/resource-patch passive memory)))))
+
 (defn- ^:async finalize-turn-failure!
   [config state session run-id conversation-id session-id started-ms
    hydration memory-hydration persisted-request-messages agent-spec err]
@@ -337,7 +332,7 @@
                                         {:status "failed"
                                          :error err-text})]
     (finalize-run-trace-blocks! run-id "error")
-    (let [failed-run (finalization/fail-run!
+    (let [failed-run (fail-turn-record!
                       run-id {:total_time_ms (- (.now js/Date) started-ms)
                               :reasoning (apply str @(:reasoning-chunks state)) :error err-text}
                       hydration memory-hydration)]
@@ -503,7 +498,7 @@
                              (apply str (map file-processor-style-marker media-parts)))
         base-text (str (or attachment-markers "")
                        (build-agent-user-message turn-message hydration memory-hydration))
-        final-text (cond-> base-text
+        final-text (cond-> (decision-input/append-context base-text (:decision-encounters agent-spec))
                      (pos? omitted-count)
                      (str "\n\n" "[Note: " omitted-count " unsupported attachment(s) were omitted for this model/runtime.]"))
         content (xturn-prompt/prompt-content media-parts final-text)]
@@ -624,9 +619,10 @@
 (defn- ^:async emit-hydration-event!
   [run-id conversation-id session-id event-type hydration resource-patch]
   (let [event (run-payload/tool-event-payload run-id conversation-id session-id event-type
-                                  {:status "ok"
-                                   :hits (count (:results hydration))
-                                   :elapsed_ms (:elapsedMs hydration)})]
+                                  (merge {:status (if (:graph? hydration) (name (:status hydration)) "ok")
+                                          :hits (count (or (:hits hydration) (:results hydration) []))
+                                          :elapsed_ms (:elapsedMs hydration)}
+                                         (select-keys hydration [:failure :field-status :graph?])))]
     (update-run! run-id
                  (fn [run]
                    (-> run
@@ -641,9 +637,9 @@
   (when hydration
     (await (emit-hydration-event! run-id conversation-id session-id "passive_hydration"
                                   hydration {:passiveHydration (select-keys hydration [:query :tokens :database :elapsedMs :results])})))
-  (when (seq (:hits memory-hydration))
+  (when (or (:graph? memory-hydration) (seq (:hits memory-hydration)))
     (await (emit-hydration-event! run-id conversation-id session-id "memory_hydration"
-                                  memory-hydration {:memoryHydration (select-keys memory-hydration [:query :mode :hits :elapsedMs :conversationId])}))))
+                                  memory-hydration {:memoryHydration (hydration/memory-hydration-projection memory-hydration)}))))
 
 (defn- resolve-turn-model
   "Resolve the effective model-id for a turn."
@@ -664,30 +660,15 @@
                                                                    (:agent-thinking-level config)
                                                                    "off"))}))
 
-(declare process-hydration-results-and-start-turn!)
-
-(defn- ^:async persist-running-session-update!
-  [session-id conversation-id run-id persisted-request-messages]
-  (try
-    (await (session-store/update-session! session-id
-                                          {:status "running"
-                                           :has_active_stream false
-                                           :messages persisted-request-messages
-                                           :conversation_id conversation-id
-                                           :run_id run-id}))
-    (catch :default err
-      (.error js/console "[turn] failed to update session"
-              (clj->js {:session-id session-id
-                        :error (ex-message err)})))))
-
-(defn- prepare-turn-context
+(defn- ^:async prepare-turn-context
   "Resolve turn parameters from the request and agent-spec.
    Returns a map of resolved values or throws for invalid inputs."
-  [_runtime config {:keys [conversation-id session-id message template-context model mode run-id auth-context thinking-level agent-spec]}]
+  [runtime config {:keys [conversation-id session-id message template-context model mode run-id auth-context thinking-level agent-spec]}]
   (let [conversation-id (or conversation-id (xturn-node/random-uuid!))
         session-id (ensure-session-id session-id)
         auth-context (auth-context-for-agent-turn auth-context agent-spec)
-        agent-spec (templates/render-agent-prompts agent-spec auth-context template-context)
+        {:keys [auth-context agent-spec encounter-context]}
+        (await (character-context/prepare! runtime config auth-context agent-spec template-context))
         _ (ensure-conversation-access! auth-context conversation-id)
         _ (remember-conversation-access! auth-context conversation-id)
         mode (or mode "direct")
@@ -701,71 +682,39 @@
         auth-extra (auth-snapshot auth-context)]
     (when (and thinking-level-raw (nil? parsed-thinking-level))
       (throw (js/Error. (str "Unsupported thinking level: " thinking-level-raw ". Expected one of off, minimal, low, medium, high, xhigh."))))
-    {:conversation-id conversation-id
-     :session-id session-id
-     :auth-context auth-context
-     :agent-spec agent-spec
-     :mode mode
-     :model-id model-id
-     :thinking-level thinking-level
-     :run-id run-id
-     :started-at started-at
-     :started-ms started-ms
-     :seeded-messages seeded-messages
-     :auth-extra auth-extra
-     :message message}))
+    {:conversation-id conversation-id :session-id session-id :run-id run-id
+     :auth-context auth-context :auth-extra auth-extra :agent-spec agent-spec
+     :mode mode :model-id model-id :thinking-level thinking-level
+     :started-at started-at :started-ms started-ms
+     :seeded-messages seeded-messages :message message
+     :memory-query (decision-input/memory-query message encounter-context)}))
 
 (defn ^:async hydrate-and-materialize!
   "Run passive hydration, memory hydration, content materialization, and session
    setup in parallel.  Returns a promise that resolves to the 4-element result vector."
-  [runtime config {:keys [conversation-id session-id message mode model-id thinking-level agent-spec auth-context startup-owner] :as context} content-parts]
+  [runtime config {:keys [conversation-id session-id message memory-query mode model-id thinking-level agent-spec auth-context startup-owner] :as ctx} content-parts]
   (let [max-bytes 32000000]
     (await
      (xpromise/all-vec
       [(passive-hydration! runtime config mode message auth-context)
-       (passive-memory-hydration! config conversation-id message auth-context agent-spec)
+       (passive-memory-hydration! config conversation-id (or memory-query message) auth-context agent-spec
+                                  (character-context/query-authority-resolver runtime config ctx))
        (materialize-content-parts! runtime config model-id auth-context max-bytes content-parts)
-       (initial-admission/construct-session! context
+       (initial-admission/construct-session! ctx
         #(ensure-agent-session! runtime config conversation-id model-id auth-context thinking-level session-id agent-spec startup-owner))]))))
 
 (defn ^:async send-agent-turn!
-  "Orchestrate a full agent turn: validate, hydrate, create run, prompt, and stream.
-   Returns a Promise that resolves with the turn response or rejects on error."
+  "Orchestrate a full agent turn: validate, hydrate, create run, prompt, and stream."
   [runtime config {:keys [content-parts] :as turn-request}]
-  (let [ctx (assoc (prepare-turn-context runtime config turn-request) :startup-owner (xturn-node/random-uuid!) :startup-failed* (atom false))
-        {:keys [conversation-id session-id run-id started-at started-ms model-id mode
-                thinking-level agent-spec auth-extra seeded-messages message startup-owner]} ctx]
-    ;; Enforce model allow-list and rate limits
+  (let [ctx (assoc (await (prepare-turn-context runtime config turn-request))
+                   :startup-owner (xturn-node/random-uuid!) :startup-failed* (atom false))
+        {:keys [conversation-id model-id message]} ctx]
     (await (policy/enforce-chat-policy! (:auth-context ctx) model-id))
     (maybe-prime-session-title! runtime config conversation-id message)
-    ;; Parallel: hydration, memory, content materialization, session setup
-    (let [hydration-results (await (initial-admission/hydrate! ctx #(hydrate-and-materialize! runtime config ctx content-parts)))
-          start-turn! (process-hydration-results-and-start-turn!
-                        runtime config run-id session-id conversation-id started-at started-ms model-id mode thinking-level
-                        agent-spec auth-extra seeded-messages message startup-owner)]
-      ;; Create run, emit events, and start prompting
-      (await (start-turn! hydration-results)))))
-
-(defn- process-hydration-results-and-start-turn!
-  [_runtime config run-id session-id conversation-id started-at started-ms model-id mode thinking-level
-   agent-spec auth-extra seeded-messages message startup-owner]
-  (^:async fn [[hydration memory-hydration materialized-content-parts session]]
-    (let [materialized-content-parts (vec (or materialized-content-parts []))
-          turn-message (content/nonblank message)
-          user-message (if (seq materialized-content-parts)
-                         {:role "user" :content turn-message :content-parts materialized-content-parts}
-                         {:role "user" :content turn-message})
-          prompt-content-parts (model-ready-content-parts config model-id materialized-content-parts)
-          request-messages (prune-session-messages agent-spec (conj seeded-messages user-message))
-          event-stream-sink (install-openplanner-event-sink! config)]
-      (await (initial-admission/create-run!
-              {:conversation-id conversation-id :startup-owner startup-owner :sink event-stream-sink}
-              [run-id session-id conversation-id started-at model-id mode thinking-level agent-spec auth-extra request-messages config]
-              #(publish-hydration! run-id conversation-id session-id hydration memory-hydration)))
-      (let [persisted-request-messages (prune-session-messages
-                                        agent-spec
-                                        (transcript/transcript-before-prompt session user-message agent-spec))]
-        (persist-running-session-update! session-id conversation-id run-id persisted-request-messages)
-        (prompt-and-await! config session-id run-id conversation-id started-ms model-id mode
-                           session turn-message prompt-content-parts hydration memory-hydration
-                           persisted-request-messages agent-spec event-stream-sink)))))
+    (let [ctx (await (character-context/refresh-query! runtime config ctx))
+          results (await (initial-admission/hydrate! ctx #(hydrate-and-materialize! runtime config ctx content-parts)))]
+      (await (startup/start! runtime config ctx results
+                             {:install-event-sink! install-openplanner-event-sink!
+                              :publish-hydration! publish-hydration!
+                              :finalize-failure! finalize-turn-failure!
+                              :prompt! prompt-and-await!})))))

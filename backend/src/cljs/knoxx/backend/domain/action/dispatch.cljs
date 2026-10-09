@@ -1,5 +1,6 @@
 (ns knoxx.backend.domain.action.dispatch
-  (:require [knoxx.backend.domain.action.loader :as loader]
+  (:require [knoxx.backend.domain.action.character-intake]
+            [knoxx.backend.domain.action.loader :as loader]
             [knoxx.backend.law.actions :as contract]
             [knoxx.backend.domain.action.registry :as registry]
             [knoxx.backend.domain.action.invoke-agent]        ;; side-effect: registers :invoke/agent defmethod

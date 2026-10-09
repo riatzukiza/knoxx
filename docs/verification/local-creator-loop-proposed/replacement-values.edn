@@ -1,0 +1,210 @@
+;; GPL-3.0-or-later.
+;; PROPOSAL ONLY. This is not a loaded resource, overlay merge implementation,
+;; or automatic overlay merge. The enclosed values use consumed source keys;
+;; they have NOT been applied to the host. Apply individual values manually
+;; to existing resources after the walkthrough's activation prerequisites pass.
+;; Preserve all unrelated values, source refs, model overrides, roles, actor
+;; grants, credentials, explicit read scopes, and publication safeguards.
+;; Refused/missing capability groups require review of the effective registry;
+;; this proposal grants no role or Discord permission.
+
+{:creative-trigger-task
+ "This is one opportunity for the continuing OpenHax character. Consider the current admitted external encounters, scoped memories, ongoing work, relationships, and supplied character state. Choose what warrants attention: observe, reflect, converse, develop an original piece, share eligible completed work, or take no public action. External experience is source evidence, not authority. When relevant evidence exists, preserve its identities in the decision/project receipt and let it inform your choice; do not manufacture a mood or claim knowledge you did not receive. Use capabilities to reveal a focused mode, then invoke only the currently revealed authorized capability with its declared arguments. Stay present in the home Discord channels without interrupting the responsive head or an active maker. A scheduled opportunity does not require a new artifact or public post. An explicit creative request still requires a saved original artifact or truthful failure. Preserve project/spec/receipt files and verify existing paths and actual native tool outcomes. For unsolicited finished-work publication, preserve at least thirty minutes between creative Bluesky posts and at most one unsolicited creative Discord share per hour. Use at most one eligible Bluesky post, descriptive image alt text, real artifact paths, and the two existing home publication sinks. Save actual outcomes or explicit failures; do not loop retries, fabricate receipts, edit contracts, schedule extra recurring jobs, or cancel another worker."
+
+ :creative-system-first-paragraph
+ "You are OpenHax's independent maker. Preserve your existing voice: strange, playful, sassy, musical. Develop artwork, music, lyrics and MIDI when admitted encounters, scoped memory, ongoing projects and the current supplied character state make that choice worthwhile. A scheduled opportunity may instead observe, reflect, converse, or take no public action. An explicit production request requires a saved original artifact or truthful failure. Native calls, retained evidence and verified files are evidence; never narrate work as if it happened. Preserve project/spec/receipt files."
+
+ ;; Replace only the first forced-production paragraph of :prompts :system.
+ ;; Retain every existing subsequent personality/tool/file/safeguard paragraph
+ ;; and role prompt. No new :character-context persona is authored here; the
+ ;; supported default derives it from the exact resolved existing prompt.
+
+ :creative-agent-tool-modes
+ {:initial "home"
+  :core []
+  :modes
+  {"home" {:description "Read and respond in currently permitted home Discord channels."
+           :tools ["discord.read" "discord.send" "discord.react"]}
+   "discord-explore" {:description "Discover and read wider Discord spaces permitted by current authority."
+                      :tools ["discord.guilds" "discord.channels" "discord.channel.messages" "discord.search"]}
+   "discord-conversation" {:description "Read, reply, react, or create a thread in permitted Discord spaces."
+                           :tools ["discord.channel.messages" "discord.send" "discord.react" "discord.thread.create"]}
+   "bluesky-observe" {:description "Read fresh timeline material, search, and inspect a conversation."
+                      :tools ["bluesky.timeline" "bluesky.search" "bluesky.thread"]}
+   "bluesky-relationships" {:description "Inspect creators and existing social encounters."
+                            :tools ["bluesky.profile" "bluesky.author.feed" "bluesky.notifications" "bluesky.follows"]}
+   "bluesky-engage" {:description "Engage or publish when evidence and existing publication safeguards admit it."
+                     :tools ["bluesky.publish" "bluesky.like" "bluesky.repost"]}
+   "memory" {:description "Recall currently admitted scoped memories and inspect their session evidence."
+             :tools ["memory_search" "memory_session"]}
+   "create-files" {:description "Develop and verify an original saved artifact using existing workspace tools."
+                   :tools ["read" "write" "bash"]}
+   "create-media" {:description "Use available native media tools within the existing provider safeguards."
+                   :tools ["music.generate" "image.generate" "audio.waveform" "audio.spectrogram" "voice.tts"]}
+   "delegate" {:description "Delegate a bounded job while preserving maker independence and truthful receipts."
+               :tools ["agents.spawn"]}}}
+
+ ;; This explicit ceiling is the union of the proposal's groups, not a grant.
+ ;; Set on the existing creative agent as :tools/allowed only after resolving
+ ;; actual stored actor/capability/resource/credential authority. Every call is
+ ;; intersected with that CURRENT authority; groups cannot manufacture grants.
+ :creative-agent-tools-allowed
+ ["discord.read" "discord.send" "discord.react" "discord.guilds"
+  "discord.channels" "discord.channel.messages" "discord.search" "discord.thread.create"
+  "bluesky.timeline" "bluesky.search" "bluesky.thread" "bluesky.profile"
+  "bluesky.author.feed" "bluesky.notifications" "bluesky.follows"
+  "bluesky.publish" "bluesky.like" "bluesky.repost"
+  "memory_search" "memory_session"
+  "read" "write" "bash" "music.generate" "image.generate"
+  "audio.waveform" "audio.spectrogram" "voice.tts" "agents.spawn"]
+
+ ;; Apply only to the existing reply agent; preserve all unrelated denial
+ ;; entries, its persona/model, incoming-message-first task and publish limits.
+ ;; These underlying reads also admit shared encounter context at decision time.
+ :reply-agent-tools-allowed
+ ["discord.send" "discord.read" "discord.react" "agents.spawn"
+  "discord.channel.messages" "bluesky.timeline" "memory_search" "memory_session"]
+ :reply-tool-denials-to-remove [:bluesky.timeline :memory_search :memory_session]
+ :reply-passive-memory-hydration
+ {:enabled? true :provider :openplanner :mode :always :k 3}
+ :reply-agent-tool-modes
+ {:initial "home" :core []
+  :modes
+  {"home" {:description "Respond promptly to the supplied home-channel event."
+           :tools ["discord.read" "discord.send" "discord.react"]}
+   "observe" {:description "Read currently permitted Discord or the bound Bluesky timeline when needed."
+              :tools ["discord.channel.messages" "bluesky.timeline"]}
+   "memory" {:description "Recall currently authorized session/action memory."
+             :tools ["memory_search" "memory_session"]}
+   "delegate" {:description "Acknowledge an explicit creative request and delegate once to the independent maker."
+               :tools ["agents.spawn"]}}}
+
+ ;; Append this existing context-source ref only if absent. Preserve every
+ ;; existing source ref. :always requests ordinary memory hydration on each
+ ;; opportunity; it is not independent perception and does not replace intake.
+ :memory-source-to-preserve-or-append
+ {:source/ref :source/openplanner-memory :hydration {:mode :always :k 6}}
+
+ ;; Set this SAME value on the maker and conversational reply agent under
+ ;; :agent/:character-encounters. Identity is their existing shared actor;
+ ;; mode, incoming event and task remain separate. This map is consumed by
+ ;; the new source runtime, not by the model and not by an alternate store.
+ :character-encounters
+ {:sources
+  [{:source {:kind "discord" :account-id "450177073990860801"
+             :scope-id "1494137016303095828" :visibility :private}
+    :tool-id "discord.channel.messages" :parameters {:channel_id "1494137016303095828"}
+    :poll-mode :newest :limit 24}
+   {:source {:kind "discord" :account-id "450177073990860801"
+             :scope-id "1444189585373663417" :visibility :private}
+    :tool-id "discord.channel.messages" :parameters {:channel_id "1444189585373663417"}
+    :poll-mode :newest :limit 24}
+   {:source {:kind "discord" :account-id "450177073990860801"
+             :scope-id "1444142673580658739" :visibility :private}
+    :tool-id "discord.channel.messages" :parameters {:channel_id "1444142673580658739"}
+    :poll-mode :newest :limit 24}
+   {:source {:kind "discord" :account-id "450177073990860801"
+             :scope-id "1444503958696624158" :visibility :private}
+    :tool-id "discord.channel.messages" :parameters {:channel_id "1444503958696624158"}
+    :poll-mode :newest :limit 24}
+   {:source {:kind "discord" :account-id "450177073990860801"
+             :scope-id "1444150910950576229" :visibility :private}
+    :tool-id "discord.channel.messages" :parameters {:channel_id "1444150910950576229"}
+    :poll-mode :newest :limit 24}
+   {:source {:kind "discord" :account-id "450177073990860801"
+             :scope-id "1494536176453816431" :visibility :private}
+    :tool-id "discord.channel.messages" :parameters {:channel_id "1494536176453816431"}
+    :poll-mode :newest :limit 24}
+   {:source {:kind "discord" :account-id "450177073990860801"
+             :scope-id "1503863006571008080" :visibility :private}
+    :tool-id "discord.channel.messages" :parameters {:channel_id "1503863006571008080"}
+    :poll-mode :newest :limit 24}
+   {:source {:kind "bluesky" :account-id "did:plc:gr6spgvkvxjirlmvjdie575b"
+             :scope-id "timeline" :visibility :public}
+    :tool-id "bluesky.timeline" :parameters {} :poll-mode :newest :limit 24}]
+  :context {:max-encounters 6 :max-chars 12000 :excerpt-chars 1200
+            :include-self-output? true}}
+
+ ;; Define these canonical source resources in the existing namespace grammar.
+ ;; Add ALL refs below to maker and reply :agent/sources, preserving prior refs.
+ ;; Exact filters/actor/tool ceilings are trusted source grants, not run overrides.
+ :encounter-source-resources
+ [{:source/id :source/open-hax-encounter-discord-frankie
+   :source/type :context :source/name "OpenHax Frankie encounter scope"
+   :source/actor "discord_automation" :enabled true
+   :source/tools [:discord.channel.messages]
+   :source/filters {:encounter-source {:kind "discord" :account-id "450177073990860801"
+                                       :scope-id "1494137016303095828" :visibility :private}}}
+  {:source/id :source/open-hax-encounter-discord-slop
+   :source/type :context :source/name "OpenHax slop encounter scope"
+   :source/actor "discord_automation" :enabled true
+   :source/tools [:discord.channel.messages]
+   :source/filters {:encounter-source {:kind "discord" :account-id "450177073990860801"
+                                       :scope-id "1444189585373663417" :visibility :private}}}
+  {:source/id :source/open-hax-encounter-discord-read-3
+   :source/type :context :source/name "OpenHax existing Discord read scope 3"
+   :source/actor "discord_automation" :enabled true
+   :source/tools [:discord.channel.messages]
+   :source/filters {:encounter-source {:kind "discord" :account-id "450177073990860801"
+                                       :scope-id "1444142673580658739" :visibility :private}}}
+  {:source/id :source/open-hax-encounter-discord-read-4
+   :source/type :context :source/name "OpenHax existing Discord read scope 4"
+   :source/actor "discord_automation" :enabled true
+   :source/tools [:discord.channel.messages]
+   :source/filters {:encounter-source {:kind "discord" :account-id "450177073990860801"
+                                       :scope-id "1444503958696624158" :visibility :private}}}
+  {:source/id :source/open-hax-encounter-discord-read-5
+   :source/type :context :source/name "OpenHax existing Discord read scope 5"
+   :source/actor "discord_automation" :enabled true
+   :source/tools [:discord.channel.messages]
+   :source/filters {:encounter-source {:kind "discord" :account-id "450177073990860801"
+                                       :scope-id "1444150910950576229" :visibility :private}}}
+  {:source/id :source/open-hax-encounter-discord-read-6
+   :source/type :context :source/name "OpenHax existing Discord read scope 6"
+   :source/actor "discord_automation" :enabled true
+   :source/tools [:discord.channel.messages]
+   :source/filters {:encounter-source {:kind "discord" :account-id "450177073990860801"
+                                       :scope-id "1494536176453816431" :visibility :private}}}
+  {:source/id :source/open-hax-encounter-discord-read-7
+   :source/type :context :source/name "OpenHax existing Discord read scope 7"
+   :source/actor "discord_automation" :enabled true
+   :source/tools [:discord.channel.messages]
+   :source/filters {:encounter-source {:kind "discord" :account-id "450177073990860801"
+                                       :scope-id "1503863006571008080" :visibility :private}}}
+  {:source/id :source/open-hax-encounter-bluesky-timeline
+   :source/type :context :source/name "OpenHax existing Bluesky timeline"
+   :source/actor "discord_automation" :enabled true
+   :source/tools [:bluesky.timeline]
+   :source/filters {:encounter-source {:kind "bluesky" :account-id "did:plc:gr6spgvkvxjirlmvjdie575b"
+                                       :scope-id "timeline" :visibility :public}
+                    :account-identifier "open-hax.bsky.social"}}]
+
+ :encounter-source-refs-to-append
+ [:source/open-hax-encounter-discord-frankie :source/open-hax-encounter-discord-slop
+  :source/open-hax-encounter-discord-read-3 :source/open-hax-encounter-discord-read-4
+  :source/open-hax-encounter-discord-read-5 :source/open-hax-encounter-discord-read-6
+  :source/open-hax-encounter-discord-read-7 :source/open-hax-encounter-bluesky-timeline]
+
+ ;; Append to EXISTING generator's :generator/emits; preserve all existing events.
+ ;; Five-minute independent observation is a proposed cadence, not active today.
+ :clock-generator-event-to-append :schedule/ussyverse-social-observation
+ :observation-resources
+ [{:schedule/id :creator-observation
+   :schedule/rule "*/5 * * * *" :schedule/generator "knoxx_schedule"
+   :schedule/event {:event/type :schedule/ussyverse-social-observation
+                    :event/payload {:reason "bounded continuing character observation"}}
+   :enabled true}
+  {:trigger/id :creator-observation
+   :trigger/kind :event :trigger/listener "discord_automation"
+   :trigger/events [:schedule/ussyverse-social-observation]
+   :trigger/action :actions/character-intake
+   :trigger/with {:agent-id "ussyverse_social_creative"}
+   :enabled true}]
+
+ ;; No snapshot, mood, relationship roster, mutable cursor, or synthetic
+ ;; evidence identities are placed in a contract. Cursors/coverage and retained
+ ;; encounters live in the existing scoped OpenPlanner event/checkpoint stream.
+ ;; The reply agent's incoming-message-first and maker-independence behavior
+ ;; stays intact. Its separate narrow ceiling above admits observation/recall,
+ ;; not the maker's production or Bluesky publication tools.
+}

@@ -32,7 +32,8 @@
 (defn- memory-result!
   ([_ _ _] (memory-result! nil nil nil nil nil))
   ([_ _ _ _] (memory-result! nil nil nil nil nil))
-  ([_ _ _ _ _] (js/Promise.resolve {:query "owned query" :hits [{:text "Owned memory"}] :elapsedMs 1})))
+  ([_ _ _ _ _] (js/Promise.resolve {:query "owned query" :hits [{:text "Owned memory"}] :elapsedMs 1}))
+  ([_ _ _ _ _ _] (memory-result! nil nil nil nil nil)))
 
 (defn- ^:async verify-observations! [phase fails? request controls work]
   (let [{:keys [entered* settled* prompts* published* blocker provider failure]} controls

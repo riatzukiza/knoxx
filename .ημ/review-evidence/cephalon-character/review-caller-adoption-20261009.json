@@ -1,0 +1,53 @@
+{
+  "tier": "observed-command-output transcription; not native approval",
+  "observed_at": "2026-10-09T16:58:51.737679Z",
+  "knoxx_previous_head": "6b592a1fb18fef8c005ef639446ed04f2437b474",
+  "receiver_revision": "45ec644c2d15ed511e9bc1e797d1b4073b63dbfc",
+  "muse_revision": "0b9a91492c8355e6933dc2164d35668cb76d9e60",
+  "agents_revision": "4b4f48dae1b804b2581974e604cca618ecedadf1",
+  "model": "opencode/mimo-v2.6-flash-free",
+  "owning_source": {
+    "prior": "137ba891a8d119716cfa603c6a3643d07acc30c3",
+    "current": "a09894c48760748b7fca7bf9e94f36471f599a47",
+    "changed_paths": [
+      ".coderabbit.yaml",
+      ".gitignore",
+      ".\u03b7\u03bc/review-evidence/cephalon-character/review-caller-scratch-configuration-20261009.json",
+      ".\u03b7\u03bc/session-mycology/ledger.md",
+      "receipts.edn"
+    ],
+    "application_package_inputs_unchanged": true,
+    "approval_transfer": false
+  },
+  "guard_fixture": {
+    "tier": "observed-command-output",
+    "observed_at": "2026-10-09T16:54:54.479735Z",
+    "scope": "Git ignore rules for generated review artifacts; no runtime or reviewer verdict",
+    "checks": [
+      {
+        "repository": "openplanner",
+        "generated_unicode_scratch_status": "",
+        "tracked_change_status": " M source.cljs\n",
+        "unexpected_source_status": "?? unexpected.cljs\n",
+        "gitignore_sha256": "66238de281125a7db7624582acb069674dd98a99791e072ac84fe60e2ab60ef7"
+      },
+      {
+        "repository": "knoxx",
+        "generated_unicode_scratch_status": "",
+        "tracked_change_status": " M source.cljs\n",
+        "unexpected_source_status": "?? unexpected.cljs\n",
+        "gitignore_sha256": "2cbd197daa5b703afd14b1a21fe96a85cff2aabb79a6534e33d6a8afde4a0603"
+      }
+    ]
+  },
+  "retained_functional_proof": {
+    "path": ".\u03b7\u03bc/review-evidence/cephalon-character/sdk-query-source-pin-green-20261009.json",
+    "sha256": "7b15469fd3fe6c677c8d631eca09943633b2c240335141c5d1b588b676d4cd7b",
+    "scope": "Actual source137 fullhermetic16PASS/0FAIL production2PASS/0FAIL;1758tests8359assertions0fail0error/0compilerwarnings; not rerun for configuration-only source revision."
+  },
+  "limits": [
+    "Current hosted fullCI, native source review and independent sourceGqualification still required.",
+    "No model call, production config, runtime, maker, board or social change.",
+    "No synthetic reviewer identity or approval, no paid credits, no repeated optional source build."
+  ]
+}
