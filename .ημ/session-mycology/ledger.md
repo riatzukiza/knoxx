@@ -335,3 +335,9 @@ Origin: `cephalon-character-automatic-scoped-graph-green-20261009`. p-efficiency
 - Origin: cephalon-194f-token-and-intake-red-20261009; receipt40.
 - Efficiency0.74/friction0.36/skill-candidate0.18. Authenticate the context before comparing requested identity; carry it through every await instead of reconstructing it from an actor label.
 - Prior record39 corrects commit-message counters without rewriting history. No spore.
+
+## 2026-10-09T21:46:58.092083Z — current stored actor binding RED
+
+- Origin: cephalon-current-stored-binding-red-20261009; receipt41.
+- Efficiency0.78/friction0.31/skill-candidate0.16. Distinguish authenticated input identity from current stored assignment; a stale actor label cannot repair a revoked binding.
+- Positive fixture contexts retain all grant-revocation assertions. No spore.

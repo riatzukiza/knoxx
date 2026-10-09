@@ -5,6 +5,8 @@
             [knoxx.backend.infra.agent.event-policy-authority :as event-authority]
             [knoxx.backend.infra.agent.turn :as turn]
             [knoxx.backend.infra.db.policy :as policy]
+            [knoxx.backend.infra.stores.mongo-policy-actor-credentials :as mongo-actor-creds]
+            [knoxx.backend.infra.stores.mongo-policy-directory :as mongo-directory]
             [knoxx.backend.infra.stores.mongo-policy-roles :as mongo-roles]
             [knoxx.backend.infra.stores.mongo-policy-tools :as mongo-tools]))
 
@@ -26,7 +28,7 @@
            (is (= {:actor-id "creative-actor" :org-id "fixture-org" :membership-id "fixture-member"} @seen*))
            (is (= (:tool-policies stored-context) (:tool-policies result)))
            (is (= (:resourcePolicies inbound) (:resourcePolicies result)))
-           (await (authority/resolve-current! config {:actorId "creative-actor" :orgId "fixture-org" :membershipId "fixture-member"}
+           (await (authority/resolve-current! config {:actorBinding "creative-actor" :orgId "fixture-org" :membershipId "fixture-member"}
                                              {:actor-id "creative-actor"}))
            (is (= {:actor-id "creative-actor" :org-id "fixture-org" :membership-id "fixture-member"} @seen*)
                "Flat request scope is preserved by the canonical auth codec")
@@ -45,7 +47,8 @@
     ((^:async fn []
        (try
          (doseq [context [nil {:org {:id "fixture-org"}}
-                          {:actor {:id "creative-actor" :binding nil}}
+                          {:actor {:id "creative-actor" :binding nil} :actorId "creative-actor"}
+                          {:actorId "creative-actor"}
                           (assoc stored-context :actor {:binding "authenticated-other"})]]
            (let [reads* (atom [])
                  config {:resolve-agent-authority! (fn [scope] (swap! reads* conj scope) stored-context)}]
@@ -217,3 +220,44 @@
                         (is (some #{[:membership-policies ["other-member"]]} @(:calls* state))))))))
          (catch :default error (is false (str error)))
          (finally (done)))))))
+
+(deftest ^:async current-stored-binding-revocation-overrides-a-stale-actor-label
+  (let [state (policy-read-fixture)
+        row* (atom active-member-row)
+        reads* (atom [])
+        inbound (event-authority/authorized-context nil "creative-actor" nil nil)]
+    (await (with-policy-read-fixture!
+            state
+            (^:async fn []
+              (with-redefs [mongo-actor-creds/resolve-actor-membership!
+                            (fn [db scope]
+                              (is (= fixture-policy-db db))
+                              (is (= "creative-actor" (:actor-id scope)))
+                              (swap! reads* conj :initial-actor-membership)
+                              {:membership_id "fixture-member" :actor_id "creative-actor"})
+                            mongo-directory/find-membership-row-with-user-org!
+                            (fn ([_id] (unscoped-read-refused!))
+                                ([db id]
+                                 (is (= fixture-policy-db db))
+                                 (is (= "fixture-member" id))
+                                 (swap! reads* conj :current-membership-row)
+                                 @row*))]
+                (let [valid (await (authority/resolve-current! {} inbound {:actor-id "creative-actor"}))]
+                  (is (= "creative-actor" (get-in valid [:actor :binding])))
+                  (is (= "allow" (:effect (policy-by-tool (:tool-policies valid) "bluesky.timeline")))))
+                ;; The initial lookup still carries actor A; only its later
+                ;; current membership row has had the binding revoked.
+                (swap! row* assoc :actor_id nil)
+                (let [current (await (policy/resolve-agent-actor-context! {:actor-id "creative-actor"}))]
+                  (is (nil? (get-in current [:actor :binding])))
+                  (is (= "creative-actor" (:actorId current)))
+                  (is (= ["fixture-user" "fixture-org" "fixture-member"]
+                         [(get-in current [:user :id]) (get-in current [:org :id])
+                          (get-in current [:membership :id])]))
+                  (is (= "allow" (:effect (policy-by-tool (:tool-policies current) "bluesky.timeline")))))
+                (try
+                  (await (authority/resolve-current! {} inbound {:actor-id "creative-actor"}))
+                  (is false "A cleared current stored binding was accepted through a stale actor label")
+                  (catch :default error
+                    (is (= :invalid-actor-context (:reason (ex-data error))))))
+                (is (= (vec (take 6 (cycle [:initial-actor-membership :current-membership-row]))) @reads*))))))))

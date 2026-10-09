@@ -63,7 +63,7 @@
         (let [spec {:actor-id "creative-actor" :contract-id contract :system-prompt "Existing creator persona"
                     :tool-modes modes :character-encounters {:sources []}
                     :decision-encounters (admitted-context "Forged provider observation")}
-              prepared (await (character-context/prepare! :runtime config nil spec nil))
+              prepared (await (character-context/prepare! :runtime config authority-fixture/stored-context spec nil))
               selected (:agent-spec prepared)
               context (:decision-encounters selected)
               request (if (= contract "maker") "Choose a creative opportunity" "Reply promptly")
@@ -176,15 +176,16 @@
             (^:async fn [config]
               (let [spec (assoc @(:selected* state) :contract-id (:id @(:selected* state))
                                 :memory-hydration {:enabled? true :mode :always :k 6})
+                    auth-context (get @(:contexts* state) actor)
                     request {:conversation-id "held-conversation" :session-id "held-session" :run-id "held-run"
                              :model "fixture-model" :mode "direct" :message "remember a creative opportunity"
-                             :agent-spec spec}
+                             :agent-spec spec :auth-context auth-context}
                     fixture {:state state :config config :request request :prompts* prompts* :logs* logs*
                              :prepared-contexts* (atom []) :memories* (atom []) :after-memory* (atom nil)
                              :provider-failure* provider-failure* :session (settled-capture-session prompts* provider-failure*)}]
-                (await (encounters/observe! :fixture-runtime config spec))
+                (await (encounters/observe! :fixture-runtime config spec auth-context))
                 (sdk-fixture/__setScopedGraphFixture
-                 (clj->js (await (encounters/graph-authority! :fixture-runtime config spec nil))))
+                 (clj->js (await (encounters/graph-authority! :fixture-runtime config spec auth-context))))
                 (try (await (with-turn-effect-fixture! fixture task!))
                      (finally (sdk-fixture/__clearScopedGraphFixture())))))))))
 

@@ -224,7 +224,7 @@
               (let [config (held-account-config state config hold-read-account* entered release)
                     before (stable-principal (get @(:contexts* state) actor-id))
                     outcome (await (with-held-operation!
-                                    (encounters/observe! :fixture-runtime config input-spec) [release]
+                                    (encounters/observe! :fixture-runtime config input-spec {:actor {:binding actor-id}}) [release]
                                     (^:async fn [pending]
                                       (is (= :account-resolution (await (await-held! entered pending))))
                                       (is (empty? @(:source-reads* state)) "The actual source read has not begun at the held account await")
@@ -281,15 +281,15 @@
     (await (with-runtime-fixture!
             state
             (^:async fn [config]
-              (await (encounters/observe! :fixture-runtime config input-spec))
-              (let [before (await (encounters/decision-context! :fixture-runtime config input-spec nil))]
+              (await (encounters/observe! :fixture-runtime config input-spec {:actor {:binding actor-id}}))
+              (let [before (await (encounters/decision-context! :fixture-runtime config input-spec {:actor {:binding actor-id}}))]
                 (reset! (:at* state) "2026-10-07T10:02:00.000Z")
                 (swap! (:details* state) assoc "bluesky.timeline"
                        {:accountId "did:plc:fixture-self" :rawCount 1 :cursor "older-provider-page-two"
                         :results [(bluesky-row "two" "New Bluesky material changes the next creative input")]})
-                (await (encounters/observe! :fixture-runtime config input-spec))
+                (await (encounters/observe! :fixture-runtime config input-spec {:actor {:binding actor-id}}))
                 (reset! (:at* state) "2026-10-07T10:03:00.000Z")
-                (let [after (await (encounters/decision-context! :fixture-runtime config input-spec nil))]
+                (let [after (await (encounters/decision-context! :fixture-runtime config input-spec {:actor {:binding actor-id}}))]
                   (is (not= (:prompt-context before) (:prompt-context after)))
                   (is (str/includes? (:prompt-context after) "New Bluesky material changes"))
                   (is (str/includes? (:prompt-context after) "wave"))
@@ -309,12 +309,12 @@
     (await (with-runtime-fixture!
             state
             (^:async fn [config]
-              (await (encounters/observe! :fixture-runtime config input-spec))
+              (await (encounters/observe! :fixture-runtime config input-spec {:actor {:binding actor-id}}))
               (let [first-rows @(:rows* state) first-store @(:store* state)]
                 (reset! (:store* state) (storage/openplanner-ports :reopened-fixture-event-client))
                 (is (not (identical? first-store @(:store* state))))
-                (let [replayed (await (encounters/observe! :fixture-runtime config input-spec))
-                      loaded (await (encounters/decision-context! :fixture-runtime config input-spec nil))]
+                (let [replayed (await (encounters/observe! :fixture-runtime config input-spec {:actor {:binding actor-id}}))
+                      loaded (await (encounters/decision-context! :fixture-runtime config input-spec {:actor {:binding actor-id}}))]
                   (is (= [:replayed :replayed] (mapv :status (:sources replayed))))
                   (is (= first-rows @(:rows* state)))
                   (is (= 2 (count (:encounters loaded))))
@@ -334,8 +334,8 @@
       (await (with-runtime-fixture!
               state
               (^:async fn [config]
-                (let [observed (await (encounters/observe! :fixture-runtime config input-spec))
-                      loaded (await (encounters/decision-context! :fixture-runtime config input-spec nil))]
+                (let [observed (await (encounters/observe! :fixture-runtime config input-spec {:actor {:binding actor-id}}))
+                      loaded (await (encounters/decision-context! :fixture-runtime config input-spec {:actor {:binding actor-id}}))]
                   (is (= [:denied] (mapv :status (:sources observed))))
                   (is (empty? @(:source-reads* state)))
                   (is (empty? @(:rows* state)))
@@ -349,14 +349,14 @@
     (await (with-runtime-fixture!
             state
             (^:async fn [config]
-              (await (encounters/observe! :fixture-runtime config input-spec))
+              (await (encounters/observe! :fixture-runtime config input-spec {:actor {:binding actor-id}}))
               (reset! (:queries* state) [])
               (reset! (:source-reads* state) [])
               (reset! (:store-opens* state) 0)
               (swap! (:contexts* state) assoc-in [actor-id :tool-policies] [])
               (let [stored @(:rows* state)
-                    result (await (encounters/observe! :fixture-runtime config input-spec))
-                    loaded (await (encounters/decision-context! :fixture-runtime config input-spec nil))]
+                    result (await (encounters/observe! :fixture-runtime config input-spec {:actor {:binding actor-id}}))
+                    loaded (await (encounters/decision-context! :fixture-runtime config input-spec {:actor {:binding actor-id}}))]
                 (is (= [:denied :denied] (mapv :status (:sources result))))
                 (is (= stored @(:rows* state)))
                 (is (empty? @(:queries* state)))
@@ -372,7 +372,7 @@
     (await (with-runtime-fixture!
             state
             (^:async fn [config]
-              (let [observed (await (encounters/observe! :fixture-runtime config input-spec))]
+              (let [observed (await (encounters/observe! :fixture-runtime config input-spec {:actor {:binding actor-id}}))]
                 (is (= [:denied] (mapv :status (:sources observed))))
                 (is (= [:source-authority-revoked] (mapv :reason (:sources observed))))
                 (is (= 1 (count @(:source-reads* state))))
@@ -383,7 +383,7 @@
     (await (with-runtime-fixture!
             state
             (^:async fn [config]
-              (await (encounters/observe! :fixture-runtime config input-spec))
+              (await (encounters/observe! :fixture-runtime config input-spec {:actor {:binding actor-id}}))
               (swap! (:contexts* state) assoc other-actor (stored-context other-actor))
               (swap! (:selected* state) assoc :actor-id other-actor
                      :sources (mapv #(assoc % :source/actor other-actor) (:sources @(:selected* state))))
@@ -406,20 +406,20 @@
     (await (with-runtime-fixture!
             state
             (^:async fn [config]
-              (await (encounters/observe! :fixture-runtime config input-spec))
+              (await (encounters/observe! :fixture-runtime config input-spec {:actor {:binding actor-id}}))
               (let [checkpoint (scope-checkpoint state (:source discord-spec))]
                 (is (= "101" (:cursor-after checkpoint)))
                 (swap! (:details* state) assoc "discord.channel.messages"
                        {:channelId "fixture-channel" :rawCount 2
                         :messages [(discord-row "103" "third observed message") (discord-row "102" "second observed message")]})
                 (reset! (:fail-after-append* state) true)
-                (let [failed (await (encounters/observe! :fixture-runtime config input-spec))]
+                (let [failed (await (encounters/observe! :fixture-runtime config input-spec {:actor {:binding actor-id}}))]
                   (is (= :partial (:status failed)))
                   (is (= [:partial] (mapv :status (:sources failed))))
                   (is (= [:source-admission-incomplete] (mapv :reason (:sources failed))))
                   (is (= checkpoint (scope-checkpoint state (:source discord-spec))))
                   (reset! (:store* state) (storage/openplanner-ports :reopened-fixture-event-client))
-                  (let [retried (await (encounters/observe! :fixture-runtime config input-spec))
+                  (let [retried (await (encounters/observe! :fixture-runtime config input-spec {:actor {:binding actor-id}}))
                         progressed (scope-checkpoint state (:source discord-spec))]
                     (is (= [:admitted] (mapv :status (:sources retried))))
                     (is (= "103" (:cursor-after progressed)))
@@ -442,15 +442,15 @@
                 ;; A with a trusted selected ref carrying override B. The
                 ;; runtime must retrieve A again before deciding authority.
                 (with-redefs [sources/source-contract (fn [_config _ref] @canonical*)]
-                  (await (encounters/observe! :fixture-runtime without-resource-port forged-spec))
+                  (await (encounters/observe! :fixture-runtime without-resource-port forged-spec {:actor {:binding actor-id}}))
                   (is (= ["discord.channel.messages"] (mapv :tool @(:source-reads* state))))
                   (doseq [canonical [(assoc-in @canonical* [:source/filters :encounter-source :scope-id] "canonical-other-channel")
                                      (assoc @canonical* :enabled false) nil]]
                     (reset! canonical* canonical)
                     (reset! (:source-reads* state) [])
                     (reset! (:queries* state) [])
-                    (let [denied (await (encounters/observe! :fixture-runtime without-resource-port forged-spec))
-                          loaded (await (encounters/decision-context! :fixture-runtime without-resource-port forged-spec nil))]
+                    (let [denied (await (encounters/observe! :fixture-runtime without-resource-port forged-spec {:actor {:binding actor-id}}))
+                          loaded (await (encounters/decision-context! :fixture-runtime without-resource-port forged-spec {:actor {:binding actor-id}}))]
                       (is (= [:denied] (mapv :status (:sources denied))))
                       (is (empty? @(:source-reads* state)))
                       (is (empty? @(:queries* state)))
@@ -467,7 +467,7 @@
                                                                              :scope (acting/current-lookup-scope)})
                                                          {:id "fixture-real-port-credential" :accountIdentifier "9001"})]
                 (await (encounters/observe! :fixture-runtime
-                                           (update config :character-encounter-runtime-ports dissoc :resolve-account!) input-spec))
+                                           (update config :character-encounter-runtime-ports dissoc :resolve-account!) input-spec {:actor {:binding actor-id}}))
                 (is (seq @scopes*))
                 (is (every? #(= {:provider "discord_bot" :actor actor-id
                                   :scope {:org-id "fixture-org" :membership-id (str "fixture-member-" actor-id)}} %) @scopes*))
@@ -480,7 +480,7 @@
       (await (with-runtime-fixture!
               state
               (^:async fn [config]
-                (await (encounters/observe! :fixture-runtime config input-spec))
+                (await (encounters/observe! :fixture-runtime config input-spec {:actor {:binding actor-id}}))
                 (let [confirmed (scope-checkpoint state (:source discord-spec))]
                   (reset! (:at* state) "2026-10-07T10:02:00.000Z")
                   (swap! (:details* state) assoc
@@ -493,7 +493,7 @@
                     :projection (swap! (:details* state) assoc-in ["discord.channel.messages" :messages]
                                        [(dissoc (discord-row "102" "Malformed source without a stable author") :authorId)])
                     :partial-write (reset! (:fail-after-append* state) true))
-                  (let [result (await (encounters/observe! :fixture-runtime config input-spec))]
+                  (let [result (await (encounters/observe! :fixture-runtime config input-spec {:actor {:binding actor-id}}))]
                     (is (= :partial (:status result)))
                     (is (= (if (= :partial-write failure) :partial :failed) (get-in result [:sources 0 :status])))
                     (is (= :admitted (get-in result [:sources 1 :status])))
@@ -514,9 +514,9 @@
     (await (with-runtime-fixture!
             state
             (^:async fn [config]
-              (await (encounters/observe! :fixture-runtime config input-spec))
-              (let [prompt (await (encounters/decision-context! :fixture-runtime config input-spec nil))
-                    first-read (await (encounters/graph-authority! :fixture-runtime config input-spec nil))]
+              (await (encounters/observe! :fixture-runtime config input-spec {:actor {:binding actor-id}}))
+              (let [prompt (await (encounters/decision-context! :fixture-runtime config input-spec {:actor {:binding actor-id}}))
+                    first-read (await (encounters/graph-authority! :fixture-runtime config input-spec {:actor {:binding actor-id}}))]
                 (is (= 1 (count (:encounters prompt))))
                 (is (= 2 (count (:records first-read))) "Graph admission is before the final prompt cap")
                 (is (= actor-id (get-in first-read [:scope :actor-id])))
@@ -524,11 +524,11 @@
                 (is (= "fixture-project" (:project first-read)))
                 (is (every? #(seq (:text %)) (:records first-read)))
                 (reset! (:at* state) "2026-10-07T10:03:00.000Z")
-                (is (= first-read (await (encounters/graph-authority! :fixture-runtime config input-spec nil)))
+                (is (= first-read (await (encounters/graph-authority! :fixture-runtime config input-spec {:actor {:binding actor-id}})))
                     "Observation time cannot mint a new grant revision")
                 (swap! (:contexts* state) assoc-in [actor-id :tool-policies] [])
                 (reset! (:queries* state) [])
-                (is (nil? (await (encounters/graph-authority! :fixture-runtime config input-spec nil))))
+                (is (nil? (await (encounters/graph-authority! :fixture-runtime config input-spec {:actor {:binding actor-id}}))))
                 (is (= [] @(:queries* state)))))))))
 
 (deftest ^:async graph-authority-never-borrows-an-admin-or-missing-user-memory-grant
@@ -540,7 +540,7 @@
       (await (with-runtime-fixture!
               state
               (^:async fn [config]
-                (is (nil? (await (encounters/graph-authority! :fixture-runtime config input-spec nil))))
+                (is (nil? (await (encounters/graph-authority! :fixture-runtime config input-spec {:actor {:binding actor-id}}))))
                 (is (= [] @(:queries* state)))
                 (is (= 0 @(:store-opens* state)))))))))
 
@@ -551,7 +551,7 @@
     (await (with-runtime-fixture!
             state
             (^:async fn [config]
-              (await (encounters/observe! :fixture-runtime config input-spec))
+              (await (encounters/observe! :fixture-runtime config input-spec {:actor {:binding actor-id}}))
               (let [read! (:recent-encounters! @(:store* state))]
                 (swap! (:store* state) assoc :recent-encounters!
                        (^:async fn [owner stream-id limit]
@@ -560,7 +560,7 @@
                              (swap! (:contexts* state) assoc-in [actor-id :tool-policies]
                                     [{:tool-id "bluesky.timeline" :effect "allow"}]))
                            rows)))
-                (let [result (await (encounters/graph-authority! :fixture-runtime config input-spec nil))]
+                (let [result (await (encounters/graph-authority! :fixture-runtime config input-spec {:actor {:binding actor-id}}))]
                   (is (nil? result) "A cross-await source grant change refuses the complete held snapshot")
                   (is (not (str/includes? (pr-str result) "Discord source"))))))))))
 
@@ -573,7 +573,7 @@
     (await (with-runtime-fixture!
             state
             (^:async fn [config]
-              (await (encounters/observe! :fixture-runtime config input-spec))
+              (await (encounters/observe! :fixture-runtime config input-spec {:actor {:binding actor-id}}))
               (let [resolve! (:resolve-agent-authority! config)
                     config (assoc config :resolve-agent-authority!
                                   (^:async fn [scope]
@@ -592,7 +592,7 @@
                                   (reset! hold-principal* true)
                                   candidates))]
                   (let [outcome (await (with-held-operation!
-                                        (encounters/graph-authority! :fixture-runtime config input-spec nil) [release]
+                                        (encounters/graph-authority! :fixture-runtime config input-spec {:actor {:binding actor-id}}) [release]
                                         (^:async fn [pending]
                                           (is (= :final-principal-lookup (await (await-held! entered pending))))
                                           (is (= 1 (count (:records @candidates*))) "Real authorized candidates were loaded before the held final lookup")
