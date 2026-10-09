@@ -418,7 +418,7 @@ explicit later operator steps.
 # Pinned owning recall source and query formatting
 
 The hosted CI and sandbox source checkout both pin personal OpenPlanner candidate
-`137ba891a8d119716cfa603c6a3643d07acc30c3`, and build its SDK and graph package
+`a09894c48760748b7fca7bf9e94f36471f599a47`, and build its SDK and graph package
 before compiling Knoxx. Its separate synchronization and scoped recall reviews
 remain delivery prerequisites; this immutable pin is not a qualification claim.
 Sandbox metadata retains the selected revision and dependency-build outcome,
@@ -431,3 +431,9 @@ semantics or request-controlled formatter is added. Local hermetic and productio
 checks now use the SDK built from this owning candidate alongside its released
 graph ESM. These checks start no service and establish no live graph/mood/field
 or social-output evidence.
+
+### Native review artifact configuration
+
+The caller consumes the qualified receiver45ec644c2d15ed511e9bc1e797d1b4073b63dbfc with the explicit economical MiMo route and frozen Muse/skill sources. Only generated, hash-verified `/.review-context/` and `/.opencode/review-evidence/` artifacts are ignored. Tracked files and unexpected source remain visible to the clean-tree guards. The root CodeRabbit configuration explicitly includes dependency lockfiles; actual native selected inputs must confirm that coverage. Neither configuration nor passing functional checks is reviewer approval.
+
+The new OpenPlanner source pin adds only review configuration/provenance atop the actual137 SDK/graph Green. Application and package build inputs are byte-identical; the retained executions at137 remain labeled as such. Current native review, current hosted integration and the separate upstream source qualification remain required.

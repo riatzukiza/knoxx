@@ -22,7 +22,7 @@ env:
   # Translation storage is Knoxx-owned ClojureScript and has no companion PR.
   # Exact personal source candidate. Its synchronization parent and recall PR
   # remain independent qualification gates; a pin is not deployment approval.
-  OPENPLANNER_REF: 137ba891a8d119716cfa603c6a3643d07acc30c3
+  OPENPLANNER_REF: a09894c48760748b7fca7bf9e94f36471f599a47
 
 jobs:
   deployment-boundary:

@@ -46,7 +46,7 @@ jobs:
       BABASHKA_SHA256: 9ac1fe988d7001625b30ef3e3307e67f8545505a7cb49a4aa179f578115a3e09
       CONTRACTS_DIR: ${{ github.workspace }}/contracts
       PUPPETEER_EXECUTABLE_PATH: /usr/bin/google-chrome
-      OPENPLANNER_REF: 137ba891a8d119716cfa603c6a3643d07acc30c3
+      OPENPLANNER_REF: a09894c48760748b7fca7bf9e94f36471f599a47
 
     steps:
       - name: Check out full repository history

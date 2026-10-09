@@ -30,3 +30,8 @@ packages/webgl-graph-view
 backend/dist*
 uploads/
 .worktrees/
+
+# Generated, hash-verified artifacts from the reusable review workflow.
+# Tracked source is still checked; these directories contain no source inputs.
+/.review-context/
+/.opencode/review-evidence/

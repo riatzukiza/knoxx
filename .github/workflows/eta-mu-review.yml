@@ -13,12 +13,15 @@ permissions:
 jobs:
   review:
     name: Evidence-first review (eta-mu)
-    # Reviewed recovery merge from eta-mu PR #304. It preserves model stdout and
-    # stderr, records invocation metadata, and permits only one omission-only
-    # corrective attempt before failing closed.
-    uses: open-hax/eta-mu/.github/workflows/opencode-code-review.yml@e8eea02d31030215984375980b765803fc72d80d
+    # Qualified Unicode-safe receiver; scope and publication obligations remain.
+    uses: open-hax/eta-mu/.github/workflows/opencode-code-review.yml@45ec644c2d15ed511e9bc1e797d1b4073b63dbfc
     with:
       pr_head_sha: ${{ github.event.pull_request.head.sha }}
+      model: opencode/mimo-v2.6-flash-free
+      muse_revision: 0b9a91492c8355e6933dc2164d35668cb76d9e60
+      agents_revision: 4b4f48dae1b804b2581974e604cca618ecedadf1
+      opencode_version: 1.18.31
+      node_version: "22.20.0"
       setup_eta_mu_toolchain: false
       evidence_gates_script: |
         run_gate diff_stat git diff --stat "${PR_BASE_SHA}...HEAD"

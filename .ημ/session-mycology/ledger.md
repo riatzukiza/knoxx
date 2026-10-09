@@ -187,3 +187,13 @@ Origin: `cephalon-character-automatic-scoped-graph-green-20261009`. p-efficiency
   spore: none
   receipt-refs: cephalon-knoxx-sdk-query-source-pin-green-20261009
   note: Verify the same immutable source candidate locally and in prepared hosted setup; a pin never transfers its separate approval or release gates.
+
+- ts: 2026-10-09T16:58:51.737679Z
+  session: /home/err/spaces/cephalon-local-character/knoxx
+  task: Adopt current canonical review caller with complete inputs
+  p-efficiency: 0.64
+  p-friction: 0.3
+  p-skill-candidate: 0.22
+  spore: none
+  receipt-refs: cephalon-knoxx-review-caller-adoption-20261009
+  note: Keep generated context known, source guarded, and immutable dependency pins separate from native qualification.
