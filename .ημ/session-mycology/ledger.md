@@ -302,3 +302,10 @@ Origin: `cephalon-character-automatic-scoped-graph-green-20261009`. p-efficiency
 - Evidence: .ημ/review-evidence/cephalon-character/ee10-review-repairs-red-20261009.json.
 - Scores: efficiency .72, friction .47, skill-candidate .19.
 - Outcome: actual four review defects reproduced; full RED1963tests11027assertions22fail1error and workflow5fail. Original fixture/operator mistakes retained separately; compiled multi-arity stubs and actual durable checkpoint port restored before final RED. Label transport failure cannot become successful cursor progress. Native hosted ee10 CI passed; finding-bearing COMMENTED review is not approval. B1/B2/liveB3 unfinished. No spore incubated or promoted.
+
+## 2026-10-09T20:34:22.556207Z — hidden-channel frontier RED
+
+- Origin: cephalon-hidden-channel-frontier-red-20261009; receipt36 appends correction to35.
+- Evidence: .ημ/review-evidence/cephalon-character/hidden-channel-frontier-red-20261009.json.
+- Scores: efficiency .76, friction .43, skill-candidate .19.
+- Outcome: intermediate full GREEN after compiled client fixture correction; then independent local inspection found a raw channel binding gap concealed by filtering. Actual registered-tool RED1964/11036/4fail0error precedes guard. Original receipt35 and its supplemental label-fixture inference remain with explicit append correction, not retrofitted history. No approval, runtime or board claim; no spore incubated/promoted.

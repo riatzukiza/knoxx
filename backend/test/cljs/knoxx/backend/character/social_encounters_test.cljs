@@ -398,15 +398,35 @@
 (deftest ^:async label-service-failure-is-not-successful-empty-page-or-cursor-progress
   (let [raw [{:id "90071992547409931" :channel_id (:scope-id fixture/source)
               :author {:id "discord-other"} :timestamp fixture/at :content "retain for retry"}]
-        spec (assoc discord-spec :poll-mode :after)]
+        spec (assoc discord-spec :poll-mode :after)
+        labels-called* (atom 0)]
     (with-redefs [discord-tools/discord-client! (fn [_] :fixture-client)
                   discord-rest/channel-messages! (fn [_ _ _] raw)
-                  planner/client (fn [_] :fixture-label-client)
+                  planner/client (fn ([_] :fixture-label-client) ([_ _] :fixture-label-client))
                   planner/enabled? (fn [_] true)
-                  planner/record-labels! (fn [_ _] (throw (ex-info "Held label transport failure" {:fixture true})))]
+                  planner/record-labels! (fn [_ _]
+                                          (swap! labels-called* inc)
+                                          (throw (ex-info "Held label transport failure" {:fixture true})))]
       (let [tool (xtools/registered-tool (discord-tools/channel-messages-tool :fixture {}))
             rows* (atom [])
             ports (pull-ports (fn [_ params] ((:execute tool) "read-fixture" params nil nil)))]
         (is (= :encounter/social-label-read-failed
                (await (failure-code! #(pull-and-admit! ports (storage-ports rows*) spec nil fixture/at)))))
-        (is (empty? @rows*))))))
+        (is (empty? @rows*))
+        (is (= 1 @labels-called*))))))
+
+(deftest ^:async hidden-foreign-or-unbound-raw-channel-cannot-drive-cursor-progress
+  (let [valid {:id "90071992547409931" :channel_id (:scope-id fixture/source)
+               :author {:id "discord-other"} :timestamp fixture/at :content "permitted encounter"}
+        hidden (assoc valid :id "90071992547409999" :content "excluded row")
+        spec (assoc discord-spec :poll-mode :after :limit 2)]
+    (doseq [foreign [(assoc hidden :channel_id "another-channel") (dissoc hidden :channel_id)]]
+      (with-redefs [discord-tools/discord-client! (fn [_] :fixture-client)
+                    discord-rest/channel-messages! (fn [_ _ _] [valid foreign])
+                    discord-tools/attach-openplanner-labels! (fn [_ messages] [(first messages)])]
+        (let [tool (xtools/registered-tool (discord-tools/channel-messages-tool :fixture {}))
+              rows* (atom [])
+              ports (pull-ports (fn [_ params] ((:execute tool) "read-fixture" params nil nil)))]
+          (is (= :encounter/source-result-conflict
+                 (await (failure-code! #(pull-and-admit! ports (storage-ports rows*) spec nil fixture/at)))))
+          (is (empty? @rows*)))))))
