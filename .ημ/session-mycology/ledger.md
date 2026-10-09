@@ -244,3 +244,17 @@ Origin: `cephalon-character-automatic-scoped-graph-green-20261009`. p-efficiency
 - Evidence: .ημ/review-evidence/cephalon-character/disclosure-final-green-20261009.json; .ημ/review-evidence/cephalon-character/independent-admission-6b6f5a8c-20261009.json
 - Scores: efficiency .78, friction .37, skill-candidate .19.
 - Outcome: all six original regressions and new refusal settlement pass in the actual isolated backend; production compile zero warnings. Atomic fencing/live activation remain unproven; independent admission inspection is local only. Baseline lint fixture path fault is retained and corrected. No spore incubated or promoted.
+
+## 2026-10-09T19:03:26.090105+00:00 — native review causal RED
+
+- Origin: cephalon-native-review-regressions-red-20261009
+- Evidence: .ημ/review-evidence/cephalon-character/native-review-regressions-red-20261009.json; native-ci-and-review-45d714de-20261009.json.
+- Scores: efficiency .81, friction .28, skill-candidate .19.
+- Outcome: all 48 failures exclusively new regressions; positive controls pass. Native full CI passes historical exact45d; finding-bearing review is not approval. Preserve source-only and live limits. No spore incubated or promoted.
+
+## 2026-10-09T19:04:17.775374Z — receipt timestamp correction
+
+- Origin: cephalon-native-review-regressions-red-timestamp-correction-20261009
+- Evidence: receipt ordinal25 timestamp rejection; correction ordinal26 retains the same UTC instant in the accepted Z form.
+- Scores: efficiency .79, friction .31, skill-candidate .19.
+- Outcome: historical bytes preserved. Original25 remains invalid under the timestamp grammar; correction26 is independently validated. No spore incubated or promoted.

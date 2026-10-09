@@ -482,3 +482,25 @@ or social-output evidence.
 The caller consumes the qualified receiver45ec644c2d15ed511e9bc1e797d1b4073b63dbfc with the explicit economical MiMo route and frozen Muse/skill sources. Only generated, hash-verified `/.review-context/` and `/.opencode/review-evidence/` artifacts are ignored. Tracked files and unexpected source remain visible to the clean-tree guards. The root CodeRabbit configuration explicitly includes dependency lockfiles; actual native selected inputs must confirm that coverage. Neither configuration nor passing functional checks is reviewer approval.
 
 The new OpenPlanner source pin adds only review configuration/provenance atop the actual137 SDK/graph Green. Application and package build inputs are byte-identical; the retained executions at137 remain labeled as such. Current native review, current hosted integration and the separate upstream source qualification remain required.
+
+## Native review regressions — 2026-10-09 UTC
+
+Full hosted CI `37974630665` completed successfully on exact
+`45d714defaa514c93492e25e00f36f4e14e591c6`, with all job steps successful.
+Its backend suite passed 1,776 tests / 9,143 assertions; HTTP/MCP e2e passed
+23 / 118 and frontend CLJS passed 456 / 2,045. Native CodeRabbit review
+`5474107458` then completed on that head with five inline findings and one
+outside-diff body finding. This is a finding-bearing `COMMENTED` review,
+not approval. Actual native records are retained in
+`.ημ/review-evidence/cephalon-character/native-ci-and-review-45d714de-20261009.json`.
+
+The new isolated backend regressions ran 1,787 tests / 9,277 assertions with
+48 failures, zero errors and zero compiler warnings. Every failure belongs to
+the new graph binding-drift, non-boolean validator, or camelCase role-route
+regression. Stable authority, exact-true validation, Malli precedence and existing
+role-route denial/admin controls pass. Actual extracted sandbox shell probes
+separately reproduce loss of the observed revision on install and build failure.
+Their inputs and exact outputs are retained in
+`.ημ/review-evidence/cephalon-character/native-review-regressions-red-20261009.json`.
+Production repair and a fresh GREEN remain required; no live B3, physical-field,
+mood, source qualification or deployment is established by this RED.

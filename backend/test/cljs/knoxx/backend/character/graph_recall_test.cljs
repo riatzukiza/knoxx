@@ -6,7 +6,9 @@
             [knoxx.backend.character.encounter-test :as fixture]
             [knoxx.backend.character.turn-context-test :as turn-fixture]
             [knoxx.backend.domain.character.encounter-context :as encounter-context]
+            [knoxx.backend.domain.node.crypto :as crypto]
             [knoxx.backend.extern.agent-turn-prompt :as prompt]
+            [knoxx.backend.extern.openplanner-sdk :as graph-boundary]
             [knoxx.backend.infra.agent.hydration :as hydration]
             [knoxx.backend.infra.agent.session :as sessions]
             [knoxx.backend.infra.agent.stream :as stream]
@@ -43,6 +45,87 @@
   {:scope {:actor-id "creator" :org-id "org-local" :membership-id "creator-member"
            :user-id "creator-user" :policy-revision "held-current-source-policy"}
    :project "creator-local" :records (mapv #(select-keys % [:id :text]) records)})
+
+(defn- ^:async with-owning-graph-result! [task!]
+  (let [prepared (fixture/prepared [(fixture/item "native-seed" "NATIVE PRIVATE SEED")
+                                    (fixture/item "native-neighbor" "NATIVE PRIVATE NEIGHBOR")])
+        authority (graph-authority (:records prepared))
+        config {:session-project-name "creator-local"}
+        spec {:character-encounters {:sources []} :memory-hydration {:enabled? true :mode :always :k 6}}
+        client (mongo/->MongoOpenPlannerClient config nil)
+        request {:version 1 :recall-id (str "passive-graph:" (crypto/sha256-hex
+                                                           (pr-str ["native-binding-conversation" "remember the seed"])))
+                 :query "remember the seed"
+                 :k 6 :fetch 18 :max-nodes 64 :max-cost 4 :feedback :none}]
+    (sdk-fixture/__setScopedGraphFixture (clj->js authority))
+    (try
+      (with-redefs [planner/client (fn ([_config] client) ([_config _options] client))
+                    planner/enabled? (fn [_client] true)]
+        ;; Produce the old result through the actual released adapter first.
+        ;; The staged port below deliberately replays this valid old result;
+        ;; it does not claim that the owning adapter permits authority drift.
+        (let [wire (await (planner/scoped-graph-recall! client request (fn [] authority)))]
+          (is (graph-boundary/valid-scoped-graph-result? wire))
+          (is (= "completed" (get-in wire [:selection :status])))
+          (is (= 2 (count (get-in wire [:selection :hits]))))
+          (await (task! config spec authority wire))))
+      (finally (sdk-fixture/__clearScopedGraphFixture())))))
+
+(defn- ^:async hydrate-authority-sequence! [config spec sequence wire]
+  (let [current* (atom nil) observed* (atom [])]
+    (with-redefs [planner/scoped-graph-recall!
+                  (^:async fn [_client _request resolve!]
+                    (doseq [authority sequence]
+                      (reset! current* authority)
+                      (await (resolve!)))
+                    wire)]
+      (let [memory (await (hydration/passive-memory-hydration!
+                          config "native-binding-conversation" "remember the seed" nil spec
+                          (fn [] (swap! observed* conj @current*) @current*)))]
+        (is (= sequence @observed*) "Every staged callback, including nil, was actually observed")
+        {:memory memory :retained (hydration/retain-current-graph-hydration memory (last sequence))}))))
+
+(defn- ^:async assert-authority-drift-refused! [sequence-for]
+  (await (with-owning-graph-result!
+          (^:async fn [config spec authority wire]
+            (let [{:keys [memory retained]} (await (hydrate-authority-sequence! config spec (sequence-for authority) wire))]
+              (is (= :failed (:status memory)))
+              (is (= {:stage :graph :code :authority-changed} (:failure memory)))
+              (is (= [] (:hits memory)) "The entire earlier ranked result is refused, including surviving hit/path IDs")
+              (is (= [] (:hits retained)) "A last matching authority must not launder earlier hits into final retention")
+              (is (= "not-loaded" (:field-status memory)))
+              (is (not (re-find #"NATIVE PRIVATE" (hydration/build-agent-user-message "Choose" nil retained))))
+              (is (not (contains? (hydration/memory-hydration-projection retained)
+                                  :knoxx.backend.infra.agent.hydration/authority-binding))))))))
+
+(deftest ^:async graph-recall-refuses-candidate-byte-drift-with-stable-scope-and-hit-identities
+  (await (assert-authority-drift-refused!
+          (fn [authority]
+            (let [changed (assoc-in authority [:records 0 :text] "CURRENT REPLACEMENT SEED")]
+              (is (= (:scope authority) (:scope changed)))
+              (is (= (mapv :id (:records authority)) (mapv :id (:records changed))))
+              (is (not= (hydration/graph-authority-binding authority) (hydration/graph-authority-binding changed)))
+              [authority changed])))))
+
+(deftest ^:async graph-recall-refuses-policy-revision-drift
+  (await (assert-authority-drift-refused!
+          (fn [authority] [authority (assoc-in authority [:scope :policy-revision] "changed-source-policy")]))))
+
+(deftest ^:async graph-recall-preserves-first-nil-as-an-observed-authority-binding
+  (await (assert-authority-drift-refused! (fn [authority] [nil authority]))))
+
+(deftest ^:async graph-recall-refuses-drift-even-when-authority-returns-to-the-first-binding
+  (await (assert-authority-drift-refused!
+          (fn [authority] [authority (assoc-in authority [:records 0 :text] "TRANSIENT CHANGED SEED") authority]))))
+
+(deftest ^:async graph-recall-preserves-ranked-hits-under-repeated-identical-authority
+  (await (with-owning-graph-result!
+          (^:async fn [config spec authority wire]
+            (let [{:keys [memory retained]} (await (hydrate-authority-sequence! config spec [authority authority] wire))]
+              (is (= :completed (:status memory))) (is (nil? (:failure memory)))
+              (is (= (get-in wire [:selection :hits]) (:hits memory)))
+              (is (= (:hits memory) (:hits retained)))
+              (is (re-find #"NATIVE PRIVATE NEIGHBOR" (hydration/build-agent-user-message "Choose" nil retained))))))))
 
 (deftest ^:async sessionless-encounter-and-graph-only-neighbor-reach-the-maker-prompt
   ;; Both records use the existing pure encounter identity/admission laws.

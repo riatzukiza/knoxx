@@ -41,6 +41,50 @@
         (is (= :invalid-arguments (:reason (ex-data error))))))
     (is (= before @calls*))))
 
+(defn- ^:async validator-controller! [calls* validator]
+  (let [tool (-> (first (catalog calls*))
+                 (dissoc :parameters-schema)
+                 (assoc :validate-arguments validator))
+        controller (await (runtime/make-controller! configuration fixture/initial-state
+                                                    (fn [] {:catalog [tool] :allowed-ids #{(:id tool)}})))]
+    (is (= :accepted (get-in (await ((execute controller "capabilities") "menu" {:mode "discord"} nil nil)) [:details :status])))
+    controller))
+
+(deftest ^:async non-boolean-tool-validator-results-refuse-before-capability-execution
+  (doseq [diagnostic [{:errors [{:path [:channel] :message "Expected a string"}]}
+                      ["Invalid channel"] "Invalid channel" {} [] "" :invalid 0 1]]
+    (let [calls* (atom []) checked* (atom []) arguments {:channel 42 :limit 1}
+          controller (await (validator-controller! calls* (fn [input] (swap! checked* conj input) diagnostic)))]
+      (await (refused-arguments! (execute controller "invoke") calls* arguments))
+      (is (= [arguments] @checked*) "The actual trusted validator was called with the invalid arguments")
+      (is (= [] @calls*) "A truthy diagnostic must not authorize the effectful capability"))))
+
+(deftest ^:async exact-true-tool-validator-result-preserves-authorized-capability-execution
+  (let [calls* (atom []) checked* (atom []) arguments {:channel "home" :limit 1}
+        controller (await (validator-controller! calls* (fn [input] (swap! checked* conj input) true)))
+        result (await ((execute controller "invoke") "call" {:tool "discord_read" :arguments arguments} nil nil))]
+    (is (= [arguments] @checked*))
+    (is (= [{:tool "discord.read" :arguments arguments}] @calls*))
+    (is (= "discord.read" (get-in result [:details :tool])))))
+
+(deftest ^:async false-and-nil-tool-validator-results-remain-refused
+  (doseq [refusal [false nil]]
+    (let [calls* (atom []) controller (await (validator-controller! calls* (fn [_arguments] refusal)))]
+      (await (refused-arguments! (execute controller "invoke") calls* {:channel 42 :limit 1})))))
+
+(deftest ^:async malli-tool-argument-schema-retains-precedence-over-the-callback-validator
+  (let [calls* (atom []) callback-calls* (atom 0)
+        tool (assoc (first (catalog calls*)) :validate-arguments
+                    (fn [_arguments] (swap! callback-calls* inc) false))
+        controller (await (runtime/make-controller! configuration fixture/initial-state
+                                                    (fn [] {:catalog [tool] :allowed-ids #{(:id tool)}})))
+        arguments {:channel "home" :limit 1}]
+    (await ((execute controller "capabilities") "menu" {:mode "discord"} nil nil))
+    (await ((execute controller "invoke") "call" {:tool "discord_read" :arguments arguments} nil nil))
+    (is (= [{:tool "discord.read" :arguments arguments}] @calls*))
+    (await (refused-arguments! (execute controller "invoke") calls* {:channel 42 :limit 1}))
+    (is (zero? @callback-calls*) "The existing Malli branch remains the authoritative schema branch")))
+
 (deftest progressive-registry-preserves-character-and-creative-tools
   (async done
     ((^:async fn []
