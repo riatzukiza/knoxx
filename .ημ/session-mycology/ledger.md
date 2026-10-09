@@ -169,3 +169,7 @@
 ## 2026-10-09T05:45:03.680763Z — Begin B3 graph recall from reviewed native admission
 
 Origin: `cephalon-character-automatic-graph-recall-red-20261009-source`. p-efficiency0.72/p-friction0.35/p-skill-candidate0.20. Native reviewed recall story admitted In Progress. Actual isolated full suite compiles new fixture with zero warnings and fails four expected assertions at real hydration and captured provider-session prompt. No graph call and sessionless seed/graph neighbor omitted. Existing recent admitted encounter still appears in the actual prompt; that constituent success does not prove graph recall. Graph transport response is synthetic and not upstream physical/scope/feedback proof. All prior owned append-only journals retained, no runtime/grant/provider/social/deployment mutation. Initial root-cwd lint lacked backend config and reported unresolved await; correct backend-cwd lint is0errors0warnings. No production edit. No spore incubated or promoted.
+
+## 2026-10-09T14:09:24.541758Z — Distinguish graph outage from vector success
+
+Origin: `cephalon-character-automatic-graph-outage-red-20261009-source`. p-efficiency0.78/p-friction0.30/p-skill-candidate0.15. Actual full isolated suite1754/8271/9fail0errors0warnings. Positive held-principal visibility passed; required graph call and truthful stage/error result remain missing. Retain the initial four inclusion failures and all previous bytes. RED is a required outcome specification, not delivered graph/auth/field/mood behavior. No spore incubated or promoted.

@@ -100,3 +100,49 @@
         (is (= 1 (count @prompts*)))
         (is (str/includes? (first @prompts*) "GRAPH ONLY: bells beneath the harbor")
             "The graph result must reach the actual provider-session boundary")))))
+
+(deftest ^:async graph-transport-failure-is-not-successful-vector-only-recall
+  ;; The session scope is authorized through the real visibility adapter.
+  ;; A successful vector lookup cannot conceal failure of the required graph
+  ;; transport or become a successful empty/partial graph recall.
+  (let [row {:id "allowed-session:memory" :kind "knoxx.user"
+             :text "An authorized harbor observation"
+             :extra {:session "allowed-session"}}
+        auth-context {:orgId "org-local" :membershipId "creator-member"
+                      :userId "creator-user" :actorId "creator"
+                      :permissions ["agent.memory.read"]}
+        spec {:actor-id "creator"
+              :memory-hydration {:enabled? true :mode :always :k 6}}
+        config {:session-project-name "creator-local"}
+        graph-calls* (atom [])
+        session-reads* (atom [])]
+    (with-redefs [planner/client (fn ([_config] :fixture-client)
+                                   ([_config _options] :fixture-client))
+                  planner/enabled? (fn [_client] true)
+                  planner/vector-search! (fn [_client _payload] (vector-result row))
+                  planner/session! (fn [_client session-id _options]
+                                     (swap! session-reads* conj session-id)
+                                     {:rows [{:id "scope-evidence"
+                                              :extra {:org_id "org-local"
+                                                      :membership_id "creator-member"
+                                                      :user_id "creator-user"}}]})
+                  planner/graph-memory! (fn [_client payload]
+                                          (swap! graph-calls* conj payload)
+                                          (js/Promise.reject
+                                           (ex-info "Fixture graph transport unavailable"
+                                                    {:status 503 :code :transport-error})))]
+      (let [memory (await (hydration/passive-memory-hydration!
+                          config "fixture-conversation" "remember the harbor"
+                          auth-context spec))]
+        (is (= ["allowed-session"] @session-reads*)
+            "The existing session visibility boundary admits the held principal")
+        (is (= 1 (count @graph-calls*))
+            "Automatic recall must attempt its distinct graph boundary")
+        (is (= :failed (:status memory))
+            "A transport failure has a truthful failed outcome")
+        (is (= :graph (get-in memory [:failure :stage]))
+            "The failed graph stage remains distinct from semantic search")
+        (is (= :transport-error (get-in memory [:failure :code]))
+            "Operators can distinguish transport failure from empty/denied recall")
+        (is (= [] (:hits memory))
+            "A successful vector seed is not silently substituted for graph recall")))))
