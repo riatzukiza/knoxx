@@ -679,3 +679,52 @@ retains one inherited Discord length error and one warning at byte-identical
 owning forms; the other four files have zero errors/warnings. Actionlint and
 diff hygiene pass. These are local source gates, not new-head hosted approval
 or live B1/B2/B3 completion.
+
+
+## Fresh text and principal review repairs — 2026-10-09 UTC
+
+Native full review `5475471638` on `194f8b64` completed with two findings:
+oversized source text could reject a whole page, and requested identity could
+select an actor without the server's authenticated binding. Its COMMENTED
+state grants no approval. Existing PR CI `37990026033` first failed at Docker
+Hub429; its one failed-job retry failed at the OAuth token endpoint504. Neither
+is a passing full functional result; no third blind retry was dispatched.
+
+Three ordinary RED checkpoints retain the original failures. The initial
+HTTP doubles had the wrong compiled function arity; the corrected causal RED
+and all original logs remain separate. Receipt39 corrects the RED commit's
+counter typo by append, without editing its message or proof. The supplementary
+real policy-resolver regression establishes a later cleared stored binding
+with stale actorId and unchanged user/org/member/grants.
+
+The repair omits source text above4000 UTF16 units without truncation, retaining
+raw row identity/frontier, bounded media/reactions and later eligible records.
+HTTP actor selection now uses the server context, rejects missing/mismatched
+bindings before queue effects, and ignores parsed auth_context. Character
+scope accepts only a canonical inbound binding or a genuine server event token;
+the returned current stored context must have the actual binding. Turn
+normalization preserves an inbound token's actor. Trusted scheduled starts and
+clock intake retain their server identity through every read/admission refresh.
+
+The first GREEN stopped at positive fixtures supplying nil context and had no
+final counters. The positive fixtures now supply canonical trusted contexts;
+all negative and held-revocation assertions remain. Final actual isolated
+backend: 1970tests/11235assertions/0fail0error;903files902compiled0warnings/16PASS0FAIL. Final production
+server compilation:559files520compiled0warnings/2PASS0FAIL. Owned snapshots are
+cleaned; no backend was started. Host Node22.18.0 is below declared22.19.0;
+this notice is separate from zero compiler warnings.
+
+Thirteen-file scoped lint retains one inherited app file-length error and
+fourteen inherited warnings. Twelve warned function forms are byte-identical
+to committed c5f82; the edited turn principal function warning is removed,
+and the current authority file has0errors0warnings. This is no whole-lint pass.
+
+The HTTP fixture calls the real direct-start handler with an owned queue port;
+it does not establish live registered-route authentication. The cleared-binding
+fixture simulates two read results, without claiming atomicity or fencing.
+Configured Discord job wiring has no scoped character flags today; any later
+scoped use would need a trusted context, and was not changed speculatively.
+Current native approval/CI, independent walkthrough settlement, prerequisite
+import choice, B1 physical field, B2 consumed mood, live B3 and deployment remain
+outstanding. Evidence:
+`.ημ/review-evidence/cephalon-character/194f-text-and-principal-green-20261009.json`.

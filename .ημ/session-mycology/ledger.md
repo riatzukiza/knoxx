@@ -341,3 +341,9 @@ Origin: `cephalon-character-automatic-scoped-graph-green-20261009`. p-efficiency
 - Origin: cephalon-current-stored-binding-red-20261009; receipt41.
 - Efficiency0.78/friction0.31/skill-candidate0.16. Distinguish authenticated input identity from current stored assignment; a stale actor label cannot repair a revoked binding.
 - Positive fixture contexts retain all grant-revocation assertions. No spore.
+
+## 2026-10-09T21:50:21.877518Z — fresh text and principal continuity GREEN
+
+- Origin: cephalon-text-and-principal-green-20261009; receipt42.
+- Efficiency0.77/friction0.38/skill-candidate0.18. Trusted fixture ingress makes the intended grant-revocation paths reachable; raw failed attempts and current successful counters remain distinct. No spore.
+- B3 source repairs do not deliver B1 field, B2 mood or live milestone/deployment.

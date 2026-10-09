@@ -56,23 +56,10 @@
   (authz/remember-conversation-access! conversation-access* ctx conversation-id))
 
 (defn- auth-context-for-agent-turn
-  "The auth context a turn's tools see, synthesized from the agent spec when the
-   turn did not arrive on a request.
-
-   `:resourcePolicies` is carried for the same reason `:toolPolicies` and
-   `:roleSlugs` are, and its absence was a real hole rather than an omission of
-   convenience. `infra.agent.runner` accepts `resource_policies` on a spec and
-   `build-initial-run` records them on the run — but nothing put them where a
-   tool could read them, and `infra.openplanner.tools` has read
-   `:resourcePolicies` off the auth context since long before any of this. So a
-   session started with a pin got its pin written to telemetry and then ran
-   unpinned: `save_translation` fell through to the OpenPlanner segment path and
-   failed with `organization is required`, discarding a finished translation.
-
-   Only synthesized when the turn has no inbound context, matching its two
-   neighbours exactly. A request that already carries resource policies keeps
-   them; this adds a path for triggered sessions rather than changing one that
-   works."
+  "Preserve an inbound server principal and its caller-specific policies.
+   Only context-free legacy turns synthesize role/tool/resource ceilings from
+   the spec. That synthesized actor label cannot authorize character scope;
+   trusted scheduled character starts supply their own in-process context."
   [auth-context agent-spec]
   (let [agent-actor-id (some-> (:actor-id agent-spec) str str/trim not-empty)
         needs-context? (or auth-context
@@ -82,7 +69,9 @@
                            (:role agent-spec))]
     (when needs-context?
       (cond-> (or auth-context {})
-        agent-actor-id (assoc :actorId agent-actor-id)
+        ;; Preserve the inbound server principal, including a genuine event token.
+        ;; A requested spec cannot relabel that token as a different actor.
+        (and (nil? auth-context) agent-actor-id) (assoc :actorId agent-actor-id)
         (and (nil? auth-context) (seq (:tool-policies agent-spec)))
         (assoc :toolPolicies (vec (:tool-policies agent-spec)))
         (and (nil? auth-context) (seq (:resource-policies agent-spec)))

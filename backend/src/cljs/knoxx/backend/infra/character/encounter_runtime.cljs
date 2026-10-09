@@ -210,10 +210,10 @@
   {:authorize! authorize! :normalize-instant (:normalize-instant ports)
    :read! #(execute-current-read! ports runtime config agent-spec auth-context owner source %1 %2)})
 
-(defn- ^:async observe-source! [ports runtime config agent-spec owner spec]
+(defn- ^:async observe-source! [ports runtime config agent-spec auth-context owner spec]
   (let [source (:source spec)
         authorize! (^:async fn [requested-owner requested-source]
-                     (:decision (await (current-source-state! ports runtime config agent-spec nil requested-owner requested-source))))
+                     (:decision (await (current-source-state! ports runtime config agent-spec auth-context requested-owner requested-source))))
         decision (await (authorize! owner source))]
     (if-not (law/authorized? owner source decision)
       {:source source :status :denied :reason (:reason decision)}
@@ -221,7 +221,7 @@
             stream-id (law/stream-id (:digest ports) owner source)
             checkpoint (await ((:latest-checkpoint! store) owner stream-id))
             _ (law/assert-checkpoint! (:digest ports) owner source checkpoint)
-            pulled (await ((:pull-source! ports) (source-ports ports runtime config agent-spec nil owner source authorize!)
+            pulled (await ((:pull-source! ports) (source-ports ports runtime config agent-spec auth-context owner source authorize!)
                            owner spec checkpoint ((:clock ports))))]
         (if (= :denied (:status pulled))
           {:source source :status :denied}
@@ -244,9 +244,9 @@
              {:status :failed :reason :source-page-rejected}
              {:status :failed :reason :source-observation-failed}))))
 
-(defn- ^:async observe-source-contained! [ports runtime config agent-spec owner spec]
+(defn- ^:async observe-source-contained! [ports runtime config agent-spec auth-context owner spec]
   (try
-    (await (observe-source! ports runtime config agent-spec owner spec))
+    (await (observe-source! ports runtime config agent-spec auth-context owner spec))
     (catch :default error (source-failure (:source spec) error))))
 
 (defn- observation-status [results]
@@ -256,19 +256,23 @@
   "Observe configured sources between creative opportunities. This starts no
    provider turn or publication. Current canonical source/account grants are
    checked before source reads and again before admission; cursors live only in
-   existing OpenPlanner events, and partial admission does not advance them."
-  [runtime config agent-spec]
+   existing OpenPlanner events, and partial admission does not advance them.
+   Scoped callers supply an authenticated host context; the legacy arity cannot
+   synthesize one from a requested actor."
+  ([runtime config agent-spec]
+   (await (observe! runtime config agent-spec nil)))
+  ([runtime config agent-spec auth-context]
   (let [ports (runtime-ports config)
         selected (await (selected-spec! ports config agent-spec))
         configuration (encounter-configuration selected)]
     (if-not configuration
       {:status :disabled :sources []}
-      (let [current (await ((:resolve-authority! ports) config nil selected))
+      (let [current (await ((:resolve-authority! ports) config auth-context selected))
             owner (owner! config selected current)]
         (loop [remaining (:sources configuration) results []]
           (if-let [spec (first remaining)]
-            (recur (next remaining) (conj results (await (observe-source-contained! ports runtime config selected owner spec))))
-            {:status (observation-status results) :owner owner :sources results}))))))
+            (recur (next remaining) (conj results (await (observe-source-contained! ports runtime config selected auth-context owner spec))))
+            {:status (observation-status results) :owner owner :sources results})))))))
 
 (defn- inclusion-evidence [decisions encounters]
   (mapv (fn [record]

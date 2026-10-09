@@ -204,7 +204,10 @@
         author-id (:authorId row)
         item {:external-id external-id :author-id author-id
               :occurred-at (normalize-instant (if discord? (:timestamp row) (:createdAt row)))
-              :text (or (if discord? (:content row) (:text row)) "")
+              ;; Omit an oversized quote, never represent an excerpt as complete.
+              ;; Raw source identity/frontier is tracked independently of admission.
+              :text (let [text (or (if discord? (:content row) (:text row)) "")]
+                      (if (<= (count text) 4000) text ""))
               :self-output? (= author-id (get-in spec [:source :account-id]))
               :reactions (if discord? (discord-reactions row) (bluesky-reactions row))
               :media (->> (if discord? (discord-media row)

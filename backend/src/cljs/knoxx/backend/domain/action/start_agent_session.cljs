@@ -342,7 +342,8 @@
       :session_id (:session-id ids)
       :run_id (:run-id ids)
       :message rendered-message
-      :auth_context (when (some? resource-policies)
+      :auth_context (when (or (some? resource-policies)
+                              (:tool-modes resolved) (:character-encounters resolved))
                       (event-policy-authority/authorized-context
                        resource-policies actor-id' (:role resolved)
                        (:tool-policies resolved)))

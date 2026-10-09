@@ -1,6 +1,7 @@
 (ns knoxx.backend.infra.character.intake-action
   "Native scheduled intake effects over a canonical actor contract. GPL-3.0-or-later."
   (:require [knoxx.backend.infra.character.encounter-runtime :as encounters]
+            [knoxx.backend.infra.agent.event-policy-authority :as event-authority]
             [knoxx.backend.infra.tooling :as tooling]
             [knoxx.backend.law.character.encounter :as law]
             [knoxx.backend.runtime.state :as runtime-state]
@@ -19,4 +20,5 @@
       (throw (ex-info "Scheduled intake contract is not selected for this actor" {:reason :invalid-intake-contract})))
     {:ok true :action/kind :actions/character-intake
      :observation (await (encounters/observe! (or (:runtime ctx) @runtime-state/runtime*) (:config ctx)
-                                             (assoc selected :contract-id agent-id)))}))
+                                             (assoc selected :contract-id agent-id)
+                                             (event-authority/authorized-context nil actor-id nil nil)))}))
