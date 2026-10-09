@@ -12,6 +12,7 @@
             [knoxx.backend.infra.actor.acting :as acting]
             [knoxx.backend.infra.actor.credentials :as credentials]
             [knoxx.backend.infra.agent.tool-catalog :as catalog]
+            [knoxx.backend.infra.auth.authz :as authz]
             [knoxx.backend.infra.character.authority :as authority]
             [knoxx.backend.infra.character.encounter-admission :as admission]
             [knoxx.backend.infra.character.encounter-openplanner :as events]
@@ -146,6 +147,13 @@
                      (seq bound-resources))
           {:decision (denial :source-account-unbound)}
           {:selected selected :auth-context current :spec spec :allowed allowed
+           ;; Current admitted facts, without observation timestamps or secret
+           ;; material. Changes here invalidate a graph snapshot across awaits.
+           :grant-binding [(shape/owner-binding owner) (shape/source-binding source)
+                           (:id selected) (:actor-id selected) (:tool-id spec)
+                           (:credential-id account) (:account-identifier account)
+                           (get-in current [:membership :id]) (sort allowed)
+                           (mapv :source/id bound-resources)]
            :decision (authorization-evidence ports owner source selected current spec account bound-resources allowed)})))))
 
 (defn- ^:async current-source-state! [ports runtime config agent-spec auth-context owner source]
@@ -243,6 +251,65 @@
   (mapv (fn [record]
           {:encounter-id (:id record) :causal-source-id (:source-id record)
            :authorization (get decisions (:source record))}) encounters))
+
+(defn- graph-principal-binding [current]
+  [(:actorId current) (get-in current [:org :id])
+   (get-in current [:membership :id]) (get-in current [:user :id])])
+
+(defn- ^:async current-graph-principal! [ports config selected auth-context]
+  (let [current (await ((:resolve-authority! ports) config auth-context selected))]
+    (when (and (m/validate shape/NonBlankString (get-in current [:user :id]))
+               (authz/ctx-permitted? current "agent.memory.read")) current)))
+
+(defn- ^:async current-graph-bindings! [ports runtime config selected auth-context owner sources]
+  (loop [remaining sources bindings []]
+    (if-let [source (first remaining)]
+      (let [state (await (current-source-state! ports runtime config selected auth-context owner source))]
+        (when (law/authorized? owner source (:decision state))
+          (recur (next remaining) (conj bindings (:grant-binding state)))))
+      bindings)))
+
+(defn- ^:async graph-candidates! [ports runtime config selected configuration auth-context owner]
+  (let [bindings* (atom {})
+        authorize! (^:async fn [requested-owner source]
+                     (let [state (await (current-source-state! ports runtime config selected auth-context requested-owner source))]
+                       (swap! bindings* assoc source (:grant-binding state))
+                       (:decision state)))
+        admitted (loop [remaining (map :source (:sources configuration)) allowed []]
+                   (if-let [source (first remaining)]
+                     (recur (next remaining)
+                            (cond-> allowed (law/authorized? owner source (await (authorize! owner source)))
+                              (conj source)))
+                     allowed))]
+    (when (seq admitted)
+      (let [loaded (await (admission/load-eligible! ((:event-ports! ports) config) (:digest ports)
+                                                   owner admitted authorize! (:context configuration)))
+            sources (filterv #(law/authorized? owner %
+                                               (get (:decisions loaded) (law/stream-id (:digest ports) owner %))) admitted)
+            bindings (mapv #(get @bindings* %) admitted)
+            after (await (current-graph-bindings! ports runtime config selected auth-context owner admitted))]
+        (when (and (= sources admitted) (= bindings after))
+          {:records (mapv #(select-keys % [:id :text]) (:records loaded))
+           :bindings bindings})))))
+
+(defn ^:async graph-authority!
+  "Trusted current encounter candidate scope for graph recall, before prompt caps.
+   Memory permission and user are explicit; legacy admin bypasses do not apply."
+  [runtime config agent-spec auth-context]
+  (let [ports (runtime-ports config)
+        selected (await (selected-spec! ports config agent-spec))
+        configuration (encounter-configuration selected)]
+    (when configuration
+      (when-let [current (await (current-graph-principal! ports config selected auth-context))]
+        (let [owner (owner! config selected current)
+              candidates (await (graph-candidates! ports runtime config selected configuration auth-context owner))
+              after (await (current-graph-principal! ports config selected auth-context))]
+          (when (and candidates after (= (graph-principal-binding current) (graph-principal-binding after)))
+            {:scope {:actor-id (:actor-id selected) :org-id (:org-id owner)
+                     :membership-id (get-in current [:membership :id]) :user-id (get-in current [:user :id])
+                     :policy-revision (str "encounter-policy:"
+                                           ((:digest ports) (pr-str [(graph-principal-binding current) (:bindings candidates)])))}
+             :project (:project owner) :records (:records candidates)}))))))
 
 (defn ^:async decision-context!
   "Reload bounded admitted experience for its exact current owner. Reauthorize

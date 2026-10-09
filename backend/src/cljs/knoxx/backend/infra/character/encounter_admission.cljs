@@ -93,7 +93,7 @@
   (await ((:with-exclusive! ports)
           #(admit-exclusive! ports digest owner page authorize!))))
 
-(defn ^:async load-context!
+(defn ^:async load-eligible!
   "Reload admitted experience from the existing store with fresh per-source authorization.
 
   Authorization denial omits that source without reading its content. The host
@@ -113,8 +113,18 @@
                 events (await ((:recent-encounters! ports) owner stream-id 48))
                 bounded (law/assert-shape! [:vector {:max 48} [:map {:closed false}]]
                                            events :recent-event-result)
-                admitted (mapv #(event-record! digest owner source %) bounded)]
+                current (await (authorize! owner source))
+                admitted (when (law/authorized? owner source current)
+                           (mapv #(event-record! digest owner source %) bounded))]
             (recur (next remaining) (into records admitted)
-                   (assoc decisions stream-id decision)))
+                   (assoc decisions stream-id current)))
           (recur (next remaining) records decisions)))
-      (context/assemble-context digest owner records decisions options))))
+      {:records (context/eligible-records digest owner records decisions
+                                          (merge context/default-options options))
+       :decisions decisions})))
+
+(defn ^:async load-context!
+  "Reauthorize sources around event reads, then apply the final prompt budget."
+  [ports digest owner sources authorize! options]
+  (let [{:keys [records decisions]} (await (load-eligible! ports digest owner sources authorize! options))]
+    (context/assemble-context digest owner records decisions options)))

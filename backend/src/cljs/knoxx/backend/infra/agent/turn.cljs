@@ -896,7 +896,8 @@
     (await
      (xpromise/all-vec
       [(passive-hydration! runtime config mode message auth-context)
-       (passive-memory-hydration! config conversation-id (or memory-query message) auth-context agent-spec)
+       (passive-memory-hydration! config conversation-id (or memory-query message) auth-context agent-spec
+                                  #(encounters/graph-authority! runtime config agent-spec auth-context))
        (materialize-content-parts! runtime config model-id auth-context max-bytes content-parts)
        (ensure-agent-session! runtime config conversation-id model-id auth-context thinking-level session-id agent-spec)]))))
 

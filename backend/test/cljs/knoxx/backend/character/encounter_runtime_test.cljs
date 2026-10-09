@@ -396,3 +396,61 @@
                     (is (= (if (= :partial-write failure) 2 1)
                            (count (filter #(and (= "character.encounter" (:kind %))
                                                 (= "discord" (get-in % [:extra :source_kind]))) @(:rows* state)))))))))))))
+
+(deftest ^:async graph-authority-loads-all-current-candidates-before-the-prompt-cap
+  (let [state (fixture)]
+    (swap! (:contexts* state) assoc-in [actor-id :user] {:id "fixture-user"})
+    (swap! (:contexts* state) assoc-in [actor-id :permissions] ["agent.memory.read"])
+    (swap! (:selected* state) assoc-in [:character-encounters :context :max-encounters] 1)
+    (await (with-runtime-fixture!
+            state
+            (^:async fn [config]
+              (await (encounters/observe! :fixture-runtime config input-spec))
+              (let [prompt (await (encounters/decision-context! :fixture-runtime config input-spec nil))
+                    first-read (await (encounters/graph-authority! :fixture-runtime config input-spec nil))]
+                (is (= 1 (count (:encounters prompt))))
+                (is (= 2 (count (:records first-read))) "Graph admission is before the final prompt cap")
+                (is (= actor-id (get-in first-read [:scope :actor-id])))
+                (is (= "fixture-user" (get-in first-read [:scope :user-id])))
+                (is (= "fixture-project" (:project first-read)))
+                (is (every? #(seq (:text %)) (:records first-read)))
+                (reset! (:at* state) "2026-10-07T10:03:00.000Z")
+                (is (= first-read (await (encounters/graph-authority! :fixture-runtime config input-spec nil)))
+                    "Observation time cannot mint a new grant revision")
+                (swap! (:contexts* state) assoc-in [actor-id :tool-policies] [])
+                (reset! (:queries* state) [])
+                (is (nil? (await (encounters/graph-authority! :fixture-runtime config input-spec nil))))
+                (is (= [] @(:queries* state)))))))))
+
+(deftest ^:async graph-authority-never-borrows-an-admin-or-missing-user-memory-grant
+  (doseq [context [(stored-context actor-id)
+                   (assoc (stored-context actor-id) :role-slugs ["system-admin"] :user {:id "fixture-user"})
+                   (assoc (stored-context actor-id) :permissions ["agent.memory.read"])]]
+    (let [state (fixture)]
+      (reset! (:contexts* state) {actor-id context})
+      (await (with-runtime-fixture!
+              state
+              (^:async fn [config]
+                (is (nil? (await (encounters/graph-authority! :fixture-runtime config input-spec nil))))
+                (is (= [] @(:queries* state)))
+                (is (= 0 @(:store-opens* state)))))))))
+
+(deftest ^:async earlier-source-revocation-during-a-later-read-prevents-stale-graph-candidates
+  (let [state (fixture)]
+    (swap! (:contexts* state) assoc-in [actor-id :user] {:id "fixture-user"})
+    (swap! (:contexts* state) assoc-in [actor-id :permissions] ["agent.memory.read"])
+    (await (with-runtime-fixture!
+            state
+            (^:async fn [config]
+              (await (encounters/observe! :fixture-runtime config input-spec))
+              (let [read! (:recent-encounters! @(:store* state))]
+                (swap! (:store* state) assoc :recent-encounters!
+                       (^:async fn [owner stream-id limit]
+                         (let [rows (await (read! owner stream-id limit))]
+                           (when (some #(= "bluesky" (get-in % [:extra :source_kind])) rows)
+                             (swap! (:contexts* state) assoc-in [actor-id :tool-policies]
+                                    [{:tool-id "bluesky.timeline" :effect "allow"}]))
+                           rows)))
+                (let [result (await (encounters/graph-authority! :fixture-runtime config input-spec nil))]
+                  (is (nil? result) "A cross-await source grant change refuses the complete held snapshot")
+                  (is (not (str/includes? (pr-str result) "Discord source"))))))))))

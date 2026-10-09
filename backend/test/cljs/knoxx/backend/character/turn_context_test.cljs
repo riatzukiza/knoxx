@@ -35,7 +35,10 @@
     (with-redefs [encounters/decision-context! (fn [_ _ spec context]
                                               (swap! loaded* conj [(:contract-id spec) context]) @context*)
                   hydration/passive-memory-hydration! (fn ([_ _ _] nil) ([_ _ _ _] nil)
-                                                       ([_ _ query context _] (swap! queries* conj [query context]) nil))
+                                                       ([_ _ query context _] (swap! queries* conj [query context]) nil)
+                                                       ([_ _ query context _ resolve-current!]
+                                                        (is (fn? resolve-current!) "Turn supplies a trusted fresh graph authority callback")
+                                                        (swap! queries* conj [query context]) nil))
                   sessions/ensure-agent-session! (fn ([_ _ _ _] session) ([_ _ _ _ _] session)
                                                     ([_ _ _ _ _ _] session) ([_ _ _ _ _ _ _] session)
                                                     ([_ _ _ _ _ _ _ _] session))

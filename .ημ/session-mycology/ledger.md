@@ -173,3 +173,7 @@ Origin: `cephalon-character-automatic-graph-recall-red-20261009-source`. p-effic
 ## 2026-10-09T14:09:24.541758Z — Distinguish graph outage from vector success
 
 Origin: `cephalon-character-automatic-graph-outage-red-20261009-source`. p-efficiency0.78/p-friction0.30/p-skill-candidate0.15. Actual full isolated suite1754/8271/9fail0errors0warnings. Positive held-principal visibility passed; required graph call and truthful stage/error result remain missing. Retain the initial four inclusion failures and all previous bytes. RED is a required outcome specification, not delivered graph/auth/field/mood behavior. No spore incubated or promoted.
+
+## 2026-10-09T16:21:20.794793Z — Automatic scoped graph prompt integration
+
+Origin: `cephalon-character-automatic-scoped-graph-green-20261009`. p-efficiency0.63/p-friction0.53/p-skill-candidate0.25. Actual owning graph selection reaches the automatic turn and provider-session prompt in held fixtures. Preserve complete prior RED and stronger source-revocation negatives. Test replacements must retain compiled multi-arity signatures; variadic shape is insufficient at statically compiled calls. Full suite and isolated server compile pass; baseline lint and native/live/physical/mood gates remain explicit. No spore incubated or promoted.

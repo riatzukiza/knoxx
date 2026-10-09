@@ -6,6 +6,7 @@
    the singleton SDK instance and all interop; callers pass and receive CLJS
    data shaped exactly like the corresponding /v1 REST response bodies."
   (:require ["@open-hax/openplanner-sdk" :as sdk-mod]
+            ["@open-hax/openplanner-graph-claim-core" :as graph-core]
             ["@open-hax/openplanner-sdk/mongo-vectors" :as mongo-vectors]
             [knoxx.backend.extern.json :as xjson]))
 
@@ -41,6 +42,24 @@
       (let [created (create-sdk!)]
         (reset! sdk-promise* created)
         created)))
+
+(defn ^:async scoped-graph-recall!
+  "Use the owning validated read-only graph boundary. Resolve host authority
+   before opening the SDK and re-resolve through it at each async read stage."
+  [request resolve-current-authority!]
+  (if (nil? (await (resolve-current-authority!)))
+    {:version 1 :field-status "not-loaded"
+     :selection {:status "denied" :hits []
+                 :feedback {:status "not-requested" :attempted 0 :completed 0}}}
+    (let [sdk (await (get-sdk!))
+          resolve! (^:async fn [] (clj->js (await (resolve-current-authority!))))
+          reader (graph-core/createScopedMongoRecall sdk resolve!)]
+      (xjson/to-cljs (await (reader (clj->js request)))))))
+
+(defn valid-scoped-graph-result?
+  "Validate decoded port data through the owning graph result contract."
+  [result]
+  (graph-core/validScopedMongoRecallResult (clj->js result)))
 
 (defn ^:async close-sdk!
   "Close the shared SDK instance (mongo connection). Safe to call when unused."

@@ -73,8 +73,15 @@
   (concat (->> records (remove :self-output?) newest-source-time-first distinct-source-round-first)
           (->> records (filter :self-output?) newest-source-time-first)))
 
-(defn- authorized-records
+(defn eligible-records
+  "Validate the bounded currently admitted set before graph ranking or prompt
+   caps. Latest source revisions are collapsed only within their exact scope."
   [digest owner records decisions options]
+  (law/assert-shape! shape/Owner owner :context-owner)
+  (law/assert-shape! Options options :context-options)
+  (when (> (count records) 384)
+    (throw (ex-info "Encounter context input exceeds the bounded candidate set"
+                    {:code :encounter/context-input-too-large})))
   (->> records
        (filter #(= owner (:owner %)))
        (filter #(law/authorized? owner (:source %)
@@ -82,7 +89,8 @@
        (map #(law/assert-record! digest % owner (:source %)))
        (filter #(or (:include-self-output? options) (not (:self-output? %))))
        latest-source-revisions
-       external-first))
+       external-first
+       vec))
 
 (defn- select-bounded-entries
   [options records]
@@ -114,10 +122,7 @@
   (law/assert-shape! shape/Owner owner :context-owner)
   (let [options (merge default-options options)]
     (law/assert-shape! Options options :context-options)
-    (when (> (count records) 384)
-      (throw (ex-info "Encounter context input exceeds the bounded candidate set"
-                      {:code :encounter/context-input-too-large})))
-    (let [authorized (authorized-records digest owner records decisions options)
+    (let [authorized (eligible-records digest owner records decisions options)
           selected (select-bounded-entries options authorized)
           entries (:entries selected)]
       {:encounters entries

@@ -1,14 +1,18 @@
 (ns knoxx.backend.character.graph-recall-test
   "Automatic encounter graph recall must reach the actual session prompt."
-  (:require [cljs.test :refer [deftest is]]
+  (:require ["@open-hax/openplanner-sdk" :as sdk-fixture]
+            [cljs.test :refer [deftest is]]
             [clojure.string :as str]
             [knoxx.backend.character.encounter-test :as fixture]
             [knoxx.backend.domain.character.encounter-context :as encounter-context]
             [knoxx.backend.extern.agent-turn-prompt :as prompt]
             [knoxx.backend.infra.agent.hydration :as hydration]
+            [knoxx.backend.infra.agent.session :as sessions]
             [knoxx.backend.infra.agent.stream :as stream]
             [knoxx.backend.infra.agent.turn :as turn]
+            [knoxx.backend.infra.character.encounter-runtime :as encounters]
             [knoxx.backend.infra.clients.openplanner :as planner]
+            [knoxx.backend.infra.clients.openplanner-mongo :as mongo]
             [knoxx.backend.law.character.encounter :as encounter-law]
             [knoxx.backend.shape.agent :as agent]))
 
@@ -34,10 +38,16 @@
             :metadatas [[(merge (:extra row) {:kind (:kind row) :role "user"})]]
             :distances [[0.1]]}})
 
+(defn- graph-authority [records]
+  {:scope {:actor-id "creator" :org-id "org-local" :membership-id "creator-member"
+           :user-id "creator-user" :policy-revision "held-current-source-policy"}
+   :project "creator-local" :records (mapv #(select-keys % [:id :text]) records)})
+
 (deftest ^:async sessionless-encounter-and-graph-only-neighbor-reach-the-maker-prompt
   ;; Both records use the existing pure encounter identity/admission laws.
   ;; The non-seed is absent from vector results and recent decision context.
-  ;; The graph response is transport fixture data, not graph traversal proof.
+  ;; The released owning adapter ranks held SDK index rows and traverses the
+  ;; held scoped edge. These are not live storage or grant fixtures.
   (let [prepared (fixture/prepared [(fixture/item "seed" "An outside encounter about a harbor")
                                     (fixture/item "neighbor" "GRAPH ONLY: bells beneath the harbor")])
         [seed neighbor] (:records prepared)
@@ -54,6 +64,7 @@
                                                     :scope-id "allowed-channel"
                                                     :visibility "public"}}]}
         spec {:actor-id "creator"
+              :character-encounters {:sources []}
               :decision-encounters (assoc encounter-state
                                          :owner fixture/owner
                                          :inclusion-evidence [{:encounter-id (:id seed)
@@ -61,50 +72,81 @@
               :memory-hydration {:enabled? true :mode :always :k 6}}
         config {:session-project-name "creator-local"}
         graph-calls* (atom []) session-reads* (atom []) prompts* (atom [])
+        authority-calls* (atom [])
+        client (mongo/->MongoOpenPlannerClient config nil)
+        recall! planner/scoped-graph-recall!
+        authority (graph-authority [seed neighbor])
         session (capturing-session prompts*)]
     (is (nil? (:session seed-row)) "Encounter identity is not a fabricated session")
     (is (= [(:id seed)] (:event-ids encounter-state)))
-    (with-redefs [planner/client (fn ([_config] :fixture-client)
-                                   ([_config _options] :fixture-client))
+    (sdk-fixture/__setScopedGraphFixture (clj->js authority))
+    (try
+    (with-redefs [planner/client (fn ([_config] client)
+                                   ([_config _options] client))
                   planner/enabled? (fn [_client] true)
                   planner/vector-search! (fn [_client _payload] (vector-result seed-row))
                   planner/session! (fn [_client session-id _options]
                                      (swap! session-reads* conj session-id)
                                      (throw (ex-info "Sessionless encounters cannot borrow session authority"
                                                      {:fixture/session-read true})))
-                  planner/graph-memory! (fn [_client payload]
+                  planner/scoped-graph-recall! (fn [client payload resolve-current!]
                                           (swap! graph-calls* conj payload)
-                                          {:query "harbor"
-                                           :nodes [{:id (:id seed) :text (:text seed) :isSeed true}
-                                                   {:id (:id neighbor) :text (:text neighbor) :isSeed false}]
-                                           :edges [{:source (:id seed) :target (:id neighbor)
-                                                    :edgeKind "fixture-admitted-relation"}]
-                                           :daimoi [{:originNodeId (:id seed) :currentNodeId (:id neighbor)
-                                                      :trail [(:id seed) (:id neighbor)]}]})
+                                          (recall! client payload resolve-current!))
+                  planner/graph-memory! (fn [& _] (throw (js/Error. "Legacy REST graph is not scoped recall")))
+                  encounters/graph-authority! (fn [runtime actual-config actual-spec actual-context]
+                                               (swap! authority-calls* conj [runtime actual-config actual-spec actual-context])
+                                               authority)
+                  sessions/ensure-agent-session! (fn ([_ _ _ _] session) ([_ _ _ _ _ _ _ _] session))
                   stream/register-active-turn! (fn ([_state _abort] nil)
                                                   ([_state _abort _spec] nil))
                   prompt/log-prompt! (fn [_observation] nil)
                   turn/finalize-turn-success! (fn [& _arguments] :fixture-completed)]
-      (let [memory (await (hydration/passive-memory-hydration!
-                          config "fixture-conversation" "remember the harbor" auth-context spec))]
+      (let [[_ memory _ actual-session]
+            (await (turn/hydrate-and-materialize!
+                    :fixture-runtime config {:conversation-id "fixture-conversation" :session-id "fixture-session"
+                                              :message "remember the harbor" :mode "direct" :model-id "fixture-model"
+                                              :agent-spec spec :auth-context auth-context} []))]
+        (is (identical? session actual-session))
+        (is (= 5 (count @authority-calls*)) "Actual turn supplies fresh authority before SDK opening and each owning read stage")
+        (is (every? #(= [:fixture-runtime config spec auth-context] %) @authority-calls*))
         (is (= 1 (count @graph-calls*)) "Automatic recall must consult the graph")
         (is (contains? (set (map :id (:hits memory))) (:id seed))
             "An authorized outside encounter must survive sessionless recall")
         (is (contains? (set (map :id (:hits memory))) (:id neighbor))
             "Recall must include an authorized graph neighbor beyond semantic seeds")
+        (is (= [(:id seed) (:id neighbor)] (get-in memory [:hits 1 :path])))
+        (is (= ["held-edge:seed:neighbor"] (get-in memory [:hits 1 :path-edge-ids])))
+        (is (= "graph-neighbor" (get-in memory [:hits 1 :reason])))
+        (is (= "not-loaded" (:field-status memory)))
+        (is (not (contains? (first @graph-calls*) :scope)) "Request payload supplies no principal or source grants")
         (await (turn/prompt-and-await!
                 config "fixture-session" "fixture-run" "fixture-conversation" 0
-                "fixture-model" "direct" session "Choose a creative opportunity"
+                "fixture-model" "direct" actual-session "Choose a creative opportunity"
                 [] nil memory [] spec))
         (is (= [] @session-reads*))
         (is (= 1 (count @prompts*)))
         (is (str/includes? (first @prompts*) "GRAPH ONLY: bells beneath the harbor")
-            "The graph result must reach the actual provider-session boundary")))))
+            "The graph result must reach the actual provider-session boundary")))
+    (finally (sdk-fixture/__clearScopedGraphFixture())))))
+
+(deftest ^:async malformed-scoped-port-results-do-not-become-empty-success
+  (let [config {:session-project-name "creator-local"}
+        spec {:character-encounters {:sources []} :memory-hydration {:enabled? true :mode :always}}
+        client (mongo/->MongoOpenPlannerClient config nil)]
+    (doseq [result [nil {} {:version 1 :field-status "not-loaded" :selection {:status "completed" :hits []}}]]
+      (with-redefs [planner/client (fn ([_] client) ([_ _] client))
+                    planner/scoped-graph-recall! (fn [& _] result)]
+        (let [memory (await (hydration/passive-memory-hydration! config "fixture" "remember" nil spec (fn [] nil)))]
+          (is (= :failed (:status memory)))
+          (is (= :invalid-projection (get-in memory [:failure :code])))
+          (is (= [] (:hits memory)))
+          (is (nil? (hydration/passive-memory-hydration-text memory))))))))
 
 (deftest ^:async graph-transport-failure-is-not-successful-vector-only-recall
   ;; The session scope is authorized through the real visibility adapter.
-  ;; A successful vector lookup cannot conceal failure of the required graph
-  ;; transport or become a successful empty/partial graph recall.
+  ;; First preserve the original session visibility precondition through the
+  ;; legacy conversational branch. Then the character branch requires scoped
+  ;; graph recall; that precondition cannot stand in for its source authority.
   (let [row {:id "allowed-session:memory" :kind "knoxx.user"
              :text "An authorized harbor observation"
              :extra {:session "allowed-session"}}
@@ -115,9 +157,14 @@
               :memory-hydration {:enabled? true :mode :always :k 6}}
         config {:session-project-name "creator-local"}
         graph-calls* (atom [])
+        client (mongo/->MongoOpenPlannerClient config nil)
+        recall! planner/scoped-graph-recall!
+        authority (graph-authority [{:id "held-encounter" :text "An authorized harbor observation"}])
         session-reads* (atom [])]
-    (with-redefs [planner/client (fn ([_config] :fixture-client)
-                                   ([_config _options] :fixture-client))
+    (sdk-fixture/__setScopedGraphFixture (clj->js (assoc authority :fail true)))
+    (try
+    (with-redefs [planner/client (fn ([_config] client)
+                                   ([_config _options] client))
                   planner/enabled? (fn [_client] true)
                   planner/vector-search! (fn [_client _payload] (vector-result row))
                   planner/session! (fn [_client session-id _options]
@@ -126,14 +173,15 @@
                                               :extra {:org_id "org-local"
                                                       :membership_id "creator-member"
                                                       :user_id "creator-user"}}]})
-                  planner/graph-memory! (fn [_client payload]
+                  planner/scoped-graph-recall! (fn [client payload resolve!]
                                           (swap! graph-calls* conj payload)
-                                          (js/Promise.reject
-                                           (ex-info "Fixture graph transport unavailable"
-                                                    {:status 503 :code :transport-error})))]
-      (let [memory (await (hydration/passive-memory-hydration!
+                                          (recall! client payload resolve!))]
+      (let [legacy (await (hydration/passive-memory-hydration! config "fixture-conversation"
+                                                              "remember the harbor" auth-context spec))
+            _ (is (= 1 (count (:hits legacy))) "The original conversational memory path still admits the session")
+            memory (await (hydration/passive-memory-hydration!
                           config "fixture-conversation" "remember the harbor"
-                          auth-context spec))]
+                          auth-context (assoc spec :character-encounters {:sources []}) (fn [] authority)))]
         (is (= ["allowed-session"] @session-reads*)
             "The existing session visibility boundary admits the held principal")
         (is (= 1 (count @graph-calls*))
@@ -145,4 +193,6 @@
         (is (= :transport-error (get-in memory [:failure :code]))
             "Operators can distinguish transport failure from empty/denied recall")
         (is (= [] (:hits memory))
-            "A successful vector seed is not silently substituted for graph recall")))))
+            "A successful vector seed is not silently substituted for graph recall")
+        (is (not (str/includes? (pr-str memory) "PRIVATE")))))
+    (finally (sdk-fixture/__clearScopedGraphFixture())))))

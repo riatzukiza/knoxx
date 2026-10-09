@@ -104,8 +104,57 @@ schema converter is not an argument validator.
 `graph_query` is excluded from the focused registry: its current execution path
 does not enforce visibility on individual memory results. Actor permission to
 call a tool does not establish permission to recall every result it returns.
-The first slice uses scoped vector recall and admitted encounter context;
-broader graph recall requires its separate visibility repair and tests.
+The conversational memory branch retains its session-scoped vector recall.
+Character profiles now use a separate scoped graph port backed by OpenPlanner's
+owning graph package. The trusted turn host supplies freshly admitted encounter
+IDs/text and an explicit stored user/memory permission; request JSON supplies no
+authority. Graph access does not invoke the legacy REST route or its feedback
+writes. Live source qualification and activation remain separate gates.
+
+## Scoped graph recall and the automatic prompt
+
+The host loads bounded eligible encounters before the final prompt cap,
+reauthorizes each source around reads, and checks the complete source binding
+after loading. A source revoked during a later source read refuses that held
+snapshot. The owning Mongo adapter refreshes the descriptor after its index,
+embedding and graph reads. These observations do not establish atomic grant
+reservation or distributed fencing.
+
+The automatic turn passes the host callback to passive hydration. The Mongo
+client invokes the released owning graph reader over its existing SDK handle;
+the consumer validates the owning result contract through the named extern
+adapter. An unsupported port, malformed result or transport failure remains a
+distinct failed graph outcome with no vector-only substitution. Indexing-pending
+and denied states remain distinct. Graph-only neighbors include stable node and
+edge paths in the actual provider-session message as quoted untrusted encounter
+material. `field-status: not-loaded` explicitly preserves the unfinished physical
+field link; recall performs no reinforcement write.
+
+The graph prompt fixture runs `hydrate-and-materialize!`, the actual Mongo client,
+named extern adapter and released OpenPlanner selection code over held SDK
+collections, then captures `IAgentSession/send-user-message!`. The host authority
+fixture separately exercises canonical stored principal/source/account resolution.
+Together these establish source-level integration, not live Mongo/model behavior,
+automatic artistic choices, physical field persistence or consumed mood.
+
+The original bare REST graph fixture remains in committed RED evidence. Its
+response was a transport placeholder, not privacy or traversal proof. The refined
+fixture retains the original neighbor/inclusion/failure assertions and adds the
+real owning path. Its session visibility assertion is an independent preserved
+conversational precondition, not authority to read the character graph.
+
+Run production compilation without connecting to a shared Shadow server:
+
+```sh
+bash scripts/verify-local-creator-loop.sh --production
+```
+
+This copies the same owned source inventory, runs the actual backend `typecheck`
+script (`shadow-cljs compile server --force-spawn`) with isolated outputs and event
+runtimes disabled, requires a completed zero-warning server build, and cleans only
+that snapshot. It starts no server. The linked SDK and graph package are build
+inputs; their independently reviewed source revisions must be pinned in delivery
+before a live compatibility or served-code claim.
 
 ## Stable character and memory ownership
 

@@ -14,10 +14,12 @@ KNOXX_VERIFY_FAILURES=0
 
 usage() {
   cat <<'USAGE'
-Usage: bash scripts/verify-local-creator-loop.sh --hermetic | --served | --full
+Usage: bash scripts/verify-local-creator-loop.sh --hermetic | --production | --served | --full
 
   --hermetic  Seed a dedicated temporary source/fixture snapshot, run the
               existing backend test target, and clean up this run's data.
+  --production  Compile the existing backend typecheck/server target in the
+                same isolated source snapshot; start no backend or hot reload.
   --served    Read-only check that a running Docker backend serves this clean,
               compiled checkout. Never builds or changes the running service.
   --full      Refuse: source fixtures cannot establish an activated continuous
@@ -65,7 +67,7 @@ case "$KNOXX_VERIFY_MODE" in
     warn "The source intake harness exists; served activation and natural decisions still need operator observation."
     printf 'FAIL  no full creator-loop PASS can be established by this script\n' >&2
     exit 2 ;;
-  --hermetic|--served) ;;
+  --hermetic|--production|--served) ;;
   *) usage >&2; exit 2 ;;
 esac
 [[ $# -eq 1 ]] || abort "supply exactly one verification mode"
@@ -91,7 +93,7 @@ hermetic() {
   local required_tests=(tool_modes_test.cljs mode_runtime_test.cljs encounter_test.cljc
                         authority_test.cljs encounter_admission_test.cljs encounter_openplanner_test.cljs
                         social_encounters_test.cljs encounter_runtime_test.cljs encounter_timestamp_test.cljs
-                        decision_input_test.cljs turn_context_test.cljs membership_policy_route_test.cljs)
+                        decision_input_test.cljs turn_context_test.cljs graph_recall_test.cljs membership_policy_route_test.cljs)
   local file
   for file in "${required_tests[@]}"; do
     [[ -f "$KNOXX_VERIFY_REPO/$test_root/$file" ]] || abort "required fixture suite is absent: $file; finish source integration before verification"
@@ -124,6 +126,25 @@ PY
   # A literal fixture token satisfies checked-in npm interpolation only.
   local fixture_env=(-i "PATH=$PATH" "HOME=$HOME" "NPM_CONFIG_USERCONFIG=/dev/null" "NPM_TOKEN=fixture")
   if [[ -n "${JAVA_HOME:-}" ]]; then fixture_env+=("JAVA_HOME=$JAVA_HOME"); fi
+  if [[ "$KNOXX_VERIFY_MODE" == "--production" ]]; then
+    setsid env "${fixture_env[@]}" CONTRACTS_DIR="$KNOXX_VERIFY_TMP/contracts" \
+      KNOXX_CONTRACTS_DIR="$KNOXX_VERIFY_TMP/contracts" KNOXX_DISABLE_EVENT_RUNTIMES=true \
+      WORKSPACE_ROOT="$KNOXX_VERIFY_TMP/workspace" KNOXX_GENERATED_CONTRACTS_DIR="$KNOXX_VERIFY_TMP/generated" \
+      KNOXX_PUBLICATION_CONTENT_ROOT="$KNOXX_VERIFY_TMP/content" TMPDIR="$KNOXX_VERIFY_TMP/tmp" \
+      pnpm -C "$fixture/backend" typecheck --force-spawn >"$logfile" 2>&1 &
+    KNOXX_VERIFY_CHILD=$!
+    local production_status=0
+    wait "$KNOXX_VERIFY_CHILD" || production_status=$?
+    KNOXX_VERIFY_CHILD=""
+    cat "$logfile"
+    (( production_status == 0 )) || abort "isolated production compilation failed"
+    if ! grep -Eq '^\[:server\] Build completed\. .*0 warnings' "$logfile"; then
+      abort "production compiler did not report a completed zero-warning server build"
+    fi
+    pass "the actual backend typecheck script compiles the server target with zero compiler warnings; no server started"
+    warn "Production compilation is not live SDK/Mongo compatibility, activation or maker-output proof."
+    return
+  fi
   if ! env "${fixture_env[@]}" TMPDIR="$KNOXX_VERIFY_TMP/tmp" \
       node --test "$fixture/backend/test/js/focused_builtin_tools.test.mjs"; then
     abort "actual supported SDK/strict schema fixture failed"
@@ -157,7 +178,7 @@ JS
   fi
   pass "the compiled fixture snapshot completed the full backend test target with zero failures and errors"
   local namespaces=(tool-modes mode-runtime authority encounter encounter-admission encounter-openplanner
-                    social-encounters encounter-runtime encounter-timestamp decision-input turn-context membership-policy-route)
+                    social-encounters encounter-runtime encounter-timestamp decision-input turn-context graph-recall membership-policy-route)
   local explanations=(
     "mode fixtures preserve character/conversation and refuse hidden, unknown, or revoked capabilities"
     "dispatcher fixtures validate delegated arguments and refresh current authority before touching a closure"
@@ -170,6 +191,7 @@ JS
     "timestamp fixtures normalize valid source precision/timezones and refuse invalid calendar facts"
     "decision input fixtures let authorized external encounters shape scoped recall while preserving quoted source data"
     "turn attachment fixtures reload admitted evidence for maker/reply context while preserving persona and fast incoming replies"
+    "actual scoped graph adapter and automatic turn fixtures include the graph-only neighbor/path in the provider-session prompt and retain safe graph failures"
     "membership policy route fixtures preserve same-org scoped operators, required permission, cross-org refusal and existing system-admin handling"
   )
   local index
@@ -229,7 +251,7 @@ walk(root); if(rows.length===0)process.exit(2); rows.sort((a,b)=>a[0].localeComp
   warn "Code provenance does not establish enabled intake, actual recall, live authorization, or model-driven decisions."
 }
 
-if [[ "$KNOXX_VERIFY_MODE" == --hermetic ]]; then hermetic; else served; fi
+if [[ "$KNOXX_VERIFY_MODE" == --served ]]; then served; else hermetic; fi
 warn "Intake contract activation and a natural live creator-loop walkthrough remain separate operator gates."
 printf '\n%s PASS; %s FAIL. Selected %s checks passed; full creator-loop behavior remains unverified.\n' \
   "$KNOXX_VERIFY_PASSES" "$KNOXX_VERIFY_FAILURES" "$KNOXX_VERIFY_MODE"
