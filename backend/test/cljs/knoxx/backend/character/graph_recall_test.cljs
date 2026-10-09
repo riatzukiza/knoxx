@@ -180,7 +180,8 @@
                   encounters/graph-authority! (fn [runtime actual-config actual-spec actual-context]
                                                (swap! authority-calls* conj [runtime actual-config actual-spec actual-context])
                                                authority)
-                  sessions/ensure-agent-session! (fn ([_ _ _ _] session) ([_ _ _ _ _ _ _ _] session))
+                  sessions/ensure-agent-session! (fn ([_ _ _ _] session) ([_ _ _ _ _ _ _ _] session)
+                                                    ([_ _ _ _ _ _ _ _ _] session))
                   stream/register-active-turn! (fn ([_state _abort] nil)
                                                   ([_state _abort _spec] nil))
                   prompt/log-prompt! (fn [_observation] nil)

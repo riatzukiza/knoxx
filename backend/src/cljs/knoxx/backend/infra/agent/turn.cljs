@@ -3,19 +3,20 @@
   (:require [clojure.string :as str]
             [knoxx.backend.infra.run-event-payload :as run-payload]
             [knoxx.backend.infra.agent.initial-admission :as initial-admission]
+            [knoxx.backend.infra.agent.turn-startup :as startup]
+            [knoxx.backend.infra.character.turn-context :as character-context]
             [knoxx.backend.infra.agent.hydration :as hydration :refer [settings-state* ensure-settings!
                                                                 passive-hydration! passive-memory-hydration!
                                                                 build-agent-user-message
                                                                 hydration-sources]]
-            [knoxx.backend.infra.agent.session :refer [ensure-agent-session! prune-session-messages]]
+            [knoxx.backend.infra.agent.session :refer [ensure-agent-session!]]
             [knoxx.backend.infra.agent.message :as msg]
             [knoxx.backend.extern.agent-turn-media :as xturn-media]
             [knoxx.backend.extern.agent-turn-node :as xturn-node]
             [knoxx.backend.extern.agent-turn-prompt :as xturn-prompt]
             [knoxx.backend.extern.agent-turn-result :as xturn-result]
             [knoxx.backend.extern.promise :as xpromise]
-            [knoxx.backend.domain.agent.agent-templates :as templates]
-            [knoxx.backend.domain.agent.content :as content :refer [model-ready-content-parts merge-content-parts]]
+            [knoxx.backend.domain.agent.content :as content :refer [merge-content-parts]]
             [knoxx.backend.domain.error-observatory :as errors]
             [knoxx.backend.infra.agent.policy :as policy]
             [knoxx.backend.infra.agent.stream :as stream]
@@ -39,10 +40,7 @@
             [knoxx.backend.domain.text :refer [assistant-message-text assistant-message-reasoning-text]]
             [knoxx.backend.domain.voice.turn-control :as turn-control]
             [knoxx.backend.domain.agent.agent-context :as agent-ctx]
-            [knoxx.backend.domain.character.tool-modes :as character-modes]
             [knoxx.backend.domain.character.decision-input :as decision-input]
-            [knoxx.backend.infra.character.authority :as character-authority]
-            [knoxx.backend.infra.character.encounter-runtime :as encounters]
             [knoxx.backend.domain.time :refer [now-iso]]))
 
 (defonce conversation-access* (atom {}))
@@ -333,14 +331,9 @@
                 assistant-content-parts hydration memory-hydration
                 persisted-request-messages agent-spec completed-event (:event-stream-sink state)))))))
 
-(defn- failure-resource-patch [passive memory]
-  (cond-> {}
-    passive (assoc :passiveHydration (select-keys passive [:query :tokens :database :elapsedMs :results]))
-    memory (assoc :memoryHydration (hydration/memory-hydration-projection memory))))
-
 (defn- fail-turn-record! [run-id payload passive memory]
   (when (finalization/fail-run! run-id payload nil nil)
-    (update-run! run-id #(update % :resources merge (failure-resource-patch passive memory)))))
+    (update-run! run-id #(update % :resources merge (character-context/resource-patch passive memory)))))
 
 (defn- ^:async finalize-turn-failure!
   [config state session run-id conversation-id session-id started-ms
@@ -678,48 +671,6 @@
                                                                    (:agent-thinking-level config)
                                                                    "off"))}))
 
-(declare process-hydration-results-and-start-turn!)
-
-(defn- ^:async persist-running-session-update!
-  [session-id conversation-id run-id persisted-request-messages]
-  (try
-    (await (session-store/update-session! session-id
-                                          {:status "running"
-                                           :has_active_stream false
-                                           :messages persisted-request-messages
-                                           :conversation_id conversation-id
-                                           :run_id run-id}))
-    (catch :default err
-      (.error js/console "[turn] failed to update session"
-              (clj->js {:session-id session-id
-                        :error (ex-message err)})))))
-
-(defn- character-spec
-  [agent-spec]
-  (if-not (:tool-modes agent-spec)
-    agent-spec
-    (let [projection (or (:character-context agent-spec)
-                         {:identity (or (:actor-id agent-spec) (:contract-id agent-spec))
-                          :persona (or (:system-prompt agent-spec) "")
-                          ;; Explicit absence of a loaded physical projection.
-                          :snapshot {} :evidence-ids []})]
-      (-> agent-spec
-          (assoc :character-context projection)
-          (update :system-prompt #(character-modes/system-context-text % {:character projection}))))))
-
-(defn- ^:async prepare-character-turn!
-  [runtime config auth-context agent-spec template-context]
-  (let [auth-context (if (or (:tool-modes agent-spec) (:character-encounters agent-spec))
-                       (await (character-authority/resolve-current! config auth-context agent-spec))
-                       auth-context)
-        agent-spec (dissoc (templates/render-agent-prompts agent-spec auth-context template-context)
-                           :decision-encounters)
-        context (when (:character-encounters agent-spec)
-                  (await (encounters/decision-context! runtime config agent-spec auth-context)))]
-    {:auth-context auth-context
-     :encounter-context context
-     :agent-spec (character-spec (cond-> agent-spec context (assoc :decision-encounters context)))}))
-
 (defn- ^:async prepare-turn-context
   "Resolve turn parameters from the request and agent-spec.
    Returns a map of resolved values or throws for invalid inputs."
@@ -728,7 +679,7 @@
         session-id (ensure-session-id session-id)
         auth-context (auth-context-for-agent-turn auth-context agent-spec)
         {:keys [auth-context agent-spec encounter-context]}
-        (await (prepare-character-turn! runtime config auth-context agent-spec template-context))
+        (await (character-context/prepare! runtime config auth-context agent-spec template-context))
         _ (ensure-conversation-access! auth-context conversation-id)
         _ (remember-conversation-access! auth-context conversation-id)
         mode (or mode "direct")
@@ -742,45 +693,12 @@
         auth-extra (auth-snapshot auth-context)]
     (when (and thinking-level-raw (nil? parsed-thinking-level))
       (throw (js/Error. (str "Unsupported thinking level: " thinking-level-raw ". Expected one of off, minimal, low, medium, high, xhigh."))))
-    {:conversation-id conversation-id
-     :session-id session-id
-     :auth-context auth-context
-     :agent-spec agent-spec
-     :mode mode
-     :model-id model-id
-     :thinking-level thinking-level
-     :run-id run-id
-     :started-at started-at
-     :started-ms started-ms
-     :seeded-messages seeded-messages
-     :auth-extra auth-extra
-     :memory-query (decision-input/memory-query message encounter-context)
-     :message message}))
-
-(defn- disclosed-agent-spec [agent-spec snapshot]
-  (cond-> (dissoc agent-spec :decision-encounters)
-    (:context snapshot) (assoc :decision-encounters (:context snapshot))))
-
-(defn- ^:async refresh-query-disclosure! [runtime config ctx]
-  (if-not (:character-encounters (:agent-spec ctx))
-    ctx
-    (let [snapshot (await (encounters/disclosure-snapshot! runtime config (:agent-spec ctx) (:auth-context ctx)))]
-      (assoc ctx :agent-spec (disclosed-agent-spec (:agent-spec ctx) snapshot)
-                 :auth-context (or (:auth-context snapshot) (:auth-context ctx))
-                 :graph-authority (:graph-authority snapshot)
-                 :memory-query (decision-input/memory-query (:message ctx) (:context snapshot))))))
-
-(defn- query-graph-authority-resolver [runtime config ctx]
-  (^:async fn []
-    (let [current (await (encounters/graph-authority! runtime config (:agent-spec ctx) (:auth-context ctx)))]
-      ;; The query can contain encounter text. A changed source snapshot must
-      ;; refuse the query before provider generation, even if another source
-      ;; still grants an otherwise valid graph scope.
-      (when (or (not (contains? ctx :graph-authority))
-                (and (:graph-authority ctx)
-                     (= (hydration/graph-authority-binding (:graph-authority ctx))
-                        (hydration/graph-authority-binding current))))
-        current))))
+    {:conversation-id conversation-id :session-id session-id :run-id run-id
+     :auth-context auth-context :auth-extra auth-extra :agent-spec agent-spec
+     :mode mode :model-id model-id :thinking-level thinking-level
+     :started-at started-at :started-ms started-ms
+     :seeded-messages seeded-messages :message message
+     :memory-query (decision-input/memory-query message encounter-context)}))
 
 (defn ^:async hydrate-and-materialize!
   "Run passive hydration, memory hydration, content materialization, and session
@@ -791,139 +709,23 @@
      (xpromise/all-vec
       [(passive-hydration! runtime config mode message auth-context)
        (passive-memory-hydration! config conversation-id (or memory-query message) auth-context agent-spec
-                                  (query-graph-authority-resolver runtime config ctx))
+                                  (character-context/query-authority-resolver runtime config ctx))
        (materialize-content-parts! runtime config model-id auth-context max-bytes content-parts)
        (initial-admission/construct-session! ctx
         #(ensure-agent-session! runtime config conversation-id model-id auth-context thinking-level session-id agent-spec startup-owner))]))))
 
 (defn ^:async send-agent-turn!
-  "Orchestrate a full agent turn: validate, hydrate, create run, prompt, and stream.
-   Returns a Promise that resolves with the turn response or rejects on error."
+  "Orchestrate a full agent turn: validate, hydrate, create run, prompt, and stream."
   [runtime config {:keys [content-parts] :as turn-request}]
   (let [ctx (assoc (await (prepare-turn-context runtime config turn-request))
                    :startup-owner (xturn-node/random-uuid!) :startup-failed* (atom false))
-        {:keys [conversation-id session-id run-id started-at started-ms model-id mode
-                thinking-level auth-extra seeded-messages message]} ctx]
-    ;; Enforce model allow-list and rate limits
+        {:keys [conversation-id model-id message]} ctx]
     (await (policy/enforce-chat-policy! (:auth-context ctx) model-id))
     (maybe-prime-session-title! runtime config conversation-id message)
-    ;; Parallel: hydration, memory, content materialization, session setup
-    (let [ctx (await (refresh-query-disclosure! runtime config ctx))
-          hydration-results (await (initial-admission/hydrate! ctx #(hydrate-and-materialize! runtime config ctx content-parts)))
-          start-turn! (process-hydration-results-and-start-turn!
-                        runtime config run-id session-id conversation-id started-at started-ms model-id mode thinking-level
-                        (:agent-spec ctx) auth-extra seeded-messages message (:auth-context ctx) (:startup-owner ctx))]
-      ;; Create run, emit events, and start prompting
-      (await (start-turn! hydration-results)))))
-
-(defn- ^:async emit-encounter-inclusion!
-  [run-id conversation-id session-id agent-spec]
-  (when-let [evidence (decision-input/inclusion-evidence (:decision-encounters agent-spec))]
-    (let [payload (assoc evidence :status "prepared" :stage "request-context"
-                         :hits (count (:event-ids evidence)))
-          event (run-payload/tool-event-payload run-id conversation-id session-id "character_encounter_context" payload)]
-      (update-run! run-id #(assoc-in % [:resources :characterEncounters] evidence))
-      (append-run-event! run-id event)
-      (await (run-events/flush! run-id))
-      (broadcast-ws-session! session-id "events" event))))
-
-(defn- prepare-running-turn [config params materialized-content-parts]
-  (let [{:keys [model-id agent-spec seeded-messages message]} params
-        materialized-content-parts (vec (or materialized-content-parts []))
-        turn-message (content/nonblank message)
-        user-message (if (seq materialized-content-parts)
-                       {:role "user" :content turn-message :content-parts materialized-content-parts}
-                       {:role "user" :content turn-message})]
-    {:user-message user-message :turn-message turn-message
-     :prompt-content-parts (model-ready-content-parts config model-id materialized-content-parts)
-     :request-messages (prune-session-messages agent-spec (conj seeded-messages user-message))}))
-
-(defn- ^:async emit-turn-hydration! [run-id conversation-id session-id agent-spec passive memory]
-  (await (emit-encounter-inclusion! run-id conversation-id session-id agent-spec))
-  (await (publish-hydration! run-id conversation-id session-id passive memory)))
-
-(defn- ^:async refresh-prompt-disclosure! [runtime config agent-spec auth-context memory]
-  (if-not (:character-encounters agent-spec)
-    {:agent-spec agent-spec :memory memory}
-    (let [snapshot (await (encounters/disclosure-snapshot! runtime config agent-spec auth-context))]
-      (when-not (:auth-context snapshot)
-        (throw (ex-info "Character disclosure authority unavailable" {:reason :character-disclosure-authority-unavailable})))
-      {:agent-spec (disclosed-agent-spec agent-spec snapshot)
-       :memory (hydration/retain-current-graph-hydration memory (:graph-authority snapshot))})))
-
-(defn- ^:async capture-prompt-disclosure! [runtime config agent-spec auth-context memory]
-  (try
-    (await (refresh-prompt-disclosure! runtime config agent-spec auth-context memory))
-    ;; knoxx-lint/allow-silent-catch — do not retain an authority exception/cause.
-    ;; Finish startup ownership before ordinary bounded failure settlement.
-    (catch :default _error
-      {:refused? true :agent-spec (dissoc agent-spec :decision-encounters)
-       :memory (hydration/retain-current-graph-hydration memory nil)})))
-
-(defn- retain-disclosed-resources! [run-id agent-spec passive memory]
-  (let [evidence (decision-input/inclusion-evidence (:decision-encounters agent-spec))]
-    (update-run! run-id
-                 #(update % :resources
-                          (fn [resources]
-                            (cond-> (merge (dissoc resources :characterEncounters)
-                                           (failure-resource-patch passive memory))
-                              evidence (assoc :characterEncounters evidence)))))))
-
-(defn- ^:async settle-disclosure-refusal! [config session params persisted memory]
-  (let [{:keys [run-id conversation-id session-id started-ms agent-spec event-stream-sink]} params
-        safe-spec (dissoc agent-spec :decision-encounters)
-        safe-memory (hydration/retain-current-graph-hydration memory nil)
-        state (assoc (stream/make-stream-state run-id conversation-id session-id (now-iso) started-ms xturn-node/random-uuid!)
-                     :event-stream-sink event-stream-sink)
-        error (ex-info "Character disclosure authority unavailable" {:reason :character-disclosure-authority-unavailable})]
-    ;; Nothing has been sent or registered as an active provider turn. Startup
-    ;; and hydration publication have settled; terminal cleanup owns this sink.
-    (retain-disclosed-resources! run-id safe-spec nil safe-memory)
-    (await (finalize-turn-failure! config state session run-id conversation-id session-id started-ms
-                                   nil safe-memory persisted safe-spec error))))
-
-(defn- ^:async final-disclosure-or-refuse! [runtime config session params auth-context persisted memory]
-  (let [disclosed (await (capture-prompt-disclosure! runtime config (:agent-spec params) auth-context memory))]
-    (if (:refused? disclosed)
-      (await (settle-disclosure-refusal! config session params persisted (:memory disclosed)))
-      disclosed)))
-
-(defn- ^:async admit-prepared-turn!
-  [runtime config params prepared persisted passive memory]
-  (let [{:keys [run-id session-id conversation-id started-at model-id mode thinking-level
-                agent-spec auth-extra auth-context startup-owner event-stream-sink]} params
-        disclosed* (atom nil)]
-    (await (initial-admission/create-run!
-            {:conversation-id conversation-id :startup-owner startup-owner :sink event-stream-sink}
-            [run-id session-id conversation-id started-at model-id mode thinking-level
-             agent-spec auth-extra (:request-messages prepared) config]
-            (^:async fn []
-              (await (persist-running-session-update! session-id conversation-id run-id persisted))
-              (let [disclosed (await (capture-prompt-disclosure! runtime config agent-spec auth-context memory))]
-                (reset! disclosed* disclosed)
-                (await (emit-turn-hydration! run-id conversation-id session-id (:agent-spec disclosed)
-                                             passive (:memory disclosed)))))))
-    @disclosed*))
-
-(defn- process-hydration-results-and-start-turn!
-  [runtime config run-id session-id conversation-id started-at started-ms model-id mode thinking-level
-   agent-spec auth-extra seeded-messages message auth-context startup-owner]
-  (^:async fn [[passive memory materialized-content-parts session]]
-    (let [params {:run-id run-id :session-id session-id :conversation-id conversation-id
-                  :started-at started-at :started-ms started-ms :model-id model-id :mode mode
-                  :thinking-level thinking-level :agent-spec agent-spec :auth-extra auth-extra
-                  :seeded-messages seeded-messages :message message :auth-context auth-context
-                  :startup-owner startup-owner}
-          prepared (prepare-running-turn config params materialized-content-parts)
-          persisted (prune-session-messages agent-spec (transcript/transcript-before-prompt session (:user-message prepared) agent-spec))
-          params (assoc params :event-stream-sink (install-openplanner-event-sink! config))
-          published (await (admit-prepared-turn! runtime config params prepared persisted passive memory))
-          disclosed (if (:refused? published)
-                      (await (settle-disclosure-refusal! config session params persisted (:memory published)))
-                      (await (final-disclosure-or-refuse! runtime config session params auth-context persisted (:memory published))))]
-      ;; Durable startup and hydration publication have settled. Recheck the
-      ;; whole retained graph/direct context after those awaits before prompt IO.
-      (retain-disclosed-resources! run-id (:agent-spec disclosed) passive (:memory disclosed))
-      (await (prompt-and-await! config session-id run-id conversation-id started-ms model-id mode
-                               session (:turn-message prepared) (:prompt-content-parts prepared) passive (:memory disclosed)
-                               persisted (:agent-spec disclosed) (:event-stream-sink params))))))
+    (let [ctx (await (character-context/refresh-query! runtime config ctx))
+          results (await (initial-admission/hydrate! ctx #(hydrate-and-materialize! runtime config ctx content-parts)))]
+      (await (startup/start! runtime config ctx results
+                             {:install-event-sink! install-openplanner-event-sink!
+                              :publish-hydration! publish-hydration!
+                              :finalize-failure! finalize-turn-failure!
+                              :prompt! prompt-and-await!})))))

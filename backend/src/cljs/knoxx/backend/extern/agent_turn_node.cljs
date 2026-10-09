@@ -9,6 +9,12 @@
   []
   (.randomUUID crypto))
 
+(defn log-session-update-failure!
+  "Preserve the running-session diagnostic at the native console boundary."
+  [session-id error-message]
+  (.error js/console "[turn] failed to update session"
+          (clj->js {:session-id session-id :error error-message})))
+
 (defn terminate-process!
   "Fail-stop the current backend after an unrecoverable provider lifecycle
    failure. The deployment supervisor restarts the process; durable event work

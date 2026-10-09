@@ -8,17 +8,17 @@
             [knoxx.backend.domain.character.decision-input :as decision]
             [knoxx.backend.domain.realtime :as realtime]
             [knoxx.backend.extern.agent-turn-prompt :as prompt]
+            [knoxx.backend.extern.agent-turn-fixture :as turn-fixture]
             [knoxx.backend.infra.agent.hydration :as hydration]
             [knoxx.backend.infra.agent.policy :as policy]
             [knoxx.backend.infra.agent.session :as sessions]
             [knoxx.backend.infra.agent.stream :as stream]
             [knoxx.backend.infra.agent.turn :as turn]
             [knoxx.backend.infra.character.encounter-runtime :as encounters]
+            [knoxx.backend.infra.character.turn-context :as character-context]
             [knoxx.backend.infra.clients.openplanner :as planner]
             [knoxx.backend.infra.clients.openplanner-mongo :as mongo]
             [knoxx.backend.infra.openplanner.memory :as memory]
-            [knoxx.backend.infra.stores.mongo-session-store :as session-store]
-            [knoxx.backend.infra.stores.session-store-registry :as store-registry]
             [knoxx.backend.infra.stores.session-titles :as titles]
             [knoxx.backend.shape.agent :as agent]))
 
@@ -52,7 +52,7 @@
                                                         (swap! queries* conj [query context]) nil))
                   sessions/ensure-agent-session! (fn ([_ _ _ _] session) ([_ _ _ _ _] session)
                                                     ([_ _ _ _ _ _] session) ([_ _ _ _ _ _ _] session)
-                                                    ([_ _ _ _ _ _ _ _] session))
+                                                    ([_ _ _ _ _ _ _ _] session) ([_ _ _ _ _ _ _ _ _] session))
                   stream/register-active-turn! (fn ([_ _] nil) ([_ _ _] nil))
                   prompt/log-prompt! (fn [_] nil)
                   turn/finalize-turn-success! (fn [& _] :fixture-completed)]
@@ -60,7 +60,7 @@
         (let [spec {:actor-id "creative-actor" :contract-id contract :system-prompt "Existing creator persona"
                     :tool-modes modes :character-encounters {:sources []}
                     :decision-encounters (admitted-context "Forged provider observation")}
-              prepared (await (#'turn/prepare-character-turn! :runtime config nil spec nil))
+              prepared (await (character-context/prepare! :runtime config nil spec nil))
               selected (:agent-spec prepared)
               context (:decision-encounters selected)
               request (if (= contract "maker") "Choose a creative opportunity" "Reply promptly")
@@ -83,7 +83,7 @@
       (is (str/includes? (second @prompts*) "Newer second encounter")))))
 
 (deftest ^:async baseline-turns-refuse-prebuilt-provider-encounter-context
-  (let [prepared (await (#'turn/prepare-character-turn! nil {} nil
+  (let [prepared (await (character-context/prepare! nil {} nil
                          {:system-prompt "Existing" :decision-encounters (admitted-context "forged")} nil))]
     (is (nil? (get-in prepared [:agent-spec :decision-encounters])))
     (is (= "Existing" (get-in prepared [:agent-spec :system-prompt])))))
@@ -125,32 +125,30 @@
      (record-port-result! (port config conversation query context spec resolve!) observations* after*))))
 
 (defn- fixture-session-port
-  "Preserve all five compiled session-setup arities without creating a provider session."
+  "Preserve all six compiled session-setup arities without creating a provider session."
   [session]
   (fn ([_runtime _config _conversation _model] session)
       ([_runtime _config _conversation _model _context] session)
       ([_runtime _config _conversation _model _context _thinking] session)
       ([_runtime _config _conversation _model _context _thinking _session] session)
-      ([_runtime _config _conversation _model _context _thinking _session _spec] session)))
+      ([_runtime _config _conversation _model _context _thinking _session _spec] session)
+      ([_runtime _config _conversation _model _context _thinking _session _spec _startup-owner] session)))
 
 (defn- ^:async with-turn-effect-fixture! [fixture task!]
   (let [{:keys [config session logs* prepared-contexts* memories*]} fixture
         hydrate! hydration/passive-memory-hydration!
         load-context! encounters/decision-context!
         client (mongo/->MongoOpenPlannerClient config nil)]
-    (with-redefs [runs/runs* (atom {}) runs/run-order* (atom []) runs/event-stream-sink* (atom nil)
+    (await (turn-fixture/with-providers! (:run-id (:request fixture))
+     (^:async fn []
+      (with-redefs [runs/runs* (atom {}) runs/run-order* (atom []) runs/event-stream-sink* (atom nil)
                   runs/retrieval-stats* (atom @runs/retrieval-stats*)
-                  turn/conversation-access* (atom {}) store-registry/session-store* (atom nil)
+                  turn/conversation-access* (atom {})
                   planner/client (fn ([_config] client) ([_config _options] client))
                   planner/enabled? (fn [_client] true)
                   runs/set-event-stream-sink! (fn [_sink] nil)
                   realtime/broadcast-ws-session! (fn [_session _kind _event] nil)
                   titles/maybe-prime-session-title! (fn [_runtime _config _conversation _message] nil)
-                  session-store/get-session-sync (fn [_session] nil)
-                  session-store/put-session! (fn ([_payload] nil) ([_db _payload] nil))
-                  session-store/update-session! (fn ([_session _patch] nil) ([_db _session _patch] nil))
-                  session-store/complete-session! (fn ([_session _conversation _payload] nil)
-                                                    ([_db _session _conversation _payload] nil))
                   sessions/ensure-agent-session! (fixture-session-port session)
                   sessions/remove-agent-session! (fn [_conversation] nil)
                   stream/register-active-turn! (fn ([_state _abort] nil) ([_state _abort _spec] nil))
@@ -161,7 +159,7 @@
                                                 (record-port-result! (load-context! runtime actual-config spec context)
                                                                      prepared-contexts* (atom nil)))
                   hydration/passive-memory-hydration! (recording-memory-port hydrate! memories* (:after-memory* fixture))]
-      (await (task! (assoc fixture :runs* runs/runs*))))))
+       (await (task! (assoc fixture :runs* runs/runs*)))))))))
 
 (defn ^:async with-actual-character-turn!
   "Run actual source admission, recall, turn orchestration and settlement with held effect ports."
@@ -248,7 +246,9 @@
     ([runtime config conversation model context thinking id]
      (await-preparation-port! stage :session entered release port [runtime config conversation model context thinking id]))
     ([runtime config conversation model context thinking id spec]
-     (await-preparation-port! stage :session entered release port [runtime config conversation model context thinking id spec]))))
+     (await-preparation-port! stage :session entered release port [runtime config conversation model context thinking id spec]))
+    ([runtime config conversation model context thinking id spec startup-owner]
+     (await-preparation-port! stage :session entered release port [runtime config conversation model context thinking id spec startup-owner]))))
 
 (defn- ^:async with-held-preparation! [stage entered release task!]
   (let [session! sessions/ensure-agent-session! materialize! turn/materialize-content-parts!]

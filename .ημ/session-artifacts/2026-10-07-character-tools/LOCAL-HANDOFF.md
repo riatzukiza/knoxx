@@ -61,6 +61,19 @@ The native Turn Processor files in this directory are an unqualified inactive
 draft, retained after migration became conditional. No SDK defect requiring
 that migration was reproduced. They are outside all active compiler paths.
 
-The next step is formal review of the local successor and proposed activation
-delta, followed by the explicitly authorized cutover and natural observation
-walkthrough. A fixture PASS does not establish deployed creator behavior.
+The October 9 personal-main merge checkpoint `00dad72f` preserves both original
+parents and their provenance. Its compatibility repair separates character
+disclosure from durable turn startup, retains main's startup owner and terminal
+sink, and updates compiled fixture arities without changing assertions. The
+actual isolated backend passed 1,957 tests / 10,988 assertions; production
+typecheck compiled with zero warnings. Seven repair-scope lint warnings remain
+in byte-identical main functions/partial protocol fixtures and file length.
+The failed attempts and final successful output are preserved in
+`.ημ/review-evidence/cephalon-character/personal-main-integration-green-20261009.json`.
+Historical compiled digests above are not the integrated candidate's digest.
+
+The next delivery gates are fresh hosted CI and native review of the integrated
+head, independently qualified OpenPlanner source, and required conversation
+settlement. No runtime, grant, model, social or deployment change accompanies
+this integration. A fixture PASS does not establish deployed creator behavior;
+the accepted B1/B2/live B3 slice is still incomplete.

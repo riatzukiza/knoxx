@@ -2,16 +2,17 @@
 
 License: GPL-3.0-or-later.
 
-The October 9 disclosure repair passed the actual isolated backend suite:
-1,776 tests, 9,143 assertions, zero failures or errors; its production server
-compiled with zero warnings. The original six review regressions and the added
-final-authority refusal regression pass. Exact output and frozen input hashes
-are preserved in
-[the GREEN evidence](../../.ημ/review-evidence/cephalon-character/disclosure-final-green-20261009.json).
+The October 9 personal-main integration passed the actual isolated backend
+suite: 1,957 tests, 10,988 assertions, zero failures or errors. Production
+compilation passed 559 files / 520 compiled with zero compiler warnings. Exact
+outputs, the preceding failed attempts, and source hashes are preserved in
+[the integration GREEN evidence](../../.ημ/review-evidence/cephalon-character/personal-main-integration-green-20261009.json).
 This proves the tested source candidate, not live intake, physical-field or mood
-behavior. Ten inherited function-length lint warnings and the existing combined
-file-size hook limitation remain explicit; changed functions have no warnings.
-The bounded admission inspection is local evidence, not native PR approval.
+behavior. The ten-file repair lint scope has zero errors and seven inherited
+warnings; the affected warning-bearing functions and partial protocol fixtures
+are byte-identical to personal main. Changed functions add no warnings. The
+historical disclosure and review repair evidence below remains inspectable.
+The bounded independent inspection is local evidence, not native PR approval.
 
 This change gives the existing OpenHax character a small capability interface
 over its authorized social and memory tools. External encounters must be
@@ -533,3 +534,52 @@ supplies no native approval. Current native full CI and new-head review remain
 required. Receipt27 corrects the rejected timestamp/kind of receipts25/26 by
 append; both historical rejected originals remain and are not claimed valid.
 B1/B2/live B3, atomic fencing, source qualification and deployment remain unproved.
+
+## Personal-main integration verified — 2026-10-09 UTC
+
+The ordinary two-parent merge checkpoint `00dad72f1b0d743608f8da63ac3b8744c136b0e4`
+retains the previous feature head `284eb32d09ef08a02e1bd1e62e9829d1bc444e61`
+and personal main `b3903dfc4c9e9dd5e32ae658cf5d8abb88b8e792`. The actual
+pre-repair isolated suite stopped at a stale compiled session-fixture arity;
+it produced no final test counters. The first repair attempt subsequently
+stopped at a newer main fixture's missing six-argument memory-hydration shape.
+Both failures remain in the evidence, separately from the final successful run.
+
+The repair extracts current character preparation and disclosure into
+`infra.character.turn-context`, and durable pre-prompt orchestration into
+`infra.agent.turn-startup`. The existing turn coordinator falls from 929 to
+731 lines. Startup admission retains main's owner and event sink, awaits
+hydration publication, then rechecks whole-context disclosure before the
+provider prompt. A refusal follows bounded terminal settlement and throws
+before provider execution. The first graph binding remains sticky through
+authority refreshes; query and final prompt disclosure retain their separate
+checks.
+
+Compiled fixtures now expose the actual nine-argument session-construction
+shape and six-argument memory-hydration shape. Character fixtures use real
+isolated run/thread providers; the provider helper does not admit the run
+prematurely. Existing seeded-run fixture behavior remains. No test definition
+or assertion line was changed by this integration repair.
+
+The final `--hermetic` wrapper passed 16 checks and the full 1,957-test /
+10,988-assertion backend target with zero failures, errors or compiler warnings.
+The `--production` wrapper passed both checks and the actual server typecheck
+target with zero compiler warnings; no server was started. Actionlint passes.
+Own diff hygiene passes against the actual personal-main PR base. An incoming
+main blob's existing trailing blank line is retained unchanged with its history.
+
+Scoped lint exits 2 with zero errors and seven inherited warnings: three
+unchanged main functions and the existing file-length warning in `turn.cljs`,
+plus three unchanged partial `IAgentSession` reifies in main's persistence
+fixtures. This is not a whole-lint zero-warning claim. The independent
+inspection found no confirmed findings in its seven-file scope; it did not run
+tests or grant native approval. The three later memory-fixture arity changes
+are covered by the parent's actual full suite.
+
+Historical full functional CI run `37978796331` succeeded at `284eb32`; it does
+not qualify the integrated revision. Fresh hosted CI, latest-head native review,
+required conversation settlement, and source prerequisite qualification remain
+separate gates. The ledger union preserves the entire original feature prefix
+and appends the exact incoming main suffix after their literal common prefix.
+Original rejected receipts25/26 and the append correction27 remain unchanged;
+no whole-journal schema pass is claimed. B1/B2/live B3 remain unfinished.

@@ -288,3 +288,10 @@ Origin: `cephalon-character-automatic-scoped-graph-green-20261009`. p-efficiency
 - Evidence: .ημ/review-evidence/cephalon-character/personal-main-integration-red-20261009.json.
 - Scores: efficiency .77, friction .42, skill-candidate .19.
 - Outcome: exact parent ledgers unioned by immutable common prefix; recorded actual ninth-arity test crash and introduced800line lint severity before repairing. Corrected only the temporary baseline path layout, retaining original error output. No spore incubated or promoted; no live or approval claim.
+
+## 2026-10-09T19:56:17.633672Z — personal main integration GREEN
+
+- Origin: cephalon-personal-main-integration-green-20261009; receipt34, contextually validated before append.
+- Evidence: .ημ/review-evidence/cephalon-character/personal-main-integration-green-20261009.json; SHA25632bdd331507c2baeb9c86a52cfa3c57b08fa3ca5b98aa13a414956a36ff270f9.
+- Scores: efficiency .82, friction .36, skill-candidate .19.
+- Outcome: extracted actual character disclosure and durable startup, repaired compiled fixture arities without changing test definitions/assertions. Final isolated1957tests10988assertions0fail0error and production0warnings; first repair attempt failure retained. Main warning functions/partial protocol fixtures unchanged; scoped0errors7inheritedwarnings is not whole-lint pass. Prior ledger histories and correction ordinals unchanged. Local inspection is not native approval; B1/B2/liveB3 and delivery remain incomplete. No spore incubated or promoted.
