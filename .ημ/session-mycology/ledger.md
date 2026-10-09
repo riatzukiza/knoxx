@@ -197,3 +197,21 @@ Origin: `cephalon-character-automatic-scoped-graph-green-20261009`. p-efficiency
   spore: none
   receipt-refs: cephalon-knoxx-review-caller-adoption-20261009
   note: Keep generated context known, source guarded, and immutable dependency pins separate from native qualification.
+
+- ts: 2026-10-09T17:28:24.167900Z
+  session: /home/err/spaces/cephalon-local-character/knoxx
+  task: Preserve native qualification and distinct integration scope
+  p-efficiency: 0.65
+  p-friction: 0.29
+  p-skill-candidate: 0.19
+  spore: none
+  receipt-refs: cephalon-knoxx-full-hosted-ci-20261009
+  note: Current native quotas and review are separate from source dependency qualification and live behavior; preserve exact original evidence and explicit unfinished links.
+
+## 2026-10-09T17:47:50.964647Z — admission authority RED
+
+- Origin: cephalon-admission-await-revocation-red-20261009
+- Friction: revocation across storage/source awaits was missing from the previously green test surface.
+- Evidence: .ημ/review-evidence/cephalon-character/admission-await-revocation-red-20261009.json; independent-689f516b-findings-20261009.json.
+- Scores: novelty .65, recurrence .29, generality .19.
+- Outcome: actual causal RED; repair and fresh full source review remain owed. No spore incubated or promoted.

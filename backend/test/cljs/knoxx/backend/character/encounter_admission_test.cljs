@@ -151,3 +151,132 @@
       (is (zero? @reads*))
       (is (= "" (:prompt-context context)))
       (is (empty? (:causal-source-ids context))))))
+
+(deftest ^:async revocation-during-checkpoint-read-prevents-content-and-cursor-appends
+  (let [rows* (atom []) allowed* (atom true)
+        ports (fixture-ports rows* (atom nil) (atom 0))
+        latest! (:latest-checkpoint! ports)
+        held (assoc ports :latest-checkpoint!
+                    (^:async fn [owner stream]
+                      (let [checkpoint (latest! owner stream)]
+                        (await (js/Promise.resolve nil))
+                        (reset! allowed* false)
+                        checkpoint)))
+        authorize! (fn [owner source]
+                     (if @allowed* (fixture/authority owner source) {:allowed? false}))
+        result (await (attempt! held (fixture/page [(fixture/item "revoked" "private source")]) authorize!))]
+    (is (= :encounter/source-denied (:code result)))
+    (is (empty? @rows*) "No content or cursor write is allowed after the checkpoint await revokes access")))
+
+(deftest ^:async revocation-during-record-lookup-prevents-the-following-append
+  (let [rows* (atom []) allowed* (atom true)
+        ports (fixture-ports rows* (atom nil) (atom 0))
+        find! (:find-event! ports)
+        held (assoc ports :find-event!
+                    (^:async fn [owner id]
+                      (let [record (find! owner id)]
+                        (await (js/Promise.resolve nil))
+                        (reset! allowed* false)
+                        record)))
+        authorize! (fn [owner source]
+                     (if @allowed* (fixture/authority owner source) {:allowed? false}))
+        result (await (attempt! held (fixture/page [(fixture/item "revoked" "private source")]) authorize!))]
+    (is (= :encounter/page-incomplete (:code result)))
+    (is (= :partial (get-in result [:progress :status])))
+    (is (nil? (get-in result [:progress :checkpoint-id])))
+    (is (empty? @rows*) "A previously allowed decision cannot authorize the later append")))
+
+(deftest ^:async revocation-after-record-readback-preserves-row-without-advancing-cursor
+  (let [rows* (atom []) allowed* (atom true)
+        ports (fixture-ports rows* (atom nil) (atom 0))
+        find! (:find-event! ports)
+        held (assoc ports :find-event!
+                    (^:async fn [owner id]
+                      (let [record (find! owner id)]
+                        (when (= "character.encounter" (:kind record))
+                          (await (js/Promise.resolve nil))
+                          (reset! allowed* false))
+                        record)))
+        authorize! (fn [owner source]
+                     (if @allowed* (fixture/authority owner source) {:allowed? false}))
+        input (fixture/page [(fixture/item "retained" "durable evidence")])
+        result (await (attempt! held input authorize!))]
+    (is (= :encounter/page-incomplete (:code result)))
+    (is (= :partial (get-in result [:progress :status])))
+    (is (nil? (get-in result [:progress :cursor])))
+    (is (= ["character.encounter"] (mapv :kind @rows*))
+        "The durable record remains, with no cursor event appended after its readback revoked access")
+    (reset! allowed* true)
+    (let [replayed (await (attempt! ports input authorize!))]
+      (is (= :admitted (:status replayed)))
+      (is (= 2 (count @rows*)) "Authorized retry reuses the retained content row"))))
+
+(deftest ^:async earlier-source-revoked-during-later-read-is-excluded-before-final-budget
+  (let [rows* (atom []) allowed-a* (atom true)
+        source-b (assoc fixture/source :scope-id "second-channel")
+        ports (fixture-ports rows* (atom nil) (atom 0))
+        recent! (:recent-encounters! ports)
+        held (assoc ports :recent-encounters!
+                    (^:async fn [owner stream limit]
+                      (let [rows (recent! owner stream limit)]
+                        (when (some #(= "second-channel" (get-in % [:extra :source_scope_id])) rows)
+                          (await (js/Promise.resolve nil))
+                          (reset! allowed-a* false))
+                        rows)))
+        authorize! (fn [owner source]
+                     (if (and (= fixture/source source) (not @allowed-a*))
+                       {:allowed? false}
+                       (fixture/authority owner source)))]
+    (await (attempt! ports (fixture/page [(fixture/item "source-a" "REVOKED PRIVATE SOURCE A")]) fixture/authority))
+    (await (attempt! ports (assoc (fixture/page [(fixture/item "source-b" "PERMITTED SOURCE B")])
+                                  :source source-b) fixture/authority))
+    (let [loaded (await (admission/load-context! held fixture/digest fixture/owner
+                                                [fixture/source source-b] authorize! {:max-encounters 1}))]
+      (is (false? @allowed-a*) "The later source read actually revoked the earlier source")
+      (is (= [source-b] (mapv :source (:encounters loaded))))
+      (is (not (re-find #"REVOKED PRIVATE SOURCE A" (:prompt-context loaded))))
+      (is (re-find #"PERMITTED SOURCE B" (:prompt-context loaded))
+          "Revoked candidates cannot consume the final one-encounter budget"))))
+
+(deftest ^:async revocation-during-content-append-refuses-further-readback-and-progress
+  (let [rows* (atom []) allowed* (atom true) reads-after-denial* (atom 0)
+        ports (fixture-ports rows* (atom nil) (atom 0))
+        append! (:append-event! ports) find! (:find-event! ports)
+        held (assoc ports
+                    :append-event! (^:async fn [event]
+                                     (append! event)
+                                     (await (js/Promise.resolve nil))
+                                     (reset! allowed* false)
+                                     {:ok true})
+                    :find-event! (fn [owner id]
+                                   (when-not @allowed* (swap! reads-after-denial* inc))
+                                   (find! owner id)))
+        authorize! (fn [owner source]
+                     (if @allowed* (fixture/authority owner source) {:allowed? false}))
+        result (await (attempt! held (fixture/page [(fixture/item "written" "retained partial fact")]) authorize!))]
+    (is (= :encounter/page-incomplete (:code result)))
+    (is (nil? (get-in result [:progress :checkpoint-id])))
+    (is (= ["character.encounter"] (mapv :kind @rows*)))
+    (is (zero? @reads-after-denial*) "No private readback is started after the content append revokes authority")))
+
+(deftest ^:async revocation-during-cursor-lookup-refuses-cursor-append
+  (let [rows* (atom []) allowed* (atom true)
+        ports (fixture-ports rows* (atom nil) (atom 0))
+        find! (:find-event! ports)
+        input (fixture/page [(fixture/item "written" "retained partial fact")])
+        cursor-id (get-in (fixture/prepared (:items input)) [:checkpoint :id])
+        held (assoc ports :find-event!
+                    (^:async fn [owner id]
+                      (let [event (find! owner id)]
+                        (when (= id cursor-id)
+                          (await (js/Promise.resolve nil))
+                          (reset! allowed* false))
+                        event)))
+        authorize! (fn [owner source]
+                     (if @allowed* (fixture/authority owner source) {:allowed? false}))
+        result (await (attempt! held input authorize!))]
+    (is (= :encounter/page-incomplete (:code result)))
+    (is (= 1 (count (get-in result [:progress :event-ids])))
+        "The already confirmed content identity remains in partial progress")
+    (is (nil? (get-in result [:progress :cursor])))
+    (is (= ["character.encounter"] (mapv :kind @rows*)))))
