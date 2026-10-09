@@ -109,7 +109,38 @@
              (memory-hydration-trigger? message)))))
 
 (defn- graph-failure [code]
-  {:status :failed :graph? true :hits [] :failure {:stage :graph :code code}})
+  {:status :failed :graph? true :field-status "not-loaded" :hits [] :failure {:stage :graph :code code}})
+
+(defn graph-authority-binding
+  "Internal retained-result binding over trusted scope and exact candidate bytes.
+   This value is never prompt material or public run/event metadata."
+  [authority]
+  (when authority
+    (assoc (select-keys authority [:scope :project])
+           :candidate-digest (crypto/sha256-hex (pr-str (:records authority))))))
+
+(defn retain-current-graph-hydration
+  "Refuse retained graph hits when final trusted authority differs. Refusal
+   clears the entire earlier ranked result, including path and query material."
+  [memory authority]
+  (if (and (:graph? memory) (seq (:hits memory))
+           (or (nil? authority) (not= (::authority-binding memory) (graph-authority-binding authority))))
+    (-> memory (assoc :status :denied :hits []) (dissoc :query :failure ::authority-binding))
+    memory))
+
+(defn memory-hydration-projection
+  "Whitelist safe settled hydration fields; internal authority never escapes."
+  [memory]
+  (cond-> (select-keys memory [:query :mode :hits :elapsedMs :conversationId :status :failure :field-status :graph?])
+    (:graph? memory) (dissoc :query)))
+
+(defn- graph-selection [result binding]
+  (let [selection (:selection result)]
+    (if-not (graph-boundary/valid-scoped-graph-result? result)
+      (graph-failure :invalid-projection)
+      (-> selection (update :status keyword)
+          (cond-> (:failure selection) (update :failure #(-> % (update :stage keyword) (update :code keyword))))
+          (assoc :graph? true :field-status (:field-status result) ::authority-binding binding)))))
 
 (defn- ^:async graph-hydration! [client conversation-id message k resolve-current-authority!]
   (cond
@@ -117,15 +148,15 @@
     (not (fn? resolve-current-authority!)) (graph-failure :authority-unavailable)
     :else
     (try
-      (let [request {:version 1 :recall-id (str "passive-graph:" (crypto/sha256-hex (pr-str [conversation-id message])))
+      (let [binding* (atom nil)
+            resolve! (^:async fn []
+                       (let [authority (await (resolve-current-authority!))]
+                         (reset! binding* (graph-authority-binding authority))
+                         authority))
+            request {:version 1 :recall-id (str "passive-graph:" (crypto/sha256-hex (pr-str [conversation-id message])))
                      :query message :k k :fetch 18 :max-nodes 64 :max-cost 4 :feedback :none}
-            result (await (openplanner-client/scoped-graph-recall! client request resolve-current-authority!))
-            selection (:selection result)]
-        (if-not (graph-boundary/valid-scoped-graph-result? result)
-          (graph-failure :invalid-projection)
-          (-> selection (update :status keyword)
-              (cond-> (:failure selection) (update :failure #(-> % (update :stage keyword) (update :code keyword))))
-              (assoc :graph? true :field-status (:field-status result)))))
+            result (await (openplanner-client/scoped-graph-recall! client request resolve!))]
+        (graph-selection result @binding*))
       ;; knoxx-lint/allow-silent-catch — never leak source/credential exception
       ;; messages into prompt or telemetry; the owning port supplies safe codes.
       (catch :default _error (graph-failure :transport-error)))))

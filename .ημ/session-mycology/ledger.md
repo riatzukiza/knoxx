@@ -230,3 +230,10 @@ Origin: `cephalon-character-automatic-scoped-graph-green-20261009`. p-efficiency
 - Evidence: .ημ/review-evidence/cephalon-character/runtime-disclosure-corrected-red-20261009.json; original fixture failure retained.
 - Scores: novelty .65, recurrence .29, generality .19.
 - Outcome: actual complete causal RED; repair and current source qualification remain owed. No spore incubated or promoted.
+
+## 2026-10-09T18:25:30.703752Z — final-authority refusal RED
+
+- Origin: cephalon-final-authority-refusal-red-20261009
+- Evidence: .ημ/review-evidence/cephalon-character/final-authority-refusal-red-20261009.json
+- Scores: novelty .65, recurrence .29, generality .19.
+- Outcome: six original findings pass; new refusal settlement is causal RED and still requires repair. No spore incubated or promoted.

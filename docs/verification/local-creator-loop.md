@@ -143,6 +143,40 @@ fixture retains the original neighbor/inclusion/failure assertions and adds the
 real owning path. Its session visibility assertion is an independent preserved
 conversational precondition, not authority to read the character graph.
 
+### Disclosure and settlement regressions
+
+The additional held-await fixtures exercise the actual source read, embedding
+query, logged prompt, provider-session send and run settlement. Revoking a source
+while account lookup, storage access, chat policy, session preparation or content
+materialization is pending must remove its authority before the next protected
+operation. A stable actor, organization, membership, user and memory permission
+does not preserve a revoked source grant. Sources omitted by current authority
+must also be removed before the final context budget, so still-authorized
+material can use that budget. Direct source context without passive memory
+continues to require its source authority and does not acquire an additional
+memory permission requirement.
+
+If the final principal disappears, the selected contract is disabled or its
+authority resolver fails after preparation, the turn must settle failed with a
+bounded refusal reason and no logged or sent source prompt. The resolver's
+private exception text must not escape into the caller response or run record.
+
+The graph outcome fixtures separately drive failed, denied, indexing-pending
+and empty results through both successful and failed provider settlement. They
+require an observable attempted hydration event and a retained bounded outcome
+in the run resource, even when there are no hits. Transport exception text,
+credential data and the trusted authority descriptor must remain absent from
+those events, run records and prompts.
+
+The [admission RED](../../.ημ/review-evidence/cephalon-character/admission-await-revocation-red-20261009.json)
+and [disclosure RED](../../.ημ/review-evidence/cephalon-character/runtime-disclosure-corrected-red-20261009.json)
+retain the actual failing executions. The initial authored test-double arity
+fault is preserved in its [separate failed attempt](../../.ημ/review-evidence/cephalon-character/runtime-disclosure-fixture-failure-20261009.json);
+it supplies no completed-suite or prompt-disclosure proof. These fixtures use
+held local effect ports and the existing owning graph implementation. They do
+not establish atomic grant reservation, distributed fencing, live activation,
+physical field persistence or consumed mood.
+
 Run production compilation without connecting to a shared Shadow server:
 
 ```sh

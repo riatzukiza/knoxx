@@ -295,6 +295,54 @@
 (deftest ^:async materialization-await-revocation-removes-stale-direct-context-and-graph-hits-from-the-actual-prompt
   (await (parallel-await-revocation! :materialization)))
 
+(defn- ^:async capture-turn-refusal! [config request]
+  (try {:response (await (turn/send-agent-turn! :fixture-runtime config request))}
+       (catch :default error {:error error})))
+
+(defn- assert-final-authority-refusal! [settled runs* request logs* prompts*]
+  (let [error (get-in settled [:value :error]) run (get @runs* (:run-id request))]
+    (is (= :fulfilled (:fixture-outcome settled)))
+    (is (some? error) "Unavailable final authority must refuse provider disclosure")
+    (is (= :character-disclosure-authority-unavailable (:reason (ex-data error))))
+    (is (= "failed" (:status run)) "The new final authority await must not leave a running run")
+    (is (empty? @logs*)) (is (empty? @prompts*))
+    (is (= 1 (count (filter #(= "run_failed" (:type %)) (:events run)))))
+    (is (not (re-find #"PRIVATE_FINAL_AUTHORITY|PRIVATE_FINAL_CREDENTIAL|Discord source|Bluesky observation"
+                      (pr-str [run (ex-data error) (str error)]))))))
+
+(defn- final-authority-config [config unavailable*]
+  (let [resolve! (:resolve-agent-authority! config)]
+    (assoc config :resolve-agent-authority!
+           (fn [scope]
+             (when @unavailable*
+               (throw (ex-info "PRIVATE_FINAL_AUTHORITY" {:credential "PRIVATE_FINAL_CREDENTIAL"})))
+             (resolve! scope)))))
+
+(defn- ^:async held-final-authority-refusal! [failure]
+  (await (with-actual-character-turn!
+          (^:async fn [{:keys [state config request runs* logs* prompts* after-memory*]}]
+            (let [entered (runtime-fixture/held-await) release (runtime-fixture/held-await)
+                  memory-ready (runtime-fixture/held-await) unavailable* (atom false)
+                  config (final-authority-config config unavailable*)]
+              (reset! after-memory* #((:release! memory-ready) %))
+              (await (with-held-preparation! :session entered release
+                       (^:async fn []
+                         (let [settled (await (runtime-fixture/with-held-operation!
+                                               (capture-turn-refusal! config request) [release]
+                                               (^:async fn [pending]
+                                                 (is (seq (:hits (await (runtime-fixture/await-held! memory-ready pending)))))
+                                                 (is (= :session (await (runtime-fixture/await-held! entered pending))))
+                                                 (is (empty? @logs*)) (is (empty? @prompts*))
+                                                 (case failure
+                                                   :missing-principal (reset! (:contexts* state) {})
+                                                   :disabled-contract (swap! (:selected* state) assoc :enabled false)
+                                                   :private-exception (reset! unavailable* true)))))]
+                           (assert-final-authority-refusal! settled runs* request logs* prompts*))))))))))
+
+(deftest ^:async final-authority-refusal-after-parallel-preparation-settles-failed-without-private-disclosure
+  (doseq [failure [:missing-principal :disabled-contract :private-exception]]
+    (await (held-final-authority-refusal! failure))))
+
 (deftest ^:async source-only-direct-context-does-not-require-a-memory-permission-at-final-disclosure
   (await (with-actual-character-turn!
           (^:async fn [{:keys [state config request prompts* logs*]}]

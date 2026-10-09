@@ -129,32 +129,55 @@
                         :evidence-id (str "encounter-authority:" ((:digest ports) (pr-str binding)))
                         :checked-at checked-at} :encounter-source-authority)))
 
-(defn- ^:async admitted-source-state! [ports runtime config agent-spec auth-context owner source]
-  (let [selected (await (selected-spec! ports config agent-spec))
-        configuration (encounter-configuration selected)
-        spec (first (filter #(= source (:source %)) (:sources configuration)))
-        current (await ((:resolve-authority! ports) config auth-context selected))
+(defn- principal-binding [current]
+  [(:actorId current) (get-in current [:org :id])
+   (get-in current [:membership :id]) (get-in current [:user :id])])
+
+(defn- source-spec [selected source]
+  (first (filter #(= source (:source %)) (:sources (encounter-configuration selected)))))
+
+(defn- source-scope [ports config selected current owner source]
+  (let [spec (source-spec selected source)
         resources ((:source-resources ports) config selected)
         allowed ((:allowed-tool-ids ports) config current selected)]
-    (if-not (and spec (= owner (owner! config selected current))
-                 (social/source-scope-admitted? spec resources allowed))
-      {:decision (denial :source-scope-denied)}
+    (when (and spec (= owner (owner! config selected current))
+               (social/source-scope-admitted? spec resources allowed))
+      {:spec spec :resources resources :allowed allowed})))
+
+(defn- source-grant-binding [ports owner source selected current spec account resources]
+  ;; Policy/resource facts only invalidate retained authority. Their constraint
+  ;; grammar remains owned by the canonical authorization/tool boundaries.
+  [(shape/owner-binding owner) (shape/source-binding source) (:id selected) (:actor-id selected)
+   (:tool-id spec) (:credential-id account) (:account-identifier account) (principal-binding current)
+   ((:digest ports) (pr-str [spec (authz/ctx-tool-policy current (:tool-id spec))
+                            (authz/system-admin? current) (:resourcePolicies current) (:resource-policies selected)
+                            (sort-by #(pr-str (:source/id %)) resources)]))])
+
+(defn- source-state [ports config selected current owner source account]
+  (if-let [{:keys [spec resources allowed]} (source-scope ports config selected current owner source)]
+    (let [bound (filterv #(and (social/source-scope-admitted? spec [%] allowed)
+                              (social/source-account-admitted? spec [%] (:actor-id selected)
+                                                               (:account-identifier account))) resources)]
+      (if-not (and (m/validate shape/NonBlankString (:credential-id account)) (seq bound))
+        {:decision (denial :source-account-unbound)}
+        {:selected selected :auth-context current :spec spec :allowed allowed :account account
+         :grant-binding (source-grant-binding ports owner source selected current spec account bound)
+         :decision (authorization-evidence ports owner source selected current spec account bound allowed)}))
+    {:decision (denial :source-scope-denied)}))
+
+(defn- ^:async admitted-source-state! [ports runtime config agent-spec auth-context owner source]
+  (let [selected (await (selected-spec! ports config agent-spec))
+        current (await ((:resolve-authority! ports) config auth-context selected))]
+    (if-let [{:keys [spec]} (source-scope ports config selected current owner source)]
       (let [account (await ((:resolve-account! ports) runtime current selected spec))
-            bound-resources (filterv #(and (social/source-scope-admitted? spec [%] allowed)
-                                           (social/source-account-admitted? spec [%] (:actor-id selected)
-                                                                            (:account-identifier account))) resources)]
-        (if-not (and (m/validate shape/NonBlankString (:credential-id account))
-                     (seq bound-resources))
-          {:decision (denial :source-account-unbound)}
-          {:selected selected :auth-context current :spec spec :allowed allowed
-           ;; Current admitted facts, without observation timestamps or secret
-           ;; material. Changes here invalidate a graph snapshot across awaits.
-           :grant-binding [(shape/owner-binding owner) (shape/source-binding source)
-                           (:id selected) (:actor-id selected) (:tool-id spec)
-                           (:credential-id account) (:account-identifier account)
-                           (get-in current [:membership :id]) (sort allowed)
-                           (mapv :source/id bound-resources)]
-           :decision (authorization-evidence ports owner source selected current spec account bound-resources allowed)})))))
+            after-selected (await (selected-spec! ports config agent-spec))
+            after (await ((:resolve-authority! ports) config auth-context after-selected))]
+        ;; No source/tool access follows the account await on an earlier grant.
+        (if (and (= (principal-binding current) (principal-binding after))
+                 (= spec (source-spec after-selected source)))
+          (source-state ports config after-selected after owner source account)
+          {:decision (denial :source-authority-changed)}))
+      {:decision (denial :source-scope-denied)})))
 
 (defn- ^:async current-source-state! [ports runtime config agent-spec auth-context owner source]
   (try
@@ -252,45 +275,81 @@
           {:encounter-id (:id record) :causal-source-id (:source-id record)
            :authorization (get decisions (:source record))}) encounters))
 
-(defn- graph-principal-binding [current]
-  [(:actorId current) (get-in current [:org :id])
-   (get-in current [:membership :id]) (get-in current [:user :id])])
+(defn- graph-principal? [current]
+  (and (m/validate shape/NonBlankString (get-in current [:user :id]))
+       (authz/ctx-permitted? current "agent.memory.read")))
 
 (defn- ^:async current-graph-principal! [ports config selected auth-context]
   (let [current (await ((:resolve-authority! ports) config auth-context selected))]
-    (when (and (m/validate shape/NonBlankString (get-in current [:user :id]))
-               (authz/ctx-permitted? current "agent.memory.read")) current)))
+    (when (graph-principal? current) current)))
 
-(defn- ^:async current-graph-bindings! [ports runtime config selected auth-context owner sources]
-  (loop [remaining sources bindings []]
-    (if-let [source (first remaining)]
-      (let [state (await (current-source-state! ports runtime config selected auth-context owner source))]
-        (when (law/authorized? owner source (:decision state))
-          (recur (next remaining) (conj bindings (:grant-binding state)))))
-      bindings)))
-
-(defn- ^:async graph-candidates! [ports runtime config selected configuration auth-context owner]
-  (let [bindings* (atom {})
+(defn- ^:async source-candidates! [ports runtime config selected configuration auth-context owner]
+  (let [states* (atom {})
         authorize! (^:async fn [requested-owner source]
                      (let [state (await (current-source-state! ports runtime config selected auth-context requested-owner source))]
-                       (swap! bindings* assoc source (:grant-binding state))
+                       (swap! states* assoc source state)
                        (:decision state)))
         admitted (loop [remaining (map :source (:sources configuration)) allowed []]
                    (if-let [source (first remaining)]
                      (recur (next remaining)
                             (cond-> allowed (law/authorized? owner source (await (authorize! owner source)))
                               (conj source)))
-                     allowed))]
-    (when (seq admitted)
-      (let [loaded (await (admission/load-eligible! ((:event-ports! ports) config) (:digest ports)
-                                                   owner admitted authorize! (:context configuration)))
-            sources (filterv #(law/authorized? owner %
-                                               (get (:decisions loaded) (law/stream-id (:digest ports) owner %))) admitted)
-            bindings (mapv #(get @bindings* %) admitted)
-            after (await (current-graph-bindings! ports runtime config selected auth-context owner admitted))]
-        (when (and (= sources admitted) (= bindings after))
-          {:records (mapv #(select-keys % [:id :text]) (:records loaded))
-           :bindings bindings})))))
+                     allowed))
+        loaded (if (seq admitted)
+                   (await (admission/load-eligible! ((:event-ports! ports) config) (:digest ports)
+                                                    owner admitted authorize! (:context configuration)))
+                   {:records [] :decisions {}})]
+    (assoc loaded :states @states* :sources admitted)))
+
+(defn- snapshot-source-states [ports config selected current owner states]
+  ;; Synchronous batch: no early source decision survives a later source await
+  ;; merely because it was once allowed. Account metadata was captured at its
+  ;; own current credential boundary; all bindings use this final principal.
+  (into {} (map (fn [[source captured]]
+                  (let [fresh (source-state ports config selected current owner source (:account captured))]
+                    [source (if (and (:grant-binding captured)
+                                     (= (:grant-binding captured) (:grant-binding fresh)))
+                              fresh {:decision (denial :source-authority-changed)})])) states)))
+
+(defn- ^:async final-source-snapshot! [ports config selected auth-context owner states]
+  (try
+    (let [after-selected (await (selected-spec! ports config selected))
+          current (await ((:resolve-authority! ports) config auth-context after-selected))]
+      {:selected after-selected :configuration (encounter-configuration after-selected) :current current
+       :states (snapshot-source-states ports config after-selected current owner states)})
+    ;; knoxx-lint/allow-silent-catch — unavailable authority is a closed snapshot;
+    ;; credential/policy exception payloads are never disclosure metadata.
+    (catch :default _error nil)))
+
+(defn- snapshot-decisions [ports owner snapshot]
+  (into {} (map (fn [[source state]]
+                  [(law/stream-id (:digest ports) owner source) (:decision state)]) (:states snapshot))))
+
+(defn- graph-snapshot [ports owner candidates snapshot]
+  (let [{:keys [selected configuration current states]} snapshot
+        sources (:sources candidates)
+        bindings (mapv #(get-in states [% :grant-binding]) sources)]
+    (when (and snapshot (seq sources) (graph-principal? current)
+               (every? #(law/authorized? owner % (get-in states [% :decision])) sources))
+      {:scope {:actor-id (:actor-id selected) :org-id (:org-id owner)
+               :membership-id (get-in current [:membership :id]) :user-id (get-in current [:user :id])
+               :policy-revision (str "encounter-policy:"
+                                     ((:digest ports) (pr-str [(principal-binding current) bindings])))}
+       :project (:project owner)
+       :records (mapv #(select-keys % [:id :text])
+                      (context/eligible-records (:digest ports) owner (:records candidates)
+                                                (snapshot-decisions ports owner snapshot)
+                                                (merge context/default-options (:context configuration))))})))
+
+(defn- ^:async graph-candidates! [ports runtime config selected configuration auth-context owner]
+  (let [candidates (await (source-candidates! ports runtime config selected configuration auth-context owner))
+        snapshot (await (final-source-snapshot! ports config selected auth-context owner (:states candidates)))]
+    (when-let [graph (graph-snapshot ports owner candidates snapshot)]
+      (assoc candidates :records (context/eligible-records (:digest ports) owner (:records candidates)
+                                                          (snapshot-decisions ports owner snapshot)
+                                                          (merge context/default-options (:context configuration)))
+                        :states (:states snapshot) :bindings (mapv #(get-in snapshot [:states % :grant-binding]) (:sources candidates))
+                        :scope (:scope graph)))))
 
 (defn ^:async graph-authority!
   "Trusted current encounter candidate scope for graph recall, before prompt caps.
@@ -303,18 +362,15 @@
       (when-let [current (await (current-graph-principal! ports config selected auth-context))]
         (let [owner (owner! config selected current)
               candidates (await (graph-candidates! ports runtime config selected configuration auth-context owner))
-              after (await (current-graph-principal! ports config selected auth-context))]
-          (when (and candidates after (= (graph-principal-binding current) (graph-principal-binding after)))
-            {:scope {:actor-id (:actor-id selected) :org-id (:org-id owner)
-                     :membership-id (get-in current [:membership :id]) :user-id (get-in current [:user :id])
-                     :policy-revision (str "encounter-policy:"
-                                           ((:digest ports) (pr-str [(graph-principal-binding current) (:bindings candidates)])))}
-             :project (:project owner) :records (:records candidates)}))))))
+              after (await (final-source-snapshot! ports config selected auth-context owner (:states candidates)))]
+          (when (and candidates (= (principal-binding current) (principal-binding (:current after))))
+            (graph-snapshot ports owner candidates after)))))))
 
-(defn ^:async decision-context!
-  "Reload bounded admitted experience for its exact current owner. Reauthorize
-   each selected source/account at load time; historical admission is provenance,
-   never a reusable grant. Inclusion evidence names the fresh read decision."
+(defn ^:async disclosure-snapshot!
+  "Reload source candidates, then validate every captured source/account binding
+   synchronously against one final canonical principal and current resources.
+   Direct context requires source grants; only graph authority requires memory.
+   This is an await-boundary check, not an atomic grant reservation."
   [runtime config agent-spec auth-context]
   (let [ports (runtime-ports config)
         selected (await (selected-spec! ports config agent-spec))
@@ -322,20 +378,17 @@
     (when configuration
       (let [current (await ((:resolve-authority! ports) config auth-context selected))
             owner (owner! config selected current)
-            decisions* (atom {})
-            authorize! (^:async fn [requested-owner source]
-                         (let [state (await (current-source-state! ports runtime config selected auth-context requested-owner source))]
-                           (swap! decisions* assoc source (:decision state))
-                           (:decision state)))
-            ;; Delay opening even the existing store until at least one source
-            ;; has current authority; all-denied decisions expose no content.
-            admitted (loop [remaining (map :source (:sources configuration)) allowed []]
-                       (if-let [source (first remaining)]
-                         (recur (next remaining) (cond-> allowed (law/authorized? owner source (await (authorize! owner source)))
-                                                  (conj source)))
-                         allowed))
-            loaded (if (seq admitted)
-                     (await (admission/load-context! ((:event-ports! ports) config) (:digest ports) owner admitted authorize!
-                                                    (:context configuration)))
-                     (context/assemble-context (:digest ports) owner [] {} (:context configuration)))]
-        (assoc loaded :owner owner :inclusion-evidence (inclusion-evidence @decisions* (:encounters loaded)))))))
+            candidates (await (source-candidates! ports runtime config selected configuration auth-context owner))
+            snapshot (await (final-source-snapshot! ports config selected auth-context owner (:states candidates)))
+            decisions (snapshot-decisions ports owner snapshot)
+            loaded (context/assemble-context (:digest ports) owner (:records candidates) decisions
+                                             (:context (:configuration snapshot)))
+            by-source (into {} (map (fn [[source state]] [source (:decision state)]) (:states snapshot)))]
+        {:context (assoc loaded :owner owner :inclusion-evidence (inclusion-evidence by-source (:encounters loaded)))
+         :graph-authority (graph-snapshot ports owner candidates snapshot)
+         :auth-context (:current snapshot)}))))
+
+(defn ^:async decision-context!
+  "Assemble freshly authorized direct source context before its prompt caps."
+  [runtime config agent-spec auth-context]
+  (:context (await (disclosure-snapshot! runtime config agent-spec auth-context))))

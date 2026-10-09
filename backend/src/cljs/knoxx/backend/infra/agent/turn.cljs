@@ -1,7 +1,7 @@
 (ns knoxx.backend.infra.agent.turn
   "Main turn orchestrator: send-agent-turn! and supporting lifecycle functions."
   (:require [clojure.string :as str]
-            [knoxx.backend.infra.agent.hydration :refer [settings-state* ensure-settings!
+            [knoxx.backend.infra.agent.hydration :as hydration :refer [settings-state* ensure-settings!
                                                                 passive-hydration! passive-memory-hydration!
                                                                 build-agent-user-message
                                                                 hydration-sources]]
@@ -301,7 +301,7 @@
                (fn [run]
                  (let [resource-patch (cond-> {:sources sources}
                                         hydration (assoc :passiveHydration (select-keys hydration [:query :tokens :database :elapsedMs :results]))
-                                        memory-hydration (assoc :memoryHydration (select-keys memory-hydration [:query :mode :hits :elapsedMs :conversationId])))
+                                        memory-hydration (assoc :memoryHydration (hydration/memory-hydration-projection memory-hydration)))
                        merged-content-parts (merge-content-parts assistant-content-parts
                                                                  (content/reply-attachment-content-parts (:tool_receipts run)))]
                    (-> run
@@ -500,7 +500,7 @@
                                   (fn [run]
                                     (let [resource-patch (cond-> {}
                                                            hydration (assoc :passiveHydration (select-keys hydration [:query :tokens :database :elapsedMs :results]))
-                                                           memory-hydration (assoc :memoryHydration (select-keys memory-hydration [:query :mode :hits :elapsedMs :conversationId])))]
+                                                           memory-hydration (assoc :memoryHydration (hydration/memory-hydration-projection memory-hydration)))]
                                       (-> run
                                           (assoc :updated_at (now-iso)
                                                  :status "failed"
@@ -779,9 +779,10 @@
 (defn- emit-hydration-event!
   [run-id conversation-id session-id event-type hydration resource-patch]
   (let [event (tool-event-payload run-id conversation-id session-id event-type
-                                  {:status "ok"
-                                   :hits (count (or (:hits hydration) (:results hydration) []))
-                                   :elapsed_ms (:elapsedMs hydration)})]
+                                  (merge {:status (if (:graph? hydration) (name (:status hydration)) "ok")
+                                          :hits (count (or (:hits hydration) (:results hydration) []))
+                                          :elapsed_ms (:elapsedMs hydration)}
+                                         (select-keys hydration [:failure :field-status :graph?])))]
     (update-run! run-id
                  (fn [run]
                    (-> run
@@ -888,16 +889,41 @@
      :memory-query (decision-input/memory-query message encounter-context)
      :message message}))
 
+(defn- disclosed-agent-spec [agent-spec snapshot]
+  (cond-> (dissoc agent-spec :decision-encounters)
+    (:context snapshot) (assoc :decision-encounters (:context snapshot))))
+
+(defn- ^:async refresh-query-disclosure! [runtime config ctx]
+  (if-not (:character-encounters (:agent-spec ctx))
+    ctx
+    (let [snapshot (await (encounters/disclosure-snapshot! runtime config (:agent-spec ctx) (:auth-context ctx)))]
+      (assoc ctx :agent-spec (disclosed-agent-spec (:agent-spec ctx) snapshot)
+                 :auth-context (or (:auth-context snapshot) (:auth-context ctx))
+                 :graph-authority (:graph-authority snapshot)
+                 :memory-query (decision-input/memory-query (:message ctx) (:context snapshot))))))
+
+(defn- query-graph-authority-resolver [runtime config ctx]
+  (^:async fn []
+    (let [current (await (encounters/graph-authority! runtime config (:agent-spec ctx) (:auth-context ctx)))]
+      ;; The query can contain encounter text. A changed source snapshot must
+      ;; refuse the query before provider generation, even if another source
+      ;; still grants an otherwise valid graph scope.
+      (when (or (not (contains? ctx :graph-authority))
+                (and (:graph-authority ctx)
+                     (= (hydration/graph-authority-binding (:graph-authority ctx))
+                        (hydration/graph-authority-binding current))))
+        current))))
+
 (defn ^:async hydrate-and-materialize!
   "Run passive hydration, memory hydration, content materialization, and session
    setup in parallel.  Returns a promise that resolves to the 4-element result vector."
-  [runtime config {:keys [conversation-id session-id message memory-query mode model-id thinking-level agent-spec auth-context]} content-parts]
+  [runtime config {:keys [conversation-id session-id message memory-query mode model-id thinking-level agent-spec auth-context] :as ctx} content-parts]
   (let [max-bytes 32000000]
     (await
      (xpromise/all-vec
       [(passive-hydration! runtime config mode message auth-context)
        (passive-memory-hydration! config conversation-id (or memory-query message) auth-context agent-spec
-                                  #(encounters/graph-authority! runtime config agent-spec auth-context))
+                                  (query-graph-authority-resolver runtime config ctx))
        (materialize-content-parts! runtime config model-id auth-context max-bytes content-parts)
        (ensure-agent-session! runtime config conversation-id model-id auth-context thinking-level session-id agent-spec)]))))
 
@@ -907,15 +933,16 @@
   [runtime config {:keys [content-parts] :as turn-request}]
   (let [ctx (await (prepare-turn-context runtime config turn-request))
         {:keys [conversation-id session-id run-id started-at started-ms model-id mode
-                thinking-level agent-spec auth-extra seeded-messages message]} ctx]
+                thinking-level auth-extra seeded-messages message]} ctx]
     ;; Enforce model allow-list and rate limits
     (await (policy/enforce-chat-policy! (:auth-context ctx) model-id))
     (maybe-prime-session-title! runtime config conversation-id message)
     ;; Parallel: hydration, memory, content materialization, session setup
-    (let [hydration-results (await (hydrate-and-materialize! runtime config ctx content-parts))
+    (let [ctx (await (refresh-query-disclosure! runtime config ctx))
+          hydration-results (await (hydrate-and-materialize! runtime config ctx content-parts))
           start-turn! (process-hydration-results-and-start-turn!
                         runtime config run-id session-id conversation-id started-at started-ms model-id mode thinking-level
-                        agent-spec auth-extra seeded-messages message)]
+                        (:agent-spec ctx) auth-extra seeded-messages message (:auth-context ctx))]
       ;; Create run, emit events, and start prompting
       (await (start-turn! hydration-results)))))
 
@@ -929,30 +956,51 @@
       (append-run-event! run-id event)
       (broadcast-ws-session! session-id "events" event))))
 
+(defn- prepare-running-turn! [config params materialized-content-parts]
+  (let [{:keys [run-id session-id conversation-id started-at model-id mode thinking-level
+                agent-spec auth-extra seeded-messages message]} params
+        materialized-content-parts (vec (or materialized-content-parts []))
+        turn-message (content/nonblank message)
+        user-message (if (seq materialized-content-parts)
+                       {:role "user" :content turn-message :content-parts materialized-content-parts}
+                       {:role "user" :content turn-message})
+        prompt-content-parts (model-ready-content-parts config model-id materialized-content-parts)
+        request-messages (prune-session-messages agent-spec (conj seeded-messages user-message))]
+    (create-initial-run! run-id session-id conversation-id started-at model-id mode thinking-level
+                         agent-spec auth-extra request-messages config)
+    {:user-message user-message :turn-message turn-message :prompt-content-parts prompt-content-parts}))
+
+(defn- emit-turn-hydration! [run-id conversation-id session-id agent-spec passive memory]
+  (emit-encounter-inclusion! run-id conversation-id session-id agent-spec)
+  (when passive
+    (emit-hydration-event! run-id conversation-id session-id "passive_hydration"
+                           passive {:passiveHydration (select-keys passive [:query :tokens :database :elapsedMs :results])}))
+  (when (or (:graph? memory) (seq (:hits memory)))
+    (emit-hydration-event! run-id conversation-id session-id "memory_hydration"
+                           memory {:memoryHydration (hydration/memory-hydration-projection memory)})))
+
+(defn- ^:async refresh-prompt-disclosure! [runtime config agent-spec auth-context memory]
+  (if-not (:character-encounters agent-spec)
+    {:agent-spec agent-spec :memory memory}
+    (let [snapshot (await (encounters/disclosure-snapshot! runtime config agent-spec auth-context))]
+      {:agent-spec (disclosed-agent-spec agent-spec snapshot)
+       :memory (hydration/retain-current-graph-hydration memory (:graph-authority snapshot))})))
+
 (defn- process-hydration-results-and-start-turn!
-  [_runtime config run-id session-id conversation-id started-at started-ms model-id mode thinking-level
-   agent-spec auth-extra seeded-messages message]
-  (fn [[hydration memory-hydration materialized-content-parts session]]
-    (let [materialized-content-parts (vec (or materialized-content-parts []))
-          turn-message (content/nonblank message)
-          user-message (if (seq materialized-content-parts)
-                         {:role "user" :content turn-message :content-parts materialized-content-parts}
-                         {:role "user" :content turn-message})
-          prompt-content-parts (model-ready-content-parts config model-id materialized-content-parts)
-          request-messages (prune-session-messages agent-spec (conj seeded-messages user-message))]
-      (create-initial-run! run-id session-id conversation-id started-at model-id mode thinking-level
-                           agent-spec auth-extra request-messages config)
-      (emit-encounter-inclusion! run-id conversation-id session-id agent-spec)
-      (when hydration
-        (emit-hydration-event! run-id conversation-id session-id "passive_hydration"
-                               hydration {:passiveHydration (select-keys hydration [:query :tokens :database :elapsedMs :results])}))
-      (when (seq (:hits memory-hydration))
-        (emit-hydration-event! run-id conversation-id session-id "memory_hydration"
-                               memory-hydration {:memoryHydration (select-keys memory-hydration [:query :mode :hits :elapsedMs :conversationId])}))
-      (let [persisted-request-messages (prune-session-messages
-                                        agent-spec
-                                        (transcript/transcript-before-prompt session user-message agent-spec))]
-        (persist-running-session-update! session-id conversation-id run-id persisted-request-messages)
-        (prompt-and-await! config session-id run-id conversation-id started-ms model-id mode
-                           session turn-message prompt-content-parts hydration memory-hydration
-                           persisted-request-messages agent-spec)))))
+  [runtime config run-id session-id conversation-id started-at started-ms model-id mode thinking-level
+   agent-spec auth-extra seeded-messages message auth-context]
+  (^:async fn [[passive memory materialized-content-parts session]]
+    (let [{:keys [user-message turn-message prompt-content-parts]}
+          (prepare-running-turn! config {:run-id run-id :session-id session-id :conversation-id conversation-id
+                                         :started-at started-at :model-id model-id :mode mode :thinking-level thinking-level
+                                         :agent-spec agent-spec :auth-extra auth-extra :seeded-messages seeded-messages :message message}
+                                 materialized-content-parts)
+          persisted (prune-session-messages agent-spec (transcript/transcript-before-prompt session user-message agent-spec))
+          _ (await (persist-running-session-update! session-id conversation-id run-id persisted))
+          disclosed (await (refresh-prompt-disclosure! runtime config agent-spec auth-context memory))]
+      ;; All preparation awaits have settled. One final source snapshot owns
+      ;; direct context and retained graph validation before logging/sending.
+      (emit-turn-hydration! run-id conversation-id session-id (:agent-spec disclosed) passive (:memory disclosed))
+      (await (prompt-and-await! config session-id run-id conversation-id started-ms model-id mode
+                               session turn-message prompt-content-parts passive (:memory disclosed)
+                               persisted (:agent-spec disclosed))))))

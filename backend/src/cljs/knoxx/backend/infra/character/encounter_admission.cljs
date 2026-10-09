@@ -18,58 +18,74 @@
                       {:code :encounter/event-content-conflict})))
     record))
 
+(defn- ^:async assert-current-authorized!
+  [authorize! owner source]
+  (law/assert-authorized! owner source (await (authorize! owner source))))
+
 (defn- ^:async ensure-record!
-  [ports digest prepared event]
+  [ports digest prepared event authorize!]
   (let [{:keys [owner source]} prepared
         existing (await ((:find-event! ports) owner (:id event)))]
+    (await (assert-current-authorized! authorize! owner source))
     (if existing
       (law/assert-existing-record!
        digest (shape/wire->record (get-in event [:extra :encounter]))
        (event-record! digest owner source existing))
       (do
         (await ((:append-event! ports) event))
-        (if-let [stored (await ((:find-event! ports) owner (:id event)))]
-          (law/assert-existing-record!
-           digest (shape/wire->record (get-in event [:extra :encounter]))
-           (event-record! digest owner source stored))
-          (throw (ex-info "Encounter append did not become durably readable"
-                          {:code :encounter/append-unconfirmed})))))))
+        (await (assert-current-authorized! authorize! owner source))
+        (let [stored (await ((:find-event! ports) owner (:id event)))]
+          (await (assert-current-authorized! authorize! owner source))
+          (if stored
+            (law/assert-existing-record!
+             digest (shape/wire->record (get-in event [:extra :encounter]))
+             (event-record! digest owner source stored))
+            (throw (ex-info "Encounter append did not become durably readable"
+                            {:code :encounter/append-unconfirmed}))))))))
 
 (defn- ^:async confirm-checkpoint!
-  [ports digest prepared]
+  [ports digest prepared authorize!]
   (let [event (:checkpoint-event prepared)
         expected (:checkpoint prepared)
         owner (:owner prepared)
+        source (:source prepared)
+        _ (await (assert-current-authorized! authorize! owner source))
         existing (await ((:find-event! ports) owner (:id event)))]
+    (await (assert-current-authorized! authorize! owner source))
     (when-not existing
-      (await ((:append-event! ports) event)))
-    (if-let [stored (or existing (await ((:find-event! ports) owner (:id event))))]
-      (let [checkpoint (shape/wire->checkpoint (get-in stored [:extra :encounter_cursor]))]
-        (law/assert-checkpoint! digest owner (:source prepared) checkpoint)
-        (when-not (and (= "character.encounter-cursor" (:kind stored))
-                       (= (:id stored) (:id expected))
-                       (= expected checkpoint))
-          (throw (ex-info "Encounter cursor retry conflicts with durable progress"
-                          {:code :encounter/checkpoint-conflict})))
-        checkpoint)
-      (throw (ex-info "Encounter cursor append did not become durably readable"
-                      {:code :encounter/checkpoint-unconfirmed})))))
+      (await ((:append-event! ports) event))
+      (await (assert-current-authorized! authorize! owner source)))
+    (let [stored (or existing (await ((:find-event! ports) owner (:id event))))]
+      (await (assert-current-authorized! authorize! owner source))
+      (if stored
+        (let [checkpoint (shape/wire->checkpoint (get-in stored [:extra :encounter_cursor]))]
+          (law/assert-checkpoint! digest owner source checkpoint)
+          (when-not (and (= "character.encounter-cursor" (:kind stored))
+                         (= (:id stored) (:id expected))
+                         (= expected checkpoint))
+            (throw (ex-info "Encounter cursor retry conflicts with durable progress"
+                            {:code :encounter/checkpoint-conflict})))
+          checkpoint)
+        (throw (ex-info "Encounter cursor append did not become durably readable"
+                        {:code :encounter/checkpoint-unconfirmed}))))))
 
 (defn- ^:async admit-exclusive!
   [ports digest owner page authorize!]
   ;; Resolve authority again inside the owned writer, before any content read
   ;; or append. The callback is wired by the host to its existing auth adapter.
-  (let [decision (await (authorize! owner (:source page)))
-        _ (law/assert-authorized! owner (:source page) decision)
+  (let [_ (await (assert-current-authorized! authorize! owner (:source page)))
         stream-id (law/stream-id digest owner (:source page))
         checkpoint (await ((:latest-checkpoint! ports) owner stream-id))
+        decision (await (assert-current-authorized! authorize! owner (:source page)))
         prepared (encounter/prepare-page digest owner page decision checkpoint)
         confirmed* (atom [])]
     (try
       (doseq [event (:events prepared)]
-        (await (ensure-record! ports digest prepared event))
+        (await (assert-current-authorized! authorize! owner (:source prepared)))
+        (await (ensure-record! ports digest prepared event authorize!))
         (swap! confirmed* conj (:id event)))
-      (await (confirm-checkpoint! ports digest prepared))
+      (await (confirm-checkpoint! ports digest prepared authorize!))
+      (await (assert-current-authorized! authorize! owner (:source prepared)))
       (encounter/completion prepared @confirmed* true)
       (catch :default error
         ;; Partial writes remain durable evidence. No returned cursor advances;
@@ -92,6 +108,18 @@
   (law/assert-shape! shape/Page page :page)
   (await ((:with-exclusive! ports)
           #(admit-exclusive! ports digest owner page authorize!))))
+
+(defn- ^:async refresh-decisions!
+  [digest owner sources authorize! decisions]
+  ;; Earlier sources can be revoked while later source reads are pending.
+  ;; The host's final batch guard owns cross-source snapshot binding; this
+  ;; generic callback layer does not claim an atomic grant reservation.
+  (loop [remaining (seq (distinct sources)) current decisions]
+    (if-let [source (first remaining)]
+      (recur (next remaining)
+             (assoc current (law/stream-id digest owner source)
+                    (await (authorize! owner source))))
+      current)))
 
 (defn ^:async load-eligible!
   "Reload admitted experience from the existing store with fresh per-source authorization.
@@ -119,9 +147,10 @@
             (recur (next remaining) (into records admitted)
                    (assoc decisions stream-id current)))
           (recur (next remaining) records decisions)))
-      {:records (context/eligible-records digest owner records decisions
-                                          (merge context/default-options options))
-       :decisions decisions})))
+      (let [current (await (refresh-decisions! digest owner sources authorize! decisions))]
+        {:records (context/eligible-records digest owner records current
+                                            (merge context/default-options options))
+         :decisions current}))))
 
 (defn ^:async load-context!
   "Reauthorize sources around event reads, then apply the final prompt budget."
