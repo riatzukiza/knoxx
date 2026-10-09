@@ -4,6 +4,7 @@
             [cljs.test :refer [deftest is]]
             [clojure.string :as str]
             [knoxx.backend.character.encounter-test :as fixture]
+            [knoxx.backend.character.turn-context-test :as turn-fixture]
             [knoxx.backend.domain.character.encounter-context :as encounter-context]
             [knoxx.backend.extern.agent-turn-prompt :as prompt]
             [knoxx.backend.infra.agent.hydration :as hydration]
@@ -128,6 +129,60 @@
         (is (str/includes? (first @prompts*) "GRAPH ONLY: bells beneath the harbor")
             "The graph result must reach the actual provider-session boundary")))
     (finally (sdk-fixture/__clearScopedGraphFixture())))))
+
+(defn- assert-graph-outcome-projection! [status memory resource events]
+  (let [event (first events)
+        failure (when (= :failed status) {:stage :graph :code :transport-error})]
+    (is (= status (:status memory)) "The actual hydration boundary preserves the configured owning outcome")
+    (is (= failure (:failure memory))) (is (= [] (:hits memory)))
+    (is (= status (:status resource)) "Turn settlement must preserve failed/denied/pending/empty distinctions")
+    (is (= failure (:failure resource)) "Only bounded graph failure metadata may survive settlement")
+    (is (= "not-loaded" (:field-status resource)))
+    (is (= true (:graph? resource))) (is (= [] (:hits resource)))
+    (is (= 1 (count events)) "Every attempted empty graph outcome must produce one observable hydration event")
+    (is (= (name status) (:status event)))
+    (is (= failure (:failure event)))
+    (is (= "not-loaded" (:field-status event))) (is (= 0 (:hits event)))
+    (is (not-any? #(contains? resource %) [:scope :auth-context :records :authority-binding])
+        "A settled resource must not publish the trusted authority binding or private candidate snapshot")))
+
+(defn- ^:async settled-graph-outcome! [status]
+  (doseq [provider-fails? [false true]]
+    (await (turn-fixture/with-actual-character-turn!
+            (^:async fn [{:keys [config request runs* provider-failure* memories* prompts* logs*]}]
+              (let [recall! planner/scoped-graph-recall!]
+                (reset! provider-failure* provider-fails?)
+                (with-redefs [planner/scoped-graph-recall!
+                              (^:async fn [client payload resolve!]
+                                (if (= :failed status)
+                                  (throw (ex-info "PRIVATE_GRAPH_TRANSPORT" {:credential "PRIVATE_GRAPH_CREDENTIAL"}))
+                                  (-> (await (recall! client payload resolve!))
+                                      (assoc-in [:selection :status] (name status))
+                                      (assoc-in [:selection :hits] []))))]
+                  (let [response (try (await (turn/send-agent-turn! :fixture-runtime config request))
+                                      (catch :default _error :held-provider-failed))
+                        run (get @runs* (:run-id request))
+                        memory (last @memories*)
+                        resource (get-in run [:resources :memoryHydration])
+                        events (filterv #(= "memory_hydration" (:type %)) (:events run))]
+                    (is (= (if provider-fails? :held-provider-failed "Hermetic answer")
+                           (if provider-fails? response (:answer response))))
+                    (is (= (if provider-fails? "failed" "completed") (:status run)))
+                    (is (= 1 (count @prompts*))) (is (= 1 (count @logs*)))
+                    (is (not (re-find #"PRIVATE_GRAPH_TRANSPORT|PRIVATE_GRAPH_CREDENTIAL" (pr-str [run @logs* @prompts*]))))
+                    (assert-graph-outcome-projection! status memory resource events)))))))))
+
+(deftest ^:async failed-graph-outcomes-retain-safe-metadata-and-events-through-success-and-failure-settlement
+  (await (settled-graph-outcome! :failed)))
+
+(deftest ^:async denied-graph-outcomes-remain-observable-through-success-and-failure-settlement
+  (await (settled-graph-outcome! :denied)))
+
+(deftest ^:async indexing-pending-graph-outcomes-remain-observable-through-success-and-failure-settlement
+  (await (settled-graph-outcome! :indexing-pending)))
+
+(deftest ^:async empty-graph-outcomes-remain-observable-through-success-and-failure-settlement
+  (await (settled-graph-outcome! :empty)))
 
 (deftest ^:async malformed-scoped-port-results-do-not-become-empty-success
   (let [config {:session-project-name "creator-local"}

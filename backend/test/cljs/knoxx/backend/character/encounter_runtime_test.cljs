@@ -1,15 +1,18 @@
 (ns knoxx.backend.character.encounter-runtime-test
-  (:require [cljs.test :refer [deftest is]]
+  (:require [cljs.test :refer [deftest do-report is]]
             [clojure.string :as str]
             [knoxx.backend.domain.action.character-intake]
             [knoxx.backend.infra.character.intake-action :as intake]
             [knoxx.backend.domain.action.registry :as actions]
             [knoxx.backend.domain.contracts.sources :as sources]
+            [knoxx.backend.extern.promise :as promise]
             [knoxx.backend.infra.actor.acting :as acting]
             [knoxx.backend.infra.actor.credentials :as credentials]
             [knoxx.backend.infra.agent.tool-catalog :as catalog]
+            [knoxx.backend.infra.auth.authz :as authz]
             [knoxx.backend.infra.character.encounter-openplanner :as storage]
             [knoxx.backend.infra.character.encounter-runtime :as encounters]
+            [knoxx.backend.infra.character.social-encounters :as source-io]
             [knoxx.backend.infra.clients.openplanner :as openplanner]
             [knoxx.backend.infra.tooling :as tooling]
             [knoxx.backend.law.character.encounter :as law]
@@ -142,6 +145,103 @@
 (defn- only-discord! [state]
   (swap! (:selected* state) assoc :sources [(source-resource discord-spec "9001")]
          :character-encounters {:sources [discord-spec]}))
+
+(defn held-await
+  "Fixture-only native Promise boundary: release an exact await without timers or external I/O."
+  []
+  (let [release* (atom nil)
+        pending (js/Promise. (fn [release _reject] (reset! release* release)))]
+    {:promise pending :release! (fn [value] (@release* value))}))
+
+(defn ^:async await-held!
+  "Fail visibly if the causal fixture never reaches its selected await."
+  ([gate]
+   (await (promise/with-timeout-error (:promise gate) 5000
+                                     (ex-info "Held fixture await was not reached" {:fixture :await-not-reached}))))
+  ([gate outcome]
+   (let [observed (await (promise/with-timeout-error (promise/race [(:promise gate) outcome]) 5000
+                                                   (ex-info "Held fixture await was not reached" {:fixture :await-not-reached})))]
+     (if (and (map? observed) (contains? observed :fixture-outcome))
+       (throw (or (:error observed) (ex-info "Fixture operation settled before its held await" {:fixture :await-not-reached})))
+       observed))))
+
+(defn- ^:async capture-outcome! [pending]
+  (try {:fixture-outcome :fulfilled :value (await pending)}
+       (catch :default error {:fixture-outcome :rejected :error error})))
+
+(defn ^:async with-held-operation!
+  "Capture rejection immediately, release owned gates on every path, and report fixture errors."
+  [pending gates observe!]
+  (let [outcome (capture-outcome! pending) reported-error* (atom nil)]
+    (try
+      (await (observe! outcome))
+      (catch :default error
+        (reset! reported-error* error)
+        (do-report {:type :error :message "Held fixture observation failed" :expected :held-observation :actual error}))
+      (finally (doseq [gate gates] ((:release! gate) nil))))
+    (let [settled (await outcome)]
+      (when (and (= :rejected (:fixture-outcome settled))
+                 (not (identical? @reported-error* (:error settled))))
+        (do-report {:type :error :message "Held fixture operation rejected" :expected :fulfilled :actual (:error settled)}))
+      settled)))
+
+(defn- stable-principal [context]
+  (select-keys context [:actor :actorId :org :membership :user :permissions]))
+
+(defn- grant-memory! [state]
+  (swap! (:contexts* state) update actor-id assoc
+         :user {:id "fixture-user"} :permissions ["agent.memory.read"]))
+
+(defn- revoke-discord! [state]
+  (swap! (:contexts* state) update-in [actor-id :tool-policies]
+         #(filterv (fn [policy] (not= "discord.channel.messages" (:tool-id policy))) %)))
+
+(defn- held-account-config [state config hold-read-account* entered release]
+  (let [account! (get-in config [:character-encounter-runtime-ports :resolve-account!])]
+    (update config :character-encounter-runtime-ports assoc
+            :source-resources (fn [_config _selected] (:sources @(:selected* state)))
+            :resolve-account! (^:async fn [runtime current selected spec]
+                                (when (compare-and-set! hold-read-account* true false)
+                                  ((:release! entered) :account-resolution)
+                                  (await (:promise release)))
+                                (account! runtime current selected spec))
+            :pull-source! (fn [ports owner spec checkpoint at]
+                            (source-io/pull-source!
+                             (assoc ports :read! (^:async fn [tool-id arguments]
+                                                  (reset! hold-read-account* true)
+                                                  (await ((:read! ports) tool-id arguments))))
+                             owner spec checkpoint at)))))
+
+(defn- ^:async account-await-revocation! [revoke!]
+  (let [state (fixture) entered (held-await) release (held-await) hold-read-account* (atom false)]
+    (only-discord! state)
+    (grant-memory! state)
+    (await (with-runtime-fixture!
+            state
+            (^:async fn [config]
+              (let [config (held-account-config state config hold-read-account* entered release)
+                    before (stable-principal (get @(:contexts* state) actor-id))
+                    outcome (await (with-held-operation!
+                                    (encounters/observe! :fixture-runtime config input-spec) [release]
+                                    (^:async fn [pending]
+                                      (is (= :account-resolution (await (await-held! entered pending))))
+                                      (is (empty? @(:source-reads* state)) "The actual source read has not begun at the held account await")
+                                      (is (empty? @(:tool-builds* state)))
+                                      (revoke! state)
+                                      (is (= before (stable-principal (get @(:contexts* state) actor-id)))
+                                          "Actor/org/member/user identities and memory permission remain unchanged"))))]
+                (when (= :fulfilled (:fixture-outcome outcome))
+                  (let [result (:value outcome)]
+                  (is (= [:denied] (mapv :status (:sources result))))
+                  (is (empty? @(:source-reads* state)) "Revocation during account resolution must prevent the actual source read")
+                  (is (empty? @(:tool-builds* state)) "A stale grant must not construct an executable source tool")
+                  (is (empty? @(:rows* state)) "No returned private content or cursor may be admitted")))))))))
+
+(deftest ^:async source-grant-revocation-during-read-account-resolution-prevents-the-source-read
+  (await (account-await-revocation! revoke-discord!)))
+
+(deftest ^:async canonical-resource-removal-during-read-account-resolution-prevents-the-source-read
+  (await (account-await-revocation! #(swap! (:selected* %) assoc :sources []))))
 
 (deftest ^:async native-clock-style-intake-stores-two-sources-without-starting-a-provider-or-publication
   (let [state (fixture)]
@@ -454,3 +554,45 @@
                 (let [result (await (encounters/graph-authority! :fixture-runtime config input-spec nil))]
                   (is (nil? result) "A cross-await source grant change refuses the complete held snapshot")
                   (is (not (str/includes? (pr-str result) "Discord source"))))))))))
+
+(deftest ^:async source-only-revocation-during-final-graph-principal-lookup-refuses-loaded-candidates
+  (let [state (fixture) entered (held-await) release (held-await)
+        hold-principal* (atom false) candidates* (atom nil)
+        load-candidates! (deref #'encounters/graph-candidates!)]
+    (only-discord! state)
+    (grant-memory! state)
+    (await (with-runtime-fixture!
+            state
+            (^:async fn [config]
+              (await (encounters/observe! :fixture-runtime config input-spec))
+              (let [resolve! (:resolve-agent-authority! config)
+                    config (assoc config :resolve-agent-authority!
+                                  (^:async fn [scope]
+                                    (when (compare-and-set! hold-principal* true false)
+                                      ((:release! entered) :final-principal-lookup)
+                                      (await (:promise release)))
+                                    (resolve! scope)))
+                    before (stable-principal (get @(:contexts* state) actor-id))]
+                ;; Preserve the real candidate loader. Its completion signals
+                ;; the next canonical principal lookup without call-count guesses.
+                (with-redefs [encounters/graph-candidates!
+                              (^:async fn [ports runtime actual-config selected configuration auth-context owner]
+                                (let [candidates (await (load-candidates! ports runtime actual-config selected
+                                                                          configuration auth-context owner))]
+                                  (reset! candidates* candidates)
+                                  (reset! hold-principal* true)
+                                  candidates))]
+                  (let [outcome (await (with-held-operation!
+                                        (encounters/graph-authority! :fixture-runtime config input-spec nil) [release]
+                                        (^:async fn [pending]
+                                          (is (= :final-principal-lookup (await (await-held! entered pending))))
+                                          (is (= 1 (count (:records @candidates*))) "Real authorized candidates were loaded before the held final lookup")
+                                          (is (str/includes? (pr-str (:records @candidates*)) "Discord source"))
+                                          (revoke-discord! state)
+                                          (is (= before (stable-principal (get @(:contexts* state) actor-id))))
+                                          (is (authz/ctx-permitted? (get @(:contexts* state) actor-id) "agent.memory.read")))))]
+                    (when (= :fulfilled (:fixture-outcome outcome))
+                      (let [result (:value outcome)]
+                      (is (nil? result) "Stable identities and memory permission cannot retain a revoked source grant")
+                      (is (not (str/includes? (pr-str result) "Discord source"))
+                          "The final graph authority must not disclose revoked private candidates")))))))))))

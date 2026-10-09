@@ -1,14 +1,25 @@
 (ns knoxx.backend.character.turn-context-test
-  (:require [cljs.test :refer [deftest is]]
+  (:require ["@open-hax/openplanner-sdk" :as sdk-fixture]
+            [cljs.test :refer [deftest is]]
             [clojure.string :as str]
             [knoxx.backend.character.authority-test :as authority-fixture]
+            [knoxx.backend.character.encounter-runtime-test :as runtime-fixture]
+            [knoxx.backend.domain.action.run-state :as runs]
             [knoxx.backend.domain.character.decision-input :as decision]
+            [knoxx.backend.domain.realtime :as realtime]
             [knoxx.backend.extern.agent-turn-prompt :as prompt]
             [knoxx.backend.infra.agent.hydration :as hydration]
+            [knoxx.backend.infra.agent.policy :as policy]
             [knoxx.backend.infra.agent.session :as sessions]
             [knoxx.backend.infra.agent.stream :as stream]
             [knoxx.backend.infra.agent.turn :as turn]
             [knoxx.backend.infra.character.encounter-runtime :as encounters]
+            [knoxx.backend.infra.clients.openplanner :as planner]
+            [knoxx.backend.infra.clients.openplanner-mongo :as mongo]
+            [knoxx.backend.infra.openplanner.memory :as memory]
+            [knoxx.backend.infra.stores.mongo-session-store :as session-store]
+            [knoxx.backend.infra.stores.session-store-registry :as store-registry]
+            [knoxx.backend.infra.stores.session-titles :as titles]
             [knoxx.backend.shape.agent :as agent]))
 
 (defn- capture-session [prompts*]
@@ -76,3 +87,220 @@
                          {:system-prompt "Existing" :decision-encounters (admitted-context "forged")} nil))]
     (is (nil? (get-in prepared [:agent-spec :decision-encounters])))
     (is (= "Existing" (get-in prepared [:agent-spec :system-prompt])))))
+
+(defn- settled-capture-session
+  "Fixture-only SDK message boundary with a nonempty answer for actual turn settlement."
+  [prompts* provider-failure*]
+  (reify agent/IAgentSession
+    (streaming? [_] false) (current-turn [_] nil)
+    (messages [_] (if (seq @prompts*)
+                   [#js {:role "assistant" :content #js [#js {:type "text" :text "Hermetic answer"}]
+                         :usage #js {:input 1 :output 1}}] []))
+    (subscribe! [_ _listener] (fn [] nil))
+    (send-user-message! [_ content]
+      (swap! prompts* conj content)
+      (when @provider-failure* (throw (ex-info "Held provider failure" {:fixture :provider-failure})))
+      (js/Promise.resolve nil))
+    (follow-up! [_ _content] (js/Promise.resolve nil))
+    (steer! [_ _content] (js/Promise.resolve nil))
+    (set-thinking-level! [_ _level] nil) (abort! [_] (js/Promise.resolve nil))))
+
+(defn- ^:async record-port-result! [pending observations* after*]
+  (let [result (await pending)]
+    (swap! observations* conj result)
+    (when-let [after! @after*] (after! result))
+    result))
+
+(defn- recording-memory-port
+  "Preserve every compiled passive-memory arity while recording actual port results."
+  [port observations* after*]
+  (fn
+    ([config conversation query]
+     (record-port-result! (port config conversation query) observations* after*))
+    ([config conversation query context]
+     (record-port-result! (port config conversation query context) observations* after*))
+    ([config conversation query context spec]
+     (record-port-result! (port config conversation query context spec) observations* after*))
+    ([config conversation query context spec resolve!]
+     (record-port-result! (port config conversation query context spec resolve!) observations* after*))))
+
+(defn- fixture-session-port
+  "Preserve all five compiled session-setup arities without creating a provider session."
+  [session]
+  (fn ([_runtime _config _conversation _model] session)
+      ([_runtime _config _conversation _model _context] session)
+      ([_runtime _config _conversation _model _context _thinking] session)
+      ([_runtime _config _conversation _model _context _thinking _session] session)
+      ([_runtime _config _conversation _model _context _thinking _session _spec] session)))
+
+(defn- ^:async with-turn-effect-fixture! [fixture task!]
+  (let [{:keys [config session logs* prepared-contexts* memories*]} fixture
+        hydrate! hydration/passive-memory-hydration!
+        load-context! encounters/decision-context!
+        client (mongo/->MongoOpenPlannerClient config nil)]
+    (with-redefs [runs/runs* (atom {}) runs/run-order* (atom []) runs/event-stream-sink* (atom nil)
+                  runs/retrieval-stats* (atom @runs/retrieval-stats*)
+                  turn/conversation-access* (atom {}) store-registry/session-store* (atom nil)
+                  planner/client (fn ([_config] client) ([_config _options] client))
+                  planner/enabled? (fn [_client] true)
+                  runs/set-event-stream-sink! (fn [_sink] nil)
+                  realtime/broadcast-ws-session! (fn [_session _kind _event] nil)
+                  titles/maybe-prime-session-title! (fn [_runtime _config _conversation _message] nil)
+                  session-store/get-session-sync (fn [_session] nil)
+                  session-store/put-session! (fn ([_payload] nil) ([_db _payload] nil))
+                  session-store/update-session! (fn ([_session _patch] nil) ([_db _session _patch] nil))
+                  session-store/complete-session! (fn ([_session _conversation _payload] nil)
+                                                    ([_db _session _conversation _payload] nil))
+                  sessions/ensure-agent-session! (fixture-session-port session)
+                  sessions/remove-agent-session! (fn [_conversation] nil)
+                  stream/register-active-turn! (fn ([_state _abort] nil) ([_state _abort _spec] nil))
+                  policy/enforce-chat-policy! (fn [_context _model] nil)
+                  memory/index-run-memory! (fn [_config _run _paths _urls] nil)
+                  prompt/log-prompt! (fn [observation] (swap! logs* conj observation))
+                  encounters/decision-context! (fn [runtime actual-config spec context]
+                                                (record-port-result! (load-context! runtime actual-config spec context)
+                                                                     prepared-contexts* (atom nil)))
+                  hydration/passive-memory-hydration! (recording-memory-port hydrate! memories* (:after-memory* fixture))]
+      (await (task! (assoc fixture :runs* runs/runs*))))))
+
+(defn ^:async with-actual-character-turn!
+  "Run actual source admission, recall, turn orchestration and settlement with held effect ports."
+  [task!]
+  (let [state (#'runtime-fixture/fixture)
+        actor (:actor-id @(:selected* state))
+        prompts* (atom []) logs* (atom []) provider-failure* (atom false)]
+    (swap! (:contexts* state) update actor assoc :user {:id "fixture-user"} :permissions ["agent.memory.read"])
+    (await (#'runtime-fixture/with-runtime-fixture!
+            state
+            (^:async fn [config]
+              (let [spec (assoc @(:selected* state) :contract-id (:id @(:selected* state))
+                                :memory-hydration {:enabled? true :mode :always :k 6})
+                    request {:conversation-id "held-conversation" :session-id "held-session" :run-id "held-run"
+                             :model "fixture-model" :mode "direct" :message "remember a creative opportunity"
+                             :agent-spec spec}
+                    fixture {:state state :config config :request request :prompts* prompts* :logs* logs*
+                             :prepared-contexts* (atom []) :memories* (atom []) :after-memory* (atom nil)
+                             :provider-failure* provider-failure* :session (settled-capture-session prompts* provider-failure*)}]
+                (await (encounters/observe! :fixture-runtime config spec))
+                (sdk-fixture/__setScopedGraphFixture
+                 (clj->js (await (encounters/graph-authority! :fixture-runtime config spec nil))))
+                (try (await (with-turn-effect-fixture! fixture task!))
+                     (finally (sdk-fixture/__clearScopedGraphFixture())))))))))
+
+(defn- current-principal [state]
+  (select-keys (get @(:contexts* state) (:actor-id @(:selected* state)))
+               [:actor :actorId :org :membership :user :permissions]))
+
+(defn- revoke-source! [state tool-id]
+  (swap! (:contexts* state) update-in [(:actor-id @(:selected* state)) :tool-policies]
+         #(filterv (fn [entry] (not= tool-id (:tool-id entry))) %)))
+
+(defn- embedding-calls
+  "Decode the existing hermetic SDK's provider-call capture at its native test boundary."
+  []
+  (->> (js->clj sdk-fixture/__calls :keywordize-keys true)
+       (filter #(= "scopedGraph.queryEmbedding" (:name %))) vec))
+
+(deftest ^:async chat-policy-await-revocation-removes-private-encounter-text-from-the-actual-embedding-query
+  (await (with-actual-character-turn!
+          (^:async fn [{:keys [state config request prompts* logs* prepared-contexts*]}]
+            (let [entered (runtime-fixture/held-await) release (runtime-fixture/held-await)
+                  before (current-principal state) prior-calls (count (embedding-calls))]
+              (with-redefs [policy/enforce-chat-policy! (^:async fn [_context _model]
+                                                         ((:release! entered) :chat-policy)
+                                                         (await (:promise release)))]
+                (let [outcome (await (runtime-fixture/with-held-operation!
+                                      (turn/send-agent-turn! :fixture-runtime config request) [release]
+                                      (^:async fn [pending]
+                                        (is (= :chat-policy (await (runtime-fixture/await-held! entered pending))))
+                                        (is (str/includes? (:prompt-context (first @prepared-contexts*)) "Discord source"))
+                                        (is (= prior-calls (count (embedding-calls))))
+                                        (is (empty? @prompts*))
+                                        (revoke-source! state "discord.channel.messages")
+                                        (is (= before (current-principal state))))))]
+                  (when (= :fulfilled (:fixture-outcome outcome))
+                  (is (= "Hermetic answer" (:answer (:value outcome))))
+                  (let [queries (mapcat #(get-in % [:args :texts]) (drop prior-calls (embedding-calls)))]
+                    (is (seq queries) "The still-authorized Bluesky source keeps the actual embedding path active")
+                    (is (some #(str/includes? % "Bluesky observation") queries))
+                    (is (not-any? #(str/includes? % "Discord source") queries)
+                        "A source revoked during chat policy cannot be disclosed to the embedding provider"))
+                  (is (= 1 (count @logs*)))
+                  (is (= 1 (count @prompts*)))
+                  (is (not (str/includes? (:content (first @logs*)) "Discord source")))
+                  (is (not (str/includes? (first @prompts*) "Discord source")))))))))))
+
+(defn- ^:async await-preparation-port! [stage held-stage entered release port arguments]
+  (when (= stage held-stage)
+    ((:release! entered) stage) (await (:promise release)))
+  (await (apply port arguments)))
+
+(defn- held-session-port
+  "Preserve session-setup arities while holding the actual setup port."
+  [port stage entered release]
+  (fn
+    ([runtime config conversation model]
+     (await-preparation-port! stage :session entered release port [runtime config conversation model]))
+    ([runtime config conversation model context]
+     (await-preparation-port! stage :session entered release port [runtime config conversation model context]))
+    ([runtime config conversation model context thinking]
+     (await-preparation-port! stage :session entered release port [runtime config conversation model context thinking]))
+    ([runtime config conversation model context thinking id]
+     (await-preparation-port! stage :session entered release port [runtime config conversation model context thinking id]))
+    ([runtime config conversation model context thinking id spec]
+     (await-preparation-port! stage :session entered release port [runtime config conversation model context thinking id spec]))))
+
+(defn- ^:async with-held-preparation! [stage entered release task!]
+  (let [session! sessions/ensure-agent-session! materialize! turn/materialize-content-parts!]
+    (with-redefs [sessions/ensure-agent-session! (held-session-port session! stage entered release)
+                  turn/materialize-content-parts!
+                  (fn [runtime config model context maximum parts]
+                    (await-preparation-port! stage :materialization entered release materialize!
+                                             [runtime config model context maximum parts]))]
+      (await (task!)))))
+
+(defn- ^:async parallel-await-revocation! [stage]
+  (await (with-actual-character-turn!
+          (^:async fn [{:keys [state config request prompts* logs* prepared-contexts* after-memory*]}]
+            (let [entered (runtime-fixture/held-await) release (runtime-fixture/held-await)
+                  memory-ready (runtime-fixture/held-await) before (current-principal state) observed* (atom nil)]
+              (swap! (:selected* state) assoc-in [:character-encounters :context :max-encounters] 1)
+              (reset! after-memory* #((:release! memory-ready) %))
+              (await (with-held-preparation! stage entered release
+                      (^:async fn []
+                        (let [outcome (await (runtime-fixture/with-held-operation!
+                                              (turn/send-agent-turn! :fixture-runtime config request) [release]
+                                              (^:async fn [pending]
+                                                (let [loaded-memory (await (runtime-fixture/await-held! memory-ready pending))
+                                                      context (first @prepared-contexts*)
+                                                      graph-only (first (remove #(contains? (set (:event-ids context)) (:id %)) (:hits loaded-memory)))]
+                                                  (reset! observed* {:graph-only graph-only :direct-text (:text (first (:encounters context)))})
+                                                  (is (= stage (await (runtime-fixture/await-held! entered pending))))
+                                                  (is (= 1 (count (:encounters context))))
+                                                  (is (some? graph-only) "Actual scoped recall completed with a hit outside the direct prompt cap")
+                                                  (is (empty? @logs*)) (is (empty? @prompts*))
+                                                  (revoke-source! state "discord.channel.messages")
+                                                  (revoke-source! state "bluesky.timeline")
+                                                  (is (= before (current-principal state)))))))]
+                          (when (= :fulfilled (:fixture-outcome outcome))
+                          (is (= "Hermetic answer" (:answer (:value outcome))))
+                          (is (= 1 (count @logs*))) (is (= 1 (count @prompts*)))
+                          (doseq [actual [(:content (first @logs*)) (first @prompts*)]]
+                            (is (not (str/includes? actual (:direct-text @observed*))) "Final logged/sent prompt must exclude revoked direct context")
+                            (is (not (str/includes? actual (get-in @observed* [:graph-only :text]))) "Final logged/sent prompt must exclude stale retained graph hits"))))))))))))
+
+(deftest ^:async session-await-revocation-removes-stale-direct-context-and-graph-hits-from-the-actual-prompt
+  (await (parallel-await-revocation! :session)))
+
+(deftest ^:async materialization-await-revocation-removes-stale-direct-context-and-graph-hits-from-the-actual-prompt
+  (await (parallel-await-revocation! :materialization)))
+
+(deftest ^:async source-only-direct-context-does-not-require-a-memory-permission-at-final-disclosure
+  (await (with-actual-character-turn!
+          (^:async fn [{:keys [state config request prompts* logs*]}]
+            (swap! (:contexts* state) assoc-in [(:actor-id @(:selected* state)) :permissions] [])
+            (let [request (assoc-in request [:agent-spec :memory-hydration] {:enabled? false})]
+              (is (= "Hermetic answer" (:answer (await (turn/send-agent-turn! :fixture-runtime config request)))))
+              (is (= 1 (count @prompts*))) (is (= 1 (count @logs*)))
+              (is (str/includes? (first @prompts*) "Discord source"))
+              (is (str/includes? (:content (first @logs*)) "Discord source")))))))

@@ -215,3 +215,18 @@ Origin: `cephalon-character-automatic-scoped-graph-green-20261009`. p-efficiency
 - Evidence: .ημ/review-evidence/cephalon-character/admission-await-revocation-red-20261009.json; independent-689f516b-findings-20261009.json.
 - Scores: novelty .65, recurrence .29, generality .19.
 - Outcome: actual causal RED; repair and fresh full source review remain owed. No spore incubated or promoted.
+
+## 2026-10-09T18:01:37.132035Z — authored fixture call-shape correction
+
+- Origin: cephalon-runtime-disclosure-fixture-failure-20261009
+- Friction: newly authored one-arity wrapper did not match statically compiled multi-arity hydration call.
+- Evidence: .ημ/review-evidence/cephalon-character/runtime-disclosure-fixture-failure-20261009.json.
+- Scores: novelty .15, recurrence .75, generality .65.
+- Outcome: failed attempt retained; no completed suite or prompt/settlement causal RED credited. Correct existing test wrappers before production repair. No spore incubated or promoted.
+
+## 2026-10-09T18:11:27.939204Z — complete runtime disclosure causal RED
+
+- Origin: cephalon-runtime-disclosure-corrected-red-20261009
+- Evidence: .ημ/review-evidence/cephalon-character/runtime-disclosure-corrected-red-20261009.json; original fixture failure retained.
+- Scores: novelty .65, recurrence .29, generality .19.
+- Outcome: actual complete causal RED; repair and current source qualification remain owed. No spore incubated or promoted.
