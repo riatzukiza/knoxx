@@ -4,6 +4,10 @@
             [knoxx.backend.character.encounter-test :as fixture]
             [knoxx.backend.domain.character.social-encounters :as social]
             [knoxx.backend.domain.discord.source :as discord-source]
+            [knoxx.backend.domain.discord.rest-client :as discord-rest]
+            [knoxx.backend.domain.discord.tools :as discord-tools]
+            [knoxx.backend.extern.tools :as xtools]
+            [knoxx.backend.infra.clients.openplanner :as planner]
             [knoxx.backend.infra.character.encounter-admission :as admission]
             [knoxx.backend.infra.character.social-encounters :as pull]
             [knoxx.backend.law.character.encounter :as law]
@@ -191,7 +195,7 @@
         (is (not (str/includes? (:prompt-context changed) "fresh outside information")))
         (is (= 2 (count (:encounters changed))))))))
 
-(deftest after-cursor-advances-only-for-proved-unfiltered-short-page
+(deftest after-cursor-advances-for-proved-full-or-short-pages
   (let [spec (assoc discord-spec :poll-mode :after :limit 2)
         older (message "90071992547409931" "earlier")
         newer (message "90071992547409932" "later")
@@ -202,7 +206,7 @@
         unknown (social/project-page spec nil fixture/at
                                      (dissoc (:details (result spec [newer])) :rawCount) identity)]
     (is (= :overflow (get-in bounded [:coverage :reason])))
-    (is (nil? (get-in bounded [:page :cursor-after])))
+    (is (= "90071992547409932" (get-in bounded [:page :cursor-after])))
     (is (= "90071992547409932" (get-in proved [:page :cursor-after])))
     (is (= "90071992547409931" (get-in bounded [:coverage :oldest-id])))
     (is (= :unknown (get-in filtered [:coverage :reason])))
@@ -267,7 +271,7 @@
     (is (= (:uri row) (:external-id item)))
     (is (= 1 (get-in projected [:coverage :admitted-count])))))
 
-(deftest truly-empty-system-row-is-skipped-without-advancing-through-the-gap
+(deftest truly-empty-system-row-is-skipped-with-proved-source-frontier-retained
   (let [spec (assoc discord-spec :poll-mode :after)
         empty-row (message "90071992547409931" "")
         newer (message "90071992547409932" "valid newer experience")
@@ -277,7 +281,7 @@
     (is (= 2 (get-in projected [:coverage :fetched-count])))
     (is (= 1 (get-in projected [:coverage :admitted-count])))
     (is (= :unknown (get-in projected [:coverage :reason])))
-    (is (nil? (get-in projected [:page :cursor-after])))
+    (is (= "90071992547409932" (get-in projected [:page :cursor-after])))
     (is (= :encounter/invalid-shape
            (fixture/error-code #(social/project-page spec nil fixture/at
                                                      (:details (result spec [(dissoc empty-row :authorId) newer]))
@@ -309,3 +313,100 @@
            (await (failure-code! #(pull/pull-source!
                                    (pull-ports (fn [_tool _params] {:isError true}))
                                    fixture/owner bluesky-spec nil fixture/at)))))))
+
+
+(deftest overlong-media-references-are-omitted-without-losing-valid-encounters
+  (let [exact (apply str (repeat 512 "u")) oversized (str exact "u")
+        discord-row (assoc (message "90071992547409931" "retained Discord text")
+                           :embeds [{:url oversized :image {:url exact}}])
+        bsky-row (assoc (post "references" "retained Bluesky text")
+                        :embed {:external {:uri oversized} :images [{:fullsize exact}]})]
+    (doseq [[spec row text] [[discord-spec discord-row "retained Discord text"]
+                            [bluesky-spec bsky-row "retained Bluesky text"]]]
+      (let [page (social/project-page spec nil fixture/at (:details (result spec [row])) identity)
+            item (first (get-in page [:page :items]))]
+        (is (= text (:text item)))
+        (is (= [{:kind :image :reference exact}] (:media item)))))
+    (let [empty (assoc (post "oversized-only" "") :embed {:images [{:fullsize oversized}]})
+          valid (post "valid" "independent valid encounter")
+          page (social/project-page bluesky-spec nil fixture/at
+                                    (:details (result bluesky-spec [empty valid])) identity)]
+      (is (= [(:uri valid)] (mapv :external-id (get-in page [:page :items])))))))
+
+(deftest filtered-raw-identities-advance-only-with-complete-consistent-evidence
+  (let [spec (assoc discord-spec :poll-mode :after :limit 2)
+        checkpoint {:cursor-after "90071992547409930"}
+        older (message "90071992547409931" "permitted encounter")
+        ids [(:id older) "90071992547409932"]
+        details (assoc (:details (result spec [older])) :rawCount 2 :rawIds ids)
+        page (social/project-page spec checkpoint fixture/at details identity)
+        hidden (social/project-page spec checkpoint fixture/at (assoc details :messages []) identity)]
+    (is (= (last ids) (get-in page [:page :cursor-after])))
+    (is (= (last ids) (get-in page [:coverage :newest-id])))
+    (is (= :unknown (get-in page [:coverage :reason])))
+    (is (false? (get-in page [:coverage :complete?])))
+    (is (true? (get-in page [:coverage :overflow?])))
+    (is (= (last ids) (get-in hidden [:page :cursor-after])))
+    (is (empty? (get-in hidden [:page :items])))
+    (doseq [unproved [(dissoc details :rawIds) (dissoc details :rawCount)]]
+      (is (= (:cursor-after checkpoint)
+             (get-in (social/project-page spec checkpoint fixture/at unproved identity) [:page :cursor-after]))))
+    (doseq [invalid [(assoc details :rawIds [(first ids)])
+                     (assoc details :rawIds [(first ids) (first ids)])
+                     (assoc details :rawIds ["not-a-snowflake" (last ids)])
+                     (assoc details :rawIds ["90071992547409933" (last ids)])
+                     (assoc details :rawIds [(:cursor-after checkpoint) (first ids)])]]
+      (is (= :encounter/invalid-social-result
+             (fixture/error-code #(social/project-page spec checkpoint fixture/at invalid identity)))))))
+
+(deftest ^:async actual-discord-tool-preserves-raw-frontier-through-label-filtering
+  (let [ids ["90071992547409931" "90071992547409932"]
+        raw (mapv (fn [id] {:id id :channel_id (:scope-id fixture/source)
+                           :author {:id "discord-other"} :timestamp fixture/at
+                           :content (str "source content " id)}) ids)
+        spec (assoc discord-spec :poll-mode :after :limit 2)]
+    (with-redefs [discord-tools/discord-client! (fn [_] :fixture-client)
+                  discord-rest/channel-messages! (fn [_ _ _] raw)]
+      (doseq [visible-count [1 0]]
+        (with-redefs [discord-tools/attach-openplanner-labels! (fn [_ messages] (vec (take visible-count messages)))]
+          (let [tool (xtools/registered-tool (discord-tools/channel-messages-tool :fixture {}))
+                response (await ((:execute tool) "read-fixture" (:parameters (social/read-request spec nil)) nil nil))
+                projected (social/project-page spec nil fixture/at (:details response) identity)]
+            (is (= ids (get-in response [:details :rawIds])))
+            (is (= 2 (get-in response [:details :rawCount])))
+            (is (= visible-count (count (get-in response [:details :messages]))))
+            (is (= (last ids) (get-in projected [:page :cursor-after])))
+            (is (= visible-count (get-in projected [:coverage :admitted-count])))))))))
+
+(deftest ^:async durable-after-checkpoints-drain-consecutive-full-pages
+  (let [spec (assoc discord-spec :poll-mode :after :limit 2)
+        rows* (atom []) requests* (atom []) stored (storage-ports rows*)
+        pages [[(message "90071992547409931" "first") (message "90071992547409932" "")]
+               [(message "90071992547409933" "next outside information") (message "90071992547409934" "new")]]
+        ports (pull-ports (fn [_ params]
+                            (swap! requests* conj params)
+                            (result spec (nth pages (dec (count @requests*))))))
+        first-read (await (pull-and-admit! ports stored spec nil fixture/at))
+        checkpoint ((:latest-checkpoint! stored) fixture/owner (get-in first-read [:admission :stream-id]))
+        second-read (await (pull-and-admit! ports stored spec checkpoint "2026-10-07T10:03:00.000Z"))]
+    (is (= "90071992547409932" (:cursor-after checkpoint)))
+    (is (= "90071992547409932" (:after (second @requests*))))
+    (is (= "90071992547409934" (get-in second-read [:admission :cursor])))
+    (is (= 3 (count (filter #(= "character.encounter" (:kind %)) @rows*))))))
+
+
+(deftest ^:async label-service-failure-is-not-successful-empty-page-or-cursor-progress
+  (let [raw [{:id "90071992547409931" :channel_id (:scope-id fixture/source)
+              :author {:id "discord-other"} :timestamp fixture/at :content "retain for retry"}]
+        spec (assoc discord-spec :poll-mode :after)]
+    (with-redefs [discord-tools/discord-client! (fn [_] :fixture-client)
+                  discord-rest/channel-messages! (fn [_ _ _] raw)
+                  planner/client (fn [_] :fixture-label-client)
+                  planner/enabled? (fn [_] true)
+                  planner/record-labels! (fn [_ _] (throw (ex-info "Held label transport failure" {:fixture true})))]
+      (let [tool (xtools/registered-tool (discord-tools/channel-messages-tool :fixture {}))
+            rows* (atom [])
+            ports (pull-ports (fn [_ params] ((:execute tool) "read-fixture" params nil nil)))]
+        (is (= :encounter/social-label-read-failed
+               (await (failure-code! #(pull-and-admit! ports (storage-ports rows*) spec nil fixture/at)))))
+        (is (empty? @rows*))))))

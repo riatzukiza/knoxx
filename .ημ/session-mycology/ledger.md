@@ -295,3 +295,10 @@ Origin: `cephalon-character-automatic-scoped-graph-green-20261009`. p-efficiency
 - Evidence: .ημ/review-evidence/cephalon-character/personal-main-integration-green-20261009.json; SHA25632bdd331507c2baeb9c86a52cfa3c57b08fa3ca5b98aa13a414956a36ff270f9.
 - Scores: efficiency .82, friction .36, skill-candidate .19.
 - Outcome: extracted actual character disclosure and durable startup, repaired compiled fixture arities without changing test definitions/assertions. Final isolated1957tests10988assertions0fail0error and production0warnings; first repair attempt failure retained. Main warning functions/partial protocol fixtures unchanged; scoped0errors7inheritedwarnings is not whole-lint pass. Prior ledger histories and correction ordinals unchanged. Local inspection is not native approval; B1/B2/liveB3 and delivery remain incomplete. No spore incubated or promoted.
+
+## 2026-10-09T20:25:38.668188Z — ee10 review repairs RED
+
+- Origin: cephalon-ee10-review-repairs-red-20261009; receipt35 validated with the containing repository.
+- Evidence: .ημ/review-evidence/cephalon-character/ee10-review-repairs-red-20261009.json.
+- Scores: efficiency .72, friction .47, skill-candidate .19.
+- Outcome: actual four review defects reproduced; full RED1963tests11027assertions22fail1error and workflow5fail. Original fixture/operator mistakes retained separately; compiled multi-arity stubs and actual durable checkpoint port restored before final RED. Label transport failure cannot become successful cursor progress. Native hosted ee10 CI passed; finding-bearing COMMENTED review is not approval. B1/B2/liveB3 unfinished. No spore incubated or promoted.

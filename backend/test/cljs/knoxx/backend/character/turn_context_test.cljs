@@ -10,6 +10,8 @@
             [knoxx.backend.extern.agent-turn-prompt :as prompt]
             [knoxx.backend.extern.agent-turn-fixture :as turn-fixture]
             [knoxx.backend.infra.agent.hydration :as hydration]
+            [knoxx.backend.infra.agent.initial-admission :as initial-admission]
+            [knoxx.backend.infra.agent.turn-startup :as startup]
             [knoxx.backend.infra.agent.policy :as policy]
             [knoxx.backend.infra.agent.session :as sessions]
             [knoxx.backend.infra.agent.stream :as stream]
@@ -20,6 +22,7 @@
             [knoxx.backend.infra.clients.openplanner-mongo :as mongo]
             [knoxx.backend.infra.openplanner.memory :as memory]
             [knoxx.backend.infra.stores.session-titles :as titles]
+            [knoxx.backend.infra.stores.mongo-session-store :as session-store]
             [knoxx.backend.shape.agent :as agent]))
 
 (defn- capture-session [prompts*]
@@ -352,3 +355,34 @@
               (is (= 1 (count @prompts*))) (is (= 1 (count @logs*)))
               (is (str/includes? (first @prompts*) "Discord source"))
               (is (str/includes? (:content (first @logs*)) "Discord source")))))))
+
+
+(deftest ^:async disclosure-refusal-stops-startup-even-when-terminal-callback-returns
+  (doseq [refusal-at [1 2]]
+    (let [captures* (atom 0) prompts* (atom []) settled* (atom [])
+          session (capture-session prompts*)
+          spec {:actor-id "creative-actor" :system-prompt "Existing creator persona"}
+          params {:run-id "refusal-run" :session-id "refusal-session" :conversation-id "refusal-conversation"
+                  :started-ms 0 :started-at "2026-10-09T20:00:00.000Z" :model-id "fixture" :mode "direct"
+                  :agent-spec spec :seeded-messages [] :message "Choose"}]
+      (with-redefs [initial-admission/create-run! (fn ([_ _] nil) ([_ _ before!] (before!)))
+                    session-store/update-session! (fn ([_ _] nil) ([_ _ _] nil))
+                    character-context/capture-prompt! (fn [_ _ _ _ _]
+                                                       {:agent-spec spec :memory nil
+                                                        :refused? (= refusal-at (swap! captures* inc))})
+                    character-context/emit-inclusion! (fn [_ _ _ _] nil)
+                    character-context/retain-resources! (fn [_ _ _ _] nil)]
+        (let [reason (try
+                       (await (startup/start! nil {} params [nil nil [] session]
+                                  {:install-event-sink! (fn [_] :fixture-sink)
+                                   :publish-hydration! (fn [_ _ _ _ _] nil)
+                                   :finalize-failure! (fn [_ _ _ _ _ _ _ _ _ _ safe-spec error]
+                                                        (swap! settled* conj [safe-spec (:reason (ex-data error))])
+                                                        :terminal-callback-returned)
+                                   :prompt! (fn [& _] (swap! prompts* conj :unexpected-provider-prompt))}))
+                       nil
+                       (catch :default error (:reason (ex-data error))))]
+          (is (= :character-disclosure-authority-unavailable reason))
+          (is (= [[spec :character-disclosure-authority-unavailable]] @settled*))
+          (is (= refusal-at @captures*))
+          (is (empty? @prompts*)))))))
