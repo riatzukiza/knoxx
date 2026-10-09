@@ -156,3 +156,16 @@
   spore: none
   receipt-refs: local-character-human-verifier,local-character-qualified-successor
   note: Qualify actual supported SDK session/prompt/tool behavior before changing engines; keep native migration conditional. Current canonical grants must beat composed overrides at fetch, admission and reload. CLJS multi-arity test replacements must retain invocation arities; use one isolated human wrapper for the final full suite and compiler counter proof. No spore promoted or distributed in this session.
+
+- ts: 2026-10-08T22:03:19.000187Z
+  task: Return the Cephalon goal to automatic encounter graph recall
+  p-efficiency: 0.72
+  p-friction: 0.45
+  p-skill-candidate: 0.30
+  spore: none
+  receipt-refs: cephalon-character-automatic-recall-trace-source-20261008T2201
+  note: Inspect the selected product checkout before repeating a historical defect. Existing6e57 fixes result ordering and supplies recent encounter context, while actual compiled session filtering excludes sessionless encounters. Graph scope must precede traversal and feedback; count acceptance at actual runtime consumption. Historical receipts and other owned work retained. No spore created or promoted.
+
+## 2026-10-09T05:45:03.680763Z — Begin B3 graph recall from reviewed native admission
+
+Origin: `cephalon-character-automatic-graph-recall-red-20261009-source`. p-efficiency0.72/p-friction0.35/p-skill-candidate0.20. Native reviewed recall story admitted In Progress. Actual isolated full suite compiles new fixture with zero warnings and fails four expected assertions at real hydration and captured provider-session prompt. No graph call and sessionless seed/graph neighbor omitted. Existing recent admitted encounter still appears in the actual prompt; that constituent success does not prove graph recall. Graph transport response is synthetic and not upstream physical/scope/feedback proof. All prior owned append-only journals retained, no runtime/grant/provider/social/deployment mutation. Initial root-cwd lint lacked backend config and reported unresolved await; correct backend-cwd lint is0errors0warnings. No production edit. No spore incubated or promoted.
