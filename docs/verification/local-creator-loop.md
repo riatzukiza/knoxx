@@ -2,6 +2,17 @@
 
 License: GPL-3.0-or-later.
 
+The October 9 disclosure repair passed the actual isolated backend suite:
+1,776 tests, 9,143 assertions, zero failures or errors; its production server
+compiled with zero warnings. The original six review regressions and the added
+final-authority refusal regression pass. Exact output and frozen input hashes
+are preserved in
+[the GREEN evidence](../../.ημ/review-evidence/cephalon-character/disclosure-final-green-20261009.json).
+This proves the tested source candidate, not live intake, physical-field or mood
+behavior. Ten inherited function-length lint warnings and the existing combined
+file-size hook limitation remain explicit; changed functions have no warnings.
+The bounded admission inspection is local evidence, not native PR approval.
+
 This change gives the existing OpenHax character a small capability interface
 over its authorized social and memory tools. External encounters must be
 retained in the existing scoped event store and supplied to later turns so that

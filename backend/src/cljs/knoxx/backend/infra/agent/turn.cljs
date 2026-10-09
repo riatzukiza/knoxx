@@ -488,6 +488,11 @@
                 assistant-content-parts hydration memory-hydration
                 persisted-request-messages agent-spec completed-event))))))
 
+(defn- failure-resource-patch [passive memory]
+  (cond-> {}
+    passive (assoc :passiveHydration (select-keys passive [:query :tokens :database :elapsedMs :results]))
+    memory (assoc :memoryHydration (hydration/memory-hydration-projection memory))))
+
 (defn- ^:async finalize-turn-failure!
   [config state session run-id conversation-id session-id started-ms
    hydration memory-hydration persisted-request-messages agent-spec err]
@@ -498,16 +503,13 @@
     (finalize-run-trace-blocks! run-id "error")
     (let [failed-run (update-run! run-id
                                   (fn [run]
-                                    (let [resource-patch (cond-> {}
-                                                           hydration (assoc :passiveHydration (select-keys hydration [:query :tokens :database :elapsedMs :results]))
-                                                           memory-hydration (assoc :memoryHydration (hydration/memory-hydration-projection memory-hydration)))]
-                                      (-> run
-                                          (assoc :updated_at (now-iso)
-                                                 :status "failed"
-                                                 :total_time_ms (- (.now js/Date) started-ms)
-                                                 :reasoning (apply str @(:reasoning-chunks state))
-                                                 :error err-text)
-                                          (update :resources merge resource-patch)))))
+                                    (-> run
+                                        (assoc :updated_at (now-iso)
+                                               :status "failed"
+                                               :total_time_ms (- (.now js/Date) started-ms)
+                                               :reasoning (apply str @(:reasoning-chunks state))
+                                               :error err-text)
+                                        (update :resources merge (failure-resource-patch hydration memory-hydration)))))
           _ (when failed-run
               (openplanner-memory/index-run-memory! config failed-run extract-mentioned-devel-paths extract-mentioned-urls))]
       (append-run-event! run-id error-event)
@@ -983,8 +985,30 @@
   (if-not (:character-encounters agent-spec)
     {:agent-spec agent-spec :memory memory}
     (let [snapshot (await (encounters/disclosure-snapshot! runtime config agent-spec auth-context))]
+      (when-not (:auth-context snapshot)
+        (throw (ex-info "Character disclosure authority unavailable" {:reason :character-disclosure-authority-unavailable})))
       {:agent-spec (disclosed-agent-spec agent-spec snapshot)
        :memory (hydration/retain-current-graph-hydration memory (:graph-authority snapshot))})))
+
+(defn- ^:async settle-disclosure-refusal! [config session params persisted memory]
+  (let [{:keys [run-id conversation-id session-id started-ms agent-spec]} params
+        safe-spec (dissoc agent-spec :decision-encounters)
+        safe-memory (hydration/retain-current-graph-hydration memory nil)
+        state (stream/make-stream-state run-id conversation-id session-id (now-iso) started-ms xturn-node/random-uuid!)
+        error (ex-info "Character disclosure authority unavailable" {:reason :character-disclosure-authority-unavailable})]
+    ;; Nothing has been sent or registered as an active provider turn. Clear
+    ;; retained source material and reuse ordinary failed-run/session cleanup.
+    (emit-turn-hydration! run-id conversation-id session-id safe-spec nil safe-memory)
+    (await (finalize-turn-failure! config state session run-id conversation-id session-id started-ms
+                                   nil safe-memory persisted safe-spec error))))
+
+(defn- ^:async final-disclosure-or-refuse! [runtime config session params auth-context persisted memory]
+  (try
+    (await (refresh-prompt-disclosure! runtime config (:agent-spec params) auth-context memory))
+    ;; knoxx-lint/allow-silent-catch — replace the unavailable authority payload
+    ;; with one bounded refusal, without retaining its exception or cause.
+    (catch :default _error
+      (await (settle-disclosure-refusal! config session params persisted memory)))))
 
 (defn- process-hydration-results-and-start-turn!
   [runtime config run-id session-id conversation-id started-at started-ms model-id mode thinking-level
@@ -997,7 +1021,10 @@
                                  materialized-content-parts)
           persisted (prune-session-messages agent-spec (transcript/transcript-before-prompt session user-message agent-spec))
           _ (await (persist-running-session-update! session-id conversation-id run-id persisted))
-          disclosed (await (refresh-prompt-disclosure! runtime config agent-spec auth-context memory))]
+          disclosed (await (final-disclosure-or-refuse! runtime config session
+                                                        {:run-id run-id :conversation-id conversation-id :session-id session-id
+                                                         :started-ms started-ms :agent-spec agent-spec}
+                                                        auth-context persisted memory))]
       ;; All preparation awaits have settled. One final source snapshot owns
       ;; direct context and retained graph validation before logging/sending.
       (emit-turn-hydration! run-id conversation-id session-id (:agent-spec disclosed) passive (:memory disclosed))

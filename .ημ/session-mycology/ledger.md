@@ -237,3 +237,10 @@ Origin: `cephalon-character-automatic-scoped-graph-green-20261009`. p-efficiency
 - Evidence: .ημ/review-evidence/cephalon-character/final-authority-refusal-red-20261009.json
 - Scores: novelty .65, recurrence .29, generality .19.
 - Outcome: six original findings pass; new refusal settlement is causal RED and still requires repair. No spore incubated or promoted.
+
+## 2026-10-09T18:35:55.928831Z — disclosure and final refusal GREEN
+
+- Origin: cephalon-disclosure-final-green-20261009
+- Evidence: .ημ/review-evidence/cephalon-character/disclosure-final-green-20261009.json; .ημ/review-evidence/cephalon-character/independent-admission-6b6f5a8c-20261009.json
+- Scores: efficiency .78, friction .37, skill-candidate .19.
+- Outcome: all six original regressions and new refusal settlement pass in the actual isolated backend; production compile zero warnings. Atomic fencing/live activation remain unproven; independent admission inspection is local only. Baseline lint fixture path fault is retained and corrected. No spore incubated or promoted.
