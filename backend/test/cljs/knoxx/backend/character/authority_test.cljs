@@ -2,6 +2,8 @@
   (:require [cljs.test :refer [deftest is async]]
             [knoxx.backend.infra.character.authority :as authority]
             [knoxx.backend.infra.agent.tool-catalog :as catalog]
+            [knoxx.backend.infra.agent.event-policy-authority :as event-authority]
+            [knoxx.backend.infra.agent.turn :as turn]
             [knoxx.backend.infra.db.policy :as policy]
             [knoxx.backend.infra.stores.mongo-policy-roles :as mongo-roles]
             [knoxx.backend.infra.stores.mongo-policy-tools :as mongo-tools]))
@@ -55,6 +57,22 @@
              (is (empty? @reads*) "Invalid actor selection must be refused before stored-authority IO")))
          (catch :default error (is false (str error)))
          (finally (done)))))))
+
+(deftest ^:async turn-normalization-cannot-rebind-a-server-event-principal
+  (let [reads* (atom [])
+        authenticated (event-authority/authorized-context nil "authenticated-other" nil nil)
+        requested {:actor-id "creative-actor"}
+        normalized (#'turn/auth-context-for-agent-turn authenticated requested)]
+    (is (= "authenticated-other" (:actorId normalized)))
+    (is (event-authority/authorized? normalized))
+    (try
+      (await (authority/resolve-current!
+              {:resolve-agent-authority! (fn [scope] (swap! reads* conj scope) stored-context)}
+              normalized requested))
+      (is false "The spec relabeled a genuine server token as another actor")
+      (catch :default error
+        (is (= :invalid-actor-context (:reason (ex-data error))))))
+    (is (empty? @reads*))))
 
 (deftest focused-contract-ceiling-does-not-invent-stored-grants
   (with-redefs [catalog/allowed-tool-ids (fn [& _] #{"discord.read" "discord.send" "bash"})]

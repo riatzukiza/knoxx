@@ -323,3 +323,15 @@ Origin: `cephalon-character-automatic-scoped-graph-green-20261009`. p-efficiency
 - Evidence: .ημ/review-evidence/cephalon-character/194f-native-delivery-20261009.json; SHA25677e113195cb936bc950c9f525238b7f776c9e9c4e99c89e28703209a7ee520b5.
 - Scores: efficiency .81, friction .39, skill-candidate .18.
 - Outcome: ordinary194f successor published, native description and exact bindings read back, three inline/body findings settled with evidence; full111-input request pending after hourly allowance boundary. Actual CI sandbox429 failure remains mandatory; one failed-job retry is in progress. Scoped acknowledgements are not overall approval; six independent author settlements and prerequisite scope remain. Initial GitHub head propagation and intermittent host spawn failures were handled without duplicate mutation or rewriting history. Full committed37 receipt/reflection prefixes remain. This owned append/proof remains uncommitted for the next concrete change, with no observation-only push. B1/B2/liveB3 and deployment remain incomplete. No spore incubated/promoted.
+
+## 2026-10-09T21:34:07.521309Z — 194f text/actor regression RED
+
+- Origin: cephalon-194f-text-and-actor-red-20261009; receipt39.
+- Efficiency0.70/friction0.43/skill-candidate0.20. Correct compiled fixture arity before interpreting route failures. Preserve the distinct first attempts and corrected actual queue reachability.
+- This B3 increment protects external information and principal disclosure; field/mood/live outcome remains unfinished. No spore.
+
+## 2026-10-09T21:37:49.763815Z — token/intake principal continuity RED
+
+- Origin: cephalon-194f-token-and-intake-red-20261009; receipt40.
+- Efficiency0.74/friction0.36/skill-candidate0.18. Authenticate the context before comparing requested identity; carry it through every await instead of reconstructing it from an actor label.
+- Prior record39 corrects commit-message counters without rewriting history. No spore.

@@ -1,5 +1,7 @@
 (ns knoxx.backend.character.encounter-runtime-test
   (:require [cljs.test :refer [deftest do-report is]]
+            [knoxx.backend.infra.agent.event-policy-authority :as event-authority]
+            [knoxx.backend.infra.character.authority :as actor-authority]
             [clojure.string :as str]
             [knoxx.backend.domain.action.character-intake]
             [knoxx.backend.infra.character.intake-action :as intake]
@@ -244,11 +246,18 @@
   (await (account-await-revocation! #(swap! (:selected* %) assoc :sources []))))
 
 (deftest ^:async native-clock-style-intake-stores-two-sources-without-starting-a-provider-or-publication
-  (let [state (fixture)]
+  (let [state (fixture)
+        resolve-current! actor-authority/resolve-current!]
     (await (with-runtime-fixture!
             state
             (^:async fn [config]
-              (with-redefs [tooling/resolve-agent-contract (fn
+              (with-redefs [actor-authority/resolve-current!
+                            (fn [config context spec]
+                              (is (event-authority/authorized? context)
+                                  "Every authority checkpoint retains the server-minted intake principal")
+                              (is (= actor-id (:actorId context)))
+                              (resolve-current! config context spec))
+                            tooling/resolve-agent-contract (fn
                                                             ([_config _id] @(:selected* state))
                                                             ([_config _id requested-actor]
                                                              (when (= actor-id requested-actor) @(:selected* state))))]
