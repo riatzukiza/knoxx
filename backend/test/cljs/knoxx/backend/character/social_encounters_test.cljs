@@ -333,6 +333,39 @@
                                     (:details (result bluesky-spec [empty valid])) identity)]
       (is (= [(:uri valid)] (mapv :external-id (get-in page [:page :items])))))))
 
+(deftest oversized-source-text-does-not-poison-the-page-or-lose-raw-frontier
+  (let [exact (apply str (repeat 2000 "🪐"))
+        oversized (str exact "x")
+        spec (assoc discord-spec :poll-mode :after)
+        checkpoint {:cursor-after "90071992547409930"}
+        valid (message "90071992547409931" "later valid encounter")
+        too-long (message "90071992547409932" oversized)]
+    (is (= 4000 (count exact)))
+    (is (= 4001 (count oversized)))
+    (doseq [[source-spec rows retained-id] [[spec [too-long valid] (:id valid)]
+                                           [bluesky-spec [(post "too-long" oversized)
+                                                          (post "valid" "later valid encounter")]
+                                            (:uri (post "valid" "later valid encounter"))]]]
+      (let [projected (social/project-page source-spec checkpoint fixture/at
+                                           (:details (result source-spec rows)) identity)]
+        (is (= [retained-id] (mapv :external-id (get-in projected [:page :items]))))
+        (is (= :unknown (get-in projected [:coverage :reason])))
+        (is (= 2 (get-in projected [:coverage :fetched-count])))
+        (is (= 1 (get-in projected [:coverage :admitted-count])))
+        (when (= spec source-spec)
+          (is (= (:id too-long) (get-in projected [:page :cursor-after]))))))
+    (let [projected (social/project-page spec checkpoint fixture/at
+                                         (:details (result spec [(assoc too-long :content exact)])) identity)]
+      (is (= exact (get-in projected [:page :items 0 :text]))))
+    (let [row (assoc too-long :attachments [{:id "123" :contentType "image/png"}])
+          projected (social/project-page spec checkpoint fixture/at
+                                           (:details (result spec [row valid])) identity)
+          item (first (get-in projected [:page :items]))]
+      (is (= "" (:text item)) "No truncated quotation is represented as complete source text")
+      (is (= [{:kind :image :reference "discord:attachment:123"}] (:media item)))
+      (is (= (:id too-long) (:external-id item)))
+      (is (= (:id too-long) (get-in projected [:page :cursor-after]))))))
+
 (deftest filtered-raw-identities-advance-only-with-complete-consistent-evidence
   (let [spec (assoc discord-spec :poll-mode :after :limit 2)
         checkpoint {:cursor-after "90071992547409930"}

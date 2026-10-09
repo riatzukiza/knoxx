@@ -17,13 +17,14 @@
        (try
          (let [seen* (atom nil)
                config {:resolve-agent-authority! (fn [scope] (reset! seen* scope) stored-context)}
-               inbound {:org {:id "fixture-org"} :membership {:id "fixture-member"}
+               inbound {:actor {:binding "creative-actor"}
+                        :org {:id "fixture-org"} :membership {:id "fixture-member"}
                         :resourcePolicies [{:effect "allow" :scope "caller-ceiling"}]}
                result (await (authority/resolve-current! config inbound {:actor-id "creative-actor"}))]
            (is (= {:actor-id "creative-actor" :org-id "fixture-org" :membership-id "fixture-member"} @seen*))
            (is (= (:tool-policies stored-context) (:tool-policies result)))
            (is (= (:resourcePolicies inbound) (:resourcePolicies result)))
-           (await (authority/resolve-current! config {:orgId "fixture-org" :membershipId "fixture-member"}
+           (await (authority/resolve-current! config {:actorId "creative-actor" :orgId "fixture-org" :membershipId "fixture-member"}
                                              {:actor-id "creative-actor"}))
            (is (= {:actor-id "creative-actor" :org-id "fixture-org" :membership-id "fixture-member"} @seen*)
                "Flat request scope is preserved by the canonical auth codec")
@@ -34,6 +35,24 @@
                (await (authority/resolve-current! {:resolve-agent-authority! (fn [_] context)} inbound {:actor-id "creative-actor"}))
                (is false "Mismatched authority was accepted")
                (catch :default error (is (= :invalid-actor-context (:reason (ex-data error))))))))
+         (catch :default error (is false (str error)))
+         (finally (done)))))))
+
+(deftest current-authority-never-selects-an-actor-from-the-requested-spec
+  (async done
+    ((^:async fn []
+       (try
+         (doseq [context [nil {:org {:id "fixture-org"}}
+                          {:actor {:id "creative-actor" :binding nil}}
+                          (assoc stored-context :actor {:binding "authenticated-other"})]]
+           (let [reads* (atom [])
+                 config {:resolve-agent-authority! (fn [scope] (swap! reads* conj scope) stored-context)}]
+             (try
+               (await (authority/resolve-current! config context {:actor-id "creative-actor"}))
+               (is false "Missing or mismatched authenticated actor was accepted")
+               (catch :default error
+                 (is (= :invalid-actor-context (:reason (ex-data error))))))
+             (is (empty? @reads*) "Invalid actor selection must be refused before stored-authority IO")))
          (catch :default error (is false (str error)))
          (finally (done)))))))
 
