@@ -20,7 +20,9 @@ env:
   PUPPETEER_EXECUTABLE_PATH: /usr/bin/google-chrome
   # Knoxx uses the existing OpenPlanner SDK for the non-translation data plane.
   # Translation storage is Knoxx-owned ClojureScript and has no companion PR.
-  OPENPLANNER_REF: main
+  # Exact personal source candidate. Its synchronization parent and recall PR
+  # remain independent qualification gates; a pin is not deployment approval.
+  OPENPLANNER_REF: 137ba891a8d119716cfa603c6a3643d07acc30c3
 
 jobs:
   deployment-boundary:
@@ -62,7 +64,7 @@ jobs:
       - name: Checkout OpenPlanner SDK source
         uses: actions/checkout@v5
         with:
-          repository: open-hax/openplanner
+          repository: riatzukiza/openplanner
           ref: ${{ env.OPENPLANNER_REF }}
           path: _deps/openplanner
           persist-credentials: false
@@ -101,13 +103,13 @@ jobs:
             frontend/pnpm-lock.yaml
             _deps/openplanner/pnpm-lock.yaml
 
-      - name: Build linked OpenPlanner SDK
+      - name: Build linked OpenPlanner SDK and scoped graph recall
         run: |
           # Knoxx currently resolves this linked source through a sibling path:
           # backend/package.json -> ../../openplanner/packages/openplanner-sdk
           ln -sfn "$GITHUB_WORKSPACE/_deps/openplanner" "$GITHUB_WORKSPACE/../openplanner"
-          pnpm -C _deps/openplanner --filter @open-hax/openplanner-sdk... install --frozen-lockfile
-          pnpm -C _deps/openplanner --filter @open-hax/openplanner-sdk... run build
+          pnpm -C _deps/openplanner --filter @open-hax/openplanner-sdk... --filter @open-hax/openplanner-graph-claim-core... install --frozen-lockfile
+          pnpm -C _deps/openplanner --filter @open-hax/openplanner-sdk... --filter @open-hax/openplanner-graph-claim-core... run build
 
       - name: Install Knoxx packages
         run: |

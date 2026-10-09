@@ -46,6 +46,7 @@ jobs:
       BABASHKA_SHA256: 9ac1fe988d7001625b30ef3e3307e67f8545505a7cb49a4aa179f578115a3e09
       CONTRACTS_DIR: ${{ github.workspace }}/contracts
       PUPPETEER_EXECUTABLE_PATH: /usr/bin/google-chrome
+      OPENPLANNER_REF: 137ba891a8d119716cfa603c6a3643d07acc30c3
 
     steps:
       - name: Check out full repository history
@@ -70,7 +71,8 @@ jobs:
       - name: Check out the OpenPlanner sibling dependency
         uses: actions/checkout@v4
         with:
-          repository: open-hax/openplanner
+          repository: riatzukiza/openplanner
+          ref: ${{ env.OPENPLANNER_REF }}
           path: .sandbox-deps/openplanner
           persist-credentials: false
 
@@ -91,10 +93,10 @@ jobs:
         with:
           node-version: "22"
 
-      - name: Set up pnpm 9
+      - name: Set up pnpm 10 for the pinned source lockfile
         uses: pnpm/action-setup@v4
         with:
-          version: "9"
+          version: "10.20.0"
           run_install: false
 
       - name: Set up pinned Clojure CLI
@@ -109,6 +111,17 @@ jobs:
         run: |
           set -o pipefail
           pnpm install --frozen-lockfile 2>&1 | tee "$OUT/logs/install-root.log"
+
+      - name: Build the pinned OpenPlanner SDK and graph package
+        id: build_openplanner
+        if: always()
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -euo pipefail
+          pnpm -C .sandbox-deps/openplanner --filter @open-hax/openplanner-sdk... --filter @open-hax/openplanner-graph-claim-core... install --frozen-lockfile 2>&1 | tee "$OUT/logs/install-openplanner.log"
+          pnpm -C .sandbox-deps/openplanner --filter @open-hax/openplanner-sdk... --filter @open-hax/openplanner-graph-claim-core... run build 2>&1 | tee "$OUT/logs/build-openplanner.log"
+          git -C .sandbox-deps/openplanner rev-parse HEAD > "$OUT/metadata/openplanner-revision.txt"
 
       - name: Install backend dependencies
         id: install_backend
@@ -242,6 +255,7 @@ jobs:
         if: always()
         env:
           INSTALL_ROOT_OUTCOME: ${{ steps.install_root.outcome }}
+          BUILD_OPENPLANNER_OUTCOME: ${{ steps.build_openplanner.outcome }}
           INSTALL_BACKEND_OUTCOME: ${{ steps.install_backend.outcome }}
           INSTALL_FRONTEND_OUTCOME: ${{ steps.install_frontend.outcome }}
           BACKEND_TYPECHECK_OUTCOME: ${{ steps.backend_typecheck.outcome }}
@@ -263,7 +277,7 @@ jobs:
             node --version
             pnpm --version
             java -version
-            command -v clojure >/dev/null 2>&1 && clojure -Sdescribe || true
+            if command -v clojure >/dev/null 2>&1; then clojure -Sdescribe || true; fi
           } > "$OUT/metadata/tool-versions.txt" 2>&1
 
           generated_at="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
@@ -273,6 +287,8 @@ jobs:
             --arg ref "$GITHUB_REF" \
             --arg generated_at "$generated_at" \
             --arg install_root "$INSTALL_ROOT_OUTCOME" \
+            --arg build_openplanner "$BUILD_OPENPLANNER_OUTCOME" \
+            --arg openplanner_revision "$OPENPLANNER_REF" \
             --arg install_backend "$INSTALL_BACKEND_OUTCOME" \
             --arg install_frontend "$INSTALL_FRONTEND_OUTCOME" \
             --arg backend_typecheck "$BACKEND_TYPECHECK_OUTCOME" \
@@ -290,8 +306,10 @@ jobs:
               revision: $revision,
               ref: $ref,
               generated_at: $generated_at,
+              openplanner_revision: $openplanner_revision,
               outcomes: {
                 install_root: $install_root,
+                build_openplanner: $build_openplanner,
                 install_backend: $install_backend,
                 install_frontend: $install_frontend,
                 backend_typecheck: $backend_typecheck,
@@ -319,7 +337,10 @@ jobs:
               ],
               network_required_after_restore: true
             }' > "$OUT/manifest.json"
-          (cd "$OUT" && find . -type f ! -name SHA256SUMS -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS)
+          checksum_file="$(mktemp "$RUNNER_TEMP/sandbox-source-checksums.XXXXXXXX")"
+          trap 'rm -f "$checksum_file"' EXIT
+          (cd "$OUT" && find . -type f ! -name SHA256SUMS -print0 | sort -z | xargs -0 sha256sum) > "$checksum_file"
+          mv "$checksum_file" "$OUT/SHA256SUMS"
 
       - name: Package optional dependency cache
         if: github.event_name == 'workflow_dispatch' && inputs.include_dependency_cache
@@ -338,7 +359,10 @@ jobs:
           if [[ -d "$HOME/.gitlibs" ]]; then
             tar -czf "$DEPS_OUT/gitlibs.tar.gz" -C "$HOME" .gitlibs
           fi
-          (cd "$DEPS_OUT" && find . -type f ! -name SHA256SUMS -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS)
+          checksum_file="$(mktemp "$RUNNER_TEMP/sandbox-deps-checksums.XXXXXXXX")"
+          trap 'rm -f "$checksum_file"' EXIT
+          (cd "$DEPS_OUT" && find . -type f ! -name SHA256SUMS -print0 | sort -z | xargs -0 sha256sum) > "$checksum_file"
+          mv "$checksum_file" "$DEPS_OUT/SHA256SUMS"
 
       - name: Upload sandbox bundle
         if: always()
@@ -362,6 +386,7 @@ jobs:
         if: >-
           always() &&
           (steps.install_root.outcome == 'failure' ||
+           steps.build_openplanner.outcome == 'failure' ||
            steps.install_backend.outcome == 'failure' ||
            steps.install_frontend.outcome == 'failure' ||
            steps.backend_typecheck.outcome == 'failure' ||

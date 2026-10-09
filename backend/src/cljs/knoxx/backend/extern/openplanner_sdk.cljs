@@ -8,6 +8,7 @@
   (:require ["@open-hax/openplanner-sdk" :as sdk-mod]
             ["@open-hax/openplanner-graph-claim-core" :as graph-core]
             ["@open-hax/openplanner-sdk/mongo-vectors" :as mongo-vectors]
+            ["@open-hax/openplanner-sdk/embedding-text" :as embedding-text]
             [knoxx.backend.extern.json :as xjson]))
 
 (defonce ^:private sdk-promise* (atom nil))
@@ -53,7 +54,7 @@
                  :feedback {:status "not-requested" :attempted 0 :completed 0}}}
     (let [sdk (await (get-sdk!))
           resolve! (^:async fn [] (clj->js (await (resolve-current-authority!))))
-          reader (graph-core/createScopedMongoRecall sdk resolve!)]
+          reader (graph-core/createScopedMongoRecall sdk resolve! embedding-text/formatEmbeddingQueryText)]
       (xjson/to-cljs (await (reader (clj->js request)))))))
 
 (defn valid-scoped-graph-result?

@@ -177,3 +177,13 @@ Origin: `cephalon-character-automatic-graph-outage-red-20261009-source`. p-effic
 ## 2026-10-09T16:21:20.794793Z — Automatic scoped graph prompt integration
 
 Origin: `cephalon-character-automatic-scoped-graph-green-20261009`. p-efficiency0.63/p-friction0.53/p-skill-candidate0.25. Actual owning graph selection reaches the automatic turn and provider-session prompt in held fixtures. Preserve complete prior RED and stronger source-revocation negatives. Test replacements must retain compiled multi-arity signatures; variadic shape is insufficient at statically compiled calls. Full suite and isolated server compile pass; baseline lint and native/live/physical/mood gates remain explicit. No spore incubated or promoted.
+
+- ts: 2026-10-09T16:45:27.887567Z
+  session: /home/err/spaces/cephalon-local-character/knoxx
+  task: Consume owning query formatter and pin hosted dependency source
+  p-efficiency: 0.67
+  p-friction: 0.29
+  p-skill-candidate: 0.2
+  spore: none
+  receipt-refs: cephalon-knoxx-sdk-query-source-pin-green-20261009
+  note: Verify the same immutable source candidate locally and in prepared hosted setup; a pin never transfers its separate approval or release gates.

@@ -415,3 +415,19 @@ explicit later operator steps.
   `foresight/docs/verification/knoxx-local-social-restoration-20261006.md`.
   Its earlier preparation statements are historical; the fifteen-minute
   schedule was read directly from the current host overlay.
+# Pinned owning recall source and query formatting
+
+The hosted CI and sandbox source checkout both pin personal OpenPlanner candidate
+`137ba891a8d119716cfa603c6a3643d07acc30c3`, and build its SDK and graph package
+before compiling Knoxx. Its separate synchronization and scoped recall reviews
+remain delivery prerequisites; this immutable pin is not a qualification claim.
+Sandbox metadata retains the selected revision and dependency-build outcome,
+and a failed build fails the collection's final result.
+
+The named SDK extern passes the existing SDK `formatEmbeddingQueryText` function
+to the owning graph factory. Prefix/template/trim behavior is exercised against
+the actual SDK formatter in the source regression; no local copy of formatting
+semantics or request-controlled formatter is added. Local hermetic and production
+checks now use the SDK built from this owning candidate alongside its released
+graph ESM. These checks start no service and establish no live graph/mood/field
+or social-output evidence.
