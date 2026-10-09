@@ -129,7 +129,7 @@
 
 (defn- reference
   [kind value label]
-  (when-let [value (nonblank value)]
+  (when-let [value (some-> (nonblank value) (#(when (<= (count %) 512) %)))]
     (cond-> {:kind kind :reference value}
       ;; Optional long source descriptions are omitted rather than misquoted as complete.
       (and (nonblank label) (<= (count label) 128)) (assoc :label label))))
@@ -233,11 +233,29 @@
     rows))
 
 (defn- snowflake-extrema
-  [items]
-  (let [ids (map :external-id items)]
-    (when (every? snowflake? ids)
-      (let [ordered (sort-by (juxt count identity) ids)]
-        {:oldest-id (first ordered) :newest-id (last ordered)}))))
+  [ids]
+  (when (every? snowflake? ids)
+    (let [ordered (sort-by (juxt count identity) ids)]
+      {:oldest-id (first ordered) :newest-id (last ordered)})))
+
+(defn- read-identities
+  [spec details rows raw-known? raw-count]
+  (when (= "discord" (get-in spec [:source :kind]))
+    (let [supplied? (contains? details :rawIds)
+          row-ids (mapv :id rows)
+          ids (if supplied? (:rawIds details) row-ids)
+          valid? (and (vector? ids) (<= (count ids) (source-limit spec))
+                      (every? snowflake? ids) (= (count ids) (count (set ids)))
+                      (every? (set ids) row-ids)
+                      (or (not supplied?) (not raw-known?) (= raw-count (count ids))))]
+      (when (and (or supplied? (= :after (:poll-mode spec))) (not valid?))
+        (throw (ex-info "Discord result has inconsistent raw source identity evidence"
+                        {:code :encounter/invalid-social-result})))
+      ;; Without a separate unfiltered ID vector, visible rows prove the frontier
+      ;; only when the source count says no rows were removed. Item admission is
+      ;; independent: an empty system row still has a read identity.
+      {:observed-ids ids
+       :raw-ids (when (and raw-known? valid? (= raw-count (count ids))) ids)})))
 
 (defn- assert-read-count!
   [details returned limit]
@@ -248,22 +266,24 @@
                     {:code :encounter/invalid-social-result}))))
 
 (defn- read-evidence
-  [spec details returned]
-  (let [limit (source-limit spec)
+  [spec details rows]
+  (let [returned (count rows)
+        limit (source-limit spec)
         _count-evidence (assert-read-count! details returned limit)
         raw-count (:rawCount details)
         raw-known? (and (integer? raw-count) (<= 0 raw-count limit))
         fetched (if raw-known? raw-count returned)
         provider-cursor (nonblank (:cursor details))]
-    {:raw-count raw-count :raw-known? raw-known? :limit limit
-     :fetched fetched :provider-cursor provider-cursor
-     :overflow? (or (= fetched limit) (boolean provider-cursor))}))
+    (merge {:raw-count raw-count :raw-known? raw-known? :limit limit
+            :fetched fetched :provider-cursor provider-cursor
+            :overflow? (or (= fetched limit) (boolean provider-cursor))}
+           (read-identities spec details rows raw-known? raw-count))))
 
 (defn- assert-after-result!
-  [spec checkpoint items]
+  [spec checkpoint ids]
   (when (and (= :after (:poll-mode spec)) (:cursor-after checkpoint)
-             (some #(not (pos? (compare [(count (:external-id %)) (:external-id %)]
-                                       [(count (:cursor-after checkpoint)) (:cursor-after checkpoint)]))) items))
+             (some #(not (pos? (compare [(count %) %]
+                                       [(count (:cursor-after checkpoint)) (:cursor-after checkpoint)]))) ids))
     (throw (ex-info "Discord after result includes an older source identity"
                     {:code :encounter/invalid-social-result}))))
 
@@ -283,10 +303,9 @@
            extrema)))
 
 (defn- next-cursor
-  [spec checkpoint evidence items extrema]
-  (let [{:keys [raw-count raw-known? limit]} evidence
-        advance? (and (= :after (:poll-mode spec)) raw-known? (< raw-count limit)
-                      (= raw-count (count items)) (:newest-id extrema))]
+  [spec checkpoint evidence extrema]
+  (let [advance? (and (= :after (:poll-mode spec)) (seq (:raw-ids evidence))
+                      (:newest-id extrema))]
     (if advance? (:newest-id extrema) (:cursor-after checkpoint))))
 
 (defn project-page
@@ -299,13 +318,13 @@
                     {:code :encounter/missing-instant-adapter})))
   (let [rows (source-rows spec details)
         items (->> rows (keep #(normalized-item spec % normalize-instant)) vec)
-        _after-evidence (assert-after-result! spec checkpoint items)
-        evidence (read-evidence spec details (count rows))
+        evidence (read-evidence spec details rows)
+        _after-evidence (assert-after-result! spec checkpoint (:observed-ids evidence))
         extrema (if (= "discord" (get-in spec [:source :kind]))
-                    (snowflake-extrema items) {:oldest-id nil :newest-id nil})
+                    (snowflake-extrema (:observed-ids evidence)) {:oldest-id nil :newest-id nil})
         coverage (coverage-report spec evidence items extrema)
         page {:source (:source spec) :items items :cursor-before (:cursor-after checkpoint)
-              :cursor-after (next-cursor spec checkpoint evidence items extrema)
+              :cursor-after (next-cursor spec checkpoint evidence extrema)
               :observed-at observed-at :coverage coverage}]
     (law/assert-shape! shape/Page page :social-page)
     {:status :observed :page page :coverage coverage}))

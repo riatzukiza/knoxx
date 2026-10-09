@@ -49,7 +49,10 @@
     ;; and hydration publication have settled; terminal cleanup owns this sink.
     (character-context/retain-resources! run-id safe-spec nil safe-memory)
     (await (finalize-failure! config state session run-id conversation-id session-id started-ms
-                                   nil safe-memory persisted safe-spec error))))
+                                   nil safe-memory persisted safe-spec error))
+    ;; Public callbacks may return normally. Refusal still terminates startup;
+    ;; a callback rejection above preserves its own failure instead.
+    (throw error)))
 
 (defn- ^:async final-disclosure-or-refuse! [finalize-failure! runtime config session params auth-context persisted memory]
   (let [disclosed (await (character-context/capture-prompt! runtime config (:agent-spec params) auth-context memory))]

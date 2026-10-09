@@ -77,3 +77,35 @@ head, independently qualified OpenPlanner source, and required conversation
 settlement. No runtime, grant, model, social or deployment change accompanies
 this integration. A fixture PASS does not establish deployed creator behavior;
 the accepted B1/B2/live B3 slice is still incomplete.
+
+
+The ee10 integrated head's actual hosted full CI37983771643 succeeded. Its
+completed native review5474890467 identified three inline defects and one body
+refusal-boundary item; COMMENTED grants no approval. REDb398e101 precedes the
+new source-frontier/media/refusal/manifest repairs. Full and filtered Discord
+pages now use complete raw-ID evidence while classification transport failures
+remain retryable and cannot create progress. Both disclosure-refusal stages stop
+a normally returning finalizer before prompt IO. Bundle provenance distinguishes
+observed checkout HEAD from an explicitly identified requested-pin fallback.
+The additional Discord-tool file scope carries an inherited lint length error
+and warning. Preserve all earlier receipts, including the original rejected
+25/26 and correction27. The OpenPlanner import scope decision remains pending;
+B1 physical field, B2 consumed mood, live B3, independent conversation settlement,
+new-head hosted qualification and deployment remain unfinished.
+
+The first final local suite retained one Chromium SVG protocol timeout, with
+1,964 tests / 11,035 assertions / one failure / zero errors. Concurrent tool
+spawn `EAGAIN` is observed; a shared cause remains inferred. No renderer change
+or test suppression was made. A single isolated full-suite retry is distinct.
+The later exact-ee10 PR CI37984817672 failed its migration infrastructure
+declaration gate; earlier manual CI37983771643 success does not supersede it.
+The backend/CI infrastructure change touches no frontend path and requires the
+native body's explicit declaration plus fresh PR-triggered qualification.
+
+Final isolated retry: 1,964 tests / 11,036 assertions / zero failures/errors,
+902 files / 901 compiled / zero warnings /16PASS0FAIL. Final production:
+559 files / 520 compiled / zero warnings /2PASS0FAIL. Actual workflow finalizer:
+five passing cases. The original browser timeout remains distinct failed
+evidence. Inherited Discord length lint1error1warning is unchanged in severity
+and owning forms; four other CLJS files are clean. New-head hosted review/CI,
+independent conversation settlement and prerequisite scope remain obligations.

@@ -316,6 +316,13 @@ jobs:
           } > "$OUT/metadata/tool-versions.txt" 2>&1
 
           generated_at="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          openplanner_revision="$OPENPLANNER_REF"
+          openplanner_revision_source="requested-pin-fallback"
+          observed_revision="$(cat "$OUT/metadata/openplanner-revision.txt" 2>/dev/null || true)"
+          if [[ "$observed_revision" =~ ^[0-9a-f]{40}$ ]]; then
+            openplanner_revision="$observed_revision"
+            openplanner_revision_source="observed-checkout"
+          fi
           jq -n \
             --arg repository "$GITHUB_REPOSITORY" \
             --arg revision "$GITHUB_SHA" \
@@ -323,7 +330,9 @@ jobs:
             --arg generated_at "$generated_at" \
             --arg install_root "$INSTALL_ROOT_OUTCOME" \
             --arg build_openplanner "$BUILD_OPENPLANNER_OUTCOME" \
-            --arg openplanner_revision "$OPENPLANNER_REF" \
+            --arg openplanner_revision "$openplanner_revision" \
+            --arg openplanner_requested_revision "$OPENPLANNER_REF" \
+            --arg openplanner_revision_source "$openplanner_revision_source" \
             --arg install_backend "$INSTALL_BACKEND_OUTCOME" \
             --arg install_frontend "$INSTALL_FRONTEND_OUTCOME" \
             --arg backend_typecheck "$BACKEND_TYPECHECK_OUTCOME" \
@@ -345,6 +354,8 @@ jobs:
               ref: $ref,
               generated_at: $generated_at,
               openplanner_revision: $openplanner_revision,
+              openplanner_requested_revision: $openplanner_requested_revision,
+              openplanner_revision_source: $openplanner_revision_source,
               outcomes: {
                 install_root: $install_root,
                 build_openplanner: $build_openplanner,

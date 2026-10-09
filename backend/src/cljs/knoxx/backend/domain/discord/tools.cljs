@@ -155,7 +155,9 @@
                good-first-then-not-bad))
         (catch :default error
           (.warn js/console "[discord-tools] OpenPlanner label lookup failed; failing closed to avoid surfacing crossed/bad messages" error)
-          [])))))
+          ;; Existing callers retain the fail-closed empty vector. Source intake
+          ;; additionally distinguishes failed classification from exclusions.
+          (with-meta [] {:label-read-failed? true}))))))
 
 (defn ^:async discord-fetch-channel-messages!
   [runtime _config channel-id {:keys [limit before after around]}]
@@ -169,9 +171,15 @@
         messages (->> (or payload [])
                       (map discord-message->map)
                       vec)]
+    ;; Validate the whole raw read before labels can hide a foreign row whose
+    ;; identity would otherwise contaminate the authorized source frontier.
+    (when (some #(not= channel-id (:channelId %)) messages)
+      (throw (ex-info "Discord raw result contains a different or missing channel"
+                      {:code :encounter/source-result-conflict})))
     {:messages messages
      :count (count messages)
      :rawCount (count messages)
+     :rawIds (mapv :id messages)
      :channelId channel-id}))
 
 (defn ^:async discord-scroll-channel-messages!
@@ -558,6 +566,9 @@
                                                                                    :around (pget params :around)}))
           messages (await (attach-openplanner-labels! config (:messages result)))
           filtered (assoc result :messages messages :count (count messages))]
+      (when (:label-read-failed? (meta messages))
+        (throw (ex-info "Discord source labels could not be read; preserve the previous cursor"
+                        {:code :encounter/social-label-read-failed})))
       (tool-text-result (discord-messages-text (str "Fetched " (:count filtered) " non-bad messages from channel " channel-id ".") messages)
                         filtered))))
 

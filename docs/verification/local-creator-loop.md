@@ -583,3 +583,99 @@ separate gates. The ledger union preserves the entire original feature prefix
 and appends the exact incoming main suffix after their literal common prefix.
 Original rejected receipts25/26 and the append correction27 remain unchanged;
 no whole-journal schema pass is claimed. B1/B2/live B3 remain unfinished.
+
+
+## Review repairs: fresh source frontier and refusal termination — 2026-10-09 UTC
+
+Hosted full CI `37983771643` completed successfully at
+`ee10ad107ba9e2ead2f2b5f8cfe6ab272b53f02d`: backend 1,957 tests / 10,988
+assertions, real-server e2e 23 / 118, frontend 456 / 2,045, each with zero
+failures and errors. The complete backend/frontend job lasted 12m47s.
+CodeRabbit review `5474890467` then completed on that same head with three
+inline findings and one review-body finding. Its finding-bearing `COMMENTED`
+state supplies no approval. The committed RED checkpoint `b398e101` preserves
+that native evidence and the failing regression output before production edits.
+
+The cursor now follows the proved raw Discord read, independently of how many
+encounters survive projection. A full page or valid empty system row can advance
+an explicit `:after` poll. The actual registered tool retains unfiltered IDs
+before label filtering. Filtered pages can advance only with complete, bounded,
+unique snowflake IDs matching the known raw count and containing every visible
+row ID. Every hidden and visible ID must be newer than the existing cursor.
+Unknown counts or incomplete identity evidence retain the previous cursor;
+malformed/inconsistent evidence is refused. Numeric IDs are ordered as decimal
+strings without floating-point conversion. Coverage stays incomplete, and
+full pages retain their overflow flag. The existing durable admission boundary
+still confirms retained records and the checkpoint before returning progress.
+
+Label lookup failure remains distinct from deliberate label exclusions: the
+channel tool reports a bounded failure and cannot append encounters or cursor
+progress. Other existing label callers retain their fail-closed empty vector.
+Optional media references over 512 characters are omitted without truncating
+identities or losing valid text, reactions, other media or later page rows.
+A media-only item with no remaining meaningful content remains inadmissible.
+
+Both disclosure-refusal routes now throw after their common terminal callback
+settles, including when that callback returns normally. A callback rejection
+preserves its own failure. The current production callback already throws;
+the new public-boundary fixture covers normally returning callbacks at both
+initial-publication and final-disclosure stages with zero provider prompts.
+
+The sandbox manifest uses the recorded actual checkout HEAD when it is a valid
+40-hex revision. Missing, empty, unreadable or invalid metadata falls back to
+the selected pin with explicit `requested-pin-fallback` provenance; the requested
+revision is also retained separately. Five isolated cases execute the actual
+workflow finalizer and verify its generated manifest and checksums.
+
+The additional channel-tool scope exposes the pre-existing Discord file-length
+lint error and warning. The same severities occur on its unchanged committed
+baseline; the forms where they are reported remain unchanged. The other four
+changed CLJS files have zero lint errors and warnings. Compiler results and
+this recorded lint limitation remain separate evidence. Source prerequisite
+qualification, current-head hosted CI/review, required conversation settlement,
+and B1/B2/live B3 remain outstanding. These repairs change no live runtime,
+source grants, model, board state, publication or deployment.
+
+
+A follow-up independent inspection identified a hidden wrong-channel row that
+could contaminate raw-ID evidence after filtering. The second RED checkpoint
+`55a0529b` exercises the actual registered tool with foreign and missing-channel
+rows, producing 1,964 tests / 11,036 assertions / four failures / zero errors.
+The raw fetch boundary now verifies every row's channel before retaining IDs or
+filtering. A rejected read writes no encounter or checkpoint.
+
+Receipt36 appends a precise correction to35: the initial supplemental label
+failure assertion had a stale compiled client fixture shape and did not reach
+label transport. Its corrected one/two-arity fixture now counts the actual
+failing label call once, and proves no durable writes. All earlier receipts and
+raw failed attempts remain unchanged. The native four finding regressions and
+the hidden-channel refinement retain their own actual RED evidence.
+
+The first final suite attempt executed 1,964 tests / 11,035 assertions with
+one failure and zero errors: the existing Chromium SVG smoke test raised
+`ProtocolError: Network.enable timed out`. During that interval the tool host
+also refused new processes with `EAGAIN`; a shared resource cause is an
+inference, not a proved SVG defect. No browser code, timeout or assertion was
+changed. The failed output remains retained separately from the isolated retry.
+
+A later PR-triggered CI run `37984817672` failed on exact `ee10ad1` at the
+frontend migration ratchet: the unchanged legacy count was 272 and the PR body
+lacked its infrastructure declaration. Workflow-dispatch run `37983771643`
+did succeed, but does not erase this later applicable failure. The owning law
+explicitly includes `.github/workflows/ci.yml` in its migration surface. This
+change adds backend graph dependency/build infrastructure and no frontend
+paths; the native description must declare `Migration infrastructure: yes`
+with that reason. Non-growth and native-source laws remain required. A fresh
+PR-triggered run on the repaired head must verify the actual declaration path.
+
+The final unchanged source's isolated retry passed **1,964 tests / 11,036
+assertions / zero failures / zero errors**, compiling 902 files / 901 compiled
+with zero warnings and passing all16 wrapper checks. Final production typecheck
+passed 559 files / 520 compiled / zero warnings and both wrapper checks. All
+five actual workflow-finalizer cases passed. The dedicated snapshots were
+cleaned and owned command sessions reaped. The prior Chromium timeout remains
+failed evidence; this successful retry does not rewrite it. Five-file lint
+retains one inherited Discord length error and one warning at byte-identical
+owning forms; the other four files have zero errors/warnings. Actionlint and
+diff hygiene pass. These are local source gates, not new-head hosted approval
+or live B1/B2/B3 completion.
