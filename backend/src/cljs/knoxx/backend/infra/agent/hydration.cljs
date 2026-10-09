@@ -148,15 +148,22 @@
     (not (fn? resolve-current-authority!)) (graph-failure :authority-unavailable)
     :else
     (try
-      (let [binding* (atom nil)
+      (let [binding* (atom ::unresolved-authority-binding)
+            changed?* (atom false)
             resolve! (^:async fn []
-                       (let [authority (await (resolve-current-authority!))]
-                         (reset! binding* (graph-authority-binding authority))
+                       (let [authority (await (resolve-current-authority!))
+                             binding (graph-authority-binding authority)]
+                         (if (= ::unresolved-authority-binding @binding*)
+                           (reset! binding* binding)
+                           (when (not= @binding* binding)
+                             (reset! changed?* true)))
                          authority))
             request {:version 1 :recall-id (str "passive-graph:" (crypto/sha256-hex (pr-str [conversation-id message])))
                      :query message :k k :fetch 18 :max-nodes 64 :max-cost 4 :feedback :none}
             result (await (openplanner-client/scoped-graph-recall! client request resolve!))]
-        (graph-selection result @binding*))
+        (if @changed?*
+          (graph-failure :authority-changed)
+          (graph-selection result @binding*)))
       ;; knoxx-lint/allow-silent-catch — never leak source/credential exception
       ;; messages into prompt or telemetry; the owning port supplies safe codes.
       (catch :default _error (graph-failure :transport-error)))))

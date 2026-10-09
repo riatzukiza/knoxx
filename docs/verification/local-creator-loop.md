@@ -460,7 +460,7 @@ explicit later operator steps.
   `foresight/docs/verification/knoxx-local-social-restoration-20261006.md`.
   Its earlier preparation statements are historical; the fifteen-minute
   schedule was read directly from the current host overlay.
-# Pinned owning recall source and query formatting
+## Pinned owning recall source and query formatting
 
 The hosted CI and sandbox source checkout both pin personal OpenPlanner candidate
 `a09894c48760748b7fca7bf9e94f36471f599a47`, and build its SDK and graph package
@@ -479,9 +479,9 @@ or social-output evidence.
 
 ### Native review artifact configuration
 
-The caller consumes the qualified receiver45ec644c2d15ed511e9bc1e797d1b4073b63dbfc with the explicit economical MiMo route and frozen Muse/skill sources. Only generated, hash-verified `/.review-context/` and `/.opencode/review-evidence/` artifacts are ignored. Tracked files and unexpected source remain visible to the clean-tree guards. The root CodeRabbit configuration explicitly includes dependency lockfiles; actual native selected inputs must confirm that coverage. Neither configuration nor passing functional checks is reviewer approval.
+The caller consumes the qualified receiver 45ec644c2d15ed511e9bc1e797d1b4073b63dbfc with the explicit economical MiMo route and frozen Muse/skill sources. Only generated, hash-verified `/.review-context/` and `/.opencode/review-evidence/` artifacts are ignored. Tracked files and unexpected source remain visible to the clean-tree guards. The root CodeRabbit configuration explicitly includes dependency lockfiles; actual native selected inputs must confirm that coverage. Neither configuration nor passing functional checks is reviewer approval.
 
-The new OpenPlanner source pin adds only review configuration/provenance atop the actual137 SDK/graph Green. Application and package build inputs are byte-identical; the retained executions at137 remain labeled as such. Current native review, current hosted integration and the separate upstream source qualification remain required.
+The new OpenPlanner source pin adds only review configuration/provenance atop the actual 137 SDK/graph Green. Application and package build inputs are byte-identical; the retained executions at 137 remain labeled as such. Current native review, current hosted integration and the separate upstream source qualification remain required.
 
 ## Native review regressions — 2026-10-09 UTC
 
@@ -504,3 +504,32 @@ Their inputs and exact outputs are retained in
 `.ημ/review-evidence/cephalon-character/native-review-regressions-red-20261009.json`.
 Production repair and a fresh GREEN remain required; no live B3, physical-field,
 mood, source qualification or deployment is established by this RED.
+
+## Native review repairs verified — 2026-10-09 UTC
+
+The repair candidate preserves the first graph authority binding, including
+an observed nil, and refuses any later drift before converting the result to
+prompt memory. A return to the first binding does not clear the refusal. Custom
+tool validators must return exactly true; existing Malli precedence stays intact.
+The sibling role-update route now consumes the canonical membership organization
+codec while preserving permission, cross-org, missing-member and admin controls.
+Its helper extraction clears the touched function-length warning. Sandbox source
+revision capture precedes dependency work; both actual extracted-step install
+and build failure probes retain the observed HEAD and still return exit25.
+
+The isolated full backend suite passes 1,787 tests / 9,278 assertions with zero
+failures, errors or compiler warnings. Production compilation passes 506 files /
+468 compiled with zero compiler warnings. Assertions are unchanged from RED;
+the successful role path executes one extra positive assertion, explaining the
+9,277-to-9,278 difference. Changed-file/test lint has zero errors and only the
+unchanged 32-line multimodal-message warning; no touched function adds warnings.
+Fresh dependency analysis resolves the three stale graph-test references without
+suppression. Actionlint and diff hygiene pass.
+
+Exact outputs, hashes and the bounded independent parent-delta inspection are in
+`.ημ/review-evidence/cephalon-character/native-review-regressions-green-20261009.json`.
+That inspection did not inspect the agent’s own hydration/mode repairs and
+supplies no native approval. Current native full CI and new-head review remain
+required. Receipt27 corrects the rejected timestamp/kind of receipts25/26 by
+append; both historical rejected originals remain and are not claimed valid.
+B1/B2/live B3, atomic fencing, source qualification and deployment remain unproved.

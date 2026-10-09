@@ -29,7 +29,7 @@
 (defn- valid-tool-arguments! [tool arguments]
   (when-not (cond
               (:parameters-schema tool) (m/validate (:parameters-schema tool) arguments)
-              (:validate-arguments tool) ((:validate-arguments tool) arguments)
+              (:validate-arguments tool) (true? ((:validate-arguments tool) arguments))
               :else false)
     (throw (ex-info "Capability arguments failed trusted schema validation"
                     {:reason (if (or (:parameters-schema tool) (:validate-arguments tool))

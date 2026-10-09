@@ -50,11 +50,12 @@ without claiming visual interpretation. Direct encounter context uses a bounded
 recent window, prioritizes external observations by actual source time, and
 starts with distinct exact source scopes. Labeled self-output uses spare budget
 rather than crowding out available external experience. Related vector recall
-still retrieves authorized session/action
-memory; sessionless historical encounter retrieval, graph visibility and full
-physical-field evolution remain separate unfinished work. `graph_query` is not
-exposed by these modes. Empty default character projections mean no field state
-was loaded, rather than invented mood evolution.
+still retrieves authorized session/action memory. The current source also adds
+automatic scoped graph recall over eligible sessionless encounters, with a
+traversal trace in the assembled prompt. The explicit `graph_query` tool remains
+unexposed by these modes. Live B3 behavior is unverified; full physical-field
+evolution remains unfinished. Empty default character projections mean no field
+state was loaded, rather than invented mood evolution.
 
 The native Turn Processor files in this directory are an unqualified inactive
 draft, retained after migration became conditional. No SDK defect requiring

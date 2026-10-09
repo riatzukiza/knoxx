@@ -119,9 +119,9 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          git -C .sandbox-deps/openplanner rev-parse HEAD > "$OUT/metadata/openplanner-revision.txt"
           pnpm -C .sandbox-deps/openplanner --filter @open-hax/openplanner-sdk... --filter @open-hax/openplanner-graph-claim-core... install --frozen-lockfile 2>&1 | tee "$OUT/logs/install-openplanner.log"
           pnpm -C .sandbox-deps/openplanner --filter @open-hax/openplanner-sdk... --filter @open-hax/openplanner-graph-claim-core... run build 2>&1 | tee "$OUT/logs/build-openplanner.log"
-          git -C .sandbox-deps/openplanner rev-parse HEAD > "$OUT/metadata/openplanner-revision.txt"
 
       - name: Install backend dependencies
         id: install_backend

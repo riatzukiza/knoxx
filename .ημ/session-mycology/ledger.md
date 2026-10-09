@@ -258,3 +258,17 @@ Origin: `cephalon-character-automatic-scoped-graph-green-20261009`. p-efficiency
 - Evidence: receipt ordinal25 timestamp rejection; correction ordinal26 retains the same UTC instant in the accepted Z form.
 - Scores: efficiency .79, friction .31, skill-candidate .19.
 - Outcome: historical bytes preserved. Original25 remains invalid under the timestamp grammar; correction26 is independently validated. No spore incubated or promoted.
+
+## 2026-10-09T19:05:11.930843Z — verified receipt schema correction
+
+- Origin: cephalon-native-review-regressions-red-schema-correction-20261009
+- Evidence: canonical validator rejected25 timestamp and26 unknown kind; candidate27 validated before append, PASS/0errors.
+- Scores: efficiency .76, friction .36, skill-candidate .19.
+- Outcome: use canonical decision kind and normalized same UTC instant. Supersedes the prior unsupported validation claim for26; all prior bytes retained. No spore incubated or promoted.
+
+## 2026-10-09T19:12:39.608868Z — native review findings GREEN
+
+- Origin: cephalon-native-review-findings-green-20261009
+- Evidence: .ημ/review-evidence/cephalon-character/native-review-regressions-green-20261009.json.
+- Scores: efficiency .83, friction .29, skill-candidate .19.
+- Outcome: complete actual backend1787/9278/0fail0error; production0warnings; sandbox failure identity retained. Parent-only independent inspection clean; not native approval. Fresh source review/CI and live links remain owed. No spore incubated or promoted.
