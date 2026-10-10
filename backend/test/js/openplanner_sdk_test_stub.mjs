@@ -2,6 +2,8 @@
 // Mirrors the SDK surface used by knoxx.backend.extern.openplanner-sdk with
 // canned data so extern conversion tests never touch MongoDB. ESM with named
 // exports, matching the real package's module shape.
+import { createHash } from "node:crypto";
+
 export const __calls = [];
 const calls = __calls;
 const ingestedEvents = [];
@@ -30,6 +32,7 @@ function scopedGraphCollection(name) {
             ? records.map((row, i) => ({
                 _id: `${row.id}::stub-embedding-model::3::0`, node_id: row.id,
                 source_event_id: row.id, project, embedding_model: "stub-embedding-model",
+                source_text_hash_sha256: createHash("sha256").update(row.text, "utf8").digest("hex"),
                 embedding_dimensions: 3, embedding: i === 0 ? [1, 0, 0] : [0, 1, 0], chunk_index: 0,
               }))
             : records.length === 2 ? [{

@@ -780,3 +780,33 @@ Invalid Bluesky source timestamps omit only the invalid row and preserve remaini
 Actual complete GREEN evidence is `.ημ/review-evidence/cephalon-character/b897-native-review-complete-green-20261010.json` (106047bytes/SHA2564fa6f2675b725e496c2ac696f5731e627b2a0b892ca2ab6b44ae8ae1f289e1f4). All seven captured commands pass: full isolated backend1977tests11459assertions0failures0errors,903files902compiled0warnings; actual production typecheck/server559files520compiled0warnings; served Node2/2; scoped CLJS lint0/0; shell syntax; both workflow actionlint; diff hygiene. Assertion counts differ from RED because refused trust paths return before conditional fixture assertions; all1977tests execute. No backend/server was started and no served/live request was run.
 
 This source repair remains a draft dependency consumer. Bounded OpenPlanner PR3 must merge and its exact merged revision/package layout must replace the old CI source pin before current hosted integration/review/merge qualification. Local linked dependencies are not that pin proof. No live B1/B2/B3, admission/activation, graph field/mood persistence, model/publication, runtime/clock/maker/gateway/PM2/cloud/grant/board change or spore follows from these fixtures. Shared held receipt/reflection appends are preserved for an appropriate handoff; unrelated rows are not swept into this code commit.
+
+## Bounded dependency integration fixture — 2026-10-10 UTC
+
+The human-selected four-package import is now OpenPlanner PR3 at
+`487f619d03ae3421518615793b6bdb166704994a`, against personal mainF95.
+A dedicated copy of the existing hermetic harness overrides only SDK and graph
+module links with that candidate, retaining other installed dependencies and
+leaving original source links untouched. Test-build SDK collections remain held
+through the existing checked-in alias; the compiled owning graph reader is the
+actual bounded candidate. This is not real Mongo or hosted merged-pin proof.
+
+The original held embedding rows lacked the repaired writer's exact raw-text
+`source_text_hash_sha256`. The owning reader correctly returned indexing-pending:
+all1,977tests ran with11,413assertions/26failures/0errors, exit2 and zero compiler
+warnings. RED0808723e retains that full output. The fixture now supplies the
+SHA256 of each exact UTF8 record text, without duplicating graph selection,
+changing production authority, or changing any test definitions or assertions.
+The same full suite passes1,977tests/11,459assertions/0failures/0errors, with
+903files/902compiled/0warnings and16selectedPASS/0FAIL. Conditional callbacks
+explain the differing assertion counts after completed versus pending recall.
+The actual prompt/graph-only path and revocation assertions remain exercised.
+
+`bounded-487-consumer-integration-red-20261010.json` and
+`bounded-487-consumer-integration-green-20261010.json` retain the complete command
+outputs and exact harness/source boundaries. This test-only correction leaves
+production source at the already compiled f6c93429 behavior. After genuine
+qualified dependency merge, both workflow pins and package-workspace paths must
+be updated together and freshly verified by hosted consumer CI and review.
+No deployed principal, automatic maker, persistent field or consumed mood is
+established by these source fixtures.
