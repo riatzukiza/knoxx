@@ -261,7 +261,7 @@
                                                             ([_config _id] @(:selected* state))
                                                             ([_config _id requested-actor]
                                                              (when (= actor-id requested-actor) @(:selected* state))))]
-                (let [ctx {:config config :runtime :fixture-runtime :actor/id actor-id
+                (let [ctx {:config config :runtime :fixture-runtime :actor/id actor-id :event/trusted? true
                            :event {:event/type :clock.tick :event/payload {:actor-id "forged" :character-encounters {:sources []}}}
                            :run-agent! (fn [& _] (throw (ex-info "Fixture forbids provider invocation" {})))}
                       result (await (actions/run-action! ctx {:action/kind :actions/character-intake
@@ -275,6 +275,30 @@
                   (is (= :provider-pagination (get-in (scope-checkpoint state (:source bluesky-spec)) [:coverage :reason])))
                   (is (nil? (:cursor-after (scope-checkpoint state (:source bluesky-spec)))))
                   (is (every? #(= actor-id (:actor %)) @(:tool-builds* state))))))))))
+
+(deftest ^:async untrusted-intake-cannot-mint-a-principal-or-read-a-source
+  (doseq [trusted [nil false "true"]]
+    (let [state (fixture)]
+      (await (with-runtime-fixture!
+              state
+              (^:async fn [config]
+                (with-redefs [tooling/resolve-agent-contract
+                              (fn
+                                ([_config _id] @(:selected* state))
+                                ([_config _id _actor] @(:selected* state)))]
+                  (let [refusal (try
+                                  (await (actions/run-action!
+                                          {:config config :runtime :fixture-runtime :actor/id actor-id
+                                           :event/trusted? trusted
+                                           :event {:event/type :clock.tick :event/payload {:event/trusted? true}}}
+                                          {:action/kind :actions/character-intake
+                                           :action/with {:agent-id contract-id}}))
+                                  nil
+                                  (catch :default error (:reason (ex-data error))))]
+                    (is (= :untrusted-character-event refusal))
+                    (is (empty? @(:source-reads* state)))
+                    (is (empty? @(:tool-builds* state)))
+                    (is (empty? @(:rows* state)))))))))))
 
 (deftest ^:async fresh-second-poll-reaches-later-context-with-fresh-inclusion-evidence-and-no-pagination-watermark
   (let [state (fixture)]

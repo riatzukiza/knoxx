@@ -6,6 +6,7 @@
             [knoxx.backend.domain.discord.source :as discord-source]
             [knoxx.backend.domain.discord.rest-client :as discord-rest]
             [knoxx.backend.domain.discord.tools :as discord-tools]
+            [knoxx.backend.extern.character-encounters :as source-time]
             [knoxx.backend.extern.tools :as xtools]
             [knoxx.backend.infra.clients.openplanner :as planner]
             [knoxx.backend.infra.character.encounter-admission :as admission]
@@ -40,6 +41,29 @@
                    (if (= "bluesky" (get-in spec [:source :kind]))
                      {:results rows :accountId (:account-id bluesky-source)}
                      {:messages rows :channelId (:scope-id fixture/source)}))})
+
+(deftest malformed-bluesky-times-omit-only-the-bad-row-and-report-unknown-coverage
+  (doseq [invalid [nil "" "2026-02-30T10:00:00Z"]]
+    (let [rows [(assoc (post "bad" "invalid timestamp") :createdAt invalid)
+                (post "valid" "valid outside encounter")]]
+      (try
+        (let [projected (social/project-page bluesky-spec nil fixture/at
+                                             (:details (result bluesky-spec rows)) source-time/normalize-instant)]
+          (is (= [(:uri (second rows))] (mapv :external-id (get-in projected [:page :items]))))
+          (is (= :unknown (get-in projected [:coverage :reason])))
+          (is (= 2 (get-in projected [:coverage :fetched-count])))
+          (is (= 1 (get-in projected [:coverage :admitted-count]))))
+        (catch :default error
+          (is false (str "One invalid Bluesky timestamp aborted the bounded page: " (ex-data error))))))))
+
+(deftest invalid-discord-timestamps-still-refuse-the-page
+  (is (= :invalid-source-instant
+         (try
+           (social/project-page discord-spec nil fixture/at
+                                (:details (result discord-spec [(assoc (message "101" "bad") :timestamp "")]))
+                                source-time/normalize-instant)
+           nil
+           (catch :default error (:reason (ex-data error)))))))
 
 (defn- pull-ports
   [read!]

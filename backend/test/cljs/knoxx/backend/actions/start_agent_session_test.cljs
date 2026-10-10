@@ -3,8 +3,50 @@
             [clojure.test :refer [deftest is testing]]
             [knoxx.backend.domain.action.registry :as action-registry]
             [knoxx.backend.domain.action.start-agent-session :as start-agent-session]
+            [knoxx.backend.infra.agent.event-policy-authority :as event-authority]
             [knoxx.backend.infra.agent.runner :as agents-runner]
             [knoxx.backend.infra.tooling :as tooling]))
+
+(deftest character-trigger-refuses-untrusted-content-before-rendering-or-minting-authority
+  (doseq [trusted [nil false "true"]]
+    (let [rendered* (atom 0) spawned* (atom 0)
+          selected {:id "character" :actor-id "creator"
+                    :character-encounters {:sources []} :tool-modes {:initial "creative"}}
+          context {:config {} :actor/id "creator" :event/trusted? trusted
+                   :event {:event/type :clock.tick
+                           :event/payload {:content "untrusted instruction" :event/trusted? true}}}]
+      (with-redefs [tooling/resolve-agent-contract (fn
+                                                   ([_config _agent] selected)
+                                                   ([_config _agent _actor] selected))
+                    start-agent-session/render-start-message (fn [_trigger _event _task _id] (swap! rendered* inc) "rendered")
+                    agents-runner/spawn-direct! (fn
+                                                ([_config _request] (swap! spawned* inc) {:ok true})
+                                                ([_runtime _config _request] (swap! spawned* inc) {:ok true}))]
+        (let [refusal (try
+                        (action-registry/run-action! context
+                                                    {:action/kind :actions/start-agent-session
+                                                     :action/with {:agent-id "character"}})
+                        nil
+                        (catch :default error (:code (ex-data error))))]
+          (is (= "untrusted_character_event" refusal))
+          (is (zero? @rendered*) "Untrusted event content never reaches the renderer")
+          (is (zero? @spawned*) "No authority-bearing session is spawned"))))))
+
+(deftest trusted-character-trigger-still-carries-server-minted-authority
+  (let [spawned* (atom nil)
+        selected {:id "character" :actor-id "creator" :character-encounters {:sources []}}]
+    (with-redefs [tooling/resolve-agent-contract (fn
+                                                 ([_config _agent] selected)
+                                                 ([_config _agent _actor] selected))
+                  agents-runner/spawn-direct! (fn
+                                              ([_config request] (reset! spawned* request) {:ok true})
+                                              ([_runtime _config request] (reset! spawned* request) {:ok true}))]
+      (action-registry/run-action!
+       {:config {} :actor/id "creator" :event/trusted? true
+        :event {:event/type :clock.tick :event/payload {:content "admitted clock"}}}
+       {:action/kind :actions/start-agent-session :action/with {:agent-id "character"}})
+      (is (event-authority/authorized? (:auth_context @spawned*)))
+      (is (= "creator" (get-in @spawned* [:auth_context :actorId]))))))
 
 (def ^:private resolved-execution
   {:model "model-a"
