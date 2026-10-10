@@ -11,6 +11,9 @@
   "The action's agent id is authored trigger data. Ignore event/provider source,
    account, grant and encounter options; observation uses current canonical data."
   [ctx action]
+  (when-not (true? (:event/trusted? ctx))
+    (throw (ex-info "Scheduled character intake event is not trusted"
+                    {:reason :untrusted-character-event})))
   (let [actor-id (law/assert-shape! shape/NonBlankString (:actor/id ctx) :intake-actor)
         agent-id (law/assert-shape! shape/NonBlankString
                                     (or (get-in action [:action/with :agent-id]) (:agent/id ctx)) :intake-agent)

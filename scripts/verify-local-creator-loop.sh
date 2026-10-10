@@ -107,6 +107,7 @@ hermetic() {
     ':(exclude,glob)**/node_modules' ':(exclude,glob)**/node_modules/**' >"$listfile"
   (cd "$KNOXX_VERIFY_REPO" && tar --null -T "$listfile" -cf -) | tar -xf - -C "$fixture"
   ln -s "$KNOXX_VERIFY_REPO/backend/node_modules" "$fixture/backend/node_modules"
+  warn "Verification uses this checkout's installed linked dependencies; it does not prove the CI OPENPLANNER_REF revision."
   # This is an exact edit of a known copied configuration, not a replacement
   # resource parser. Refuse drift rather than accidentally bind a shared port.
   python3 - "$fixture/backend/shadow-cljs.edn" <<'PY'
@@ -222,14 +223,22 @@ served() {
   [[ -f "$dist/server.js" ]] || abort "compile the server from this reviewed checkout before comparing served code"
   local source module
   local required_sources=(
-    infra/agent/session.cljs infra/agent/turn.cljs extern/eta_mu.cljs extern/tools.cljs
-    domain/character/tool_modes.cljc law/character/tool_modes.cljc
-    infra/character/mode_runtime.cljs domain/character/encounter_context.cljc
-    infra/character/encounter_admission.cljs infra/character/encounter_openplanner.cljs
-    domain/character/social_encounters.cljc infra/character/social_encounters.cljs
-    infra/character/encounter_runtime.cljs infra/character/intake_action.cljs
-    domain/action/character_intake.cljs
-    domain/character/decision_input.cljc extern/character_encounters.cljs
+    domain/action/character_intake.cljs domain/action/dispatch.cljs domain/action/start_agent_session.cljs
+    domain/bluesky/bluesky.cljs domain/character/decision_input.cljc domain/character/encounter.cljc
+    domain/character/encounter_context.cljc domain/character/social_encounters.cljc domain/character/tool_modes.cljc
+    domain/contracts/resolve.cljs domain/discord/source.cljs domain/discord/tools.cljs domain/event/dispatch.cljs
+    extern/agent_turn_node.cljs extern/character_encounters.cljs extern/eta_mu.cljs extern/openplanner_sdk.cljs
+    extern/tool_validation.cljs extern/tools.cljs
+    infra/agent/hydration.cljs infra/agent/runner.cljs infra/agent/session.cljs infra/agent/tool_catalog.cljs
+    infra/agent/turn.cljs infra/agent/turn_startup.cljs
+    infra/character/authority.cljs infra/character/encounter_admission.cljs infra/character/encounter_openplanner.cljs
+    infra/character/encounter_runtime.cljs infra/character/intake_action.cljs infra/character/mode_runtime.cljs
+    infra/character/social_encounters.cljs infra/character/turn_context.cljs
+    infra/clients/openplanner.cljs infra/clients/openplanner_mongo.cljs infra/db/policy.cljs
+    infra/openplanner/memory.cljs infra/openplanner/tools.cljs
+    infra/routes/app.cljs infra/routes/memory.cljs infra/routes/users/admin.cljs
+    law/character/encounter.cljc law/character/tool_modes.cljc shape/agent.cljs
+    shape/character/encounter.cljc shape/character/tool_modes.cljc
   )
   for source in "${required_sources[@]}"; do
     module="knoxx.backend.${source//\//.}"

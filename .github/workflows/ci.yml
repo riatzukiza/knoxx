@@ -39,6 +39,8 @@ jobs:
         run: |
           node scripts/check-deployment-boundary.mjs --self-test
           node scripts/check-deployment-boundary.mjs
+      - name: Verify creator-loop source freshness refusal
+        run: node --test scripts/verify-local-creator-loop.test.mjs
 
   knoxx:
     name: knoxx (backend + frontend)

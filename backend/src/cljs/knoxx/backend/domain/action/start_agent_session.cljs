@@ -314,6 +314,14 @@
       (seq event-types) (assoc :event_types event-types)
       schedule-id (assoc :schedule_id schedule-id))))
 
+(defn- assert-trusted-character-event!
+  "Only server-admitted events may render a character's authority-bearing turn."
+  [ctx resolved resource-policies]
+  (when (and (or (some? resource-policies) (:tool-modes resolved) (:character-encounters resolved))
+             (not (true? (:event/trusted? ctx))))
+    (throw (ex-info "Character event is not trusted"
+                    {:status 403 :code "untrusted_character_event"}))))
+
 (defmethod run-action! :actions/start-agent-session
   [{:keys [config event trigger] :as ctx} action]
   (assert-trusted-event-overlay! ctx action)
@@ -326,6 +334,7 @@
                                            {:sticky? (sticky-session-source? source)})
         task-input (action-task-input action trigger resolved)
         resource-policies (action-resource-policies ctx action)
+        _trusted-character-event (assert-trusted-character-event! ctx resolved resource-policies)
         rendered-message (render-start-message trigger event task-input (:trigger-id ids))]
     (when (execution-snapshot-from-event? action)
       (assert-event-execution! event agent-id resolved))
@@ -342,8 +351,9 @@
       :session_id (:session-id ids)
       :run_id (:run-id ids)
       :message rendered-message
-      :auth_context (when (or (some? resource-policies)
-                              (:tool-modes resolved) (:character-encounters resolved))
+      :auth_context (when (and (true? (:event/trusted? ctx))
+                              (or (some? resource-policies)
+                                  (:tool-modes resolved) (:character-encounters resolved)))
                       (event-policy-authority/authorized-context
                        resource-policies actor-id' (:role resolved)
                        (:tool-policies resolved)))

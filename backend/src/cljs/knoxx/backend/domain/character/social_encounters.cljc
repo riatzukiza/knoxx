@@ -197,26 +197,40 @@
                  {:label label :count count})))
        vec))
 
+(defn- source-instant
+  "Omit known invalid Bluesky source dates; preserve Discord and unexpected failures."
+  [discord? row normalize-instant]
+  (try
+    (normalize-instant (if discord? (:timestamp row) (:createdAt row)))
+    (catch #?(:clj Exception :cljs :default) error
+      (if (and (not discord?) (= :invalid-source-instant (:reason (ex-data error))))
+        nil
+        (throw error)))))
+
 (defn- normalized-item
   [spec row normalize-instant]
   (let [discord? (= "discord" (get-in spec [:source :kind]))
-        external-id (if discord? (:id row) (:uri row))
-        author-id (:authorId row)
-        item {:external-id external-id :author-id author-id
-              :occurred-at (normalize-instant (if discord? (:timestamp row) (:createdAt row)))
-              ;; Omit an oversized quote, never represent an excerpt as complete.
-              ;; Raw source identity/frontier is tracked independently of admission.
-              :text (let [text (or (if discord? (:content row) (:text row)) "")]
-                      (if (<= (count text) 4000) text ""))
-              :self-output? (= author-id (get-in spec [:source :account-id]))
-              :reactions (if discord? (discord-reactions row) (bluesky-reactions row))
-              :media (->> (if discord? (discord-media row)
-                             (bluesky-embed-media (:embed row)))
-                          distinct (take 6) vec)}]
-    ;; Even an empty system row must prove its source identity/author/time.
-    (law/assert-shape! shape/Item item :social-item)
-    (when (or (not (str/blank? (:text item))) (seq (:media item)) (seq (:reactions item)))
-      (law/assert-item! item))))
+        occurred-at (source-instant discord? row normalize-instant)]
+    ;; Invalid Bluesky record dates cannot attest an encounter. Keep the rest
+    ;; of the page; coverage records that not every fetched row was admitted.
+    (when (or discord? (some? occurred-at))
+      (let [external-id (if discord? (:id row) (:uri row))
+            author-id (:authorId row)
+            item {:external-id external-id :author-id author-id
+                  :occurred-at occurred-at
+                  ;; Omit an oversized quote, never represent an excerpt as complete.
+                  ;; Raw source identity/frontier is tracked independently of admission.
+                  :text (let [text (or (if discord? (:content row) (:text row)) "")]
+                          (if (<= (count text) 4000) text ""))
+                  :self-output? (= author-id (get-in spec [:source :account-id]))
+                  :reactions (if discord? (discord-reactions row) (bluesky-reactions row))
+                  :media (->> (if discord? (discord-media row)
+                                 (bluesky-embed-media (:embed row)))
+                              distinct (take 6) vec)}]
+        ;; Even an empty system row must prove its source identity/author/time.
+        (law/assert-shape! shape/Item item :social-item)
+        (when (or (not (str/blank? (:text item))) (seq (:media item)) (seq (:reactions item)))
+          (law/assert-item! item))))))
 
 (defn- source-rows
   [spec details]
