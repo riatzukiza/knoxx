@@ -64,7 +64,8 @@ for (const feature of ['infra/character/authority.cljs', 'infra/agent/turn_start
         timeout: 30_000,
       });
       assert.equal(result.status, 2, result.stdout + result.stderr);
-      assert.match(result.stderr, new RegExp(`compiled module predates its source: ${feature.replaceAll('.', '\\.')}[;]`));
+      const module = `knoxx.backend.${feature.replaceAll('/', '.').replace(/\.(cljs|cljc)$/, '.js')}`;
+      assert.match(result.stderr, new RegExp(`compiled module predates its source: ${module.replaceAll('.', '\\.')}[;]`));
       assert.doesNotMatch(readFileSync(trace, 'utf8'), /^exec /m,
         'Source freshness fails before any compiled-content or behavioral container operation');
     } finally {
