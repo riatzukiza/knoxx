@@ -319,3 +319,12 @@
   spore: none
   receipt-refs: /home/err/.local/share/openhax-codex/20261010/review-state/Knoxx-93eb-native-error-property-boundary-causal-RED-v1/root-provenance-canonical-receipt-event.edn
   note: Characterize original successful runtime behavior while proving actual static object-boundary rejection. Preserve genuine exceptions and unchanged rules; separate corrected setup/runtime routing failures from causal evidence. Full release lint remains pending. No new spore.
+- ts: 2026-10-14T23:41:48.426717227Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: Commit named native-error-property contract without weakening constructor behavior
+  p-efficiency: 0.82
+  p-friction: 0.64
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: b7394f3917093492962621883bc6bf18b3c535a60667603b3a9470b353a918be,3384bab8f6bfd3828c415e5dd12a74b0ce667ea0
+  note: Use a named portable field-map contract before native mutation and preserve original primitive/null property reads. Distinguish local full tests and clean owning lint from unqualified CI2025 negative and inherited full-lint gate. Preserve exact receipt source closure, independent review and original failing evidence. No spore or promotion.
