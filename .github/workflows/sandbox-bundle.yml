@@ -46,6 +46,7 @@ jobs:
       BABASHKA_SHA256: 9ac1fe988d7001625b30ef3e3307e67f8545505a7cb49a4aa179f578115a3e09
       CONTRACTS_DIR: ${{ github.workspace }}/contracts
       PUPPETEER_EXECUTABLE_PATH: /usr/bin/google-chrome
+      OPENPLANNER_REF: a09894c48760748b7fca7bf9e94f36471f599a47
 
     steps:
       - name: Check out full repository history
@@ -70,7 +71,8 @@ jobs:
       - name: Check out the OpenPlanner sibling dependency
         uses: actions/checkout@v4
         with:
-          repository: open-hax/openplanner
+          repository: riatzukiza/openplanner
+          ref: ${{ env.OPENPLANNER_REF }}
           path: .sandbox-deps/openplanner
           persist-credentials: false
 
@@ -91,10 +93,10 @@ jobs:
         with:
           node-version: "24"
 
-      - name: Set up pnpm 9
+      - name: Set up pnpm 10 for the pinned source lockfile
         uses: pnpm/action-setup@v4
         with:
-          version: "9"
+          version: "10.20.0"
           run_install: false
 
       - name: Set up pinned Clojure CLI
@@ -110,6 +112,17 @@ jobs:
         run: |
           set -o pipefail
           pnpm install --frozen-lockfile 2>&1 | tee "$OUT/logs/install-root.log"
+
+      - name: Build the pinned OpenPlanner SDK and graph package
+        id: build_openplanner
+        if: always()
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -euo pipefail
+          git -C .sandbox-deps/openplanner rev-parse HEAD > "$OUT/metadata/openplanner-revision.txt"
+          pnpm -C .sandbox-deps/openplanner --filter @open-hax/openplanner-sdk... --filter @open-hax/openplanner-graph-claim-core... install --frozen-lockfile 2>&1 | tee "$OUT/logs/install-openplanner.log"
+          pnpm -C .sandbox-deps/openplanner --filter @open-hax/openplanner-sdk... --filter @open-hax/openplanner-graph-claim-core... run build 2>&1 | tee "$OUT/logs/build-openplanner.log"
 
       - name: Install backend dependencies
         id: install_backend
@@ -274,6 +287,7 @@ jobs:
         if: always()
         env:
           INSTALL_ROOT_OUTCOME: ${{ steps.install_root.outcome }}
+          BUILD_OPENPLANNER_OUTCOME: ${{ steps.build_openplanner.outcome }}
           INSTALL_BACKEND_OUTCOME: ${{ steps.install_backend.outcome }}
           INSTALL_FRONTEND_OUTCOME: ${{ steps.install_frontend.outcome }}
           BACKEND_TYPECHECK_OUTCOME: ${{ steps.backend_typecheck.outcome }}
@@ -302,12 +316,23 @@ jobs:
           } > "$OUT/metadata/tool-versions.txt" 2>&1
 
           generated_at="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          openplanner_revision="$OPENPLANNER_REF"
+          openplanner_revision_source="requested-pin-fallback"
+          observed_revision="$(cat "$OUT/metadata/openplanner-revision.txt" 2>/dev/null || true)"
+          if [[ "$observed_revision" =~ ^[0-9a-f]{40}$ ]]; then
+            openplanner_revision="$observed_revision"
+            openplanner_revision_source="observed-checkout"
+          fi
           jq -n \
             --arg repository "$GITHUB_REPOSITORY" \
             --arg revision "$GITHUB_SHA" \
             --arg ref "$GITHUB_REF" \
             --arg generated_at "$generated_at" \
             --arg install_root "$INSTALL_ROOT_OUTCOME" \
+            --arg build_openplanner "$BUILD_OPENPLANNER_OUTCOME" \
+            --arg openplanner_revision "$openplanner_revision" \
+            --arg openplanner_requested_revision "$OPENPLANNER_REF" \
+            --arg openplanner_revision_source "$openplanner_revision_source" \
             --arg install_backend "$INSTALL_BACKEND_OUTCOME" \
             --arg install_frontend "$INSTALL_FRONTEND_OUTCOME" \
             --arg backend_typecheck "$BACKEND_TYPECHECK_OUTCOME" \
@@ -328,8 +353,12 @@ jobs:
               revision: $revision,
               ref: $ref,
               generated_at: $generated_at,
+              openplanner_revision: $openplanner_revision,
+              openplanner_requested_revision: $openplanner_requested_revision,
+              openplanner_revision_source: $openplanner_revision_source,
               outcomes: {
                 install_root: $install_root,
+                build_openplanner: $build_openplanner,
                 install_backend: $install_backend,
                 install_frontend: $install_frontend,
                 backend_typecheck: $backend_typecheck,
@@ -410,6 +439,7 @@ jobs:
         if: >-
           always() &&
           (steps.install_root.outcome == 'failure' ||
+           steps.build_openplanner.outcome == 'failure' ||
            steps.install_backend.outcome == 'failure' ||
            steps.install_frontend.outcome == 'failure' ||
            steps.backend_typecheck.outcome == 'failure' ||

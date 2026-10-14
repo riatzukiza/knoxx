@@ -41,6 +41,9 @@ importers:
       '@open-hax/eta-mu-cli':
         specifier: ^0.70.14
         version: 0.70.16(@modelcontextprotocol/sdk@1.29.0(zod@3.25.76))(@types/react@19.2.16)(ws@8.20.0)(zod@3.25.76)
+      '@open-hax/openplanner-graph-claim-core':
+        specifier: link:../../openplanner/packages/graph/graph-claim-core
+        version: link:../../openplanner/packages/graph/graph-claim-core
       '@open-hax/openplanner-sdk':
         specifier: link:../../openplanner/packages/openplanner-sdk
         version: link:../../openplanner/packages/openplanner-sdk
@@ -50,6 +53,12 @@ importers:
       '@sinclair/typebox':
         specifier: ^0.34.41
         version: 0.34.49
+      ajv:
+        specifier: 8.18.0
+        version: 8.18.0
+      ajv-formats:
+        specifier: 3.0.1
+        version: 3.0.1(ajv@8.18.0)
       audiobuffer-to-wav:
         specifier: ^1.0.0
         version: 1.0.0

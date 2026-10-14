@@ -1,0 +1,317 @@
+{
+  "tier": "observed-command-output",
+  "command": [
+    "clj-kondo",
+    "--config-dir",
+    "backend/.clj-kondo",
+    "--config",
+    "{:output {:format :json}}",
+    "--lint",
+    "-",
+    "--filename",
+    "backend/src/cljs/knoxx/backend/infra/routes/app.cljs"
+  ],
+  "results": {
+    "reviewed_642b": {
+      "exit_code": 3,
+      "summary": {
+        "error": 1,
+        "warning": 11,
+        "info": 0,
+        "type": "summary",
+        "duration": 425,
+        "files": 1
+      },
+      "findings": [
+        {
+          "end-row": 241,
+          "type": "fn-length/long",
+          "level": "warning",
+          "filename": "backend/src/cljs/knoxx/backend/infra/routes/app.cljs",
+          "col": 1,
+          "end-col": 104,
+          "langs": [],
+          "message": "active-run-summary spans 40 lines (warning >=30)",
+          "row": 201
+        },
+        {
+          "end-row": 405,
+          "type": "file-length/long",
+          "level": "warning",
+          "filename": "backend/src/cljs/knoxx/backend/infra/routes/app.cljs",
+          "col": 1,
+          "end-col": 93,
+          "langs": [],
+          "message": "file at least 405 lines (warning >=400)",
+          "row": 390
+        },
+        {
+          "end-row": 772,
+          "type": "fn-length/long",
+          "level": "warning",
+          "filename": "backend/src/cljs/knoxx/backend/infra/routes/app.cljs",
+          "col": 1,
+          "end-col": 63,
+          "langs": [],
+          "message": "handle-chat-start spans 55 lines (warning >=30)",
+          "row": 717
+        },
+        {
+          "end-row": 819,
+          "type": "file-length/too-long",
+          "level": "error",
+          "filename": "backend/src/cljs/knoxx/backend/infra/routes/app.cljs",
+          "col": 1,
+          "end-col": 70,
+          "langs": [],
+          "message": "file at least 819 lines (error >=800)",
+          "row": 774
+        },
+        {
+          "end-row": 819,
+          "type": "fn-length/long",
+          "level": "warning",
+          "filename": "backend/src/cljs/knoxx/backend/infra/routes/app.cljs",
+          "col": 1,
+          "end-col": 70,
+          "langs": [],
+          "message": "handle-direct-start spans 45 lines (warning >=30)",
+          "row": 774
+        },
+        {
+          "end-row": 872,
+          "type": "fn-length/long",
+          "level": "warning",
+          "filename": "backend/src/cljs/knoxx/backend/infra/routes/app.cljs",
+          "col": 1,
+          "end-col": 45,
+          "langs": [],
+          "message": "handle-admin-abort spans 51 lines (warning >=30)",
+          "row": 821
+        },
+        {
+          "end-row": 942,
+          "type": "fn-length/long",
+          "level": "warning",
+          "filename": "backend/src/cljs/knoxx/backend/infra/routes/app.cljs",
+          "col": 1,
+          "end-col": 61,
+          "langs": [],
+          "message": "handle-session-status spans 51 lines (warning >=30)",
+          "row": 891
+        },
+        {
+          "end-row": 995,
+          "derived-location": true,
+          "type": "fn-length/long",
+          "level": "warning",
+          "filename": "backend/src/cljs/knoxx/backend/infra/routes/app.cljs",
+          "col": 1,
+          "end-col": 50,
+          "langs": [],
+          "message": "config! spans 35 lines (warning >=30)",
+          "row": 960
+        },
+        {
+          "end-row": 1456,
+          "derived-location": true,
+          "type": "fn-length/long",
+          "level": "warning",
+          "filename": "backend/src/cljs/knoxx/backend/infra/routes/app.cljs",
+          "col": 1,
+          "end-col": 44,
+          "langs": [],
+          "message": "api-knoxx-session-undo! spans 43 lines (warning >=30)",
+          "row": 1413
+        },
+        {
+          "end-row": 1607,
+          "type": "fn-length/long",
+          "level": "warning",
+          "filename": "backend/src/cljs/knoxx/backend/infra/routes/app.cljs",
+          "col": 1,
+          "end-col": 94,
+          "langs": [],
+          "message": "register-admin-and-memory-routes! spans 42 lines (warning >=30)",
+          "row": 1565
+        },
+        {
+          "end-row": 1705,
+          "type": "fn-length/long",
+          "level": "warning",
+          "filename": "backend/src/cljs/knoxx/backend/infra/routes/app.cljs",
+          "col": 1,
+          "end-col": 71,
+          "langs": [],
+          "message": "register-publication-surface-routes! spans 51 lines (warning >=30)",
+          "row": 1654
+        },
+        {
+          "end-row": 1749,
+          "type": "fn-length/long",
+          "level": "warning",
+          "filename": "backend/src/cljs/knoxx/backend/infra/routes/app.cljs",
+          "col": 1,
+          "end-col": 82,
+          "langs": [],
+          "message": "register-resource-and-media-routes! spans 42 lines (warning >=30)",
+          "row": 1707
+        }
+      ],
+      "input_sha256": "ac2661c7b2c632392c5a593bb0034464e5a6b518ed375ea7fa1ffc02d8fb2e27",
+      "stdout": "{\"findings\":[{\"end-row\":241,\"type\":\"fn-length/long\",\"level\":\"warning\",\"filename\":\"backend/src/cljs/knoxx/backend/infra/routes/app.cljs\",\"col\":1,\"end-col\":104,\"langs\":[],\"message\":\"active-run-summary spans 40 lines (warning >=30)\",\"row\":201},{\"end-row\":405,\"type\":\"file-length/long\",\"level\":\"warning\",\"filename\":\"backend/src/cljs/knoxx/backend/infra/routes/app.cljs\",\"col\":1,\"end-col\":93,\"langs\":[],\"message\":\"file at least 405 lines (warning >=400)\",\"row\":390},{\"end-row\":772,\"type\":\"fn-length/long\",\"level\":\"warning\",\"filename\":\"backend/src/cljs/knoxx/backend/infra/routes/app.cljs\",\"col\":1,\"end-col\":63,\"langs\":[],\"message\":\"handle-chat-start spans 55 lines (warning >=30)\",\"row\":717},{\"end-row\":819,\"type\":\"file-length/too-long\",\"level\":\"error\",\"filename\":\"backend/src/cljs/knoxx/backend/infra/routes/app.cljs\",\"col\":1,\"end-col\":70,\"langs\":[],\"message\":\"file at least 819 lines (error >=800)\",\"row\":774},{\"end-row\":819,\"type\":\"fn-length/long\",\"level\":\"warning\",\"filename\":\"backend/src/cljs/knoxx/backend/infra/routes/app.cljs\",\"col\":1,\"end-col\":70,\"langs\":[],\"message\":\"handle-direct-start spans 45 lines (warning >=30)\",\"row\":774},{\"end-row\":872,\"type\":\"fn-length/long\",\"level\":\"warning\",\"filename\":\"backend/src/cljs/knoxx/backend/infra/routes/app.cljs\",\"col\":1,\"end-col\":45,\"langs\":[],\"message\":\"handle-admin-abort spans 51 lines (warning >=30)\",\"row\":821},{\"end-row\":942,\"type\":\"fn-length/long\",\"level\":\"warning\",\"filename\":\"backend/src/cljs/knoxx/backend/infra/routes/app.cljs\",\"col\":1,\"end-col\":61,\"langs\":[],\"message\":\"handle-session-status spans 51 lines (warning >=30)\",\"row\":891},{\"end-row\":995,\"derived-location\":true,\"type\":\"fn-length/long\",\"level\":\"warning\",\"filename\":\"backend/src/cljs/knoxx/backend/infra/routes/app.cljs\",\"col\":1,\"end-col\":50,\"langs\":[],\"message\":\"config! spans 35 lines (warning >=30)\",\"row\":960},{\"end-row\":1456,\"derived-location\":true,\"type\":\"fn-length/long\",\"level\":\"warning\",\"filename\":\"backend/src/cljs/knoxx/backend/infra/routes/app.cljs\",\"col\":1,\"end-col\":44,\"langs\":[],\"message\":\"api-knoxx-session-undo! spans 43 lines (warning >=30)\",\"row\":1413},{\"end-row\":1607,\"type\":\"fn-length/long\",\"level\":\"warning\",\"filename\":\"backend/src/cljs/knoxx/backend/infra/routes/app.cljs\",\"col\":1,\"end-col\":94,\"langs\":[],\"message\":\"register-admin-and-memory-routes! spans 42 lines (warning >=30)\",\"row\":1565},{\"end-row\":1705,\"type\":\"fn-length/long\",\"level\":\"warning\",\"filename\":\"backend/src/cljs/knoxx/backend/infra/routes/app.cljs\",\"col\":1,\"end-col\":71,\"langs\":[],\"message\":\"register-publication-surface-routes! spans 51 lines (warning >=30)\",\"row\":1654},{\"end-row\":1749,\"type\":\"fn-length/long\",\"level\":\"warning\",\"filename\":\"backend/src/cljs/knoxx/backend/infra/routes/app.cljs\",\"col\":1,\"end-col\":82,\"langs\":[],\"message\":\"register-resource-and-media-routes! spans 42 lines (warning >=30)\",\"row\":1707}],\"summary\":{\"error\":1,\"warning\":11,\"info\":0,\"type\":\"summary\",\"duration\":425,\"files\":1}}\n",
+      "stderr": ""
+    },
+    "repair": {
+      "exit_code": 3,
+      "summary": {
+        "error": 1,
+        "warning": 11,
+        "info": 0,
+        "type": "summary",
+        "duration": 403,
+        "files": 1
+      },
+      "findings": [
+        {
+          "end-row": 241,
+          "type": "fn-length/long",
+          "level": "warning",
+          "filename": "backend/src/cljs/knoxx/backend/infra/routes/app.cljs",
+          "col": 1,
+          "end-col": 104,
+          "langs": [],
+          "message": "active-run-summary spans 40 lines (warning >=30)",
+          "row": 201
+        },
+        {
+          "end-row": 405,
+          "type": "file-length/long",
+          "level": "warning",
+          "filename": "backend/src/cljs/knoxx/backend/infra/routes/app.cljs",
+          "col": 1,
+          "end-col": 93,
+          "langs": [],
+          "message": "file at least 405 lines (warning >=400)",
+          "row": 390
+        },
+        {
+          "end-row": 774,
+          "type": "fn-length/long",
+          "level": "warning",
+          "filename": "backend/src/cljs/knoxx/backend/infra/routes/app.cljs",
+          "col": 1,
+          "end-col": 63,
+          "langs": [],
+          "message": "handle-chat-start spans 57 lines (warning >=30)",
+          "row": 717
+        },
+        {
+          "end-row": 823,
+          "type": "file-length/too-long",
+          "level": "error",
+          "filename": "backend/src/cljs/knoxx/backend/infra/routes/app.cljs",
+          "col": 1,
+          "end-col": 70,
+          "langs": [],
+          "message": "file at least 823 lines (error >=800)",
+          "row": 776
+        },
+        {
+          "end-row": 823,
+          "type": "fn-length/long",
+          "level": "warning",
+          "filename": "backend/src/cljs/knoxx/backend/infra/routes/app.cljs",
+          "col": 1,
+          "end-col": 70,
+          "langs": [],
+          "message": "handle-direct-start spans 47 lines (warning >=30)",
+          "row": 776
+        },
+        {
+          "end-row": 876,
+          "type": "fn-length/long",
+          "level": "warning",
+          "filename": "backend/src/cljs/knoxx/backend/infra/routes/app.cljs",
+          "col": 1,
+          "end-col": 45,
+          "langs": [],
+          "message": "handle-admin-abort spans 51 lines (warning >=30)",
+          "row": 825
+        },
+        {
+          "end-row": 946,
+          "type": "fn-length/long",
+          "level": "warning",
+          "filename": "backend/src/cljs/knoxx/backend/infra/routes/app.cljs",
+          "col": 1,
+          "end-col": 61,
+          "langs": [],
+          "message": "handle-session-status spans 51 lines (warning >=30)",
+          "row": 895
+        },
+        {
+          "end-row": 999,
+          "derived-location": true,
+          "type": "fn-length/long",
+          "level": "warning",
+          "filename": "backend/src/cljs/knoxx/backend/infra/routes/app.cljs",
+          "col": 1,
+          "end-col": 50,
+          "langs": [],
+          "message": "config! spans 35 lines (warning >=30)",
+          "row": 964
+        },
+        {
+          "end-row": 1464,
+          "derived-location": true,
+          "type": "fn-length/long",
+          "level": "warning",
+          "filename": "backend/src/cljs/knoxx/backend/infra/routes/app.cljs",
+          "col": 1,
+          "end-col": 44,
+          "langs": [],
+          "message": "api-knoxx-session-undo! spans 43 lines (warning >=30)",
+          "row": 1421
+        },
+        {
+          "end-row": 1615,
+          "type": "fn-length/long",
+          "level": "warning",
+          "filename": "backend/src/cljs/knoxx/backend/infra/routes/app.cljs",
+          "col": 1,
+          "end-col": 94,
+          "langs": [],
+          "message": "register-admin-and-memory-routes! spans 42 lines (warning >=30)",
+          "row": 1573
+        },
+        {
+          "end-row": 1713,
+          "type": "fn-length/long",
+          "level": "warning",
+          "filename": "backend/src/cljs/knoxx/backend/infra/routes/app.cljs",
+          "col": 1,
+          "end-col": 71,
+          "langs": [],
+          "message": "register-publication-surface-routes! spans 51 lines (warning >=30)",
+          "row": 1662
+        },
+        {
+          "end-row": 1757,
+          "type": "fn-length/long",
+          "level": "warning",
+          "filename": "backend/src/cljs/knoxx/backend/infra/routes/app.cljs",
+          "col": 1,
+          "end-col": 82,
+          "langs": [],
+          "message": "register-resource-and-media-routes! spans 42 lines (warning >=30)",
+          "row": 1715
+        }
+      ],
+      "input_sha256": "8a09ccd5028d310e37f973123277a915c01574b6f06fcde7526ea6061b9bd75f",
+      "stdout": "{\"findings\":[{\"end-row\":241,\"type\":\"fn-length/long\",\"level\":\"warning\",\"filename\":\"backend/src/cljs/knoxx/backend/infra/routes/app.cljs\",\"col\":1,\"end-col\":104,\"langs\":[],\"message\":\"active-run-summary spans 40 lines (warning >=30)\",\"row\":201},{\"end-row\":405,\"type\":\"file-length/long\",\"level\":\"warning\",\"filename\":\"backend/src/cljs/knoxx/backend/infra/routes/app.cljs\",\"col\":1,\"end-col\":93,\"langs\":[],\"message\":\"file at least 405 lines (warning >=400)\",\"row\":390},{\"end-row\":774,\"type\":\"fn-length/long\",\"level\":\"warning\",\"filename\":\"backend/src/cljs/knoxx/backend/infra/routes/app.cljs\",\"col\":1,\"end-col\":63,\"langs\":[],\"message\":\"handle-chat-start spans 57 lines (warning >=30)\",\"row\":717},{\"end-row\":823,\"type\":\"file-length/too-long\",\"level\":\"error\",\"filename\":\"backend/src/cljs/knoxx/backend/infra/routes/app.cljs\",\"col\":1,\"end-col\":70,\"langs\":[],\"message\":\"file at least 823 lines (error >=800)\",\"row\":776},{\"end-row\":823,\"type\":\"fn-length/long\",\"level\":\"warning\",\"filename\":\"backend/src/cljs/knoxx/backend/infra/routes/app.cljs\",\"col\":1,\"end-col\":70,\"langs\":[],\"message\":\"handle-direct-start spans 47 lines (warning >=30)\",\"row\":776},{\"end-row\":876,\"type\":\"fn-length/long\",\"level\":\"warning\",\"filename\":\"backend/src/cljs/knoxx/backend/infra/routes/app.cljs\",\"col\":1,\"end-col\":45,\"langs\":[],\"message\":\"handle-admin-abort spans 51 lines (warning >=30)\",\"row\":825},{\"end-row\":946,\"type\":\"fn-length/long\",\"level\":\"warning\",\"filename\":\"backend/src/cljs/knoxx/backend/infra/routes/app.cljs\",\"col\":1,\"end-col\":61,\"langs\":[],\"message\":\"handle-session-status spans 51 lines (warning >=30)\",\"row\":895},{\"end-row\":999,\"derived-location\":true,\"type\":\"fn-length/long\",\"level\":\"warning\",\"filename\":\"backend/src/cljs/knoxx/backend/infra/routes/app.cljs\",\"col\":1,\"end-col\":50,\"langs\":[],\"message\":\"config! spans 35 lines (warning >=30)\",\"row\":964},{\"end-row\":1464,\"derived-location\":true,\"type\":\"fn-length/long\",\"level\":\"warning\",\"filename\":\"backend/src/cljs/knoxx/backend/infra/routes/app.cljs\",\"col\":1,\"end-col\":44,\"langs\":[],\"message\":\"api-knoxx-session-undo! spans 43 lines (warning >=30)\",\"row\":1421},{\"end-row\":1615,\"type\":\"fn-length/long\",\"level\":\"warning\",\"filename\":\"backend/src/cljs/knoxx/backend/infra/routes/app.cljs\",\"col\":1,\"end-col\":94,\"langs\":[],\"message\":\"register-admin-and-memory-routes! spans 42 lines (warning >=30)\",\"row\":1573},{\"end-row\":1713,\"type\":\"fn-length/long\",\"level\":\"warning\",\"filename\":\"backend/src/cljs/knoxx/backend/infra/routes/app.cljs\",\"col\":1,\"end-col\":71,\"langs\":[],\"message\":\"register-publication-surface-routes! spans 51 lines (warning >=30)\",\"row\":1662},{\"end-row\":1757,\"type\":\"fn-length/long\",\"level\":\"warning\",\"filename\":\"backend/src/cljs/knoxx/backend/infra/routes/app.cljs\",\"col\":1,\"end-col\":82,\"langs\":[],\"message\":\"register-resource-and-media-routes! spans 42 lines (warning >=30)\",\"row\":1715}],\"summary\":{\"error\":1,\"warning\":11,\"info\":0,\"type\":\"summary\",\"duration\":403,\"files\":1}}\n",
+      "stderr": ""
+    }
+  },
+  "boundary": "Both baseline and repair retain inherited app file/function length diagnostics. No whole lint pass or waiver; new authored authority test is clean."
+}

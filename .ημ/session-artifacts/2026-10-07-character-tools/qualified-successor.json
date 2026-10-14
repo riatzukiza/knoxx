@@ -1,0 +1,149 @@
+{
+  "license": "GPL-3.0-or-later",
+  "served_baseline": "2644fc6c51bbbcda599964a5a674415b58344c3b",
+  "source_content_sha256": "4272be65e73b12419f642f5a1c9f5c7c06b4ab8cc195c9dbb0c9caab7d825152",
+  "source_files": {
+    "backend/package.json": "61344943a2a7d34a4418b6a66247c81a74683ee42fd13a9bf0e0034f0514704a",
+    "backend/pnpm-lock.yaml": "c41e0a288102313e893446bd019af7e83bc6c4ec0f58ebc9f3dfa4aea7b72241",
+    "backend/src/cljs/knoxx/backend/domain/action/character_intake.cljs": "21d2844eee833750f7cc29e40fb65ca90ea2e3c966c8670991c3d0b261b832b4",
+    "backend/src/cljs/knoxx/backend/domain/action/dispatch.cljs": "d39362e1a5cefb3cc96320be3fda8fc532fac652135a1b7cb7d1a43eb35310dd",
+    "backend/src/cljs/knoxx/backend/domain/action/start_agent_session.cljs": "21256650f2cd7e8567a118c90959364cdc2931e940e1993e6ad1817148cf22e6",
+    "backend/src/cljs/knoxx/backend/domain/bluesky/bluesky.cljs": "02b010cf6c4f65c514be076ba014377843985991a81ef0fa8dc744fc639d4e7b",
+    "backend/src/cljs/knoxx/backend/domain/character/decision_input.cljc": "e01a56c1e9f284758b018eb809228b406984b1edc3b9ada7fbee4f1d44d8fe51",
+    "backend/src/cljs/knoxx/backend/domain/character/encounter.cljc": "4e9cbf3de23d9bf218022de175dd08342dc43ef84811b101e913d978b05c7327",
+    "backend/src/cljs/knoxx/backend/domain/character/encounter_context.cljc": "f79e3bd668b6b87724cd75507524a50eeafb29f561df1d7ad5de0c26d2b56298",
+    "backend/src/cljs/knoxx/backend/domain/character/social_encounters.cljc": "658b1eb1876923e61bb1b139db95699794c253549a7002ff151a10e2ac48c099",
+    "backend/src/cljs/knoxx/backend/domain/character/tool_modes.cljc": "df64074fd09ce9507312b1434a71736ef00e6cf3c306255d71e012e3c157322a",
+    "backend/src/cljs/knoxx/backend/domain/contracts/resolve.cljs": "b2c0b78590123541bd955a72df117af9b8d9d981c82e6ae2155f0730a1ab6bd3",
+    "backend/src/cljs/knoxx/backend/domain/discord/source.cljs": "fe099bf6f75e40981f3d6dfde640492d6588842e595edd87c62d26e685ba4c57",
+    "backend/src/cljs/knoxx/backend/domain/discord/tools.cljs": "af1df4b73546e8a14ac52823a69c7d064d15c20273fc970256b8380b70b787de",
+    "backend/src/cljs/knoxx/backend/domain/event/dispatch.cljs": "6d0291ec88599f14328d3302d22679b625da57be2863ba2856bb75e0c1c3e6aa",
+    "backend/src/cljs/knoxx/backend/extern/character_encounters.cljs": "3f9b54915f7176089e1490ea3dfc2ba01075202b8db7b3e2d2e9637db70fba76",
+    "backend/src/cljs/knoxx/backend/extern/eta_mu.cljs": "233df7e77b8a24fd1765eb4e7f627002fe431fcc9236f025b805c3613756772d",
+    "backend/src/cljs/knoxx/backend/extern/tool_validation.cljs": "612c08f814e4b5bf2f40c7aeb88966be9ae8afac8b8dfe331e33178fa11cb315",
+    "backend/src/cljs/knoxx/backend/extern/tools.cljs": "bd65d1c5d4d7935cea512cc2de088d73ce6352b6a26eb4a6425c277d69db134d",
+    "backend/src/cljs/knoxx/backend/infra/agent/hydration.cljs": "b09664ab631c9c49fd0bfea5d8268e3236027b4a674827127f88e9659b5097f7",
+    "backend/src/cljs/knoxx/backend/infra/agent/runner.cljs": "20663a95d3751b6cb25f84cce215db37d7b9725c62a1fe792aec49fadfa8416f",
+    "backend/src/cljs/knoxx/backend/infra/agent/session.cljs": "5c66dff8da19f6228154cd370316c33c80e12c6fa7c0577c34779f7dc010597c",
+    "backend/src/cljs/knoxx/backend/infra/agent/tool_catalog.cljs": "7515d7de7c87e032a9bee0af3635971d3529caecf433da2cf6a5989994d316be",
+    "backend/src/cljs/knoxx/backend/infra/agent/turn.cljs": "81b23d2b39ebfbe21dcbebcc1c54a0dd84d60593e1a7a6003d9dae3778890115",
+    "backend/src/cljs/knoxx/backend/infra/character/authority.cljs": "872c6d6a61500997445e8a764258e9c79cefa20765b11e722c5df7b738848391",
+    "backend/src/cljs/knoxx/backend/infra/character/encounter_admission.cljs": "23bfe053619b60b7e6abc62ac1391de64f1a4ec2e75de0350d6bc70b26ec562f",
+    "backend/src/cljs/knoxx/backend/infra/character/encounter_openplanner.cljs": "7d3eac3c987819f542a3b15a36fe87908df290de054b6d291f21c5deac9a2dd5",
+    "backend/src/cljs/knoxx/backend/infra/character/encounter_runtime.cljs": "718c9838df866688d9cabf510de0dde8e9a7d4618474065d53c0035dd5f083c0",
+    "backend/src/cljs/knoxx/backend/infra/character/intake_action.cljs": "360b8bc300f76ab95a33c3137c782fa53068ba2d00670f3e6ab174ed740a96a5",
+    "backend/src/cljs/knoxx/backend/infra/character/mode_runtime.cljs": "e52c0f7dbe6f49f63c4cbc23c0fa9bd53150ea73b9cb088be641828a13b923e9",
+    "backend/src/cljs/knoxx/backend/infra/character/social_encounters.cljs": "0291ff06723cd6603e85a7182d89f9b8ce2c6656c3f92d5c96be5eec9a6f463a",
+    "backend/src/cljs/knoxx/backend/infra/db/policy.cljs": "744809fbbe1ab6010a617c1aa07e299aec06faf11195c5ea6abfaafa35637b66",
+    "backend/src/cljs/knoxx/backend/infra/openplanner/memory.cljs": "5443e530b0e80fb33f3f8727788fe655cd950db55264311acc30a609da009b15",
+    "backend/src/cljs/knoxx/backend/infra/openplanner/tools.cljs": "a8b271e98269cf8f7533fc490d27842f777a5aab839ff104951c621d3e609151",
+    "backend/src/cljs/knoxx/backend/infra/routes/memory.cljs": "7f2dd725b20aa6899739d54424b78c5b65c7f06957b35b4c6d5d4df678eee2bc",
+    "backend/src/cljs/knoxx/backend/infra/routes/users/admin.cljs": "fb0d9e5411431f295e1536dc072483b1cf000c284c40847b14bc68e5625e01e7",
+    "backend/src/cljs/knoxx/backend/law/character/encounter.cljc": "6a87500ecbf7d2eff92624fb38464fc25851b99d169c52ce585d39e3cde6e74d",
+    "backend/src/cljs/knoxx/backend/law/character/tool_modes.cljc": "7de4d6c1c10767254f4c4e784d2547c4c65c82bf6d31e3537e4b8b254243aaac",
+    "backend/src/cljs/knoxx/backend/shape/agent.cljs": "bfe86670b5984d60d7b11fe9f11737611336a7ddc4a70107a64e397bf51ca86f",
+    "backend/src/cljs/knoxx/backend/shape/character/encounter.cljc": "952e6bd7a68dfc1ca6fe22f09a66fb62fda0d7d4c723421895f4e1a4412f979c",
+    "backend/src/cljs/knoxx/backend/shape/character/tool_modes.cljc": "3f5e41379f6264f6e8c59f05a34ccff5c840cf12a558c5f982061ceabb0524dc",
+    "backend/test/cljs/knoxx/backend/agent_turn_timeout_test.cljs": "789d8285117fd594fbeade0f44a1d68d93f197c0ac6d83828c7ecec0ff6eeda5",
+    "backend/test/cljs/knoxx/backend/agents/runner_test.cljs": "4d3a25f30a52996ffd3cc69b0965cd16cb5de8b1d00676cc2c75c5daf3d4eda2",
+    "backend/test/cljs/knoxx/backend/character/authority_test.cljs": "f75cea68271f87992331580572ce99f912379c30a43509edf7217e581e3b17eb",
+    "backend/test/cljs/knoxx/backend/character/decision_input_test.cljs": "baad821b45a2ce10256072f5d297de7155dfc73e9cc65f01f207f10e9d85278c",
+    "backend/test/cljs/knoxx/backend/character/encounter_admission_test.cljs": "b80cb0a3187e28264d4b311d882fc5db9ea33add4cabf197f101a6ced5a1109c",
+    "backend/test/cljs/knoxx/backend/character/encounter_openplanner_test.cljs": "04625ea6870374d311ba1aa598e5bac72407d6793cd0e48f1e244fe1c0ca9522",
+    "backend/test/cljs/knoxx/backend/character/encounter_runtime_test.cljs": "f68eff5ebe9588e001799bcd2dc11354fdfdbe8b7be0a731888370c30f38d7ff",
+    "backend/test/cljs/knoxx/backend/character/encounter_test.cljc": "a70acf5813f8a0c5a92525c18ff4389bbb5e7e161ea92dca5b50adabe9874226",
+    "backend/test/cljs/knoxx/backend/character/encounter_timestamp_test.cljs": "f2da15e5dc300c705dadd833be1d1005d81049c89f43eac671d9aec1905190b5",
+    "backend/test/cljs/knoxx/backend/character/membership_policy_route_test.cljs": "f840f8bb31908819961541ca2025448f65fb33334f6c679e114c6936b6564851",
+    "backend/test/cljs/knoxx/backend/character/mode_runtime_test.cljs": "394864d32fae6f4e158fcc51ff1e12a7e8c519fcf6f2c96eb38474006159e1f6",
+    "backend/test/cljs/knoxx/backend/character/social_encounters_test.cljs": "b52ab8d72e563d7451ccfd1b529765027fce797b312bef2accdac1ddf60a01f4",
+    "backend/test/cljs/knoxx/backend/character/tool_modes_test.cljs": "b7af129315e0d808ab58dc647754fa1cb20127c7c17ed53686def9f36a346c5c",
+    "backend/test/cljs/knoxx/backend/character/turn_context_test.cljs": "df747d809635f1fb4281222866f74413d89ca4f1254f4bd3ee60e3c9f2216dd9",
+    "backend/test/cljs/knoxx/backend/memory_recall_budget_test.cljs": "1b78b2fe7bb981545a61d3bbfd199d765ec144f4b0474faaab0b8008c654b9cd",
+    "backend/test/js/focused_builtin_tools.test.mjs": "5a80daba6e6755f4cc911f4daf7c16c9bc5bd99a64da30975a4d79659e04fb87",
+    "docs/verification/local-creator-loop-proposed/replacement-values.edn": "35a61d1f81b42049c5b8d3685932a1c1e89041e156ba452e1143aa67e8d12c7c",
+    "docs/verification/local-creator-loop.md": "d858c02dfb54a7cd7478c53ac97b6b940e1e497054f4a2f7a8c88d8acb9ef512",
+    "scripts/verify-local-creator-loop.sh": "4b01457108a2cba5a1b20af498620278b3ba1154f2d31df2f7f2571d1d9ccb6e"
+  },
+  "compiled_server": {
+    "root": "backend/dist",
+    "javascript_file_count": 506,
+    "sorted_path_and_sha256_list_digest": "e9f4f812cf2cc551e960a846e7557a537797f6fd2bd19d11b3cce89ab551c237",
+    "started": false,
+    "source_build_log": "backend/.local-character-server-policy.log"
+  },
+  "verification": {
+    "hermetic": {
+      "tests": 1752,
+      "assertions": 8257,
+      "failures": 0,
+      "errors": 0,
+      "compiler_warnings": 0,
+      "required_character_namespaces": 12,
+      "actual_installed_sdk_fixture": "passed",
+      "log": "backend/.local-character-verifier-policy.log"
+    },
+    "server_compile": {
+      "files": 504,
+      "compiled": 468,
+      "warnings": 0,
+      "log": "backend/.local-character-server-policy.log"
+    },
+    "first_wrapper": {
+      "status": "failed",
+      "final_counters": "absent",
+      "causes": [
+        "multi-arity CLJS test replacement lacked fixed invocation entrypoints",
+        "projection-error fixture used a valid skippable empty system row"
+      ],
+      "disposition": "narrow fixture corrections verified by subsequent full wrapper"
+    },
+    "baseline_error_boundary_check": {
+      "status": "inherited failure",
+      "sites": 173,
+      "new_site_ids": 0
+    },
+    "log_sha256": {
+      "backend/.local-character-server-build.log": "6e48bab49afbbbbf4a74308ff06c0bae39267737951dd4450a154be6247deffc",
+      "backend/.local-character-server-final.log": "767ad020e08b4251b2848b5b5d3f52a7a54ad710d0d7fb1dd796c5dbf5bca7fc",
+      "backend/.local-character-server-policy.log": "baa0048053acd7774cef7e3611797a38051016e0375a72c7f32d7544d5b57ad9",
+      "backend/.local-character-targeted-tests.log": "d321d3507abe1834f4e5413b8c54e11746e35153520cf28773403e8797421c47",
+      "backend/.local-character-verifier-external-priority.log": "1e7972dca014c2ecc2f3a0583de2dd4371f997b330cf9a7d1bd57f1ebfbb26c7",
+      "backend/.local-character-verifier-final.log": "1b181391b4d0b395c89f9dac1e4884e3531a8c4bee156c0cf3be2c3be6cdbf0e",
+      "backend/.local-character-verifier-policy.log": "085a6e3a60877443f8818c3d144eeb9c97788d154e22cf325b952ea7237b4eef",
+      "backend/.local-character-verifier-repaired.log": "b1762f4547510eeb188bb42b537068614c7245331cf6a9a2eec0f165e7e7f5d7",
+      "backend/.local-character-verifier.log": "16993187d8e66e1dc0606b69a3a92223967544f4ecbbc4a3a3a3754cc1d94191"
+    },
+    "external_priority_wrapper": {
+      "tests": 1750,
+      "assertions": 8186,
+      "failures": 1,
+      "errors": 0,
+      "compiler_warnings": 0,
+      "disposition": "unchanged served-baseline timer premise raced under a pause; preserved failed evidence and corrected only to immediate/pending provider controls"
+    },
+    "deterministic_timeout_wrapper": {
+      "tests": 1750,
+      "assertions": 8187,
+      "failures": 0,
+      "errors": 0,
+      "compiler_warnings": 0
+    }
+  },
+  "state": {
+    "local_source_verified": true,
+    "live_overlay_changed": false,
+    "runtime_activated": false,
+    "formal_review_completed": false,
+    "field_evolution_completed": false,
+    "arbitrary_historical_encounter_vector_recall": false,
+    "graph_tool_exposed": false,
+    "live_actor_additional_tool_grants_applied": false
+  },
+  "conditional_engine_decision": "No reproduced SDK blocker; native processor draft retained outside active classpath and not qualified.",
+  "activation_prerequisites": [
+    "separately reviewed exact actor-specific membership overrides and rollback",
+    "candidate image dependency/runtime qualification",
+    "explicit controlled local cutover approval",
+    "natural fresh encounter/request/decision observation"
+  ]
+}

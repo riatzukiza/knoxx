@@ -83,6 +83,10 @@
   (forward-v1! [_ request]
     (openplanner-client/forward-v1! rest-client request))
 
+  openplanner-client/IOpenPlannerScopedGraphRecall
+  (scoped-graph-recall! [_ request resolve-current-authority!]
+    (xsdk/scoped-graph-recall! request resolve-current-authority!))
+
   openplanner-client/IOpenPlannerEventProjectionRepair
   (ingest-events-awaiting-projections! [_ events]
     (xsdk/events! events {:await-index? true}))

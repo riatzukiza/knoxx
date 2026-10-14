@@ -32,7 +32,7 @@
     (await (threads/put-thread! provider value))))
 
 (defn- passive! ([_ _ _ _] (passive! nil nil nil nil nil)) ([_ _ _ _ _] nil))
-(defn- memory! ([_ _ _] nil) ([_ _ _ _] nil) ([_ _ _ _ _] nil))
+(defn- memory! ([_ _ _] nil) ([_ _ _ _] nil) ([_ _ _ _ _] nil) ([_ _ _ _ _ _] nil))
 (defn- model-session []
   (reify agent/IAgentSession (set-thinking-level! [_ _] nil) (messages [_] [])
     (streaming? [_] false) (current-turn [_] nil)))

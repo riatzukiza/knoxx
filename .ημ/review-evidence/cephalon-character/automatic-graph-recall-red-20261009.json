@@ -1,0 +1,40 @@
+{
+  "kind": "observed-isolated-command-output-with-selected-stdout-excerpt",
+  "source_head": "6e57a9966f5cd505499717f4024bf66d9e9e1e5e",
+  "command": "bash scripts/verify-local-creator-loop.sh --hermetic",
+  "exit": 2,
+  "test_file": "backend/test/cljs/knoxx/backend/character/graph_recall_test.cljs",
+  "test_sha256": "af975b7826499fee5730788b10c8e122365ec8ce90d7285578bd5841c440ce1b",
+  "counts": {
+    "tests": 1753,
+    "assertions": 8265,
+    "failures": 4,
+    "errors": 0,
+    "compiler_warnings": 0
+  },
+  "compile": {
+    "files": 782,
+    "compiled": 781,
+    "seconds": 52.02
+  },
+  "all_failure_test": "sessionless-encounter-and-graph-only-neighbor-reach-the-maker-prompt",
+  "failures": [
+    "0 graph calls, expected1",
+    "empty hits omit sessionless encounter seed",
+    "empty hits omit graph-only neighbor",
+    "actual provider-session prompt omits graph-only neighbor"
+  ],
+  "full_stdout_private_path": "/home/err/.local/share/codex/cephalon-review-artifacts/recall-admission-20261009/knoxx-automatic-graph-recall-red.log",
+  "full_stdout_sha256": "9d664e50ef3778e0a1a329adca6571a169721cac5e7bea5a2b2bce5aa146bb81",
+  "selected_stdout_path": ".\u03b7\u03bc/review-evidence/cephalon-character/automatic-graph-recall-red-20261009.stdout.txt",
+  "selected_stdout_sha256": "b82d7ca4476a550424c577b55b8695f256ece49462538efba9870fac9e196369",
+  "fixture_boundaries": [
+    "Existing encounter identity and admission laws",
+    "Actual passive hydration and prompt-and-await orchestration",
+    "Captured IAgentSession send instead of provider",
+    "Synthetic graph transport response does not prove traversal, scope enforcement, feedback or persistence",
+    "No production implementation changed",
+    "Dedicated temporary snapshot removed by existing wrapper"
+  ],
+  "scope": "B3 initial RED; full recall story and B1/B2 remain incomplete"
+}

@@ -1,0 +1,36 @@
+{
+  "kind": "observed-isolated-command-output-with-selected-stdout-excerpt",
+  "source_head": "6f5618cdcd3b67ef2d4aab02ca7aabbffdd9b938",
+  "command": "bash scripts/verify-local-creator-loop.sh --hermetic",
+  "exit": 2,
+  "test_file": "backend/test/cljs/knoxx/backend/character/graph_recall_test.cljs",
+  "test_sha256": "5ac6902e99926b4575d5ee759f86f1be5f98f54b0f283f9156925811d8be6a63",
+  "counts": {
+    "tests": 1754,
+    "assertions": 8271,
+    "failures": 9,
+    "errors": 0,
+    "compiler_warnings": 0
+  },
+  "compile": {
+    "files": 782,
+    "compiled": 781,
+    "seconds": 49.32
+  },
+  "previous_inclusion_failures": 4,
+  "new_outage_failures": 5,
+  "positive_session_visibility_assertion": "PASS: exact held organization/membership/user through existing visibility adapter",
+  "lint": "backend-cwd clj-kondo changed test 0errors0warnings",
+  "sdk_fixture": "PASS: actual SDK factories/session prompt rebuild/tool ceiling/history/strict JSON Schema without provider call",
+  "full_stdout_private_path": "/home/err/.local/share/codex/cephalon-review-artifacts/receipt-river-fixture-20261009/knoxx-automatic-graph-outage-red.log",
+  "full_stdout_sha256": "8d1e6ec6e1b71729120533c0075ef92d3880a73f11786381a752820772f6148a",
+  "selected_stdout_path": ".ημ/review-evidence/cephalon-character/automatic-graph-outage-red-20261009.stdout.txt",
+  "selected_stdout_sha256": "ab57317c1b36737798320d15b9103b32693d421f4acf740b0be7db5b5ac38d3a",
+  "boundaries": [
+    "Actual passive hydration; held existing graph transport boundary",
+    "Production remains vector-only and returned the authorized vector hit",
+    "No real graph traversal/authentication/persistence/feedback or live prompt proof",
+    "Dedicated temporary snapshot removed; no production edit/runtime/model/grant/social change"
+  ],
+  "scope": "B3 additional RED; B1/B2 and full recall story unfinished"
+}

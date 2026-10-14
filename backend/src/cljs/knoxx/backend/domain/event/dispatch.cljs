@@ -5,6 +5,7 @@
             [knoxx.backend.domain.action.registry :as action-registry]
             [knoxx.backend.domain.action.start-agent-session]
             [knoxx.backend.domain.action.run-pipeline]
+            [knoxx.backend.domain.action.character-intake]
             [knoxx.backend.domain.condition.registry :as condition-registry]
             [knoxx.backend.domain.event.normalize :as event-normalize]
             [knoxx.backend.domain.resources.loader :as resources]

@@ -1,7 +1,9 @@
 (ns knoxx.backend.infra.agent.tool-catalog
   "Agent tool catalog and policy resolution ports."
   (:require [clojure.string :as str]
+            [clojure.set :as set]
             [knoxx.backend.extern.eta-mu :as eta-mu-extern]
+            [knoxx.backend.infra.auth.authz :as authz]
             [knoxx.backend.infra.agent.hydration :refer [create-agent-custom-tools]]
             [knoxx.backend.infra.tooling :as tooling]))
 
@@ -27,6 +29,16 @@
                                auth-context
                                (:contract-id agent-spec)
                                (:actor-id agent-spec)))
+
+(defn focused-authorized-tool-ids
+  "For scoped dispatch, a contract's tool ceiling must also have CURRENT stored
+   actor grants. Historical explicit contracts otherwise bypass that clamp."
+  [config auth-context agent-spec]
+  (let [ceiling (allowed-tool-ids config auth-context agent-spec)]
+    (cond
+      (nil? auth-context) #{}
+      (authz/system-admin? auth-context) ceiling
+      :else (set/intersection ceiling (tooling/auth-tool-ids auth-context)))))
 
 (defn builtin-tools
   [runtime config tool-auth-context agent-spec]
@@ -80,7 +92,9 @@
                                    str/trim
                                    not-empty)
              :system-prompt (some-> (:system-prompt agent-spec) str str/trim not-empty)
-             :task-prompt (some-> (:task-prompt agent-spec) str str/trim not-empty)})))
+             :task-prompt (some-> (:task-prompt agent-spec) str str/trim not-empty)
+             :tool-modes (:tool-modes agent-spec)
+             :character-context (:character-context agent-spec)})))
 
 (defrecord DefaultToolPolicyResolver [config]
   IToolPolicyResolver

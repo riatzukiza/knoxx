@@ -9,26 +9,20 @@
             [knoxx.backend.infra.stores.session-store-registry :as registry]
             [knoxx.backend.shape.session-persistence :as run-port]))
 
-(defn ^:async with-run!
-  "Seed valid durable lifecycle coordinates and restore every installed fixture."
-  [{:keys [run_id session_id conversation_id] :as coordinates} body]
+(defn ^:async with-providers!
+  "Install owned disk providers for one turn without pre-admitting its run."
+  [run-id body]
   (let [directory (disk/temporary-directory)
         previous-run @registry/session-store* previous-thread @sessions/provider*
         previous-heap @state/runs* previous-order @state/run-order*
-        at (disk/instant (disk/now-ms))
-        run (merge {:status "running" :created_at at :updated_at at :messages []}
-                   coordinates)
         provider (runs/open! {:directory (str directory "/runs")})]
     (try
       (reset! registry/session-store* provider)
       (events/install! provider)
       (sessions/install! (threads/open! {:directory (str directory "/threads")}))
-      (await (run-port/put-run! provider run))
-      (await (sessions/put-session! (assoc run :session_id session_id :conversation_id conversation_id)))
-      (state/store-run! run_id run)
       (await (body))
       (finally
-        (try (await (events/flush! run_id))
+        (try (await (events/flush! run-id))
              (finally
                (reset! registry/session-store* previous-run)
                (events/install! previous-run)
@@ -36,6 +30,21 @@
                (reset! state/runs* previous-heap)
                (reset! state/run-order* previous-order)
                (disk/remove! directory)))))))
+
+(defn ^:async with-run!
+  "Seed valid durable lifecycle coordinates and restore every installed fixture."
+  [{:keys [run_id session_id conversation_id] :as coordinates} body]
+  (await
+   (with-providers!
+    run_id
+    (^:async fn []
+      (let [at (disk/instant (disk/now-ms))
+            run (merge {:status "running" :created_at at :updated_at at :messages []}
+                       coordinates)]
+        (await (run-port/put-run! @registry/session-store* run))
+        (await (sessions/put-session! (assoc run :session_id session_id :conversation_id conversation_id)))
+        (state/store-run! run_id run)
+        (await (body)))))))
 
 (defn prompt-stub
   "Replace either public prompt arity while retaining compiled arity dispatch."

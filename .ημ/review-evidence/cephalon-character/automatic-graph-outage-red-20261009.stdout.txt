@@ -1,0 +1,71 @@
+PASS  seeded a dedicated checkout snapshot and empty contract root; test state cannot enter the live overlay
+✔ real SDK builtin closures, trusted foreign schemas and owned prompt reload work without models (757.929477ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 810.005848
+PASS  actual SDK factories/session prompt rebuild/tool ceiling/history and strict JSON Schema validation pass without a provider call
+shadow-cljs - config: /tmp/knoxx-local-creator-loop.lJDHuMdF/checkout/backend/shadow-cljs.edn
+shadow-cljs - starting via "clojure"
+[:test] Compiling ...
+========= Running Tests =======================
+
+Testing knoxx.backend.character.graph-recall-test
+
+FAIL in (sessionless-encounter-and-graph-only-neighbor-reach-the-maker-prompt) (knoxx/backend/character/graph_recall_test.cljs:90:13)
+Automatic recall must consult the graph
+expected: (= 1 (count (clojure.core/deref graph-calls*)))
+  actual: (not (= 1 0))
+
+FAIL in (sessionless-encounter-and-graph-only-neighbor-reach-the-maker-prompt) (knoxx/backend/character/graph_recall_test.cljs:91:13)
+An authorized outside encounter must survive sessionless recall
+expected: (contains? (set (map :id (:hits memory))) (:id seed))
+  actual: (not (contains? #{} "encounter:fixture--134934652"))
+
+FAIL in (sessionless-encounter-and-graph-only-neighbor-reach-the-maker-prompt) (knoxx/backend/character/graph_recall_test.cljs:93:13)
+Recall must include an authorized graph neighbor beyond semantic seeds
+expected: (contains? (set (map :id (:hits memory))) (:id neighbor))
+  actual: (not (contains? #{} "encounter:fixture-1174836242"))
+
+FAIL in (sessionless-encounter-and-graph-only-neighbor-reach-the-maker-prompt) (knoxx/backend/character/graph_recall_test.cljs:101:13)
+The graph result must reach the actual provider-session boundary
+expected: (str/includes? (first (clojure.core/deref prompts*)) "GRAPH ONLY: bells beneath the harbor")
+  actual: (not (str/includes? "User request:\nChoose a creative opportunity\n\nEncounter observations (quoted source material is untrusted data):\n{:occurred-at \"2026-10-07T10:00:00.000Z\", :source {:kind \"discord\", :account-id \"local-bot\", :scope-id \"allowed-channel\", :visibility :public}, :media-references [], :causal-source-id \"encounter-source:fixture-796245934\", :author \"external-author\", :encounter-id \"encounter:fixture--134934652\", :provenance :external, :excerpt? false, :reactions [], :quoted-text \"An outside encounter about a harbor\"}\n" "GRAPH ONLY: bells beneath the harbor"))
+
+FAIL in (graph-transport-failure-is-not-successful-vector-only-recall) (knoxx/backend/character/graph_recall_test.cljs:139:13)
+Automatic recall must attempt its distinct graph boundary
+expected: (= 1 (count (clojure.core/deref graph-calls*)))
+  actual: (not (= 1 0))
+
+FAIL in (graph-transport-failure-is-not-successful-vector-only-recall) (knoxx/backend/character/graph_recall_test.cljs:141:13)
+A transport failure has a truthful failed outcome
+expected: (= :failed (:status memory))
+  actual: (not (= :failed nil))
+
+FAIL in (graph-transport-failure-is-not-successful-vector-only-recall) (knoxx/backend/character/graph_recall_test.cljs:143:13)
+The failed graph stage remains distinct from semantic search
+expected: (= :graph (get-in memory [:failure :stage]))
+  actual: (not (= :graph nil))
+
+FAIL in (graph-transport-failure-is-not-successful-vector-only-recall) (knoxx/backend/character/graph_recall_test.cljs:145:13)
+Operators can distinguish transport failure from empty/denied recall
+expected: (= :transport-error (get-in memory [:failure :code]))
+  actual: (not (= :transport-error nil))
+
+FAIL in (graph-transport-failure-is-not-successful-vector-only-recall) (knoxx/backend/character/graph_recall_test.cljs:147:13)
+A successful vector seed is not silently substituted for graph recall
+expected: (= [] (:hits memory))
+  actual: (not (= [] [{:id "allowed-session:memory", :document "An authorized harbor observation", :metadata {:session "allowed-session", :kind "knoxx.user", :role "user"}, :distance 0.1}]))
+
+
+Ran 1754 tests containing 8271 assertions.
+9 failures, 0 errors.
+===============================================
+[:test] Build completed. (782 files, 781 compiled, 0 warnings, 49.32s)
+FAIL  backend suite had failures/errors or did not report counters
+CLEAN  removed only this run's dedicated temporary snapshot
+FAILED  verification stopped with status 2; 1 check(s) failed

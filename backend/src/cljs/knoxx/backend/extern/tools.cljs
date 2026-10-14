@@ -6,6 +6,7 @@
    sanitation/mutation, and JSON parsing for tool string parameters. Domain tool
    namespaces should delegate here instead of importing generic JS/JSON helpers."
   (:require [clojure.string :as str]
+            [knoxx.backend.extern.tool-validation :as validation]
             [malli.json-schema :as mjs]))
 
 (defn parameters
@@ -21,7 +22,47 @@
        :promptSnippet prompt-snippet
        :promptGuidelines (clj->js prompt-guidelines)
        :parameters (parameters parameters-schema)
+       ;; Trusted schema travels with the closure, never from model arguments.
+       :knoxxParametersSchema parameters-schema
        :execute (partial execute runtime config)})
+
+(defn registered-tool
+  "Convert a constructed, policy-scoped domain closure for scoped dispatch.
+   Absence of a trusted argument schema is refused by the dispatch boundary."
+  [tool]
+  {:id (or (aget tool "originalName") (aget tool "name"))
+   :name (aget tool "name")
+   :label (or (aget tool "label") (aget tool "name"))
+   :description (or (aget tool "description") "")
+   :parameters (js->clj (aget tool "parameters") :keywordize-keys true)
+   :parameters-schema (aget tool "knoxxParametersSchema")
+   :validate-arguments (when-not (aget tool "knoxxParametersSchema")
+                         (validation/trusted-json-validator
+                          (js->clj (aget tool "parameters") :keywordize-keys true)))
+   :execute (^:async fn [id args signal update!]
+              (js->clj
+               (await ((aget tool "execute") id (clj->js args) signal
+                       (when update!
+                         (fn [value] (update! (js->clj value :keywordize-keys true))))
+                       ;; Knoxx domain closures retain the SDK's optional ctx
+                       ;; position. Explicit nil preserves their fixed arity;
+                       ;; public builtin/MCP JS closures ignore this extra arg.
+                       nil))
+               :keywordize-keys true))})
+
+(defn focused-tools
+  "Expose the engine-independent small menu/dispatch surface to the SDK.
+   Its argument decoder never imports authority or schemas from model input."
+  [controller]
+  (into-array
+   (map (fn [{:keys [name label description parameters execute]}]
+          #js {:name name :label label :description description
+               :parameters (clj->js parameters)
+               :execute (^:async fn [id args signal update!]
+                          (clj->js (await (execute id (js->clj args :keywordize-keys true) signal
+                                                  (when update!
+                                                    #(update! (clj->js %)))))))})
+        (:tools controller))))
 
 (defn send-update!
   "Call a tool runtime update callback with a CLJS payload map."

@@ -12,7 +12,7 @@
             [knoxx.backend.infra.agent.policy :refer [validate-chat-policy!]]
             [knoxx.backend.infra.agent.turn :refer [ensure-conversation-access! ensure-session-id]]
             [knoxx.backend.shape.app-shapes :refer [normalize-chat-body normalize-control-body route!]]
-            [knoxx.backend.infra.auth.authz :refer [policy-db policy-db-enabled? policy-db-promise with-request-context! ensure-permission! ensure-tool! ensure-any-permission! ensure-org-scope! primary-context-role ctx-permitted? system-admin? ctx-role-slugs ctx-user-id ctx-user-email ctx-org-id run-visible?]]
+            [knoxx.backend.infra.auth.authz :refer [policy-db policy-db-enabled? policy-db-promise with-request-context! ensure-permission! ensure-tool! ensure-any-permission! ensure-org-scope! primary-context-role ctx-permitted? system-admin? ctx-role-slugs ctx-user-id ctx-user-email ctx-org-id ctx-actor-binding run-visible?]]
             [knoxx.backend.infra.core-memory :refer [fetch-openplanner-session-rows! session-visible? session-matches-page-actor-filter? filter-authorized-memory-hits! authorized-session-ids!]]
             [knoxx.backend.infra.routes.resources :as resource-routes]
             [knoxx.backend.infra.publication-admission-hook :as publication-admission-hook]
@@ -168,8 +168,12 @@
 
 (defn- effective-auth-context
   [ctx parsed]
-  (let [base (or ctx (:auth-context parsed))
-        requested-actor-id (some-> (get-in parsed [:agent-spec :actor-id]) str str/trim not-empty)
+  (let [base ctx
+        requested-actor-id (some-> (:requested-actor-id parsed) str str/trim not-empty)
+        _ (when (and requested-actor-id
+                     (not= requested-actor-id (ctx-actor-binding ctx)))
+            (throw (ex-info "Actor-scoped requests require their authenticated server binding"
+                            {:status 403 :reason :invalid-actor-context})))
         requested-role-slug (requested-role parsed)
         role-slugs (cond
                      (and (nil? base) requested-role-slug) [requested-role-slug]
@@ -713,7 +717,9 @@
 (defn ^:async handle-chat-start [runtime config reply ctx request]
   (let [node-crypto crypto
         parsed0 (normalize-chat-body (request-body request))
-        parsed (assoc parsed0 :agent-spec (merged-agent-spec config parsed0))
+        parsed (assoc parsed0
+                      :requested-actor-id (get-in parsed0 [:agent-spec :actor-id])
+                      :agent-spec (merged-agent-spec config parsed0))
         agent-ctx (effective-auth-context ctx parsed)
         policy-model (or (:model parsed)
                          (get-in parsed [:agent-spec :model])
@@ -770,7 +776,9 @@
 (defn ^:async handle-direct-start [runtime config reply ctx request]
   (let [node-crypto crypto
         parsed0 (normalize-chat-body (request-body request))
-        parsed (assoc parsed0 :agent-spec (merged-agent-spec config parsed0))
+        parsed (assoc parsed0
+                      :requested-actor-id (get-in parsed0 [:agent-spec :actor-id])
+                      :agent-spec (merged-agent-spec config parsed0))
         agent-ctx (effective-auth-context ctx parsed)
         policy-model (or (:model parsed)
                          (get-in parsed [:agent-spec :model])
@@ -1321,7 +1329,9 @@
   "POST" "/api/knoxx/chat"
   (when ctx (ensure-permission! ctx "agent.chat.use"))
   (let [parsed0 (normalize-chat-body (request-body request))
-        parsed (assoc parsed0 :agent-spec (merged-agent-spec config parsed0))
+        parsed (assoc parsed0
+                      :requested-actor-id (get-in parsed0 [:agent-spec :actor-id])
+                      :agent-spec (merged-agent-spec config parsed0))
         agent-ctx (effective-auth-context ctx parsed)
         body (assoc parsed
                     :mode "rag"
@@ -1341,7 +1351,9 @@
   "POST" "/api/knoxx/direct"
   (when ctx (ensure-permission! ctx "agent.chat.use"))
   (let [parsed0 (normalize-chat-body (request-body request))
-        parsed (assoc parsed0 :agent-spec (merged-agent-spec config parsed0))
+        parsed (assoc parsed0
+                      :requested-actor-id (get-in parsed0 [:agent-spec :actor-id])
+                      :agent-spec (merged-agent-spec config parsed0))
         agent-ctx (effective-auth-context ctx parsed)
         body (assoc parsed
                     :mode "direct"

@@ -1,0 +1,39 @@
+{
+  "tier": "actual isolated candidate library/held SDK/provider-session RED, not live principal or deployment",
+  "observed_at": "2026-10-14T11:46:58.796516+00:00",
+  "exit": 2,
+  "seconds": 99.034,
+  "log_bytes": 105216,
+  "log_sha256": "5126631b47b82489afe0c3a62b0ab34fe4cb6223d292f67d063e9e481814d221",
+  "summaries": [
+    "Ran 1979 tests containing 11557 assertions.",
+    "10 failures, 0 errors."
+  ],
+  "failure_headers": [
+    "FAIL in (admitted-graph-revisions-reach-the-prompt-and-safe-projection) (knoxx/backend/character/graph_recall_test.cljs:138:19)",
+    "FAIL in (admitted-graph-revisions-reach-the-prompt-and-safe-projection) (knoxx/backend/character/graph_recall_test.cljs:141:19)",
+    "FAIL in (admitted-graph-revisions-reach-the-prompt-and-safe-projection) (knoxx/backend/character/graph_recall_test.cljs:143:19)",
+    "FAIL in (sessionless-encounter-and-graph-only-neighbor-reach-the-maker-prompt) (knoxx/backend/character/graph_recall_test.cljs:233:13)",
+    "FAIL in (graph-revisions-survive-actual-turn-publication-and-provider-settlement) (knoxx/backend/character/graph_recall_test.cljs:252:21)",
+    "FAIL in (graph-revisions-survive-actual-turn-publication-and-provider-settlement) (knoxx/backend/character/graph_recall_test.cljs:253:21)",
+    "FAIL in (graph-revisions-survive-actual-turn-publication-and-provider-settlement) (knoxx/backend/character/graph_recall_test.cljs:254:21)",
+    "FAIL in (graph-revisions-survive-actual-turn-publication-and-provider-settlement) (knoxx/backend/character/graph_recall_test.cljs:252:21)",
+    "FAIL in (graph-revisions-survive-actual-turn-publication-and-provider-settlement) (knoxx/backend/character/graph_recall_test.cljs:253:21)",
+    "FAIL in (graph-revisions-survive-actual-turn-publication-and-provider-settlement) (knoxx/backend/character/graph_recall_test.cljs:254:21)"
+  ],
+  "source": "033c001125019908d0c68aa5365749005644edc8",
+  "consumer_before": "4bccab04045703e411d7f4c1d34df80e9fa76821",
+  "changed_test": "graph_recall_test.cljs",
+  "owned_snapshot_cleaned": true,
+  "owning_library_release": {
+    "source": "033c001125019908d0c68aa5365749005644edc8",
+    "exit": 0,
+    "seconds": 10.58,
+    "log_bytes": 271,
+    "log_sha256": "93ae6c4db95485d0b3a736246f8a4324443c69002c30fd92db1401ee137cd84b",
+    "library_sha256": "6d6d2e0402c249cfeb26869e0ee57cb7179d05ea01e1414c6e07f24f594381b2"
+  },
+  "private_verifier_sha256": "d635cc57d365a8c6df8730dadfda2963265665c084b576e058d19bb169087c04",
+  "verification_recipe": "Existing isolated fixture driver with two SDK/graph-core links to actual033c and bounded owned JVM; no application start, real DB/provider call, or deployed source proof",
+  "initial_lint_observation": "Bare root-cwd clj-kondo missed backend configuration/cache; correct backend-cwd test lint0/0. Scoped lint including unchanged hydration also retains existing32-line build-agent-multimodal-message warning; no new code is hidden or claimed warning-free by that run."
+}

@@ -6,6 +6,7 @@
             [knoxx.backend.domain.resources.loader :as resources]
             [knoxx.backend.infra.agent.event-policy-authority :as authority]
             [knoxx.backend.infra.agent.runner :as agent-runner]
+            [knoxx.backend.infra.character.authority :as character-authority]
             [knoxx.backend.infra.publication-draft-tool :as draft-tool]
             [knoxx.backend.infra.routes.tools :as tool-routes]
             [knoxx.backend.infra.tooling :as tooling]))
@@ -115,6 +116,33 @@
                                  :knoxx.backend.infra.agent.event-policy-authority/authority)
                          :knoxx.backend.infra.agent.event-policy-authority/authority
                          (js/Object.)))))))))
+
+(deftest ^:async scoped-trigger-without-policy-overlay-carries-server-actor-context
+  (let [spawned* (atom nil)
+        reads* (atom [])
+        resolved (assoc resolved-agent :tool-modes {:initial "home" :core []
+                                                   :modes {"home" {:description "Home" :tools []}}})
+        stored {:actor {:binding "pi"} :org {:id "stored-org"}
+                :membership {:id "stored-member"}}]
+    (with-redefs [tooling/resolve-agent-contract
+                  (fn ([_ _] resolved) ([_ _ _] resolved))
+                  agent-runner/spawn-direct!
+                  (fn ([_ payload] (reset! spawned* payload) {:ok true})
+                      ([_ _ payload] (reset! spawned* payload) {:ok true}))]
+      (action-registry/run-action!
+       (assoc-in (draft-context true) [:event :event/payload] {})
+       {:action/kind :actions/start-agent-session
+        :action/with {:agent-id "scoped-creator" :task "Choose from current encounters."}}))
+    (let [params (agent-runner/direct-start-payload->turn-params @spawned*)
+          context (:auth-context params)]
+      (is (authority/authorized? context) "The trusted action, not source content, mints the context")
+      (is (= "pi" (:actorId context)))
+      (is (nil? (:resourcePolicies context)) "No policy overlay or grant is invented")
+      (is (= stored
+             (dissoc (await (character-authority/resolve-current!
+                             {:resolve-agent-authority! (fn [scope] (swap! reads* conj scope) stored)}
+                             context (:agent-spec params))) :actorId)))
+      (is (= [{:actor-id "pi" :org-id nil :membership-id nil}] @reads*)))))
 
 (deftest ^:async direct-draft-tool-policy-without-authority-is-refused
   (let [execute (draft-tool/make-save-draft-execute

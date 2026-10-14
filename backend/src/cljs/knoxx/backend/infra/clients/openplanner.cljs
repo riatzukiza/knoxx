@@ -47,6 +47,16 @@
   (forward-v1! [client request]
     "Proxy compatibility for the frontend /api/openplanner/v1/* route."))
 
+(defprotocol IOpenPlannerScopedGraphRecall
+  "Fresh host-bound scoped read, separate from the legacy service-key REST API."
+  (scoped-graph-recall! [client request resolve-current-authority!]
+    "Read admitted graph context with a trusted host callback, never payload grants."))
+
+(defn scoped-graph-recall-supported?
+  "Only an explicit scoped adapter may serve automatic character recall."
+  [client]
+  (satisfies? IOpenPlannerScopedGraphRecall client))
+
 (defprotocol IOpenPlannerEventProjectionRepair
   "Optional capability for repairing derived fields beside immutable events.
 

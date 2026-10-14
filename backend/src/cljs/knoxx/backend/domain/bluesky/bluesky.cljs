@@ -127,6 +127,27 @@
                    (str/join "\n"))]
     (str prefix (when-not (str/blank? lines) (str "\n" lines)))))
 
+(defn- read-post-projection
+  "Retain source identities and media/count evidence alongside the existing text projection."
+  [post]
+  (let [author (:author post)
+        record (:record post)
+        handle (or (:handle author) "")]
+    {:handle handle
+     :displayName (or (:displayName author) "")
+     :authorId (or (:did author) "")
+     :text (or (:text record) "")
+     :createdAt (or (:createdAt record) "")
+     :uri (or (:uri post) "")
+     :url (bluesky-post-url handle (:uri post))
+     :cid (:cid post)
+     :embed (or (:embed post) (:embed record))
+     :reactionCounts (into {} (keep (fn [[source-key target-key]]
+                                     (when (contains? post source-key)
+                                       [target-key (get post source-key)]))
+                                   [[:likeCount :like] [:repostCount :repost]
+                                    [:replyCount :reply] [:quoteCount :quote]]))}))
+
 (defn ^:async bluesky-search! [runtime query kind limit]
   (let [kind (if (= kind "actors") "actors" "posts")
         session (await (bluesky-create-session! runtime))
@@ -144,17 +165,9 @@
                                          (str "https://bsky.app/profile/" handle))})))]
         {:kind kind :results results})
       (let [results (->> (or (:posts payload) [])
-                         (mapv (fn [post]
-                                 (let [author (:author post)
-                                       record (:record post)
-                                       handle (or (:handle author) "")]
-                                   {:handle handle
-                                    :displayName (or (:displayName author) "")
-                                    :text (or (:text record) "")
-                                    :createdAt (or (:createdAt record) "")
-                                    :uri (or (:uri post) "")
-                                    :url (bluesky-post-url handle (:uri post))}))))]
-        {:kind kind :results results}))))
+                         (mapv read-post-projection))]
+        {:kind kind :results results :cursor (:cursor payload) :rawCount (count results)
+         :accountId (:did session)}))))
 
 (defn ^:async bluesky-profile! [runtime actor]
   (let [actor (some-> actor str str/trim)
@@ -177,34 +190,19 @@
   (let [payload (await (bsky-client/actor-feed! (bluesky-client) nil actor limit))
         results (->> (or (:feed payload) [])
                      (mapv (fn [entry]
-                             (let [post (:post entry)
-                                   author (:author post)
-                                   record (:record post)
-                                   handle (or (:handle author) "")]
-                               {:handle handle
-                                :displayName (or (:displayName author) "")
-                                :text (or (:text record) "")
-                                :createdAt (or (:createdAt record) "")
-                                :uri (or (:uri post) "")
-                                :url (bluesky-post-url handle (:uri post))}))))]
-    {:actor actor :results results}))
+                             (assoc (read-post-projection (:post entry))
+                                    :repostReason (:reason entry)))))]
+    {:actor actor :results results :cursor (:cursor payload) :rawCount (count results)}))
 
 (defn ^:async bluesky-timeline! [runtime limit cursor]
   (let [session (await (bluesky-create-session! runtime))
         payload (await (bsky-client/timeline! (bluesky-client) session {:limit limit :cursor cursor}))
         results (->> (or (:feed payload) [])
                      (mapv (fn [entry]
-                             (let [post (:post entry)
-                                   author (:author post)
-                                   record (:record post)
-                                   handle (or (:handle author) "")]
-                               {:handle handle
-                                :displayName (or (:displayName author) "")
-                                :text (or (:text record) "")
-                                :createdAt (or (:createdAt record) "")
-                                :uri (or (:uri post) "")
-                                :url (bluesky-post-url handle (:uri post))}))))]
-    {:cursor (:cursor payload) :results results}))
+                             (assoc (read-post-projection (:post entry))
+                                    :repostReason (:reason entry)))))]
+    {:cursor (:cursor payload) :results results :rawCount (count results)
+     :accountId (:did session)}))
 
 (defn- text->utf8-bytes [text]
   (js/Uint8Array.from (js/Array.from (.encode (js/TextEncoder.) text))))

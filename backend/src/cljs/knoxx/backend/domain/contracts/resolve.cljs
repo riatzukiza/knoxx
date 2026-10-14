@@ -528,6 +528,9 @@
              :trigger-kind (some-> (:trigger-kind contract) keywordish->role-slug)
              :memory-hydration (memory-hydration-from-contract contract)
              :context-policy (context-policy-from-contract contract)
+             :tool-modes (or (get-in contract [:agent :tool-modes]) (:tool-modes contract))
+             :character-context (or (get-in contract [:agent :character-context]) (:character-context contract))
+             :character-encounters (or (get-in contract [:agent :character-encounters]) (:character-encounters contract))
              :sources runtime-sources
              :tool-ids (:tool-ids tool-ctx)
              :tool-policies (:tool-policies tool-ctx)

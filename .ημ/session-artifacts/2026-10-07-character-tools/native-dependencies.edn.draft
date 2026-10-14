@@ -1,0 +1,8 @@
+    ;; Native turn orchestration, consumed as immutable ClojureScript source.
+    ;; The npm artifact is not published; do not fall back to the legacy SDK.
+    io.github.open-hax/turn-processor {:git/url "https://github.com/open-hax/eta-mu.git"
+                                      :git/sha "d98ab446d56ddfd24542df49b102b851f2a767fa"
+                                      :deps/root "packages/turn-processor"}
+    io.github.open-hax/eta-mu-native {:git/url "https://github.com/open-hax/eta-mu.git"
+                                     :git/sha "d98ab446d56ddfd24542df49b102b851f2a767fa"
+                                     :deps/root "packages/eta-mu"}

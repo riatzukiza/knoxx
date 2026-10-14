@@ -7,7 +7,7 @@
             [knoxx.backend.infra.clients.proxx :as proxx-client]
             [knoxx.backend.infra.clients.openplanner :as openplanner-client]
             [knoxx.backend.infra.http :refer [http-error]]
-            [knoxx.backend.infra.openplanner.memory :refer [openplanner-memory-search! openplanner-graph-query! openplanner-event]]
+            [knoxx.backend.infra.openplanner.memory :refer [openplanner-memory-search! limit-authorized-memory-result openplanner-graph-query! openplanner-event]]
             [knoxx.backend.infra.openplanner.translation-scope :as translation-scope]
             [knoxx.backend.infra.translation-agent-runtime :as translation-agent]
             [knoxx.backend.law.translation-agent :as translation-agent-law]
@@ -139,9 +139,9 @@
           k (aget params "k")
           session-id (or (aget params "sessionId") "")]
       (maybe-tool-update! on-update "Searching Knoxx memory in OpenPlanner…")
-      (let [result (await (openplanner-memory-search! config {:query query :k k :session-id session-id}))
+      (let [result (await (openplanner-memory-search! config {:query query :k k :session-id session-id :defer-limit? true}))
             hits (await (filter-authorized-memory-hits! config auth-context (:hits result)))
-            filtered (assoc result :hits hits)]
+            filtered (limit-authorized-memory-result result hits k)]
         (tool-text-result (openplanner-memory-search-text filtered) filtered)))))
 
 (defn make-memory-session-execute [auth-context]

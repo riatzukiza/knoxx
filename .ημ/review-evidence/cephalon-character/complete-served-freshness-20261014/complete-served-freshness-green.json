@@ -1,0 +1,48 @@
+{
+  "tier": "actual dedicated shell fixture verification; no live Docker/runtime/backend",
+  "observed_at": "2026-10-14T12:34:41.528754+00:00",
+  "red_source": "98bea5f995ae30488f6f5ae3cc54b9a3dcae1208",
+  "commands": [
+    {
+      "argv": [
+        "/home/err/.volta/tools/image/node/22.20.0/bin/node",
+        "--test",
+        "scripts/verify-local-creator-loop.test.mjs"
+      ],
+      "exit": 0,
+      "seconds": 1.292,
+      "stdout": "TAP version 13\n# Subtest: served verification refuses a stale infra/character/authority.cljs before Docker exec\nok 1 - served verification refuses a stale infra/character/authority.cljs before Docker exec\n  ---\n  duration_ms: 179.183836\n  type: 'test'\n  ...\n# Subtest: served verification refuses a stale infra/agent/turn_startup.cljs before Docker exec\nok 2 - served verification refuses a stale infra/agent/turn_startup.cljs before Docker exec\n  ---\n  duration_ms: 167.796653\n  type: 'test'\n  ...\n# Subtest: served verification refuses a stale domain/node/crypto.cljs before Docker exec\nok 3 - served verification refuses a stale domain/node/crypto.cljs before Docker exec\n  ---\n  duration_ms: 190.52192\n  type: 'test'\n  ...\n# Subtest: served verification refuses stale emitted shared markup before Docker exec\nok 4 - served verification refuses stale emitted shared markup before Docker exec\n  ---\n  duration_ms: 190.556368\n  type: 'test'\n  ...\n# Subtest: dynamic inventory retains mandatory feature-module presence refusal\nok 5 - dynamic inventory retains mandatory feature-module presence refusal\n  ---\n  duration_ms: 169.60513\n  type: 'test'\n  ...\n# Subtest: fresh emitted backend/shared source controls pass matching served bytes\nok 6 - fresh emitted backend/shared source controls pass matching served bytes\n  ---\n  duration_ms: 295.945253\n  type: 'test'\n  ...\n1..6\n# tests 6\n# suites 0\n# pass 6\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 1257.064069\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "bash",
+        "-n",
+        "scripts/verify-local-creator-loop.sh"
+      ],
+      "exit": 0,
+      "seconds": 0.003,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit": 0,
+      "seconds": 0.006,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "script_sha256": "238568d38ff2e58593c09d0d3619ed7d4739f0265a4a53ff1f16a89e9d65b478",
+  "tests_sha256": "9dabee09f4e8dfc43fc4404b2e67a2b5a1d7512cf17395db16431aae312dacca",
+  "backend_code_unchanged_from_e985": true,
+  "scope": "Existing native freshness review and larger recall5point; no new source prerequisite or scope inclusion",
+  "workflow_sha256": "8cd131db0a7c8235073dc1d173f81686600492c90a74ef631eac5fa36b735754",
+  "required_ci_step": "Verify served source freshness contract, actual node --test existing script suite after Node setup",
+  "actionlint": "Actual .github/workflows/ci.yml exit0; no output",
+  "limits": "Timestamp freshness for emitted owned backend/shared modules, mandatory presence and full compiled JS comparison; no cryptographic build attestation, outside dependency pin or live behavior proof"
+}
