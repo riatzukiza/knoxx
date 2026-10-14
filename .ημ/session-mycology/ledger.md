@@ -292,3 +292,12 @@
   spore: none
   receipt-refs: 139ae20e4a813bc7461453445e7766d21853ea73,264d62bec18e2ee618b8a4fd0952f060448489d23add28e5eac43c80ebc0a3c1
   note: A failing migration progress law needs actual source retirement with preserved behavior. Keep a small slice within its existing card and preserve all metadata and historical body. Separate native API parity from inherited lifecycle hardening, and an observed local browser runtime from required hosted capability. Publish concrete scope and use canonical planning/readiness before RED; no inflated estimate, inaccurate infrastructure exemption, invented readiness or new planning stack. No new spore or promotion.
+- ts: 2026-10-14T21:24:23.939773598Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: private-durable-CMS-receipt-causal-RED
+  p-efficiency: 0.87
+  p-friction: 0.46
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: root-private-causal-RED-and-ack-canonical-receipt.edn
+  note: Actual two-route RED shows receipt loss after cache reset and205samepublicationnoops; compilerexit0 is not suitepass when seven assertions fail. CanonicalClioexact-replay does not fsync after ambiguouswrite; public lockedemptyappend safely syncs sameinode and separateOScanonicalreader verifiesunchangedfacts. Keep actualCMSrestart and namespacepowerloss proof separate. Full lint baseline13errors/284warnings is retained and unchangedsource independentlyverified; do not call fullqualificationpass. No spore/promotion.
