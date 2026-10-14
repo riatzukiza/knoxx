@@ -292,3 +292,12 @@
   spore: none
   receipt-refs: 139ae20e4a813bc7461453445e7766d21853ea73,264d62bec18e2ee618b8a4fd0952f060448489d23add28e5eac43c80ebc0a3c1
   note: A failing migration progress law needs actual source retirement with preserved behavior. Keep a small slice within its existing card and preserve all metadata and historical body. Separate native API parity from inherited lifecycle hardening, and an observed local browser runtime from required hosted capability. Publish concrete scope and use canonical planning/readiness before RED; no inflated estimate, inaccurate infrastructure exemption, invented readiness or new planning stack. No new spore or promotion.
+- ts: 2026-10-14T22:43:12.596214649Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: Knoxx model-safe runtime causal RED custody
+  p-efficiency: 0.8
+  p-friction: 0.35
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: /home/err/.local/share/openhax-codex/20261010/review-state/Knoxx-EC101-runtime-contract-private-RED-2ba-v1/root-provenance-canonical-receipt-event.edn
+  note: Commit actual public-API causal regression evidence before repair; preserve existing assertions and distinguish successful compiler completion from failed tests. Keep actual model/provider/database and production qualification separate. No new spore or promotion.
