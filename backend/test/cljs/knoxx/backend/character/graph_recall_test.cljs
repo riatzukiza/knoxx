@@ -127,6 +127,24 @@
               (is (= (:hits memory) (:hits retained)))
               (is (re-find #"NATIVE PRIVATE NEIGHBOR" (hydration/build-agent-user-message "Choose" nil retained))))))))
 
+(deftest ^:async admitted-graph-revisions-reach-the-prompt-and-safe-projection
+  (await (with-owning-graph-result!
+          (^:async fn [config spec authority wire]
+            (let [{:keys [retained]} (await (hydrate-authority-sequence! config spec [authority authority] wire))
+                  revision-keys [:recall-id :graph-revision :field-revision :field-owner]
+                  revisions (select-keys (:selection wire) revision-keys)
+                  revoked (hydration/retain-current-graph-hydration retained nil)]
+              (is (= 4 (count revisions)) "The owning result actually supplies every revision identity")
+              (is (str/includes? (hydration/build-agent-user-message "Choose" nil retained)
+                                 (pr-str revisions))
+                  "The prompt must bind its admitted paths to their actual graph and field revisions")
+              (is (= revisions (select-keys (hydration/memory-hydration-projection retained) revision-keys))
+                  "Persisted safe hydration metadata must retain the same owning revision identities")
+              (is (empty? (select-keys revoked revision-keys))
+                  "Revoked authority must clear stale revision identities together with the ranked hits")
+              (is (not (str/includes? (hydration/build-agent-user-message "Choose" nil revoked)
+                                      (:graph-revision revisions)))))))))
+
 (deftest ^:async sessionless-encounter-and-graph-only-neighbor-reach-the-maker-prompt
   ;; Both records use the existing pure encounter identity/admission laws.
   ;; The non-seed is absent from vector results and recent decision context.
@@ -211,8 +229,32 @@
         (is (= [] @session-reads*))
         (is (= 1 (count @prompts*)))
         (is (str/includes? (first @prompts*) "GRAPH ONLY: bells beneath the harbor")
-            "The graph result must reach the actual provider-session boundary")))
+            "The graph result must reach the actual provider-session boundary")
+        (is (str/includes? (first @prompts*)
+                           (pr-str (select-keys memory [:recall-id :graph-revision :field-revision :field-owner])))
+            "The actual provider-session prompt must retain the revisions of that graph traversal")))
     (finally (sdk-fixture/__clearScopedGraphFixture())))))
+
+(deftest ^:async graph-revisions-survive-actual-turn-publication-and-provider-settlement
+  (doseq [provider-fails? [false true]]
+    (await (turn-fixture/with-actual-character-turn!
+            (^:async fn [{:keys [config request runs* provider-failure* memories* prompts*]}]
+              (reset! provider-failure* provider-fails?)
+              (try (await (turn/send-agent-turn! :fixture-runtime config request))
+                   (catch :default _error :held-provider-failed))
+              (let [memory (last @memories*)
+                    revision-keys [:recall-id :graph-revision :field-revision :field-owner]
+                    revisions (select-keys memory revision-keys)
+                    run (get @runs* (:run-id request))
+                    event (first (filter #(= "memory_hydration" (:type %)) (:events run)))]
+                (is (= 4 (count revisions)))
+                (is (= (if provider-fails? "failed" "completed") (:status run)))
+                (is (str/includes? (first @prompts*) (pr-str revisions)))
+                (is (= revisions (select-keys (get-in run [:resources :memoryHydration]) revision-keys)))
+                (is (= revisions (select-keys event revision-keys)))
+                (is (not-any? #(contains? (get-in run [:resources :memoryHydration]) %)
+                              [:policy-revision :scope :records :auth-context
+                               :knoxx.backend.infra.agent.hydration/authority-binding]))))))))
 
 (defn- assert-graph-outcome-projection! [status memory resource events]
   (let [event (first events)

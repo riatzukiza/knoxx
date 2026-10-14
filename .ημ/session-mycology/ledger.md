@@ -347,3 +347,113 @@ Origin: `cephalon-character-automatic-scoped-graph-green-20261009`. p-efficiency
 - Origin: cephalon-text-and-principal-green-20261009; receipt42.
 - Efficiency0.77/friction0.38/skill-candidate0.18. Trusted fixture ingress makes the intended grant-revocation paths reachable; raw failed attempts and current successful counters remain distinct. No spore.
 - B3 source repairs do not deliver B1 field, B2 mood or live milestone/deployment.
+
+## 2026-10-09T21:58:04.171834Z — published principal and text repair
+
+- Origin: cephalon-text-and-principal-native-delivery-20261009; receipt43.
+- Efficiency0.78/friction0.34/skill-candidate0.18. Preserve causal RED and distinct failed fixture attempts, then carry one authenticated identity through every recheck. Inspect actual hosted job eligibility before counting its green badge.
+- Two native findings settled; new CI retry and full review remain pending, and independent walkthrough/import choice still owed. Goal active/heartbeat paused; no spore or live/board/deployment change. Owned journals remain uncommitted for next concrete change.
+
+
+## 2026-10-09 — current full hosted CI completed
+
+- Origin: cephalon-recall-full-ci-completed-20261009
+- p-efficiency: 0.82; p-friction: 0.22; p-skill-candidate: 0.10.
+- Actual same-head full runs37995836777 and37995990751attempt2 succeeded. Preserve the first failed attempt and45second observer timeout separately; no retry of live work.
+- Current canonical music3 policy recognizes one available-agent cohort and authenticated Codex account quota; required conversations remain separate.
+- Owning Receipt River validation infers containing repo. Operator CLJS-result destructuring/timestamp errors were corrected before append. Prefix guard caught concurrent deployment-worker receipt44 and preserved it; this owned source checkpoint is45/root354.
+- Prepared119-input642b full review requires fresh pending/cooldown/head/base after22:23UTC. OpenPlanner scope choice and independent walkthroughs remain; B1/B2/liveB3 unfinished.
+- No spore or runtime/board/model/grant/social/deployment operation in this chat. Hold appends for the next concrete owned change, without observation-only push.
+- ts: 2026-10-09T22:25:34.606062535Z
+  session: /home/err/spaces/cephalon-local-character/knoxx
+  task: Local Knoxx live memory and voluntary-creation config; local MCP discovery routing
+  p-efficiency: 0.77
+  p-friction: 0.52
+  p-skill-candidate: 0.38
+  spore: none
+  receipt-refs: local-knoxx-live-memory-opportunity-20261009
+  note: Validate actual deployed memory authorization separately from storage and always-mode selection. Confirm connector runtime identity and proxy OAuth discovery rather than assuming tool presence describes the local bot. Inspect inherited role prompt assembly for mandatory recipes; clarify voluntary behavior only in the bot-specific prompt. Preserve initial failed diagnostic attempts and exact rollback bytes; do not treat hot reload as verified recall or bypass principal filters. No spore or same-session promotion.
+
+
+## Current-head full review delivered — 2026-10-09T22:29:25.784Z
+
+- Origin: cephalon-recall-current-head-full-review-20261009
+- p-efficiency:0.87; p-friction:0.14; p-skill-candidate:0.05.
+- Actual full request6090251958 and authenticated reply6090253457 bind642b/baseb390. Runb71921d4 processes all119 selectedinputs; processing is not completed coverage/approval.
+- CurrentfullCIalreadySUCCESS; no duplicate provider request, unchanged-source rebuild or observation-only push.
+- Existing ReceiptRiver fixture authorization is fulfilled. OpenPlanner scope choice/independentwalkthroughs remain; B1/B2/liveB3 uncompleted.
+- Preserve foreign deployment-worker bytes and containing-repository attribution. No spore or runtime/board/deployment operation in this chat.
+
+
+## Ordinary actor regression causal RED — 2026-10-09T22:51:39.512Z
+
+- Origin: cephalon-ordinary-actor-causal-red-20261009; source receipt 48.
+- p-efficiency: 0.68; p-friction: 0.28; p-skill-candidate: 0.12.
+- Preserve the initial authored Fastify reply error separately; corrected 24 failures isolate ordinary default selection across four registered callbacks. Explicit binding negatives remain exercised.
+- Real RED committed before GREEN; existing shared foreign journals remain unchanged and uncommitted.
+- No spore, runtime, board, model, social or deployment operation.
+
+
+## Ordinary actor repair delivered and native CI complete — 2026-10-10T04:07:44.158Z
+
+- Origin: cephalon-ordinary-actor-green-native-handoff-20261009; receipt 49.
+- p-efficiency: 0.78; p-friction: 0.23; p-skill-candidate: 0.10.
+- Preserve the initial authored reply fixture failure. Corrected RED isolates24ordinary-default refusals; GREEN and production compile complete with0compilerwarnings. Both review findings are resolved with independent scoped readback.
+- Latest fullCI38002032012 succeeds; cancelled owned duplicate38001903426 is superseded, not pass credit.55second observer timeout and GraphQL403 are operator read failures; authenticated connector confirms actual threads/jobs/logs.
+- No source-head churn for handoff. Preserve shared foreign journals and exact union provenance; containing repository supplies new receipt attribution.
+- Full127-input new-head brief is prepared, not sent; fresh cooldown/pending/head/base needed after23:36UTC. Six independent walkthroughs and OpenPlanner56/config-versus2041sync scope choice remain.
+- This is B3 source progress. B1 persistent physical field, B2 persisted consumed mood and live B3 remain incomplete. GoalACTIVE/heartbeatPAUSED; no spore or runtime/board/deployment/social operation.
+
+- ts: 2026-10-10
+  task: Reproduce native trust, timestamp and served source defects
+  p-efficiency: 0.75
+  p-friction: 0.28
+  p-skill-candidate: 0.12
+  spore: none
+  receipt-refs: cephalon-character-b897-native-review-causal-red-20261010
+  note: Compiled multi-arity production calls require matching test doubles. Correct the authored fixture before attributing failures to production; preserve the original proof. No live maker effects are needed for these regressions.
+
+- ts: 2026-10-10T14:43:41.202Z
+  task: Bounded Codex review repair
+  p-efficiency: 0.8
+  p-friction: 0.25
+  p-skill-candidate: 0.12
+  spore: none
+  receipt-refs: cephalon-knoxx-native-b897-review-green-20261010
+  note: Require exact top-level server event/trusted true before character authority rendering/spawn and intake sources; skip only known invalid Bluesky source timestamp rows while retaining valid page material/incomplete coverage; check all46feature backend served inputs with actual fake-Docker negative fixtures; require CI to run them and warn local linked dependencies do not verify OPENPLANNER_REF. RED assertion count11504 differs because denied paths return before conditional fixture assertions; all1977tests run. Preserve foreign journal/reflection appends unstaged. Bounded OpenPlanner merged pin/layout consumption and fresh hosted/current-review evidence remain owed; no live B1/B2/B3, runtime, grant, social, board, deployment, paid or spore claim.
+
+- ts: 2026-10-10T14:52:56.100Z
+  task: Bounded Codex review repair
+  p-efficiency: 0.8
+  p-friction: 0.25
+  p-skill-candidate: 0.12
+  spore: none
+  receipt-refs: cephalon-knoxx-bounded-487-consumer-causal-red-20261010
+  note: Exact candidate SDK/graph package links in isolated module overlay expose held SDK embedding fixture missing raw source text SHA256. Owning graph correctly refuses unbound rows as indexing-pending before query/traversal, causing26 existing prompt/authority assertions. Original source links and tests unchanged. Repair only fixture row shape to actual owning contract; no local graph implementation, source admission waiver, runtime, hosted pin or live B1/B2/B3 proof. Preserve all old and foreign receipt/reflection bytes unstaged.
+
+- ts: 2026-10-10T14:55:55.241Z
+  task: Bounded Codex review repair
+  p-efficiency: 0.8
+  p-friction: 0.25
+  p-skill-candidate: 0.12
+  spore: none
+  receipt-refs: cephalon-knoxx-bounded-487-consumer-green-20261010
+  note: Held SDK embedding rows now include exact raw UTF8 source text SHA256 matching owning writer contract. Compiled owning bounded graph reader now admits valid held rows; all original prompt/path and revocation assertions are unchanged. RED11413/GREEN11459 differ due conditional callbacks after pending versus completed recall. SDK collections remain held test double through existing alias, not real Mongo. Production source unchanged from previously verified f6c93429. Merged dependency pin/layout consumption and fresh hosted/review gates remain owed. Preserve all foreign journal/reflection prefixes unstaged; no runtime/actor/grant/social/board/deployment/paid/spore change or live B1/B2/B3 claim.
+
+- ts: 2026-10-14T11:49:15.326Z
+  task: Existing Ready5point recall a1e9d6af B3
+  p-efficiency: 0.8
+  p-friction: 0.2
+  p-skill-candidate: 0.1
+  spore: none
+  receipt-refs: cephalon-graph-revision-custody-red-20261014
+  note: Actual full isolated backend RED1979tests11557assertions10fail0error/zero compiler warnings; every failure is in the new revision custody assertions, no unrelated failing test. Actual owning candidate033c library release0warnings, SHA6d6d2e0402c249cfeb26869e0ee57cb7179d05ea01e1414c6e07f24f594381b2. Already reviewed5point recall story moved nativeReady->Todo->InProgress through qualifiedRheos853; new source/API scope is not added. Graph/field/recall revision tuple is omitted from prompt/run/event, and stale tuple survives revocation in retained memory. This is B3 adapter RED only, not live principal, physical field, mood or completed recall proof. Existing held receipts24520bytes/reflections8335bytes carried without rewriting; earlier raw files stay held. Initial root-cwd lint mismatch and pre-existing untouched32line hydration warning retained. No source review/merge/deployment transfer, paid/model/auth/grant/live maker/runtime/clock/gateway/cloud/heartbeat/social/new agent/chat/spore change.
+
+- ts: 2026-10-14T11:50:45.586Z
+  task: Existing B3 recall RED evidence
+  p-efficiency: 0.8
+  p-friction: 0.2
+  p-skill-candidate: 0.1
+  spore: none
+  receipt-refs: cephalon-graph-revision-red-raw-custody-correction-20261014
+  note: Initial explicit staging hit generic *.log ignore; after explicitly retaining only that owned proof, diff hygiene identified trailing whitespace in actual fixture stdout. Original output was not trimmed or normalized. Full byte-equivalent JSON custody now carries every line/string/newline and original hash; ignored raw file and private original remain intact. Receipt54 initial created-file manifest remains historical, this companion supplies the actual committed five-path set. No policy/check waiver, history/receipt rewrite, force push, runtime or source behavior change.
