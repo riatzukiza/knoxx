@@ -130,6 +130,8 @@
    (env "KNOXX_PUBLICATION_SITE_URL" "http://localhost:4173")
    :publication-content-root
    (some-> (aget js/process.env "KNOXX_PUBLICATION_CONTENT_ROOT") str str/trim not-empty)
+   :publication-receipt-ledger-directory
+   (some-> (env "KNOXX_PUBLICATION_RECEIPT_LEDGER_DIRECTORY" nil) str str/trim)
    ;; Which producer a translation dispatch asks. See
    ;; `infra.routes.translation-dispatch/runner-kinds` for the two, and
    ;; `default-runner` there for why the agent is the default: this deployment

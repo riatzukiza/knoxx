@@ -14,6 +14,10 @@ import urllib.request
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE_PATHS = (
     "backend/src/cljs/knoxx/backend/law/publication_media.cljc",
+    "backend/src/cljs/knoxx/backend/law/publication_receipt_store.cljc",
+    "backend/src/cljs/knoxx/backend/extern/publication_receipt_store.cljs",
+    "backend/src/cljs/knoxx/backend/infra/publication_receipt_store.cljs",
+    "backend/src/cljs/knoxx/backend/infra/config.cljs",
     "backend/src/cljs/knoxx/backend/domain/publication_content.cljc",
     "backend/src/cljs/knoxx/backend/infra/publication_runtime.cljs",
     "backend/src/cljs/knoxx/backend/infra/routes/publication_reconcile.cljs",
@@ -249,21 +253,77 @@ def verify(run_root, proof_file):
         "after metadata-only noop")
     check(len(cms.json("GET", document_path + "/history")["revisions"]) == 2,
           "native history retains the original and metadata revision without rewriting either")
+    retained = emitted_after_noop
+    if receipt.get("durable-receipts"):
+        for _ in range(205):
+            noop = cms.json("POST", "/api/publications/reconcile", {"publicationId": publications["en"]["id"]})
+            if noop != repeated:
+                raise AssertionError("Same-publication noop changed its real receipt")
+        retained = cms.json("GET", "/api/publications/receipts")["receipts"]
+        check(len(retained) == 208 and retained[0] == english and retained[1] == spanish
+              and retained[2:] == [repeated] * 206,
+              "205 additional real noops cross journal retention while the durable ledger retains every emission")
+        verify_cms_observation(cms, publication_document_id, publications["en"]["id"],
+                               materialized_revision, "after 205 additional noops")
+        check(public.request("GET", publications["en"]["path"])[1] == rendered
+              and public.request("GET", "/published/manifest.edn")[1] == manifest,
+              "205 additional noops retain the original public artifact and manifest bytes")
     result = {"publication-path": publications["en"]["path"], "public-url": receipt["public-origin"] + publications["en"]["path"],
               "public-html-sha256": sha256(rendered), "manifest-sha256": sha256(manifest),
               "asset-sha256": sha256(asset), "song-destination": SONG, "actual-local-tracks": 0,
               "document-id": publication_document_id, "publication-id": publications["en"]["id"],
               "materialized-receipt": english, "noop-receipt": repeated,
               "cms-after-materialized": observed_materialized, "cms-after-noop": observed_noop,
+              "retained-receipts": retained, "durable-receipts": receipt.get("durable-receipts", False),
+              "initial-process-id": receipt["process-id"],
               "proof": proof}
     (run_root / "verification.json").write_text(json.dumps(result, indent=2) + "\n")
     print("WARN fixture identity and process-local empty evidence stores do not verify password login, Mongo persistence or provider output.")
-    print("WARN CMS observed readback proves only this process-local scoped receipt journal; restart persistence and durable receipt adapters need separate evidence.")
+    if receipt.get("durable-receipts"):
+        print("WARN selected Clio receipt adapter is exercised; the separate fresh-process phase must pass before restart recovery is established.")
+    else:
+        print("WARN CMS observed readback proves only this process-local scoped receipt journal; restart persistence and durable receipt adapters need separate evidence.")
     print("WARN music listening destination is selected public metadata; this run does not prove current remote playback or ingest audio bytes.")
     print("WARN supplied artwork is separately staged; CMS owns the source reference and publication, not transferred media byte custody.")
     print("WARN translated media authenticity is separately covered by publication-runtime-test; a real Spanish provider/review journey remains required.")
     print("WARN optional prebuilt frontend is a read-only tour input; its source/image qualification is separate from this backend fixture proof.")
     print("PASS native CMS approved-media verification completed; shell teardown removes the whole owned runtime.")
+
+
+def verify_restart(run_root, proof_file):
+    """Read retained native state from a genuinely new owned publisher process."""
+    run_root = Path(run_root)
+    receipt = json.loads((run_root / "receipt.json").read_text())
+    prior = json.loads((run_root / "verification.json").read_text())
+    proof = json.loads(Path(proof_file).read_text())
+    check(receipt.get("durable-receipts") is True and prior["durable-receipts"] is True
+          and receipt["process-id"] != prior["initial-process-id"],
+          "a different owned OS process reopened the configured durable fixture")
+    cms = Client(receipt["origin"], cookies=True)
+    cms.json("GET", urllib.parse.urlsplit(receipt["start-url"]).path)
+    public = Client(receipt["public-origin"])
+    check(cms.json("GET", "/_verify/proof") == proof == receipt["proof"] == prior["proof"],
+          "fresh process serves the same frozen source and compiled artifact")
+    retained = cms.json("GET", "/api/publications/receipts")["receipts"]
+    check(retained == prior["retained-receipts"] and len(retained) == 208,
+          "fresh receipt reader recovers all exact emissions, including original materialization and 206 noops")
+    observed = verify_cms_observation(cms, prior["document-id"], prior["publication-id"],
+                                      prior["materialized-receipt"]["revision"], "after OS process restart")
+    status, rendered, _ = public.request("GET", prior["publication-path"])
+    manifest_status, manifest, _ = public.request("GET", "/published/manifest.edn")
+    asset_status, asset, _ = public.request("GET", ART)
+    check(status == 200 and manifest_status == 200 and asset_status == 200
+          and sha256(rendered) == prior["public-html-sha256"]
+          and sha256(manifest) == prior["manifest-sha256"] and sha256(asset) == prior["asset-sha256"],
+          "fresh anonymous public reader retains original artifact, manifest and selected artwork bytes")
+    check(cms.json("GET", "/api/publications/receipts")["receipts"] == retained,
+          "independent CMS list/document and public reads append no receipt or reconciliation")
+    (run_root / "restart-verification.json").write_text(json.dumps(
+        {"initial-process-id": prior["initial-process-id"], "fresh-process-id": receipt["process-id"],
+         "retained-receipts": retained, "cms-after-restart": observed, "proof": proof,
+         "public-html-sha256": sha256(rendered), "manifest-sha256": sha256(manifest)}, indent=2) + "\n")
+    print("WARN process restart establishes same-volume recovery, not directory-entry fsync, power-loss, deployed mounts, Mongo or provider qualification.")
+    print("PASS durable CMS observations survived actual publisher OS process restart; teardown removes both owned lifecycles and data.")
 
 
 if __name__ == "__main__":
@@ -272,6 +332,8 @@ if __name__ == "__main__":
             print(json.dumps(source_proof(), indent=2))
         elif len(sys.argv) == 3 and sys.argv[1] == "--proof":
             print(json.dumps(source_proof(sys.argv[2]), indent=2))
+        elif len(sys.argv) == 4 and sys.argv[1] == "--verify-restart":
+            verify_restart(sys.argv[2], sys.argv[3])
         elif len(sys.argv) == 3:
             verify(sys.argv[1], sys.argv[2])
         else:
