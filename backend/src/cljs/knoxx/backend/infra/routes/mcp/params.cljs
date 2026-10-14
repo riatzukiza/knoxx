@@ -7,6 +7,7 @@
    http-error, because the parsers and the error they throw are one concern and
    splitting them would have left a cycle."
   (:require [clojure.string :as str]
+            [knoxx.backend.extern.fastify :as xfastify]
             [malli.core :as m]
             [malli.error :as me]))
 
@@ -58,15 +59,11 @@
 (defn http-error
   ([status error detail]      (http-error status error detail nil))
   ([status error detail data]
-   (let [e (ex-info detail (merge {:status status :error error :detail detail} data))]
-     (aset e "statusCode" status)
-     ;; And the code where a hijacked route looks. /mcp writes its own response,
-     ;; so it reads the error off the object rather than through Fastify — and
-     ;; ex-data is invisible from JS, so without this every refusal reported as
-     ;; mcp_post_failed and a client could not tell actor_reassigned from a
-     ;; crash.
-     (aset e "code" error)
-     e)))
+   ;; /mcp's hijacked response also reads the native code. Keep both fields at
+   ;; the owning Fastify boundary without changing the exception or its data.
+   (xfastify/with-error-properties!
+    (ex-info detail (merge {:status status :error error :detail detail} data))
+    {:status-code status :code error})))
 
 (defn- validation-detail [schema value]
   (some-> (m/explain schema value) me/humanize pr-str))

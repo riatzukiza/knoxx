@@ -4,7 +4,9 @@
    Owns raw Fastify request/reply object traversal and native RequestInit
    construction. Callers pass/receive CLJS maps where possible and may carry
    opaque handles such as raw request streams or Response buffers."
-  (:require [clojure.string :as str]))
+  (:require [clojure.string :as str]
+            [goog.object :as object]
+            [knoxx.backend.law.error-properties :as error-properties]))
 
 (defn no-content?
   [x]
@@ -193,19 +195,27 @@
                   :headers (forward-headers request extra-headers)}]
     (.assign js/Object base (stream-body-options request) (clj->js extra))))
 
+(defn with-error-properties!
+  "Stamp Fastify's native HTTP fields on the same opaque exception handle."
+  [error properties]
+  (let [{:keys [status-code code]} (error-properties/assert-valid! properties)]
+    (object/set error "statusCode" status-code)
+    (object/set error "code" code)
+    error))
+
 (defn error-status
   [err default-status]
-  (or (aget err "statusCode")
-      (aget err "status")
+  (or (js* "~{}[~{}]" err "statusCode")
+      (js* "~{}[~{}]" err "status")
       default-status))
 
 (defn error-message
   [err]
-  (or (aget err "message") (str err)))
+  (or (js* "~{}[~{}]" err "message") (str err)))
 
 (defn error-code
   [err]
-  (aget err "code"))
+  (js* "~{}[~{}]" err "code"))
 
 (defn log-unclassified-failure!
   "Record a failure the boundary could not classify, without printing its values.

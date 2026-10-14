@@ -5,7 +5,8 @@
             [goog.object :as object]
             [knoxx.backend.extern.fastify :as fastify]
             [knoxx.backend.infra.http :as http]
-            [knoxx.backend.infra.routes.mcp.params :as params]))
+            [knoxx.backend.infra.routes.mcp.params :as params]
+            [knoxx.backend.law.error-properties :as error-properties]))
 
 (defn- capture-created-exception
   "Capture and return the genuine ex-info constructed by the public API."
@@ -96,3 +97,37 @@
     (is (= {:mongo-uri "mongodb://user:pw@host"
             :resource/file-path "/srv/private/secret.edn"}
            (ex-data error)))))
+
+(deftest error-property-contract-refuses-malformed-maps-before-mutation
+  (doseq [properties [nil false "invalid" []
+                      {} {:status-code 403} {:code "denied"}
+                      {"status-code" 403 "code" "denied"}
+                      #js {:statusCode 403 :code "denied"}]]
+    (let [error (js/Error. "original")
+          refused (try
+                    (fastify/with-error-properties! error properties)
+                    nil
+                    (catch :default failure failure))]
+      (is (false? (error-properties/valid? properties)))
+      (is (= :knoxx.backend.law.error-properties/ErrorProperties
+             (:contract (ex-data refused))))
+      (is (nil? (object/get error "statusCode")))
+      (is (nil? (object/get error "code")))
+      (is (= "original" (.-message error))))))
+
+(deftest error-property-contract-preserves-existing-constructor-values
+  (doseq [[status code] [[nil nil] [false false] [0 0]
+                        [418 "denied"] ["400" :custom]
+                        [js/undefined js/undefined]]]
+    (let [properties {:status-code status :code code :unrelated "retained"}
+          error (js/Error. "same")]
+      (is (true? (error-properties/valid? properties)))
+      (is (identical? properties (error-properties/assert-valid! properties)))
+      (is (identical? error (fastify/with-error-properties! error properties)))
+      (is (= status (object/get error "statusCode")))
+      (is (= code (object/get error "code"))))
+    (doseq [error [(http/http-error status code "message")
+                  (params/http-error status code "message")]]
+      (is (instance? js/Error error))
+      (is (= status (object/get error "statusCode")))
+      (is (= code (object/get error "code"))))))
