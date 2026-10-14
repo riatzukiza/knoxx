@@ -457,3 +457,12 @@ Origin: `cephalon-character-automatic-scoped-graph-green-20261009`. p-efficiency
   spore: none
   receipt-refs: cephalon-graph-revision-red-raw-custody-correction-20261014
   note: Initial explicit staging hit generic *.log ignore; after explicitly retaining only that owned proof, diff hygiene identified trailing whitespace in actual fixture stdout. Original output was not trimmed or normalized. Full byte-equivalent JSON custody now carries every line/string/newline and original hash; ignored raw file and private original remain intact. Receipt54 initial created-file manifest remains historical, this companion supplies the actual committed five-path set. No policy/check waiver, history/receipt rewrite, force push, runtime or source behavior change.
+
+- ts: 2026-10-14T12:00:58.577Z
+  task: Existing InProgress5point recall a1e9d6af B3
+  p-efficiency: 0.8
+  p-friction: 0.2
+  p-skill-candidate: 0.1
+  spore: none
+  receipt-refs: cephalon-graph-revision-custody-green-20261014
+  note: Repairs a real B3 source gap under the already reviewed five-point recall story. The closed owning wire supplies all revision identities; adapter now exposes only recall/graph/field/field-owner tuple to quoted context and safe run/event metadata, excludes policy/principal/candidate bindings, and clears stale tuple alongside hits on final authority revocation. Legacy vector results cannot supply graph tuple. No physical field computation or live admission is invented; field remainsnot-loaded. Zero new lint warnings; four historical size warnings remain explicit and mandatory broader gate/review obligations are not waived. Earlier raw-log staging failures and baseline-copy path mistake are retained with append corrections; no raw output/receipt was normalized. Own source/current parent qualification, actual stored principal and live maker prompt proof still required. No model/auth/paid/deployment/runtime/clock/gateway/cloud/PM2/heartbeat/social/newagent/chat/spore operation.

@@ -536,6 +536,73 @@ required. Receipt 27 corrects the rejected timestamp/kind of receipts 25/26 by
 append; both historical rejected originals remain and are not claimed valid.
 B1/B2/live B3, atomic fencing, source qualification and deployment remain unproved.
 
+## Graph revision custody — 2026-10-14 UTC
+
+Recall AC4 requires the actual graph and field revisions to accompany the
+associative path into the maker prompt. The owning graph result already supplied
+`recall-id`, `graph-revision`, `field-revision` and `field-owner`; Knoxx retained
+them internally but omitted them from prompt assembly, safe persisted hydration
+and the hydration event. Final authority revocation also left the stale tuple
+on the retained result after clearing its hits.
+
+The adapter now includes that exact four-key tuple in quoted graph context and
+safe run/event metadata. It uses the existing owning result contract, including
+its finite identity limits, and copies no principal, grant, policy revision or
+candidate snapshot into the projection. Revocation clears the tuple with the
+ranked hits. Legacy vector hydration cannot supply graph revision metadata.
+`field-status: not-loaded` and the owning `not-loaded` field identity remain
+explicit; this does not implement physical state or invent a field revision.
+
+The existing runnable `scripts/verify-local-creator-loop.sh --hermetic` exercises
+the actual automatic turn/provider-session boundary through the graph-recall
+namespace. Look for the tests
+`admitted-graph-revisions-reach-the-prompt-and-safe-projection`,
+`graph-revisions-survive-actual-turn-publication-and-provider-settlement` and
+`legacy-hydration-cannot-publish-graph-revision-fields`. Their assertions compare
+the actual owning tuple with the final sent prompt, persisted resource and
+event through both successful and failed provider settlement. A held authority
+revocation must remove stale identities. The script still refuses `--full`;
+these tests never grant authority to or invoke a live maker.
+
+Actual RED at `50fe9708798417c2dfa8618306bbd457ed5d1210`: full backend
+1,979 tests / 11,557 assertions / 10 failures / 0 errors, all ten failures in
+the new custody assertions, zero compiler warnings. Full byte-equivalent
+command output is retained in the JSON log-custody archive; native trailing
+whitespace was not trimmed to satisfy diff hygiene.
+
+Actual GREEN on supported Node 22.20.0: full backend **1,980 tests / 11,559
+assertions / 0 failures / 0 errors**, zero compiler warnings, and the existing
+production typecheck compiled the server with zero compiler warnings. Both
+owned snapshots were cleaned. The first successful GREEN used the Volta shim's
+Node 22.18 and emitted the package's unsupported-engine notice; that earlier
+output is preserved separately. A private worker launcher then bound the
+existing Node 22.20 and pnpm 10.15 without changing global or project runtime
+configuration, and both final checks passed without that notice.
+
+The isolated recipe explicitly selected the released candidate OpenPlanner
+`033c001125019908d0c68aa5365749005644edc8` SDK/graph-core boundaries, with held
+collections and provider sessions. The owning library build passed with zero
+warnings, SHA256 `6d6d2e0402c249cfeb26869e0ee57cb7179d05ea01e1414c6e07f24f594381b2`.
+This is separately labeled candidate integration, not a hosted qualified pin,
+live Mongo compatibility, deployed runtime or successful behavioral milestone.
+The original installed dependencies still require their source/consumer gates.
+
+Before/after scoped lint has the same four historical size warnings:
+`build-agent-multimodal-message`, `install-openplanner-event-sink!`,
+`finalize-turn-success!` and the existing `turn.cljs` file-length warning.
+Changed-test lint passes with zero errors/warnings; changed-code scoped lint has
+zero errors and those four retained warnings. No full-lint pass is claimed.
+The initial baseline-copy invocation produced namespace/path mismatches; the
+correct directory structure removed those operator errors without code edits.
+
+Native Foresight recall task `a1e9d6af-0233-4dcb-9677-5c76fa9a2701` moved
+lawfully Ready → Todo → In Progress through qualified Rheos. It remains the
+five-point larger story. This repairs one B3 adapter obligation; source review,
+qualified dependency delivery and actual stored-principal/prompt evidence remain
+outstanding. B1 physical persistence and B2 separate consumed mood remain
+unfinished. No backend/gateway/clock/PM2/cloud/heartbeat change, live publication
+or provider call was performed.
+
 ## Personal-main integration verified — 2026-10-09 UTC
 
 The ordinary two-parent merge checkpoint `00dad72f1b0d743608f8da63ac3b8744c136b0e4`

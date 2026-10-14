@@ -145,6 +145,15 @@
               (is (not (str/includes? (hydration/build-agent-user-message "Choose" nil revoked)
                                       (:graph-revision revisions)))))))))
 
+(deftest legacy-hydration-cannot-publish-graph-revision-fields
+  (let [legacy {:query "Legacy memory" :hits [] :status :completed
+                :recall-id "LEGACY_UNTRUSTED" :graph-revision "LEGACY_UNTRUSTED"
+                :field-revision "LEGACY_UNTRUSTED" :field-owner "LEGACY_UNTRUSTED"}]
+    (is (empty? (select-keys (hydration/memory-hydration-projection legacy)
+                             [:recall-id :graph-revision :field-revision :field-owner])))
+    (is (not (str/includes? (hydration/build-agent-user-message "Choose" nil legacy)
+                            "LEGACY_UNTRUSTED")))))
+
 (deftest ^:async sessionless-encounter-and-graph-only-neighbor-reach-the-maker-prompt
   ;; Both records use the existing pure encounter identity/admission laws.
   ;; The non-seed is absent from vector results and recent decision context.

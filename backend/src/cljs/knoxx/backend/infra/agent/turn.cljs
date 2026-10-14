@@ -622,7 +622,9 @@
                                   (merge {:status (if (:graph? hydration) (name (:status hydration)) "ok")
                                           :hits (count (or (:hits hydration) (:results hydration) []))
                                           :elapsed_ms (:elapsedMs hydration)}
-                                         (select-keys hydration [:failure :field-status :graph?])))]
+                                         (select-keys (hydration/memory-hydration-projection hydration)
+                                                      [:failure :field-status :graph? :recall-id
+                                                       :graph-revision :field-revision :field-owner])))]
     (update-run! run-id
                  (fn [run]
                    (-> run
