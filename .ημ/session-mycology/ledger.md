@@ -310,3 +310,12 @@
   spore: none
   receipt-refs: /home/err/.local/share/openhax-codex/20261010/review-state/afac-private-configured-sink-explicit-retry-GREEN-v1/root-canonical-receipt-event.edn
   note: Append-only scopedClioexactpayload/identity retained; genuineequals-bodyobservationsdistinct; failedattemptkeepscause+envelope/internalretry; no publication/reconciliation repeat. 233actualcompiledimportsboundseparatelyfromstableShadowloader. Privatebehaviorqualification only; source/nativehosted/image/config/Services admissionandfullappchecksremain; AFACnotcomplete; realSpanishprovideranddeploymentunqualified.
+- ts: 2026-10-14T23:00:43.728008476Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: Native error-property static causal RED
+  p-efficiency: 0.78
+  p-friction: 0.32
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: /home/err/.local/share/openhax-codex/20261010/review-state/Knoxx-93eb-native-error-property-boundary-causal-RED-v1/root-provenance-canonical-receipt-event.edn
+  note: Characterize original successful runtime behavior while proving actual static object-boundary rejection. Preserve genuine exceptions and unchanged rules; separate corrected setup/runtime routing failures from causal evidence. Full release lint remains pending. No new spore.
