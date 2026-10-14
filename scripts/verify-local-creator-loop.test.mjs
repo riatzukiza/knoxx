@@ -2,7 +2,7 @@
 // Actual served-mode shell execution with a dedicated source tree and fake Docker.
 // The fixture never reaches the system Docker executable, HTTP or a backend.
 import assert from 'node:assert/strict';
-import { mkdtempSync, mkdirSync, writeFileSync, readFileSync, readdirSync, copyFileSync,
+import { mkdtempSync, mkdirSync, writeFileSync, readFileSync, readdirSync, copyFileSync, unlinkSync,
   chmodSync, utimesSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
@@ -21,17 +21,17 @@ function git(root, ...args) {
   return result.stdout.trim();
 }
 
-function seedModules(source, destination, modules, relative = '') {
+function seedModules(source, destination, modules, relative = '', namespace = 'knoxx.backend') {
   for (const entry of readdirSync(source, { withFileTypes: true })) {
     const file = path.join(relative, entry.name);
     if (entry.isDirectory()) {
-      seedModules(path.join(source, entry.name), destination, modules, file);
+      seedModules(path.join(source, entry.name), destination, modules, file, namespace);
     } else if (entry.isFile() && /\.(cljs|cljc)$/.test(file)) {
       const target = path.join(destination, file);
       mkdirSync(path.dirname(target), { recursive: true });
       copyFileSync(path.join(source, entry.name), target);
       utimesSync(target, 1_600_000_000, 1_600_000_000);
-      const module = path.join(modules, `knoxx.backend.${file.replaceAll('/', '.').replace(/\.(cljs|cljc)$/, '.js')}`);
+      const module = path.join(modules, `${namespace}.${file.replaceAll('/', '.').replace(/\.(cljs|cljc)$/, '.js')}`);
       writeFileSync(module, '// dedicated compiled-content fixture\n');
       utimesSync(module, 1_700_000_000, 1_700_000_000);
     }
@@ -49,8 +49,16 @@ function compiledInventory(root, relative = '', rows = []) {
   return rows.sort((a, b) => a[0].localeCompare(b[0]));
 }
 
-for (const feature of ['infra/character/authority.cljs', 'infra/agent/turn_startup.cljs', 'domain/node/crypto.cljs']) {
-  test(`served verification refuses a stale ${feature} before Docker exec`, () => {
+const cases = [
+  ...['infra/character/authority.cljs', 'infra/agent/turn_startup.cljs', 'domain/node/crypto.cljs']
+    .map(feature => ({ feature, title: `served verification refuses a stale ${feature} before Docker exec` })),
+  { feature: 'markup.cljs', shared: true, title: 'served verification refuses stale emitted shared markup before Docker exec' },
+  { missing: 'infra/character/authority.cljs', title: 'dynamic inventory retains mandatory feature-module presence refusal' },
+  { title: 'fresh emitted backend/shared source controls pass matching served bytes' },
+];
+
+for (const { feature, shared, missing, title } of cases) {
+  test(title, () => {
     const root = mkdtempSync(path.join(tmpdir(), 'knoxx-served-freshness-'));
     try {
       const fixtures = path.join(root, 'scripts');
@@ -59,11 +67,17 @@ for (const feature of ['infra/character/authority.cljs', 'infra/agent/turn_start
       for (const directory of [fixtures, bin, modules]) mkdirSync(directory, { recursive: true });
       copyFileSync(path.join(scripts, 'verify-local-creator-loop.sh'), path.join(fixtures, 'verify-local-creator-loop.sh'));
       seedModules(sourceRoot, path.join(root, 'backend/src/cljs/knoxx/backend'), modules);
-      const stale = path.join(root, 'backend/src/cljs/knoxx/backend', feature);
-      utimesSync(stale, 1_800_000_000, 1_800_000_000);
+      seedModules(path.join(repository, 'shared/src/cljs/open_hax/uxx'),
+        path.join(root, 'shared/src/cljs/open_hax/uxx'), modules, '', 'open_hax.uxx');
+      if (feature) {
+        const stale = path.join(root, shared ? 'shared/src/cljs/open_hax/uxx' : 'backend/src/cljs/knoxx/backend', feature);
+        utimesSync(stale, 1_800_000_000, 1_800_000_000);
+      }
+      if (missing) unlinkSync(path.join(modules,
+        `knoxx.backend.${missing.replaceAll('/', '.').replace(/\.(cljs|cljc)$/, '.js')}`));
       writeFileSync(path.join(root, 'backend/dist/server.js'), '// fixture, never executed\n');
       git(root, 'init', '--quiet');
-      git(root, 'add', '--', 'scripts', 'backend');
+      git(root, 'add', '--', 'scripts', 'backend', 'shared');
       git(root, '-c', 'commit.gpgSign=false', '-c', 'user.name=Fixture', '-c', 'user.email=fixture@example.invalid',
         'commit', '--quiet', '-m', 'Dedicated freshness fixture');
       const head = git(root, 'rev-parse', 'HEAD');
@@ -77,11 +91,19 @@ for (const feature of ['infra/character/authority.cljs', 'infra/agent/turn_start
         encoding: 'utf8', env: { ...process.env, PATH: `${bin}${path.delimiter}${process.env.PATH}` },
         timeout: 30_000,
       });
-      assert.equal(result.status, 2, result.stdout + result.stderr);
-      const module = `knoxx.backend.${feature.replaceAll('/', '.').replace(/\.(cljs|cljc)$/, '.js')}`;
-      assert.match(result.stderr, new RegExp(`compiled module predates its source: ${module.replaceAll('.', '\\.')}[;]`));
-      assert.doesNotMatch(readFileSync(trace, 'utf8'), /^exec /m,
-        'Source freshness fails before any compiled-content or behavioral container operation');
+      if (!feature && !missing) {
+        assert.equal(result.status, 0, result.stdout + result.stderr);
+        assert.match(result.stdout, /source freshness checked \d+ emitted modules/);
+        assert.match(readFileSync(trace, 'utf8'), /^exec /m);
+      } else {
+        assert.equal(result.status, 2, result.stdout + result.stderr);
+        const module = `${shared ? 'open_hax.uxx' : 'knoxx.backend'}.${(feature ?? missing)
+          .replaceAll('/', '.').replace(/\.(cljs|cljc)$/, '.js')}`;
+        assert.match(result.stderr, new RegExp(`${missing ? 'required feature module is absent from compiled server' :
+          'compiled module predates its source'}: ${module.replaceAll('.', '\\.')}[;\n]`));
+        assert.doesNotMatch(readFileSync(trace, 'utf8'), /^exec /m,
+          'Source freshness and mandatory presence refuse before container content operations');
+      }
     } finally {
       rmSync(root, { recursive: true, force: true });
     }

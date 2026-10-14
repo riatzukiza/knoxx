@@ -475,3 +475,12 @@ Origin: `cephalon-character-automatic-scoped-graph-green-20261009`. p-efficiency
   spore: none
   receipt-refs: cephalon-complete-served-freshness-causal-red-20261014
   note: This is existing native review scope, not a new feature/prerequisite. Fixed module list still omitted an actual compiled memory-authority hashing dependency. Improved fixture makes served bytes exactly match local stale bytes, exposing a real falsePASS rather than an unrelated content-mismatch refusal. Preserve original two tests and all source history. Initial path guess failure remains with actual corrected RED; no inventory or guard is claimed repaired beforeGREEN. Actual e985 fullfunctionalCI/sandbox completed separately, no fullcurrent approval or B1/B2/liveB3 proof. Prior native untrusteddispatch and Blueskytimestamp roots were verified against current code/tests and settled through canonical native CLI, author walkthrough roots remain obligations. No realDocker/provider/runtime/grant/clock/gateway/cloud/PM2/heartbeat/social/model/paid/spore change.
+
+- ts: 2026-10-14T12:39:05.438Z
+  task: Existing InProgress5point recall source/verification gate
+  p-efficiency: 0.8
+  p-friction: 0.2
+  p-skill-candidate: 0.1
+  spore: none
+  receipt-refs: cephalon-complete-served-freshness-green-and-ci-contract-20261014
+  note: The original required-source list had two named examples fixed but still omitted actual compiled dependencies; causal fixture establishes oldservedexit0 for stalecrypto and identical local/container code. Now mandatory module presence remains, and every emitted namespace with matching regular source under declared backend/shared roots gets freshness verification before container content reads. Inventory/read failure and no matched emitted source fail, then existing fullJSbyte comparison runs. The six meaningful cases execute in required existing functionalCI afterNode setup; no signing/model/credential or deployment path added. This is a timestamp/content verifier, not outside dependency revision, cryptographic build attestation or behavioral completion. Prior native untrusteddispatch and invalidBlueskytimestamp were verified and settled; review5477552589 nitpick has actual itemized sourcewarning explanation6168303050. Six authorwalkthroughs remain unsatisfied, no self-settlement or waiver. Sourcecurrenthead approval, fullCI and all review gates stillrequired; B1/B2/liveB3 remain0of3. No new source prerequisite, points/dependency change, runtime/maker/clock/gateway/cloud/PM2/heartbeat/grant/social/model/paid/newagent/chat/spore action.

@@ -246,6 +246,31 @@ served() {
     [[ -f "$dist/cljs-runtime/$module" ]] || abort "required feature module is absent from compiled server: $module"
     [[ ! "$KNOXX_VERIFY_REPO/backend/src/cljs/knoxx/backend/$source" -nt "$dist/cljs-runtime/$module" ]] || abort "compiled module predates its source: $module; rebuild the reviewed server"
   done
+  # Presence of mandatory feature modules is checked above. Freshness also
+  # covers every emitted namespace in the declared in-repository source roots,
+  # including existing dependencies outside that mandatory feature list.
+  need find
+  local source_root relative checked=0
+  local source_roots=("$KNOXX_VERIFY_REPO/backend/src/cljs")
+  [[ -d "${source_roots[0]}" ]] || abort "backend source root is absent"
+  if [[ -d "$KNOXX_VERIFY_REPO/shared/src/cljs" ]]; then
+    source_roots+=("$KNOXX_VERIFY_REPO/shared/src/cljs")
+  fi
+  find "${source_roots[@]}" -type f \( -name '*.cljs' -o -name '*.cljc' \) -print0 \
+    >"$KNOXX_VERIFY_TMP/compiled-source-inventory" || abort "cannot inventory compiled source roots"
+  while IFS= read -r -d '' source; do
+    for source_root in "${source_roots[@]}"; do
+      if [[ "$source" == "$source_root/"* ]]; then relative="${source#"$source_root/"}"; break; fi
+    done
+    module="${relative//\//.}"; module="${module%.*}.js"
+    # Timestamp checking applies to emitted namespaces. A missing module
+    # cannot satisfy or replace the mandatory presence checks above.
+    [[ -f "$dist/cljs-runtime/$module" ]] || continue
+    [[ ! "$source" -nt "$dist/cljs-runtime/$module" ]] || abort "compiled module predates its source: $module; rebuild the reviewed server"
+    checked=$((checked + 1))
+  done <"$KNOXX_VERIFY_TMP/compiled-source-inventory"
+  (( checked > 0 )) || abort "no emitted owned source module was checked"
+  pass "source freshness checked $checked emitted modules in the declared backend/shared source roots"
   local hash_code
   hash_code='import fs from "node:fs"; import path from "node:path"; import crypto from "node:crypto";
 const root=process.argv[1], rows=[];

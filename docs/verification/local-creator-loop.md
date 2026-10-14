@@ -536,7 +536,44 @@ required. Receipt 27 corrects the rejected timestamp/kind of receipts 25/26 by
 append; both historical rejected originals remain and are not claimed valid.
 B1/B2/live B3, atomic fencing, source qualification and deployment remain unproved.
 
-## Graph revision custody — 2026-10-14 UTC
+## Graph and served-source verification — 2026-10-14 UTC
+
+### Complete owned-source freshness — 2026-10-14
+
+Native review `4236370074` requires freshness for the served feature's complete
+compiled source inventory. The earlier fixed list covered the two named
+examples, but a stale emitted `domain/node/crypto.cljs` still passed when local
+and served JavaScript bytes were identical. The strengthened real shell fixture
+reproduces that false PASS; the initial nonexistent `domain/authz.cljs` fixture
+path is retained as a setup error, separately from the causal RED.
+
+`--served` now retains the mandatory feature-module presence checks and checks
+every emitted namespace with a matching regular source file under the declared
+backend and shared CLJS source roots. Source inventory failure or no matching
+emitted module refuses. It then performs the existing complete JavaScript-byte
+comparison. This is timestamp freshness plus content equality, not a
+cryptographic build attestation or proof of outside dependency provenance;
+local hermetic/production modes still explicitly report that they use installed
+dependencies and do not prove `OPENPLANNER_REF`.
+
+Run `node --test scripts/verify-local-creator-loop.test.mjs` for six actual shell
+cases: stale authority, turn startup and the previously omitted crypto module;
+stale shared markup; a missing mandatory module; and a fresh backend/shared
+control with identical local/served bytes. All Docker commands are captured by
+a dedicated fake executable. No test calls the system Docker or a backend.
+The corrected RED was three tests/two passing/one failing because the old script
+returned0 for stale crypto. GREEN passes all six, with the negative cases
+refusing before Docker content execution and the fresh control reaching it.
+The existing required functional CI job now runs this same shell-contract suite
+after Node setup. It uses only the dedicated repository/container fixtures and
+requires no model, live Docker or application service.
+
+The complete hosted functional run `38560839103` and sandbox `38560838929`
+passed on prior `e98563b8350bb1602c24feba5155b344e963335b`. They do not qualify
+this subsequent verification-script head. Backend runtime source is unchanged
+by the freshness repair; fresh mandatory hosted checks/reviews remain required.
+
+### Graph revision custody
 
 Recall AC4 requires the actual graph and field revisions to accompany the
 associative path into the maker prompt. The owning graph result already supplied

@@ -105,6 +105,9 @@ jobs:
             frontend/pnpm-lock.yaml
             _deps/openplanner/pnpm-lock.yaml
 
+      - name: Verify served source freshness contract
+        run: node --test scripts/verify-local-creator-loop.test.mjs
+
       - name: Build linked OpenPlanner SDK and scoped graph recall
         run: |
           # Knoxx currently resolves this linked source through a sibling path:
