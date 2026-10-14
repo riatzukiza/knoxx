@@ -466,3 +466,12 @@ Origin: `cephalon-character-automatic-scoped-graph-green-20261009`. p-efficiency
   spore: none
   receipt-refs: cephalon-graph-revision-custody-green-20261014
   note: Repairs a real B3 source gap under the already reviewed five-point recall story. The closed owning wire supplies all revision identities; adapter now exposes only recall/graph/field/field-owner tuple to quoted context and safe run/event metadata, excludes policy/principal/candidate bindings, and clears stale tuple alongside hits on final authority revocation. Legacy vector results cannot supply graph tuple. No physical field computation or live admission is invented; field remainsnot-loaded. Zero new lint warnings; four historical size warnings remain explicit and mandatory broader gate/review obligations are not waived. Earlier raw-log staging failures and baseline-copy path mistake are retained with append corrections; no raw output/receipt was normalized. Own source/current parent qualification, actual stored principal and live maker prompt proof still required. No model/auth/paid/deployment/runtime/clock/gateway/cloud/PM2/heartbeat/social/newagent/chat/spore operation.
+
+- ts: 2026-10-14T12:26:46.211Z
+  task: Existing recall5point source/deployment verification obligation
+  p-efficiency: 0.8
+  p-friction: 0.2
+  p-skill-candidate: 0.1
+  spore: none
+  receipt-refs: cephalon-complete-served-freshness-causal-red-20261014
+  note: This is existing native review scope, not a new feature/prerequisite. Fixed module list still omitted an actual compiled memory-authority hashing dependency. Improved fixture makes served bytes exactly match local stale bytes, exposing a real falsePASS rather than an unrelated content-mismatch refusal. Preserve original two tests and all source history. Initial path guess failure remains with actual corrected RED; no inventory or guard is claimed repaired beforeGREEN. Actual e985 fullfunctionalCI/sandbox completed separately, no fullcurrent approval or B1/B2/liveB3 proof. Prior native untrusteddispatch and Blueskytimestamp roots were verified against current code/tests and settled through canonical native CLI, author walkthrough roots remain obligations. No realDocker/provider/runtime/grant/clock/gateway/cloud/PM2/heartbeat/social/model/paid/spore change.

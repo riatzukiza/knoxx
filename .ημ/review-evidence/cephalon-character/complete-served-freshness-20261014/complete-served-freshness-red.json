@@ -1,0 +1,11 @@
+{
+  "tier": "actual dedicated fixture shell/Docker-stub output, no live Docker or backend",
+  "observed_at": "2026-10-14T12:24:49.335017+00:00",
+  "source_before": "e98563b8350bb1602c24feba5155b344e963335b",
+  "exit": 1,
+  "seconds": 0.507,
+  "stdout": "TAP version 13\n# Subtest: served verification refuses a stale infra/character/authority.cljs before Docker exec\nok 1 - served verification refuses a stale infra/character/authority.cljs before Docker exec\n  ---\n  duration_ms: 187.533265\n  type: 'test'\n  ...\n# Subtest: served verification refuses a stale infra/agent/turn_startup.cljs before Docker exec\nok 2 - served verification refuses a stale infra/agent/turn_startup.cljs before Docker exec\n  ---\n  duration_ms: 187.571033\n  type: 'test'\n  ...\n# Subtest: served verification refuses a stale domain/authz.cljs before Docker exec\nnot ok 3 - served verification refuses a stale domain/authz.cljs before Docker exec\n  ---\n  duration_ms: 35.318005\n  type: 'test'\n  location: '/home/err/spaces/cephalon-local-character/knoxx/scripts/verify-local-creator-loop.test.mjs:53:3'\n  failureType: 'testCodeFailure'\n  error: \"ENOENT: no such file or directory, utime '/tmp/knoxx-served-freshness-hSWPAS/backend/src/cljs/knoxx/backend/domain/authz.cljs'\"\n  code: 'ENOENT'\n  stack: |-\n    utimesSync (node:fs:2203:11)\n    TestContext.<anonymous> (file:///home/err/spaces/cephalon-local-character/knoxx/scripts/verify-local-creator-loop.test.mjs:63:7)\n    Test.runInAsyncScope (node:async_hooks:214:14)\n    Test.run (node:internal/test_runner/test:1047:25)\n    Test.processPendingSubtests (node:internal/test_runner/test:744:18)\n    Test.postRun (node:internal/test_runner/test:1173:19)\n    Test.run (node:internal/test_runner/test:1101:12)\n    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 2\n# fail 1\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 467.84858\n",
+  "stderr": "",
+  "stdout_sha256": "46af6228db04b49c2b98ae3d107cb59da9d0ac60c8cab662bdd3ef0f7c47885d",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

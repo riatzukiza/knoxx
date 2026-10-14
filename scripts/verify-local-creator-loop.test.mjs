@@ -8,6 +8,7 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import test from 'node:test';
 
 const repository = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -37,7 +38,18 @@ function seedModules(source, destination, modules, relative = '') {
   }
 }
 
-for (const feature of ['infra/character/authority.cljs', 'infra/agent/turn_startup.cljs']) {
+function compiledInventory(root, relative = '', rows = []) {
+  for (const entry of readdirSync(path.join(root, relative), { withFileTypes: true })) {
+    const file = path.join(relative, entry.name);
+    if (entry.isDirectory()) compiledInventory(root, file, rows);
+    else if (entry.isFile() && file.endsWith('.js')) {
+      rows.push([file, createHash('sha256').update(readFileSync(path.join(root, file))).digest('hex')]);
+    }
+  }
+  return rows.sort((a, b) => a[0].localeCompare(b[0]));
+}
+
+for (const feature of ['infra/character/authority.cljs', 'infra/agent/turn_startup.cljs', 'domain/node/crypto.cljs']) {
   test(`served verification refuses a stale ${feature} before Docker exec`, () => {
     const root = mkdtempSync(path.join(tmpdir(), 'knoxx-served-freshness-'));
     try {
@@ -56,8 +68,10 @@ for (const feature of ['infra/character/authority.cljs', 'infra/agent/turn_start
         'commit', '--quiet', '-m', 'Dedicated freshness fixture');
       const head = git(root, 'rev-parse', 'HEAD');
       const trace = path.join(root, 'docker-calls');
+      const served = path.join(root, 'same-stale-served-inventory.json');
+      writeFileSync(served, JSON.stringify(compiledInventory(path.join(root, 'backend/dist'))));
       const docker = path.join(bin, 'docker');
-      writeFileSync(docker, `#!/bin/sh\nprintf '%s\\n' "$*" >> '${trace}'\ncase "$*" in\n*State.Running*) printf 'true\\n';;\n*org.opencontainers.image.revision*) printf '${head}\\n';;\n*) printf '[]\\n';;\nesac\n`);
+      writeFileSync(docker, `#!/bin/sh\nprintf '%s\\n' "$*" >> '${trace}'\ncase "$*" in\n*State.Running*) printf 'true\\n';;\n*org.opencontainers.image.revision*) printf '${head}\\n';;\nexec*) cat '${served}';;\n*) exit 2;;\nesac\n`);
       chmodSync(docker, 0o755);
       const result = spawnSync('bash', [path.join(fixtures, 'verify-local-creator-loop.sh'), '--served'], {
         encoding: 'utf8', env: { ...process.env, PATH: `${bin}${path.delimiter}${process.env.PATH}` },
