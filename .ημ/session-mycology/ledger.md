@@ -301,3 +301,12 @@
   spore: none
   receipt-refs: /home/err/.local/share/openhax-codex/20261010/review-state/Knoxx-EC101-runtime-contract-private-RED-2ba-v1/root-provenance-canonical-receipt-event.edn
   note: Commit actual public-API causal regression evidence before repair; preserve existing assertions and distinguish successful compiler completion from failed tests. Keep actual model/provider/database and production qualification separate. No new spore or promotion.
+- ts: 2026-10-14T23:50:40.870060951Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: Preserve genuine SDK fallback lost-row-refusal causal RED
+  p-efficiency: 0.83
+  p-friction: 0.62
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: c97d13dbbe077da346e581457e61b957555ca65734c025ae4062f259267631d8,0f0d551625200ab1cf8ee3c96649aba041db5dca
+  note: Exercise the actual pinned SDK catch/fallback rather than copy its policy into an alias. Preserve valid native and transport fallback neighbors while retaining row rejection independently. Distinguish complete tested dirty candidate from test-only parent commits and keep initial fixture mismatches as historical evidence. No spore/promotion.
