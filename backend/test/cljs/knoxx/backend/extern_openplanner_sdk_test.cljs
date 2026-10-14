@@ -3,10 +3,49 @@
    boundary (stubbed module — see test/js/openplanner_sdk_test_stub.mjs) and
    the mode-selecting OpenPlanner client factory."
   (:require ["@open-hax/openplanner-sdk" :as sdk-mod]
-            [cljs.test :refer [deftest is testing]]
+            [cljs.test :refer [deftest is testing use-fixtures]]
+            [knoxx.backend.extern.embedding :as embedding]
             [knoxx.backend.extern.openplanner-sdk :as xsdk]
             [knoxx.backend.infra.clients.openplanner :as openplanner-client]
             [knoxx.backend.infra.clients.openplanner-mongo :as openplanner-mongo]))
+
+(defonce ^:private original-provider-fetch (atom nil))
+(defonce ^:private provider-requests (atom []))
+(defonce ^:private provider-response (atom nil))
+
+(defn- valid-provider-response
+  [request]
+  {:model "qwen3-embedding:8b"
+   :data (mapv (fn [index] {:index index :embedding (vec (repeat 1024 0.25))})
+               (range (count (:input request))))})
+
+(use-fixtures :each
+  {:before (fn []
+             (reset! original-provider-fetch js/fetch)
+             (reset! provider-requests [])
+             (reset! provider-response nil)
+             (sdk-mod/__setCheckedRuntimeMode false)
+             (sdk-mod/__setNativeQueryCore false)
+             (sdk-mod/__setPartitions #js [])
+             (set! js/fetch
+                   (fn [url opts]
+                     (when-not (and (= "http://127.0.0.1:11434/v1/embeddings" url)
+                                    (= "POST" (aget opts "method")))
+                       (throw (js/Error. "Owned SDK fixture refuses unexpected embedding route")))
+                     (let [request (js->clj (.parse js/JSON (aget opts "body")) :keywordize-keys true)]
+                       (swap! provider-requests conj {:url url :request request
+                                                     :headers (js->clj (aget opts "headers") :keywordize-keys true)
+                                                     :redirect (aget opts "redirect")})
+                       (js/Promise.resolve
+                        (js/Response. (.stringify js/JSON (clj->js (if-let [respond @provider-response]
+                                                                  (respond request)
+                                                                  (valid-provider-response request))))
+                                      #js {:status 200}))))))
+   :after (fn []
+            (set! js/fetch @original-provider-fetch)
+            (sdk-mod/__setCheckedRuntimeMode false)
+            (sdk-mod/__setNativeQueryCore false)
+            (sdk-mod/__setPartitions #js []))})
 
 (deftest ^:async events-conversion
   (testing "ingest result arrives as keywordized CLJS without transport-only keys"
@@ -39,7 +78,7 @@
               :event-ids ["ev-await-index"]
               :event-count 1
               :vector-count 1
-              :embedding-dimensions 3}
+              :embedding-dimensions 1024}
              (await (xsdk/verify-event-vectors! ["ev-await-index"])))))))
 
 (deftest ^:async event-extra-is-the-durable-arbitrary-metadata-shape
@@ -145,13 +184,13 @@
         (await (xsdk/verify-event-vectors! [id]))
         (is false "strict verification must identify the wrong vector shape")
         (catch :default err
-          (is (= 3 (:expected-dimensions (ex-data err))))
+          (is (= 1024 (:expected-dimensions (ex-data err))))
           (is (= [id] (:invalid-event-ids (ex-data err))))))
       (let [ensured (await (xsdk/ensure-event-vectors! [id]))
             stored (await (xsdk/mongo-query
                            {:collection "events" :filter {:id id}}))]
         (is (= [id] (:repaired-event-ids ensured)))
-        (is (= 3 (:embedding-dimensions ensured)))
+        (is (= 1024 (:embedding-dimensions ensured)))
         (is (= 1 (:vector-count ensured)))
         (is (= 1 (:total stored))
             "shape repair must replace vectors without reinserting the event")))
@@ -400,3 +439,203 @@
         (aset hot "getBackgroundEmbeddingFunction" original-provider)
         (restore-env!)
         (await (xsdk/close-sdk!))))))
+
+
+(deftest ^:async checked-runtime-supports-ingest-hot-compact-query-and-repair
+  (sdk-mod/__setCheckedRuntimeMode true)
+  (sdk-mod/__setPartitions
+   (clj->js [{:tier "hot" :model "qwen3-embedding:8b" :dimensions 1024 :collectionName "owned-hot"}
+             {:tier "compact" :model "qwen3-embedding:8b" :dimensions 1024 :collectionName "owned-compact"}]))
+  (let [texts [(str (apply str (repeat 150 "same prefix ")) "first complete tail")
+               (str (apply str (repeat 150 "same prefix ")) "different complete tail")]
+        ids ["owned-checked-ingest-first" "owned-checked-ingest-second"]
+        events (mapv (fn [id text] {:schema "openplanner.event.v1" :id id
+                                   :ts "2026-10-14T00:00:00Z" :source "owned-green" :kind "docs" :text text}) ids texts)
+        result (await (xsdk/events! events {:await-index? true}))]
+    (is (true? (:ok result)))
+    (is (= texts (mapv #(first (get-in % [:request :input])) @provider-requests))
+        "complete distinct tails reach generation without prefix cache reuse")
+    (is (= 2 (:vector-count (await (xsdk/verify-event-vectors! ids)))))
+    (doseq [_ (range 2)]
+      (is (true? (:ok (await (xsdk/vector-search! {:q "owned full query" :tier "both"}))))))
+    (is (= 6 (count @provider-requests)) "both query tiers generate on every invocation")
+    (let [sdk (await (sdk-mod/createOpenPlannerSdk))
+          runtime (embedding/runtime (.-embeddingRuntime sdk) (embedding/configuration!))
+          compact (.-compact (:handle runtime))
+          provider (.getBackgroundEmbeddingFunction compact)]
+      (is (= 1024 (.-length (aget (await (.generate provider #js ["owned complete compact source"])) 0))))
+      (is (= "qwen3-embedding:8b" (.getModel compact))))
+    (doseq [{:keys [url request headers redirect]} @provider-requests]
+      (is (= "http://127.0.0.1:11434/v1/embeddings" url))
+      (is (= "qwen3-embedding:8b" (:model request)))
+      (is (= 1024 (:dimensions request)))
+      (is (= "error" redirect))
+      (is (not (contains? headers :Authorization)) "direct host request carries no provider credential"))
+    (let [row (-> (await (xsdk/mongo-query {:collection "events" :filter {:id (first ids)}})) :rows first)]
+      (is (= (first texts) (:text row)))
+      (is (= 1 (:total (await (xsdk/mongo-query {:collection "events" :filter {:id (first ids)}}))))))))
+
+(deftest ^:async malformed-generated-batches-refuse-with-named-contracts
+  (let [sdk (await (sdk-mod/createOpenPlannerSdk))
+        malformed [(fn [_] {:model "gte-large-en-v1.5" :data [{:index 0 :embedding (vec (repeat 1024 0.5))}]})
+                   (fn [_] {:data [{:index 0 :embedding (vec (repeat 1023 0.5))}]})
+                   (fn [_] {:data [{:index 0 :embedding (vec (repeat 1025 0.5))}]})
+                   (fn [_] {:data [{:index 0 :embedding (assoc (vec (repeat 1024 0.5)) 9 nil)}]})
+                   (fn [_] {:data [{:embedding (vec (repeat 1024 0.5))}]})
+                   (fn [_] {:data [{:index 0 :embedding (vec (repeat 1024 0.5))}
+                                  {:index 0 :embedding (vec (repeat 1024 0.5))}]})
+                   (fn [_] {:data [{:index 1 :embedding (vec (repeat 1024 0.5))}]})
+                   (fn [_] {:data []})]]
+    (doseq [respond malformed]
+      (reset! provider-response respond)
+      (let [runtime (embedding/runtime (.-embeddingRuntime sdk) (embedding/configuration!))
+            provider (.getEmbeddingFunction (.-hot (:handle runtime)) #js {})]
+        (try
+          (await (.generate provider #js ["owned complete input"]))
+          (is false "the whole malformed response must refuse before SDK persistence")
+          (catch :default error
+            (is (contains? #{"knoxx_embedding_contract_invalid" "knoxx_embedding_result_identity_invalid"}
+                           (:code (ex-data error))))))))
+    (reset! provider-response (fn [request] (update (valid-provider-response request) :data #(vec (reverse %)))))
+    (let [runtime (embedding/runtime (.-embeddingRuntime sdk) (embedding/configuration!))
+          provider (.getEmbeddingFunction (.-hot (:handle runtime)) #js {})]
+      (is (= 2 (.-length (await (.generate provider #js ["complete first input" "complete second input"]))))
+          "unique complete indices may arrive shuffled"))))
+
+(deftest ^:async swallowed-sdk-generation-failure-retains-partial-progress-without-repair
+  (sdk-mod/__setCheckedRuntimeMode true)
+  (reset! provider-response
+          (fn [request]
+            (if (= ["owned failing generation"] (:input request))
+              {:data [{:index 0 :embedding [1 2 3]}]}
+              (valid-provider-response request))))
+  (let [sdk (await (sdk-mod/createOpenPlannerSdk))
+        ids ["owned-independent-good-batch" "owned-refused-batch"]
+        events (mapv (fn [id text] {:schema "openplanner.event.v1" :id id :ts "2026-10-14T00:00:00Z"
+                                   :source "owned-green" :kind "docs" :text text})
+                     ids ["owned successful generation" "owned failing generation"])]
+    (try
+      (await (xsdk/events! events {:await-index? true}))
+      (is false "caught SDK background failure cannot become completed qualification")
+      (catch :default error
+        (is (= "knoxx_embedding_invocation_failed" (:code (ex-data error))))
+        (is (= "knoxx_embedding_contract_invalid" (:cause-code (ex-data error))))
+        (is (= ids (get-in (ex-data error) [:partial-progress :ids])))))
+    (is (= 2 (count @provider-requests)) "failure triggers no automatic retry or follow-up repair")
+    (doseq [id ids]
+      (is (= 1 (:total (await (xsdk/mongo-query {:collection "events" :filter {:id id}}))))
+          "actual fixture source writes remain visible"))
+    (let [rows (js->clj (await (.toArray (.find (.-hotVectors (.-mongo sdk))
+                                               (clj->js {:parent_id {:$in ids}})))) :keywordize-keys true)]
+      (is (= [(first ids)] (mapv :parent_id rows)))
+      (is (= 1024 (:embedding_dimensions (first rows)))))))
+
+(deftest ^:async legacy-query-partitions-refuse-before-provider-dispatch
+  (sdk-mod/__setCheckedRuntimeMode true)
+  (doseq [field [:embedding_model "embedding_model"]]
+    (let [before (count @provider-requests)]
+      (try (await (xsdk/vector-search! {:q "owned explicitly selected legacy" :where {field "gte-large-en-v1.5"}}))
+           (is false "an explicit legacy query filter must refuse")
+           (catch :default error (is (= "knoxx_embedding_model_invalid" (:code (ex-data error))))))
+      (is (= before (count @provider-requests)))))
+  (doseq [[model dimensions] [["gte-large-en-v1.5" 1024] ["qwen3-embedding:8b" 768]]]
+    (sdk-mod/__setPartitions (clj->js [{:tier "hot" :model model :dimensions dimensions :collectionName "owned-legacy"}]))
+    (let [before (count @provider-requests)]
+      (try (await (xsdk/vector-search! {:q "owned query" :tier "hot"}))
+           (is false "query-visible legacy identity must refuse")
+           (catch :default error (is (= "knoxx_embedding_contract_invalid" (:code (ex-data error))))))
+      (is (= before (count @provider-requests)))))
+  (let [before (count @provider-requests)]
+    (try
+      (let [old (aget js/process.env "EMBED_PROVIDER_BASE_URL")]
+        (try
+          (aset js/process.env "EMBED_PROVIDER_BASE_URL" "http://127.0.0.1:8789")
+          (await (xsdk/vector-search! {:q "owned wrong route"}))
+          (is false "wrong provider route must refuse")
+          (catch :default error (is (= "knoxx_embedding_route_invalid" (:code (ex-data error)))))
+          (finally (if (nil? old) (js-delete js/process.env "EMBED_PROVIDER_BASE_URL")
+                       (aset js/process.env "EMBED_PROVIDER_BASE_URL" old)))))
+      (finally (is (= before (count @provider-requests)))))))
+
+
+(deftest ^:async non-generative-sdk-reads-preserve-their-independent-boundary
+  (await (xsdk/close-sdk!))
+  (let [keys ["EMBED_PROVIDER_DIMENSIONS" "EMBED_PROVIDER_MODEL" "EMBED_PROVIDER_BASE_URL"]
+        before (into {} (map (fn [key] [key (aget js/process.env key)])) keys)]
+    (try
+      (aset js/process.env "EMBED_PROVIDER_DIMENSIONS" "unknown")
+      (aset js/process.env "EMBED_PROVIDER_MODEL" "unqualified-old-model")
+      (aset js/process.env "EMBED_PROVIDER_BASE_URL" "http://127.0.0.1:8789")
+      (is (true? (:ok (await (xsdk/health)))) "metadata health must not dispatch or require an embedding provider")
+      (is (true? (:ok (await (xsdk/sessions {})))))
+      (is (true? (:ok (await (xsdk/mongo-query {:collection "events" :limit 1})))))
+      (try (await (xsdk/vector-search! {:q "generation remains held"}))
+           (is false "embedding operations still refuse an unqualified profile")
+           (catch :default error
+             (is (= "openplanner_embedding_dimensions_invalid" (:code (ex-data error))))))
+      (is (empty? @provider-requests))
+      (finally
+        (doseq [[key value] before]
+          (if (nil? value) (js-delete js/process.env key) (aset js/process.env key value)))
+        (await (xsdk/close-sdk!))))))
+
+(defn- native-query-cursor
+  "Keep actual cursor chaining and separately controlled native/fallback reads."
+  [rows failure]
+  (let [cursor #js {:toArray (^:async fn []
+                              (when failure (throw failure))
+                              (clj->js rows))}]
+    (aset cursor "sort" (fn [& _] cursor))
+    (aset cursor "limit" (fn [& _] cursor))
+    cursor))
+
+(defn- ^:async native-query-outcome
+  "Invoke unchanged Knoxx query through the genuine SDK's native fallback core."
+  [native-rows native-error fallback-rows]
+  (let [sdk (await (sdk-mod/createOpenPlannerSdk))
+        db (.-db (.-mongo sdk))
+        original-collection (.-collection db)
+        reads (atom [])
+        collection #js {:collectionName "owned-native-fallback"
+                        :aggregate (fn [_]
+                                     (swap! reads conj :aggregate)
+                                     (native-query-cursor native-rows native-error))
+                        :find (fn [_]
+                                (swap! reads conj :fallback)
+                                (native-query-cursor fallback-rows nil))}]
+    (sdk-mod/__setNativeQueryCore true)
+    (sdk-mod/__setPartitions
+     (clj->js [{:tier "hot" :model "qwen3-embedding:8b" :dimensions 1024
+               :collectionName "owned-native-fallback" :searchIndexName "owned-index"
+               :searchIndexStatus "ready"}]))
+    (try
+      (aset db "collection" (fn [& _] collection))
+      {:result (await (fixture-outcome #(xsdk/vector-search!
+                                         {:q "owned full query" :tier "hot" :quality "any"})))
+       :reads @reads}
+      (finally
+        (aset db "collection" original-collection)
+        (sdk-mod/__setNativeQueryCore false)))))
+
+(deftest ^:async native-sdk-query-catch-cannot-erase-a-recorded-row-refusal
+  (let [valid {:_id "owned-valid-fallback" :parent_id "owned-source"
+               :ts (js/Date. "2026-10-14T00:00:00Z") :source "owned-runtime" :kind "docs"
+               :search_tier "hot"
+               :text "owned complete source" :chunk_index 0 :chunk_count 1
+               :embedding_model "qwen3-embedding:8b" :embedding_dimensions 1024
+               :embedding (vec (repeat 1024 0.25)) :score 0.9}
+        invalid (assoc valid :_id "owned-wrong-model-native" :embedding_model "gte-large-en-v1.5")]
+    (doseq [fallback [[valid] []]]
+      (let [{:keys [result reads]} (await (native-query-outcome [invalid] nil fallback))]
+        (is (= :refused (:outcome result))
+            "a native row contract failure refuses even after a healthy or empty fallback")
+        (is (= [:aggregate :fallback] reads)
+            "genuine SDK catch consumed the rejected native read and completed fallback")))
+    (let [{:keys [result reads]} (await (native-query-outcome [] (js/Error. "owned native transport unavailable") [valid]))]
+      (is (= :accepted (:outcome result)) "native transport failure still permits valid cosine fallback")
+      (is (= [["owned-source"]] (get-in result [:value :result :ids])))
+      (is (= [:aggregate :fallback] reads)))
+    (let [{:keys [result reads]} (await (native-query-outcome [valid] nil []))]
+      (is (= :accepted (:outcome result)) "healthy native results remain admitted")
+      (is (= [["owned-source"]] (get-in result [:value :result :ids])))
+      (is (= [:aggregate] reads)))))
