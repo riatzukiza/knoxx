@@ -301,3 +301,12 @@
   spore: none
   receipt-refs: root-private-causal-RED-and-ack-canonical-receipt.edn
   note: Actual two-route RED shows receipt loss after cache reset and205samepublicationnoops; compilerexit0 is not suitepass when seven assertions fail. CanonicalClioexact-replay does not fsync after ambiguouswrite; public lockedemptyappend safely syncs sameinode and separateOScanonicalreader verifiesunchangedfacts. Keep actualCMSrestart and namespacepowerloss proof separate. Full lint baseline13errors/284warnings is retained and unchangedsource independentlyverified; do not call fullqualificationpass. No spore/promotion.
+- ts: 2026-10-14T22:27:15.987903533Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: Qualified private durable publication receipts and explicit native-fsync retry
+  p-efficiency: 0.76
+  p-friction: 0.65
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: /home/err/.local/share/openhax-codex/20261010/review-state/afac-private-configured-sink-explicit-retry-GREEN-v1/root-canonical-receipt-event.edn
+  note: Append-only scopedClioexactpayload/identity retained; genuineequals-bodyobservationsdistinct; failedattemptkeepscause+envelope/internalretry; no publication/reconciliation repeat. 233actualcompiledimportsboundseparatelyfromstableShadowloader. Privatebehaviorqualification only; source/nativehosted/image/config/Services admissionandfullappchecksremain; AFACnotcomplete; realSpanishprovideranddeploymentunqualified.
