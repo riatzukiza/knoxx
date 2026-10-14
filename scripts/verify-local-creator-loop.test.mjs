@@ -105,7 +105,7 @@ for (const { feature, shared, missing, title } of cases) {
           'Source freshness and mandatory presence refuse before container content operations');
       }
     } finally {
-      rmSync(root, { recursive: true, force: true });
+      rmSync(root, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 });
     }
   });
 }
