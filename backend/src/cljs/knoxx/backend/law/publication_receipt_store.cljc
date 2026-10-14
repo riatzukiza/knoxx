@@ -1,6 +1,7 @@
 (ns knoxx.backend.law.publication-receipt-store
   "Portable contracts for scoped publication observations in canonical Clio."
-  (:require [clio.law.schema :as schema]
+  (:require [clio.law.event :as event]
+            [clio.law.schema :as schema]
             [clojure.string :as str]
             [malli.core :as m]))
 
@@ -46,3 +47,38 @@
                     {:cause :publication-receipt/invalid-observation})))
   (assert-scope! (:receipt/scope observation))
   observation)
+
+
+(def PendingAttempt
+  "An exact immutable emission envelope retained with its trusted scope."
+  [:map {:closed true}
+   [:scope Scope]
+   [:event (get catalog :knoxx.publication/receipt-observed)]])
+
+(def FailedAttempt
+  "Internal failed-commit capability; never a ledger payload or HTTP body."
+  [:map {:closed true}
+   [:cause [:= :publication-receipt/commit-unacknowledged]]
+   [:publication-receipt/pending PendingAttempt]
+   [:publication-receipt/retry! [:fn fn?]]])
+
+(defn assert-pending-attempt!
+  "Require the unchanged canonical event and its matching admitted scope."
+  [{:keys [scope event] :as pending}]
+  (when-not (and (m/validate PendingAttempt pending)
+                 (event/event-identity-valid? event)
+                 (= scope (get-in event [:event/data :receipt/scope])))
+    (throw (ex-info "Invalid pending publication receipt attempt"
+                    {:cause :publication-receipt/invalid-pending-attempt})))
+  (assert-scope! scope)
+  (assert-observation! (:event/data event))
+  pending)
+
+(defn assert-failed-attempt!
+  "Validate an explicit retry capability while retaining the exact attempt."
+  [failure]
+  (when-not (m/validate FailedAttempt failure)
+    (throw (ex-info "Invalid failed publication receipt attempt"
+                    {:cause :publication-receipt/invalid-failed-attempt})))
+  (assert-pending-attempt! (:publication-receipt/pending failure))
+  failure)

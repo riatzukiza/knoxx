@@ -104,7 +104,12 @@
           (is (= public-before (memory/public-routes target)))
           (is (= 2 (count @observations)))
           (is (false? (:failed? (last @observations))))
-          (is (= (:identity (first @observations)) (:identity (last @observations)))))
+          (is (= (:identity (first @observations)) (:identity (last @observations))))
+          (is (= emitted (await (retry!))) "reusing the same retained capability returns its original callback result")
+          (is (= [fact] (store/read-events! directory scope)) "another explicit ACK preserves the original envelope")
+          (is (= [emitted] @delivered) "the prior callback runs once for the retained attempt")
+          (is (= 1 (memory/materialization-count target)))
+          (is (= public-before (memory/public-routes target))))
         (let [noop (await (reconciler/reconcile! reconciler trigger))
               again (await (reconciler/reconcile! reconciler trigger))
               events (store/read-events! directory scope)]

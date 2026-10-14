@@ -117,7 +117,9 @@
     result))
 
 (defn receipt-sink
-  "Select authoritative persistence while preserving the prior sink callback."
+  "Persist one immutable envelope per emission; retain an explicit failed attempt.
+   Retry never reconciles or compares receipt bodies. The prior callback runs
+   only after ACK and at most once for this attempt; its failure stays distinct."
   [config scope prior-sink]
   (if-not (selected? config) prior-sink
     (do
@@ -126,5 +128,21 @@
                         {:cause :publication-receipt/invalid-sink})))
       (let [writer (open-writer! (:publication-receipt-ledger-directory config) scope)]
         (^:async fn [receipt]
-          (append-prepared! writer (prepare-event! writer receipt))
-          (await (prior-sink receipt)))))))
+          (let [pending (law/assert-pending-attempt!
+                         {:scope scope :event (prepare-event! writer receipt)})
+                delivery (delay ((^:async fn [] (await (prior-sink receipt)))))
+                attempt! (fn ^:async retry-emission! []
+                           (try
+                             (append-prepared! writer (:event pending))
+                             (catch :default cause
+                               (throw
+                                (ex-info "Publication receipt commit was not acknowledged"
+                                         (law/assert-failed-attempt!
+                                          {:cause :publication-receipt/commit-unacknowledged
+                                           :publication-receipt/pending pending
+                                           :publication-receipt/retry! retry-emission!})
+                                         cause))))
+                           ;; Callback errors are outside the commit catch. A
+                           ;; retained retry cannot repeat callback side effects.
+                           (await (force delivery)))]
+            (await (attempt!))))))))
