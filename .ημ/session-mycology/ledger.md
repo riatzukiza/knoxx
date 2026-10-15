@@ -589,3 +589,12 @@
   spore: none
   receipt-refs: .ημ/receipts.edn#cddbfbe6-5ace-42cf-8229-4fdfb37e8265
   note: Source70495d6fa5531cf05afe1cc8fd74bcf8e930772f; Codex5537788801/root4286589102. Newfixture/auth5->core5->draft5->locale3 total18/new+5; accepted8parent/history unchanged. Native7events, exact4BODYs/canonicalparser,2644otherinputs retained. Native reflection24171718-e3ee-4711-980a-a835715e3b00. Plan only/no fixture/auth/test/build/browser/model/public/runtime effects. Preserve refused772 HOSTtrace and Gitlink baseline-reader refusal/correction. Candidate0/no spore.
+- ts: 2026-10-15T19:32:58.440462290Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: CMS16 complete Mongo fixture lifecycle and export unmount planning
+  p-efficiency: 0.91
+  p-friction: 0.17
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#510fcf8e-ae13-4855-b44a-4dd87c2c1ce4
+  note: Source9a62cde06ac2fc0d3dc8777fb8a186f0c5ca12bd; Codex5538651862 roots4287284040/4069 and body-only export-unmount. Two native scope comments + exact two BODYs; all2649physical/Git inputs/modes and2646otherinputs preserved; metadata/history/dependencies/18total unchanged. Full system-named Mongo lifecycle and exact TERM mid-cleanup recovery; separate export-unmount callbacks/browser with captured download kept. Native reflectionc4a72401-74a3-4bbd-963b-3de723220f1f. Planning only/no implementation/app/fixture/auth/test/build/browser/model/runtime/public effects. Originalb19 UnknownError remains failed; conditional retry neverexecuted. Candidate0/no spore.
