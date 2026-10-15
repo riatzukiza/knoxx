@@ -14,6 +14,7 @@
     "start:dev:direct": "node dist-dev/server.js",
     "test": "node --test test/js/*.test.mjs && node scripts/run-shadow-tests-ci.mjs",
     "test:coverage": "node --test test/js/*.test.mjs && node scripts/run-shadow-tests-coverage-ci.mjs",
+    "test:sandbox-sdk-bootstrap": "node --test test/integration/sandbox-openplanner-sdk-bootstrap.test.mjs",
     "test:smoke": "node --test test/js/*.test.mjs",
     "test:mutation": "clojure -M:mutation --run --limit 100",
     "mutation:smoke": "clojure -M:mutation --run --limit 10",

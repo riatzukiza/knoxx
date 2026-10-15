@@ -3,11 +3,11 @@ category: "tasks"
 labels: "tasks, knoxx, sandbox, ci, sdk-bootstrap, source-custody, 5sp"
 dependency: ["knoxx-knoxx-backend-lint-zero-warning-gate"]
 type: "task"
-write-id: "1792084758516-0.zcpbnqe8rcc1w582zqy"
+write-id: "1792093089861-0.1xt9dy7yml2gahlcjqy"
 points: "5"
 title: "Prepare the pinned OpenPlanner SDK in Knoxx Sandbox bundles"
 priority: "P1"
-status: "breakdown"
+status: "in_progress"
 uuid: "prepare-the-pinned-openplanner-sdk-in-knoxx-sandbox-bundles"
 created_at: "2026-10-15T09:44:54.782Z"
 ---
