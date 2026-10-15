@@ -4,7 +4,7 @@ labels: "tasks, 5sp, has-parent, verification, translations, cms"
 dependency: []
 parent: "knoxx-translation-review-chat-panel"
 type: "task"
-write-id: "1792099218297-0.ey67bh2mkbu7c49el2q"
+write-id: "1792101135108-0.9dp19auoz0woxci86ak"
 points: "5"
 title: "Seed run-owned legacy review fixtures and prove auth preflight"
 priority: "P0"
@@ -94,6 +94,28 @@ Add automatically discovered `backend/test/cljs/knoxx/backend/extern/node_cli_te
 conversion/output/exit regressions, preserving original failure category/status
 and checked cleanup. Reuse clock/node-env tests and the existing process harness
 for settings, output and failure custody, without duplicating their policy.
+Make this no-interop invariant executable for the exact touched entry. Extend
+`backend/scripts/check-js-boundary.mjs` so its registered `--check` both includes
+`backend/scripts/translation_split_review_fixture.cljs` and strictly rejects its
+forbidden executable host-interop forms. Adding the path only to inventory or
+checking generic extern imports alone cannot qualify: existing `--check` ignores
+the other inventoried categories. Cover native env/process, Date, JSON/encoding,
+console/error properties/exit mutation, `aget`/`aset`, `js->clj`/`clj->js`, `#js`,
+Mongo/native construction and direct native property/method access still left in
+this non-extern entry. Missing/unreadable fixture entry or unknown scan outcome
+refuses; safe CLJS orchestration through named adapters remains accepted. Keep
+existing source-tree inventory and legacy generic-extern allowlist semantics
+unchanged; do not exempt this newly strict entry or broaden the allowlist to
+make a failing migration pass.
+Add `backend/test/js/js-boundary-fixture-script.test.mjs`, discovered by the
+existing `test/js/*.test.mjs` backend test runner, to drive the actual checker in
+an owned disposable source layout. Genuine RED must catch the present skipped
+script/generic-import-only bypass. Independently inject each forbidden category
+into the fixture entry and require a nonzero check with exact path/category;
+include missing/unreadable-entry refusal, a clean CLJS-only entry using named
+adapter APIs, and the same legitimate interop inside its named extern adapter.
+Preserve existing allowlisted/nonallowlisted generic-import controls. No fixture
+seed, database, provider, credentials or app process runs for this source gate.
 Document these system boundaries in the existing boundary inventory where required;
 no use-case-named generic extern or opaque raw-Mongo escape hatch is introduced.
 Its already owned typed read action also supplies exact run-owned resource
@@ -222,6 +244,12 @@ and `test/cljs` with `--fail-level warning`; typecheck at line32 only compiles
 server and cannot substitute. Retain complete lint output and actual native exit;
 require zero errors and zero warnings without narrowing paths, suppressing
 warnings or waiving a historical failure for this story's law/extern/test work.
+Register `pnpm -C backend boundary:check` and
+`pnpm -C backend exec node --test test/js/js-boundary-fixture-script.test.mjs`
+alongside the full backend lint/build/test and existing harness gates. Retain
+complete native output/exit and require zero failures/errors/warnings; an inventory
+report, passing generic-import check or successful app compile cannot substitute
+for the exact fixture-entry assertion and its forbidden-category controls.
 Run `python3 scripts/test-cms-verifier-preconditions.py` as its registered gate.
 These backend/helper gates belong to this separately estimated prerequisite.
 The dependent frontend stories retain their own unit/browser gates; this
@@ -347,5 +375,7 @@ Root-reviewed local planning correction for native Codex5539062909/current0429, 
 Root-reviewed local planning correction for Codex5539622567/currente9 root4288059113: explicitly require pnpm -C backend run lint, retaining the full src/cljs+test/cljs clj-kondo --fail-level warning pathset, complete actual output/exit and zero errors/warnings alongside test/server compiles; no narrowing, suppression or historical-red waiver. The already owned typed verification read may expose only exact run-owned resource/publication+tenant/source-bound dispatch/claim/batch/receipt snapshots for core5. Extend action-dispatched request/result schemas as needed, validate before DB access and return safe state/equality/count data only, never handles/content/credentials or a generic read escape. Samefixture5/status/dependencies/history/18total; no new fixture/API/model/writer, app/test/auth/runtime/readiness or public effect.
 
 Root-reviewed local planning correction for Codex5539948033/current1c6282bd root4288291896: extend the already-owned complete touched fixture-entry extern boundary beyond Mongo. Reuse actual extern.node-env/variable and extern.clock/instant-iso; add only named extern.node-cli encoding/output/error/exit adapter with explicit CLJS contracts/tests so the script retains no raw host interop/native handles. Preserve pure fixture/domain/tenant semantics, safe errors/first cause/checked cleanup, full backend zero-warning gates and all existing resource actions. Same fixture5/status/deps/history and repair18total; no new fixture family/endpoint/product behavior. Exact three-BODY patch11222B SHA41aec60aa05bcf77506315baa6bfb262cf5ff2811be06f73efc730089b289980. No app/auth/test/browser/model/runtime/readiness/release/public effect.
+
+Root-reviewed local planning correction for Codex5540235261/current2c09de085f0558d32f57c9998173c732dae7cd54 root4288525597: require an enforceable strict no-interop assertion for the exact touched fixture entry under registered backend boundary:check, not only source-walk inclusion or generic-import inventory. Preserve existing source-tree allowlist semantics, refuse missing/unreadable/unknown entry scans, and add actual-checker process controls for every forbidden host-interoperability category plus clean CLJS/named-extern controls under existing backend JS test discovery. Same fixture5/status/deps/labels/history and repair18total. Exact reviewed3357B BODY patchSHA15b6fccdd1883be0b8b40fcc86d3af0877fdd2444f7c99ddf4915fe68639449a. No product/checker implementation, gate/test/auth/browser/model/runtime/readiness/public/deployment effect.
 
 ---
