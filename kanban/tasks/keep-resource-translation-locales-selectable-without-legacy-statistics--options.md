@@ -4,7 +4,7 @@ labels: "tasks, 3sp, has-parent, regression, translations, frontend, cms"
 dependency: ["knoxx-translation-review-current-view-mutation-lifecycle", "ae9a3cb7-a630-4d8d-8d60-c69b825d008d"]
 parent: "knoxx-translation-review-chat-panel"
 type: "task"
-write-id: "1792069076946-0.u2ecva8t63pdcmqkaqh"
+write-id: "1792083442017-0.33uduzdd206dmyyl016"
 points: "3"
 title: "Keep resource translation locales selectable without legacy statistics"
 priority: "P0"
@@ -208,6 +208,41 @@ or silently re-estimated by these repair estimates.
    HTTP 502 responses remain explicit evidence limits. Passing this narrow
    locale check supplies no independent review, approval or release credit.
 
+
+### Real locale-read authentication before controlled responses
+
+For native inline Codex root4285031557, this three-point locale story also owns
+two real credential-free GET assertions in the shared API verifier
+`scripts/verify-translation-split-review.sh`, consumed by the tour and guide;
+extend `scripts/test-cms-verifier-preconditions.py` for their causal orchestration
+controls through its existing registered CI invocation.
+Before any manifest route override or deferred fetch adapter is installed, bind
+the actual effective server project, settle authenticated readiness for both
+existing locale-loading routes, then use an independent empty-cookie client
+without bearer/API/identity headers to probe their exact frontend-built URLs:
+`api/get-manifest` builds `/api/translations/export/manifest?project=<encoded>`;
+`api/list-documents` uses URLSearchParams for project and the current optional
+`target_lang`. Do not substitute the resource inventory, SFT route or detail
+endpoint. A real authenticated200 with contract-shaped manifest/documents data
+establishes route readiness; an empty valid languages/documents result is ready.
+The wrapper tests readiness before authentication, so503,404,400, missing fixture,
+or an unavailable dependency cannot be relabeled as an authentication pass.
+
+Require401 with no_session for each real anonymous GET. Unexpected readable
+content is a failure without logging its body. Record real method/path/query,
+status/error and the absence of auth headers/cookies, independently from the
+later UI-only empty-manifest control. Prove the two probes occur before any
+interceptor registration, exercise a real200 exposure and unready503 adverse
+case, and fail if a probe is omitted or intercepted. Only then install this
+card's exact controlled empty manifest and require the matching response/render.
+Reuse core5's real auth-preflight mechanism and complete its temporary legacy
+fixture teardown before navigation/counter reset. Keep these two GETs separately
+accounted from SFT and the two legacy POSTs, the initial project-adoption reads,
+and settled es→fr→All counts. Product code adds no endpoint or request; this
+explicitly scoped verification preflight does not alter the existing successful
+filter baseline or the controlled phase's zero forwarded mutation/provider calls.
+No native auth probe or interceptor is executed by this planning amendment.
+
 ## Verification
 
 RED first: add an interaction regression with actual resource `es`/`fr`/`nl`
@@ -344,5 +379,7 @@ Native PR16 body review5532308090 is handled in mandatory lifecycle predecessor 
 Native PR16 current8b187 Codex5532537847 and CodeRabbit5532590232 planning correction: install current successful unfiltered resource locales before awaiting legacy enrichment; revalidate the selected target on fallback-to-manifest/resource option changes, retaining a represented selection or resetting to All with synchronous stale filtered-load invalidation. Add deferred causal unit and visibly controlled browser schedules. Shared pre-passive generations, segment/draft guards, actual anonymous SFT boundary and pending-snapshot catch-up belong to existing mandatory lifecycle predecessor. Exact locale body19529B sha256:f70a2218000c04e1056f16eb0835de63b182efa4f1b85600caaef74974e0e019; full delta17244B sha256:1a51a6fd7c1784998020f7dcd304c7f02fd8c9b1b76d2ad369a4be39d8552da7. Keep breakdown/P0/3points, same lifecycle dependency, scalar labels and accepted8 parent unchanged/open. Preserve default18 and optin20/18/1/1, real auth/inventory versus synthetic race distinction, all14 prior native roots/body review5532308090 and original browser/502/Sandbox limits. No app implementation/readiness/merge/runtime/provider/content/publication effects.
 
 Root-reviewed Codex5532975630 correction preserves locale3/P0/breakdown, ordering/unfiltered/early options/valid-target/native-auth-inventory/default18-optin20 scope. ONE SINGLE-KEY native dependency edit preserves core5 and adds UUIDv4 draft/refresh5 ae9a3cb7-a630-4d8d-8d60-c69b825d008d. Both predecessor proofs remain mandatory: boundary/operation/unmount/export in core, three-runner dirty draft/controller/form-sync and bounded freshness in successor. Exact UUID-bound body20223B SHAc96f3d60e2953d336ac02005ffacc9fb2dc58394d9742020d44affaf73ea2d2d. Total13 repair points is explicit+5 beyond prior8; broader accepted8 parent unchanged/open. Preserve20 settled native roots, all histories and original browser/502/Sandbox limitations. Local planning only; hold all public PR/body/reply/review/push/merge/readiness effects.
+
+Native CMS16 Codex P1 root4285031557/threadPRRT_kwDOU4VeEc6s2Lri/review5535724920 on18125604b5cc499e6616ec65cbe768ae5521518c: root reviewed exact two-card patch e40ce45100723de196647e1b629455dd8f009fe9908bdaa90825ce22853010d2. Existing locale3 owns exact frontend-built manifest and legacy-document-list real credential-free GETs before any synthetic interception; establish authenticated200 route readiness and require401/no_session with an empty-cookie/header-free client. Exposure200/unready503/400/404 or intercepted/omitted probes cannot pass. Extend shared API verifier and existing registered process tests; retain UI-only empty-manifest evidence and distinguish probe/init/filter counts. Preserve default18/optin20/18/1/1, core5->draft5->locale3=13, all metadata/history and accepted8 parent unchanged/open. Core owns temporary legacy fixture teardown before navigation; no app implementation/auth probe/test/runtime/model/publication or readiness credit. Local-only planning source and separate provenance; public effects held.
 
 ---
