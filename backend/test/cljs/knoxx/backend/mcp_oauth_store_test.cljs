@@ -1,6 +1,7 @@
 (ns knoxx.backend.mcp-oauth-store-test
   (:require [cljs.test :refer [deftest is testing]]
             [knoxx.backend.extern.mongo :as extern-mongo]
+            [knoxx.backend.extern.mongo-cache-fixture :as clock-fixture]
             [knoxx.backend.infra.stores.mongo-mcp-oauth :as store]
             [knoxx.backend.law.mcp-oauth :as law]
             [knoxx.backend.law.mongo :as law-mongo]))
@@ -312,23 +313,30 @@
              :code_data {:clientId "c" :codeChallenge "ch"}
              :expiresAt (js/Date. (+ (.now js/Date) 300000))}})
 
+(def ^:private fixture-loaded-at (clock-fixture/now-ms))
+
+(defn- live-code-fixture
+  "Return the code fixture for this individual exchange test."
+  []
+  live-code)
+
 (deftest ^:async a-code-can-be-consumed-once
   (testing "the first claim gets the data"
-    (let [db     (fake-codes-db live-code)
+    (let [db     (fake-codes-db (live-code-fixture))
           record (await (store/consume-code! db "code-1"))]
       (is (some? record))
       (is (= "c" (:clientId record))))))
 
 (deftest ^:async a-consumed-code-cannot-be-claimed-again
   (testing "a second exchange with the same code gets nothing"
-    (let [db (fake-codes-db live-code)]
+    (let [db (fake-codes-db (live-code-fixture))]
       (is (some? (await (store/consume-code! db "code-1"))))
       (is (nil? (await (store/consume-code! db "code-1")))
           "the code is spent — a replay must not mint a second token"))))
 
 (deftest ^:async concurrent-exchanges-yield-exactly-one-token
   (testing "two exchanges racing on one code produce a single winner"
-    (let [db (fake-codes-db live-code)
+    (let [db (fake-codes-db (live-code-fixture))
           results (await (js/Promise.all
                           #js [(store/consume-code! db "code-1")
                                (store/consume-code! db "code-1")
@@ -342,7 +350,7 @@
     ;; An attacker who observes the code on the front channel but has no
     ;; verifier must not be able to destroy it. The exchange checks the
     ;; bindings against a peek and only claims once they hold.
-    (let [db (fake-codes-db live-code)]
+    (let [db (fake-codes-db (live-code-fixture))]
       (is (some? (await (store/peek-code! db "code-1"))))
       (is (some? (await (store/peek-code! db "code-1"))) "peeking twice is fine")
       (is (seq @(aget db "docs")) "the code is still there")
@@ -363,6 +371,33 @@
                                          :expiresAt (js/Date. (- (.now js/Date) 1000))}})]
       (is (nil? (await (store/consume-code! db "code-old"))) "expired yields nothing")
       (is (empty? @(aget db "docs")) "and the document is gone, not left behind"))))
+
+(deftest ^:async live-code-fixture-is-fresh-after-namespace-aging
+  (testing "a test beginning after the old module-level TTL still gets a live code"
+    (await (clock-fixture/with-clock! (+ fixture-loaded-at 300001)
+             (^:async fn []
+               (let [db (fake-codes-db (live-code-fixture))]
+                 (is (some? (await (store/peek-code! db "code-1"))))
+                 (is (= "c" (:clientId (await (store/consume-code! db "code-1")))))))))))
+
+(deftest ^:async live-code-fixture-keeps-the-five-minute-boundary
+  (testing "fresh fixtures retain real expiry; equality is expired and still consumes"
+    (let [issued-at (+ fixture-loaded-at 600002)]
+      (await (clock-fixture/with-clock! issued-at
+               (^:async fn []
+                 (let [codes (live-code-fixture)
+                       expiry (extern-mongo/instant-ms (get-in codes ["code-1" :expiresAt]))
+                       db (fake-codes-db codes)]
+                   (is (= (+ issued-at 300000) expiry))
+                   (is (some? (await (store/peek-code! db "code-1"))))
+                   (await (clock-fixture/with-clock! (+ issued-at 299999)
+                            (^:async fn []
+                              (is (some? (await (store/peek-code! db "code-1")))))))
+                   (await (clock-fixture/with-clock! (+ issued-at 300000)
+                            (^:async fn []
+                              (is (nil? (await (store/peek-code! db "code-1"))))
+                              (is (nil? (await (store/consume-code! db "code-1"))))
+                              (is (nil? (await (store/peek-code! db "code-1"))))))))))))))
 
 (deftest credential-liveness-is-one-pure-rule
   (testing "an expiry after the given instant is live, before it is not"

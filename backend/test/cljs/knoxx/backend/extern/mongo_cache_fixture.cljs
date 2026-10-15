@@ -2,6 +2,8 @@
   "Disposable native Mongo rows and clock controls for cache boundary regressions."
   (:require [clojure.walk :as walk]))
 
+(defn now-ms "Read the current native clock for a fresh TTL fixture." [] (.now js/Date))
+
 (defn date "Construct an opaque BSON-style Date for a native fixture." [at] (js/Date. at))
 (defn iso "Encode fixture epoch milliseconds as portable UTC text." [at] (.toISOString (date at)))
 (defn invalid-date "Construct a malformed native expiry." [] (js/Date. "invalid"))
