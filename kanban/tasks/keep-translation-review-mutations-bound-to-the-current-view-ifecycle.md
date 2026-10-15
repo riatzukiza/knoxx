@@ -4,7 +4,7 @@ labels: "tasks, 5sp, has-parent, regression, translations, frontend, cms"
 dependency: []
 parent: "knoxx-translation-review-chat-panel"
 type: "task"
-write-id: "1792069076389-0.k1m6tvi1k731v6v9l2"
+write-id: "1792077793328-0.dkzupyu4okbbpytoqlz"
 points: "5"
 title: "Keep translation review mutations bound to the current view"
 priority: "P0"
@@ -100,10 +100,24 @@ locale story depends on that successor and transitively on this one.
   review law. Product/test scope is `review_controller.cljs`, `view.cljs`,
   `review_controller_test.cljs` and `page_interaction_test.cljs`. The related
   locale story owns `logic.cljs`, `logic_test.cljs` and locale projection wiring.
-- Verification scope remains the existing shared fixture helper,
+- Verification scope includes the existing API verifier
+  `scripts/verify-translation-split-review.sh`, shared fixture helper,
   `scripts/verify-translation-split-review-tour.sh` and
-  `docs/verification/translation-split-review.md`. Preserve default consumers and
-  existing default full-tour mutation behavior.
+  `docs/verification/translation-split-review.md`. Extend their existing auth
+  step with named anonymous checks for both actual legacy mutation routes;
+  retain the resource bulk check but label its exact route accurately. Preserve
+  default consumers, scenario counts and existing default full-tour behavior.
+- Before synthetic interception, require real credential-free POST probes for
+  legacy segment labels and legacy document review under verified auth-enabled,
+  legacy-route-ready conditions. Use an independent empty cookie jar and no
+  Authorization, API-key or identity headers. Bind IDs, project/garden scope,
+  URL encoding, query and payload to the actual source-built run-owned fixture
+  and current frontend API. Require HTTP401/no_session and authenticated before/
+  after evidence that fixture review state is unchanged with no effective write.
+  Other non-200, validation400, absent404, legacy503 or unready responses cannot
+  prove auth; fail closed without logging unexpected content/body. These probes
+  are real unauthenticated POST requests. Separately, the later controlled phase
+  must still forward zero mutation/provider/publication requests.
 
 ## Non-goals
 
@@ -176,6 +190,22 @@ reads; the controlled race phase is visibly separate.
    An unexpected content response fails without logging its body; an unavailable
    route/legacy503 cannot pass authentication and blocks this in-scope check.
 
+10. In the existing real auth preflight, before any synthetic interceptor,
+    send exactly one credential-free POST to each source-built legacy route:
+    `/api/translations/segments/:id/labels` and
+    `/api/translations/documents/:documentId/:targetLang/review`. Resolve the
+    encoded run-owned IDs and valid scope/payload from the actual legacy fixture
+    and frontend API, not literal placeholder IDs or the resource bulk endpoint.
+    Independently establish enabled auth and compatibility/route readiness.
+    An empty cookie jar and absent Authorization/API/identity headers are
+    mandatory. Both must return401/no_session, and authenticated before/after
+    reads must prove unchanged labels/review state and no effective write.
+    A400/404/503, unavailable prerequisite, unknown state comparison or unexpected
+    content fails this check without logging the body. Keep the existing resource
+    bulk anonymous check as a distinct accurately named assertion. Add these
+    named assertions within the existing auth step; preserve default18 and locale
+    opt-in20/18/1/1 scenario counts and the separate SFT401 preflight.
+
 ## Verification
 
 Use controlled deferred API fixtures for causal RED. Add explicit cases for
@@ -204,6 +234,33 @@ readiness before authenticated context; `backend/src/cljs/knoxx/backend/infra/au
 path. Do not mistake an early503/unavailable proxy for proof of authentication.
 The exact URL/query comes from frontend `api.cljs:96–101`, not a guessed path.
 Preserve the existing anonymous inventory check and all real auth/inventory reads.
+
+For native body-only Codex review5535316442, extend the existing API verifier's
+auth step and the shared tour/guide with the two exact legacy POST checks in
+AC10. Frontend `api.cljs:38-45,82-90` defines their source-built paths/body scope;
+`view.cljs:180-200,234-254` uses existing `logic/prepare-label-payload` and
+`logic/legacy-review-scope` for the original form/status and selected row's
+project/garden/document/locale coordinates. Reuse those exact builders. The existing verifier's `BULK_REVIEWS_URL` check at231-232 is resource
+bulk review, not the legacy document route: retain it and correct its label and
+guide description. Use valid run-owned persisted legacy segments and document
+scope under the actual enabled-auth/legacy-route-ready preconditions. Establish
+an authenticated before snapshot, make each real POST using the independent
+empty-cookie client with no auth/API/identity header, then read the same fixture
+authenticated and compare review/label state and effective-write evidence.
+Only401/no_session plus unchanged fixture state qualifies; status alone or a
+request that cannot reach the intended ready route does not. On an unexpected
+result, stop without printing content/body, including a mistaken success reply.
+Unavailable route/fixture or inability to establish non-mutation remains a
+visible failure, never an auth pass or a manufactured completed checkpoint.
+
+Run these named checks before installing any synthetic browser/fetch interceptor.
+Record their two real unauthenticated POST counts separately from the existing
+SFT GET and resource-auth checks. The controlled race phase retains its own zero
+forwarded mutation/provider/publication counters and exact abort allowlists; do
+not describe the whole artifact as issuing zero POST requests. The current
+planning amendment executes no probes and claims neither an auth vulnerability
+nor a tested auth result. The core5/draft5/locale3 estimates and boundaries stay
+unchanged; these are missing assertions for already affected legacy runners.
 
 The human controlled race phase then uses its private authenticated browser session. Install the run-owned browser adapter before navigating to
 the controlled translation view. The shared HTTP helper resolves `js/fetch`
@@ -326,5 +383,7 @@ Planning refinement for native body-only Codex review5532308090 on b896ced5ad278
 Native PR16 current8b187 reviews5532537847 and5532590232: require pending segment/draft completion guards, credential-free real SFT boundary before synthetic interception, synchronous old list/manifest/detail invalidation at the applicable project/filter boundary, and required coalesced catch-up after a pre-mutation same-project pending snapshot settles. Preserve valid project-only manifest on filter changes, all original server payloads/followups, pending request installation, and old-project no-reload. Exact authored lifecycle body20598B sha256:cde449c7e1e546a14bbff42cc22044088bd64f21d1097cc930d7cdd9f06fef0b; full six-finding delta17244B sha256:1a51a6fd7c1784998020f7dcd304c7f02fd8c9b1b76d2ad369a4be39d8552da7. Same breakdown/P0/5points/parent and six mutation runners; no metadata/status expansion, app implementation/browser/runtime/provider/content/publication effects. Prior14 native settlements and body review5532308090 history preserved. Current8b187 MiMo actual approved review5532648270 remains historical on correction push; no duplicated review request.
 
 Root-reviewed Codex5532975630 split keeps core5/P0/breakdown for synchronous project/filter/work/mounted boundaries, all six original runners/payloads/followups, operation saving ownership and separate read-only SFT feedback/auth checks. AC8 now explicitly requires pending->unmount->success/error/finally unit callback spies and normal CMS/router/remount browser checkpoints. Old draft AC8 and catch-up AC10 transfer intact to actual five-point sibling ae9a3cb7-a630-4d8d-8d60-c69b825d008d, extended to resource split/bulk and real controller/form-sync resets. UUID-bound body21206B SHA92d3e22312ac0bfdb627cbd1fdde1471e63bc5df6d9cfb061f50cedd94368c02 differs from root-reviewed body only by frozen prospective-symbol substitution. Core5+draft5+locale3=13, explicit+5 discovery; accepted8 parent unchanged/open. Each story owns unit/browser proof; no obligation waived, no product/runtime/publication effect.
+
+Root-admitted native body-P1 Codex5535316442 correction at914ed5881c563b414addf1926d79bc5dcd50d3f2. Existing core5 planning requires both exact source-built legacy anonymous POST routes (segment labels and document review) before synthetic interception, under auth-enabled/legacy-route-ready preconditions, independent empty-cookie/no-auth/API/identity-header transport, HTTP401/no_session and authenticated unchanged-state/no-effective-write evidence. Non200/400/404/503/unready cannot pass; never log unexpected content/body. Retain resource bulk anonymous assertion with accurate route naming, SFT401 preflight, normal payloads/follow-ups,6runner/7UIentry coverage, zero forwarded controlled writes and default18/locale20/18/1/1 counts. Add existing API verifier to the named future verification files alongside helper/tour/guide. Core5->draft5->locale3=13, accepted8 parent, all points/status/dependencies/other cards and history stay unchanged. Planning prose only: no probes, tests, auth-vulnerability/result, browser/model/runtime/deployment success claimed.
 
 ---
