@@ -544,3 +544,12 @@
   spore: none
   receipt-refs: .ημ/receipts.edn#8c5a07e6-9dda-41e1-b2e4-c17411f7e9f2
   note: Source a22 remains partial: standalone isolated SDK build and actionlint pass; full integration 3/4 passes then fixture900000ms SIGTERM while Maven TLS resolution waits. Typecheck/coverage/lint unrun; registry WARNs retained. Isolate actual JVM user.home before lifecycle and allow outer cleanup grace to exceed inner grace; meaningful causal RED controls are committed. Preserve failed capture/build bytes, exact source/deadlines and in_progress5/lint3 completion dependency. No retry/public/deploy effect; native SM known unsupported route not retried, this is portable candidate0/no spore.
+- ts: 2026-10-15T22:35:48.410226795Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-sandbox-sdk-bootstrap-plan-over-19f-v1
+  task: SDK17 prerequisite: causal OAuth fixture aging recovery and remaining full lint blockers
+  p-efficiency: 0.65
+  p-friction: 0.8
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#53856d37-93ec-4db0-80c7-fba47a1c232b
+  note: Mint TTL fixtures per test invocation through the existing named clock boundary. Preserve original30tests102assertions; deterministicRED5new failures then explicit/normal/coverage1945/10749/0/0, Node84/84 and boundary pass. Full lint remains7errors258warnings; no fullGREEN, owner completion or deployment. Original failure clocks unobserved; no model/nativeSM retry, no spore.
