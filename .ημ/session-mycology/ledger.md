@@ -499,3 +499,12 @@
   spore: none
   receipt-refs: .ημ/receipts.edn#006da400-04de-409f-8860-85a7276f5af7
   note: Accepted all six real Codex planning findings. Make fixture ownership, exact order, immediate installed-state hiding/All reset, existing request deltas and nl-outside-fallback causality executable in the bounded 3-point plan. Keep planning review and implementation proof separate; preserve original browser failures and SDK source-family CI limitation. Candidate0; no spore or runtime/model/content action.
+- ts: 2026-10-15T10:27:20.273091404Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: PR16 planning refinement: run-owned causal manifest and installed detail boundary
+  p-efficiency: 0.73
+  p-friction: 0.59
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#9c06a569-fd27-425c-9fac-0adb0c2a2fb0
+  note: Accept three source-backed current-head findings: control and disclose exact project manifest response in private opt-in browser scenario with teardown, await empty-map render/nl witness before RED, and clear installed selected work/detail with generation invalidation at project change. Keep causal UI fixture evidence separate from genuine backend/provider health. MiMo model submit completed but invocation trace guard failed; retain native failure without credential fallback. No app/runtime effect, candidate0.

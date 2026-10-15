@@ -4,7 +4,7 @@ labels: "tasks, 3sp, has-parent, regression, translations, frontend, cms"
 dependency: []
 parent: "knoxx-translation-review-chat-panel"
 type: "task"
-write-id: "1792059088816-0.nj0z2j6gyviu8xq1q7b"
+write-id: "1792059899014-0.z76v0yvdvgnmojhvzz"
 points: "3"
 title: "Keep resource translation locales selectable without legacy statistics"
 priority: "P0"
@@ -69,8 +69,11 @@ Français, from the same project's choices.
   erasing or overwriting the current resource locale projection.
 - At an effective project change, immediately hide the previously installed
   project's resource-locale projection and legacy manifest, and reset Target
-  Lang to All before starting the new project's document load. Pending, hung or
-  failed replacement requests must not keep the previous project's state visible.
+  Lang to All before starting the new project's document load. In that same
+  boundary, clear selected work, detail, selected segment and draft review form,
+  and invalidate the old detail generation. The first render identifying the new
+  project must expose no previous-project Dispatch/review/approval controls.
+  Pending, hung or failed replacement requests must not retain that old state.
   Generic historical fallback choices may remain; they are not evidence of the
   previous project's inventory.
 - Limit product/test changes to the existing translation page files below:
@@ -96,8 +99,22 @@ intents need no generated candidates or model invocation. Keep other helper
 consumers on the unchanged default. The opt-in tour must reconcile its expected
 All inventory of 20 work items and filtered counts of 18 Spanish, one French and
 one Dutch, while preserving the original default 18-row regression assertion.
-Preserve checkout preconditions, dedicated fixture paths and signal-safe cleanup.
-This planning change edits none of those implementation or verification files.
+For this opt-in scenario, make empty legacy statistics run-owned: before
+translation navigation, use the existing browser driver's route/body facility
+for only the exact current-server-project manifest URL from
+`api/get-manifest` (`/api/translations/export/manifest?project=<encoded project>`),
+returning the JSON `{"languages":{}}`. Require the page's matching GET to finish
+with that controlled empty response and its render to settle before checking
+options; fail if the driver cannot install or observe the control. Keep native
+resource inventory and authentication live. Record the override explicitly as
+UI integration evidence, with no upstream-manifest or backend-health credit.
+Remove the exact route in the run-owned EXIT/INT/TERM cleanup and close its
+private browser session; never clear a shared project's legacy records.
+The opt-in locale branch exits after selection/detail checks and fixture
+cleanup, before the existing tour's dispatch/review/approval/reconcile actions.
+The unchanged default mode retains its full existing workflow. Preserve checkout
+preconditions, dedicated fixture paths and signal-safe cleanup. This planning
+change edits none of those implementation or verification files.
 
 Estimate: three points includes the presentation plumbing, project-boundary and
 causal helper/controller/UI regressions, and this bounded shared-helper/tour/doc
@@ -134,7 +151,9 @@ endpoints and deployment rollout.
    Lang to All before the new document load. This holds while new resource or
    manifest responses are pending, hung or failed; it also prevents an old
    selected locale from filtering away the new project's work. Late superseded
-   responses cannot reinstall old state.
+   responses cannot reinstall old state. Clear selected work/detail/segment
+   draft at the same boundary and invalidate old detail requests; no A-bound
+   Dispatch/review/approval control is visible or callable while B is pending.
 6. Locale projection preserves work/candidate identity, review state and
    authorization. In a successful settled-project fixture with no automatic
    project adoption, each existing `es` → `fr` → All filter change makes exactly
@@ -151,12 +170,15 @@ endpoints and deployment rollout.
 
 ## Verification
 
-RED first: add an interaction regression to the existing page test with resource
-`es` plus `fr` work and `{:languages {}}`. Assert both combobox options before
-selection, select `es`, then assert `fr` is still available and no mutation API
-was called. The current code must fail the first actual locale-option assertion.
-This fixture exercises resource inventory rather than manufacturing legacy
-segments to conceal the failure.
+RED first: add an interaction regression with actual resource `es`/`fr`/`nl`
+work and a controlled deferred manifest promise. Resolve it to `{:languages {}}`
+inside the test's render/act boundary, then await the resulting render before
+asserting all three actual combobox options. The outside-fallback `nl` witness
+and completed empty-map render prevent the initial nil-manifest es/fr fallback
+from producing a false pass. Select `es`, require `fr` and `nl` still selectable,
+and require zero mutation calls. The current code must fail the first settled
+resource-locale assertion. This fixture exercises resource inventory rather
+than manufacturing legacy segments to conceal the failure.
 
 Add pure helper cases asserting exact ordered vectors, rather than sets:
 empty statistics; legacy-only codes sorted lexically; deduplication and sorted
@@ -169,9 +191,12 @@ resource projection.
 Add controller cases for filtered rows retaining the unfiltered inventory,
 legacy failure, and stale generations arriving after the current response.
 Add an interaction case that first installs project A's resource locale `nl`
-and legacy-only `sv`, selects `nl`, then changes effective project to B. Assert
-immediately, before B resolves, that A's `nl`/`sv` options are absent, All is
-selected and B's first documents request does not carry `nl`. Hold B's manifest
+and legacy-only `sv`, selects `nl` and opens a real A work/detail with its action
+controls, then changes effective project to B. Assert in the first B render,
+before B resolves, that A's `nl`/`sv` options, selected row, detail and action
+controls are absent, All is selected and B's first documents request does not
+carry `nl`. Require zero mutation calls across that boundary, and resolve an old A detail
+request last to prove it cannot restore that selected work. Hold B's manifest
 pending (including a never-resolving response), then exercise manifest failure
 while B's resource work is available; neither may restore A's installed state.
 Resolve an old A response last and require B's state to remain current. This
@@ -198,8 +223,10 @@ owner; do not call the repair complete or silently replace the suite.
 
 The implementation verification artifact must validate the checkout served,
 seed and tear down its dedicated resource fixture, exercise empty legacy
-statistics plus actual Spanish/French/Dutch resource intents through the bounded
-opt-in helper scenario, assert the default and opt-in cardinalities above,
+statistics through the explicitly controlled run-owned legacy response plus
+actual Spanish/French/Dutch resource intents through the bounded opt-in helper
+scenario, require the matching empty-manifest response/render before assertions,
+assert the default and opt-in cardinalities above,
 capture locale selection/detail steps, and fail on this card's invariant
 violations. Keep fixture behavior
 separate from provider-quality evidence and leave unrelated known gaps visible
@@ -232,5 +259,7 @@ boundary, while leaving review and publication truth in their current owners.
 
 ---
 Planning refinement for native PR16 review 5531333989 on 7e7af709cac6b996f7df3a842cf949356eebb853: all six findings were verified against the existing frontend logic/controller/view and shared fixture helper. Refine only this 3-point breakdown card body and verification: explicitly own the shared helper's opt-in es/fr/nl scenario while preserving default 18 rows; define exact locale ordering; reset All and immediately hide installed old-project manifest/resource options; assert the existing successful filter-change GET baseline; use nl outside the historical fallback for causal unavailable-manifest coverage. No application source/test/fixture implementation, ready transition, runtime rebuild, model/content/review/publication effect or CI waiver is admitted by this planning refinement. Draft SHA256 a2288993471240d1a2c0dfd20301ea40b24b113ae455a2f8f0ea4590da33e2df. Existing source-family Sandbox SDK failure and observed private browser failures/502 limits remain visible.
+
+Planning refinement for native current-head Codex review5531594405 on69235c23641c4e4cf1972bf5bd2cec7c16278412: accept three source-backed findings4281770565/4281770579/4281770589. Keep this same P0 three-point breakdown child and prior six Fixed histories. Add immediate clearing of selected work/detail/segment draft plus old-detail generation invalidation at project change; settle a controlled empty-map manifest render before causal RED using nl outside fallback; make the opt-in locale tour's empty manifest a private run-owned exact-current-project GET override with actual-response/render evidence and EXIT/INT/TERM unroute/session cleanup. Keep resource inventory/authentication real, default18/full tour unchanged and opt-in20/18/1/1 counts. Explicitly label the override causal UI integration only, with no genuine upstream/backend/provider/release health credit. Exact root-reviewed V2 delta SHA2562e71f3e001d5ef0ca99b7768af98edd2f6e1cb45bc763e1b7b69d3ef6ceda04b; full draft SHA256dec9e55e0417a5228349e290ac68bc7952f3a8d54f57639cec457c00926dfcd4. No application/runtime/model/content/production effect, no readiness/merge or CI waiver.
 
 ---
