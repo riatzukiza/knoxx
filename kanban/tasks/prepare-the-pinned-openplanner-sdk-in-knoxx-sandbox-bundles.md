@@ -1,9 +1,9 @@
 ---
 category: "tasks"
-labels: "knoxx, sandbox, ci, sdk-bootstrap, source-custody, 3sp"
+labels: "tasks, knoxx, sandbox, ci, sdk-bootstrap, source-custody, 3sp"
 dependency: []
 type: "task"
-write-id: "1792057570859-0.gsw8vvz8nouor5rj5i5"
+write-id: "1792058875592-0.54tdflwghjdx7dghvfy"
 points: "3"
 title: "Prepare the pinned OpenPlanner SDK in Knoxx Sandbox bundles"
 priority: "P1"
