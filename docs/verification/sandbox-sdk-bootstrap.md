@@ -46,7 +46,9 @@ checksums must hash to
 `3f67946839edd484db2973dd19b2eb822e41e10ada9ac878bb2d24468839aece`.
 Raw `.env`, `.npmrc`, auth/config stores, Git history, installed packages and
 old dist are excluded before lifecycle execution. A fresh home/config and two
-distinct empty npmrc files replace inherited credential configuration. The
+distinct empty npmrc files replace inherited credential configuration. Java
+`user.home` is explicitly bound to that fresh home and checked before lifecycle
+execution; setting only the shell HOME does not isolate Maven configuration. The
 helper verifies source, Node, pnpm and Java before the upstream frozen filtered
 install and build; stdout returns a verified owned build path only on success.
 

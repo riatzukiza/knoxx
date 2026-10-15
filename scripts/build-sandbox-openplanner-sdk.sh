@@ -113,6 +113,7 @@ async function environment() {
   return { PATH: process.env.PATH, HOME: home, XDG_CONFIG_HOME: config,
     XDG_CACHE_HOME: join(run, 'cache'), PNPM_HOME: join(run, 'pnpm-home'),
     CI: 'true', JAVA_HOME: process.env.JAVA_HOME,
+    JAVA_TOOL_OPTIONS: `-Duser.home="${home}"`,
     NPM_CONFIG_USERCONFIG: user, NPM_CONFIG_GLOBALCONFIG: global,
     NPM_CONFIG_REGISTRY: 'https://registry.npmjs.org',
     GIT_CONFIG_GLOBAL: '/dev/null', GIT_CONFIG_NOSYSTEM: '1', GIT_TERMINAL_PROMPT: '0' };
@@ -202,7 +203,9 @@ try {
   state.node_version = process.version;
   state.pnpm_version = await command(['pnpm', '--version'], { env });
   assert.equal(state.pnpm_version, '10.20.0', 'SDK requires pnpm10.20.0');
-  const javaVersion = await command(['/bin/bash', '-c', 'java -version 2>&1'], { env });
+  const javaVersion = await command(['/bin/bash', '-c', 'java -XshowSettings:properties -version 2>&1'], { env });
+  assert.equal(javaVersion.split('\n').find((line) => /^\s*user.home = /.test(line))?.trim(), `user.home = ${env.HOME}`, 'JVM home must be isolated before lifecycle');
+  state.jvm_user_home = env.HOME;
   assert.match(javaVersion, /(?:openjdk|java) version "21[.\"]/); state.java_version = javaVersion;
   if (mode === 'verify') {
     await command([process.execPath, '--test', join(dirname(self), '../backend/test/integration/sandbox-openplanner-sdk-bootstrap.test.mjs')],
@@ -223,7 +226,7 @@ try {
     await fs.writeFile(join(evidence, 'source.json'), JSON.stringify(state, null, 2) + '\n');
     for (const path of paths) { await fs.mkdir(dirname(join(filtered, path)), { recursive: true }); await fs.copyFile(join(snapshot, path), join(filtered, path)); }
     await verifyOnlySelected(filtered, paths);
-    state.before_lifecycle = { selected_source_verified: true, credential_env_names_present: [],
+    state.before_lifecycle = { selected_source_verified: true, credential_env_names_present: [], jvm_user_home: state.jvm_user_home,
       allowed_env_names: Object.keys(env).sort(), forbidden_source_paths_absent: true };
     await fs.writeFile(join(evidence, 'before-lifecycle.json'), JSON.stringify(state.before_lifecycle, null, 2) + '\n');
     const install = ['pnpm', '-C', filtered, '--filter', '@open-hax/openplanner-sdk...', 'install', '--frozen-lockfile'];
