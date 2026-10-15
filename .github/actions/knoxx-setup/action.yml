@@ -17,6 +17,14 @@ runs:
     - uses: actions/setup-node@v5
       with:
         node-version: '24'
+    - name: Prepare the explicit native-error test evaluator
+      shell: bash
+      run: |
+        set -euo pipefail
+        bundle="$RUNNER_TEMP/knoxx-native-error-evaluator-bundle"
+        node scripts/native-error-static-evaluator.mjs collect "$bundle"
+        evaluator="$(node scripts/native-error-static-evaluator.mjs restore "$bundle" "$RUNNER_TEMP/knoxx-native-error-evaluator")"
+        printf 'KNOXX_NATIVE_ERROR_KONDO=%s\n' "$evaluator" >> "$GITHUB_ENV"
     - uses: actions/checkout@v5
       with:
         repository: open-hax/openplanner

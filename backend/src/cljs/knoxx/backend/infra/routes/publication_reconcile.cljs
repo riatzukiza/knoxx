@@ -5,7 +5,7 @@
 
    POST /api/publications/reconcile decodes a trigger, runs the reconciler,
    and answers with the correlated receipt. GET /api/publications/receipts
-   answers with the receipt journal the runtime emitted into. Both authorize:
+   answers with the selected scoped receipt evidence. Both authorize:
    reconciliation changes what is public (`org.publications.manage`), while
    receipts only name what happened (`org.publications.read`).
 
@@ -32,6 +32,7 @@
             [knoxx.backend.domain.document-admission :as document-admission]
             [knoxx.backend.extern.fastify :as fastify]
             [knoxx.backend.infra.auth.authz :as authz]
+            [knoxx.backend.infra.publication-receipt-store :as receipt-store]
             [knoxx.backend.infra.publication-reconciler :as reconciler]
             [knoxx.backend.infra.publication-runtime :as production]
             [knoxx.backend.infra.publication-target-memory :as memory]
@@ -119,7 +120,8 @@
        :evidence-facts (:evidence-facts spec)
        :artifact-source (:artifact-source spec)
        :locale-admissible? (:locale-admissible? spec)
-       :emit-receipt! (or (:emit-receipt! spec) (:emit! journal))})}))
+       :emit-receipt! (receipt-store/receipt-sink
+                       config scope (or (:emit-receipt! spec) (:emit! journal)))})}))
 
 (defn- runtime-for
   "The `{:reconciler ... :journal ...}` for `config` and tenant scope.
@@ -159,23 +161,31 @@
 
 (defn- receipt-evidence-configured?
   [config]
-  (or (:publication/reconciliation config) (production/configured? config)))
+  (or (receipt-store/selected? config)
+      (:publication/reconciliation config) (production/configured? config)))
 
 (defn ^:async receipt-evidence!
-  "Read the existing scoped receipt journal for trusted request scope.
+  "Read selected scoped receipt evidence for trusted request scope.
 
    Organization comes from the admitted context and project from server config,
    exactly as for reconciliation. Reading never constructs the production
    runtime or invokes its translation/artifact effects. nil means unconfigured;
    an unavailable or malformed configured reader throws, never becomes empty.
-   This journal remains process-local, with its existing retention bound."
+   A configured publication receipt ledger is read afresh through Clio. Without
+   that explicit selection, the legacy journal retains its existing process-local
+   retention bound. Unknown ledger scope has no observations; a missing root
+   or incomplete known partition refuses rather than becoming volatile."
   [config ctx]
   (when (receipt-evidence-configured? config)
     (let [scope (production-scope config ctx)
-          journal (or (:journal (runtime-for config scope))
-                      (production-journal scope))]
+          records (if (receipt-store/selected? config)
+                    (receipt-store/read-receipts!
+                     (:publication-receipt-ledger-directory config) scope)
+                    (let [journal (or (:journal (runtime-for config scope))
+                                      (production-journal scope))]
+                      (await ((:receipts journal)))))]
       (receipts-law/assert-receipt-evidence!
-       {:receipts (await ((:receipts journal)))}))))
+       {:receipts records}))))
 
 ;; ── Responses ──────────────────────────────────────────────────────────────
 
@@ -236,7 +246,7 @@
                           {:detail "publication reconciliation is not configured"}))))
 
 (defn- ^:async handle-receipts!
-  "Answer with the receipt journal the configured reconciler has emitted into."
+  "Answer with the selected existing scoped receipt evidence."
   [config ctx _request reply]
   ;; Keep this route's organization requirement even when unconfigured. CMS
   ;; may still render desired intent without a receipt capability.

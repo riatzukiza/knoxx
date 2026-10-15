@@ -400,3 +400,48 @@
   spore: none
   receipt-refs: root-private-frontend-native-browser-canonical-receipt.edn
   note: Actual native460/2101 andoptimized8controlgroups support thefrontendmigration, notproduction. Keep controlledfixture/seededmetrics andoriginalAVA failure separate. Correctsource-lineattribution beforecausalclaims: bothpredecessor/candidate reachAudit sessions butmiss fork-run-active, causedbyignoredkeywordPromise.then callback introducedJune13. Preserveunchangedassertions/timeouts andrequireactualboundaryregressionbeforeminimalrepair. No spore/promotion.
+- ts: 2026-10-14T21:24:23.939773598Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: private-durable-CMS-receipt-causal-RED
+  p-efficiency: 0.87
+  p-friction: 0.46
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: root-private-causal-RED-and-ack-canonical-receipt.edn
+  note: Actual two-route RED shows receipt loss after cache reset and205samepublicationnoops; compilerexit0 is not suitepass when seven assertions fail. CanonicalClioexact-replay does not fsync after ambiguouswrite; public lockedemptyappend safely syncs sameinode and separateOScanonicalreader verifiesunchangedfacts. Keep actualCMSrestart and namespacepowerloss proof separate. Full lint baseline13errors/284warnings is retained and unchangedsource independentlyverified; do not call fullqualificationpass. No spore/promotion.
+- ts: 2026-10-14T22:27:15.987903533Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: Qualified private durable publication receipts and explicit native-fsync retry
+  p-efficiency: 0.76
+  p-friction: 0.65
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: /home/err/.local/share/openhax-codex/20261010/review-state/afac-private-configured-sink-explicit-retry-GREEN-v1/root-canonical-receipt-event.edn
+  note: Append-only scopedClioexactpayload/identity retained; genuineequals-bodyobservationsdistinct; failedattemptkeepscause+envelope/internalretry; no publication/reconciliation repeat. 233actualcompiledimportsboundseparatelyfromstableShadowloader. Privatebehaviorqualification only; source/nativehosted/image/config/Services admissionandfullappchecksremain; AFACnotcomplete; realSpanishprovideranddeploymentunqualified.
+- ts: 2026-10-14T23:00:43.728008476Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: Native error-property static causal RED
+  p-efficiency: 0.78
+  p-friction: 0.32
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: /home/err/.local/share/openhax-codex/20261010/review-state/Knoxx-93eb-native-error-property-boundary-causal-RED-v1/root-provenance-canonical-receipt-event.edn
+  note: Characterize original successful runtime behavior while proving actual static object-boundary rejection. Preserve genuine exceptions and unchanged rules; separate corrected setup/runtime routing failures from causal evidence. Full release lint remains pending. No new spore.
+- ts: 2026-10-14T23:41:48.426717227Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: Commit named native-error-property contract without weakening constructor behavior
+  p-efficiency: 0.82
+  p-friction: 0.64
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: b7394f3917093492962621883bc6bf18b3c535a60667603b3a9470b353a918be,3384bab8f6bfd3828c415e5dd12a74b0ce667ea0
+  note: Use a named portable field-map contract before native mutation and preserve original primitive/null property reads. Distinguish local full tests and clean owning lint from unqualified CI2025 negative and inherited full-lint gate. Preserve exact receipt source closure, independent review and original failing evidence. No spore or promotion.
+- ts: 2026-10-15T00:18:45.333267349Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: Commit explicit auxiliary evaluator without replacing primary lint policy
+  p-efficiency: 0.88
+  p-friction: 0.52
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: add837a367bac006b5a79ae63a1cfe344ce8e81826ec1b9b523d1158d2743843,d06cfc0ecff4741e0a5349b46863f0cd6c3b9870
+  note: Treat evaluator identity as an explicit pinned contract input. Preserve genuine negative predicates and both positive neighbors, primary tooling and offline restore ownership. Missing/wrong auxiliary fails visibly; incompatible historical analyzer gets no credit. Local tool provisioning does not clear inherited runtime lint or supply hosted admission. No spore/promotion.
