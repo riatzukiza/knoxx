@@ -62,11 +62,19 @@
     (with-redefs [client/mongo-query! (fn [_ query]
                                       (swap! queries conj query)
                                       (fixture/resolved {:rows source :total 3}))]
-      (let [result (await (routes/fetch-contract-session-pages-from-mongo! {} "c" 1))
+      (let [result (await (routes/fetch-contract-session-pages-from-mongo!
+                           {:session-project-name "p"} "c" 1))
             query (first @queries)]
         (is (= 1 (count @queries)))
         (is (= 500 (:limit query)))
         (is (= {"ts" -1} (:sort query)))
+        (is (= {:collection "events"
+                :filter {"project" "p"
+                         "session" {"$type" "string" "$ne" ""}
+                         "extra.contract_id" "c"}
+                :projection {"_id" 0 "project" 1 "session" 1 "ts" 1 "extra" 1}
+                :sort {"ts" -1} :limit 500}
+               query))
         (is (= "c" (get-in query [:filter "extra.contract_id"])))
         (is (= ["s2"] (mapv :session (:rows result))))
         (is (= 2 (-> result :rows first :event_count)))

@@ -98,3 +98,45 @@
                      (assoc-in base [:ctx :role-slugs] ["system_admin"])]]
       (is (not= key (routes/memory-sessions-cache-key changed))))))
 
+
+(deftest ^:async coalesced-rejection-reaches-both-waiters-and-then-retries
+  (await
+   (fixture/with-cache!
+    (^:async fn [_state]
+      (let [calls (atom 0) hold (fixture/deferred)
+            fetch! (fn []
+                     (if (= 1 (swap! calls inc)) (:promise hold)
+                         (fixture/resolved {:rows [:retry]})))
+            one (routes/cached-memory-sessions-source! "two-fail" fetch!)
+            two (routes/cached-memory-sessions-source! "two-fail" fetch!)
+            failure-one (fixture/failure? one)
+            failure-two (fixture/failure? two)]
+        (await (fixture/tick!))
+        (is (= 1 @calls))
+        ((:reject! hold))
+        (is (= [true true] (await (fixture/all! [failure-one failure-two]))))
+        (let [retry (await (routes/cached-memory-sessions-source! "two-fail" fetch!))]
+          (is (= {:rows [:retry]} (:value retry)))
+          (is (= 2 @calls))))))))
+
+(deftest ^:async older-publisher-failure-keeps-newer-pending-owner
+  (await
+   (fixture/with-cache!
+    (^:async fn [_state]
+      (let [calls (atom 0) old-hold (fixture/deferred) new-hold (fixture/deferred)
+            fetch! (fn []
+                     (:promise (if (= 1 (swap! calls inc)) old-hold new-hold)))
+            old (routes/cached-memory-sessions-source! "owner" fetch!)
+            old-failure (fixture/failure? old)]
+        (await (fixture/tick!))
+        (routes/clear-memory-sessions-cache!)
+        (let [new-one (routes/cached-memory-sessions-source! "owner" fetch!)]
+          (await (fixture/tick!))
+          ((:reject! old-hold))
+          (is (await old-failure))
+          (let [new-two (routes/cached-memory-sessions-source! "owner" fetch!)]
+            (await (fixture/tick!))
+            (is (= 2 @calls))
+            ((:resolve! new-hold) {:rows [:new]})
+            (is (= [{:rows [:new]} {:rows [:new]}]
+                   (mapv :value (await (fixture/all! [new-one new-two]))))))))))))
