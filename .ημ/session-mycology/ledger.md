@@ -292,3 +292,12 @@
   spore: none
   receipt-refs: 139ae20e4a813bc7461453445e7766d21853ea73,264d62bec18e2ee618b8a4fd0952f060448489d23add28e5eac43c80ebc0a3c1
   note: A failing migration progress law needs actual source retirement with preserved behavior. Keep a small slice within its existing card and preserve all metadata and historical body. Separate native API parity from inherited lifecycle hardening, and an observed local browser runtime from required hosted capability. Publish concrete scope and use canonical planning/readiness before RED; no inflated estimate, inaccurate infrastructure exemption, invented readiness or new planning stack. No new spore or promotion.
+- ts: 2026-10-15T00:50:50.299092065Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: Persist canonical Knoxx lint test-boundaries owner start and explicit source-admission order
+  p-efficiency: 0.83
+  p-friction: 0.29
+  p-skill-candidate: 0.00
+  spore: none
+  receipt-refs: 752c53944338bf02a6e5fb8fb4ed2cc729680d6210fb18921a201f38a40c5ed7
+  note: Read the whole existing card and its real history before deciding scope. The public-boundary and regression mandate admits the explicit auxiliary strict-Throwable evaluator subset; configured Rheos performed one lawful todo to in_progress transition with actual WIP checks. Preserve its native event root and write-ID without inventing creation history or task completion. Keep private source passes separate from composed full release and current native gates. Retain engine EOF normalization explicitly, all ledger prefixes, eight errors and 284 warnings. No model, DB, provider, PM2, deployment, push, request, new spore or promotion.

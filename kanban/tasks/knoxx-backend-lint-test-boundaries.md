@@ -1,13 +1,14 @@
 ---
-uuid: "knoxx-knoxx-backend-lint-test-boundaries"
-title: "Knoxx Backend Lint — Test Boundaries and Async Cleanup"
-status: todo
-priority: P1
+category: "tasks"
 labels: ["tasks", "5sp"]
-created_at: "2026-05-27T00:00:00Z"
+write-id: "1792024611247-0.1awu2j51zq6iptz4lf"
+points: "5"
 source: "specs/tasks/knoxx-backend-lint-test-boundaries.md"
-points: 5
-category: tasks
+title: "Knoxx Backend Lint — Test Boundaries and Async Cleanup"
+priority: "P1"
+status: "in_progress"
+uuid: "knoxx-knoxx-backend-lint-test-boundaries"
+created_at: "2026-05-27T00:00:00Z"
 ---
 
 # Knoxx Backend Lint — Test Boundaries and Async Cleanup
