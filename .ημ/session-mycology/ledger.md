@@ -364,3 +364,12 @@
   spore: none
   receipt-refs: /home/err/.local/share/openhax-codex/20261010/review-state/Knoxx-K57b54-event-store-protocol-actual-GREEN-v1/canonical-plan-receipt-event.edn
   note: Fresh actual source/config/owner guards and one canonical scoped comment preserve in_progress and five points; exact native write-ID/event and historical prefixes read back. Approved one-file patch remains unapplied before genuine owning primary2025 lint RED. Preserve all original callbacks, identity, five test names, 12 assertions and prior 14 qualified files. No release/provider/production credit or spore.
+- ts: 2026-10-15T03:36:47.866678889Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: Qualify complete refusing event-store protocol in the existing retirement tests
+  p-efficiency: 0.95
+  p-friction: 0.05
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: /home/err/.local/share/openhax-codex/20261010/review-state/Knoxx-K57b54-event-store-protocol-actual-GREEN-v1/canonical-result-receipt-event.edn
+  note: Exact approved one-file source committed af07ccf4. Genuine owning lint RED reproduced one missing-protocol warning; owning GREEN 0/0, registered typecheck/full normal tests pass with 1918 CLJS tests / 9921 assertions and 75 Node pass, zero compiler warnings. Original record, constructor, three callbacks, five tests, 12 assertions and prior 14 qualified files preserved. Full lint removes exactly one diagnostic and remains 7 errors / 265 unchanged warnings across 126 unchanged owner files; no missing-protocol diagnostic in captured run. Existing real Mongo DNS failure retained without live database credit. All guards checked with NUL UTF8 Git paths; no repair, repeated passing gate, public/provider/production effect or spore.
