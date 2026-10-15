@@ -328,3 +328,12 @@
   spore: none
   receipt-refs: /home/err/.local/share/openhax-codex/20261010/review-state/Knoxx-K54606-history-test-boundaries-actual-GREEN-v1/canonical-plan-receipt-event.edn
   note: Record exact three-test-path plan before implementation; preserve all17 names/34 assertion forms and previous four qualified paths. Native Rheos coalesces final comment and moves closing delimiter while retaining all previous content; verify generated write-ID and actual event rather than repeat an uncertain operation. Existing JSON config deprecation retained. No new source/runtime/production credit or spore.
+- ts: 2026-10-15T02:48:15.708379356Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: Qualify strict complete OpenPlanner history-client test fixtures under active five-point Knoxx owner
+  p-efficiency: 0.86
+  p-friction: 0.24
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: /home/err/.local/share/openhax-codex/20261010/review-state/Knoxx-K54606-history-test-boundaries-actual-GREEN-v1/canonical-result-receipt-event.edn
+  note: Exact approved three test paths committed c468ce0f; owning lint0/0 and registered typecheck/fulltests pass. Six targeted warnings removed, full primary lint remains7errors274warnings with complete unchanged-diagnostic custody. Preserve all17names34assertionforms and prior4translationfiles. Existing Mongo DNS connection failed; no liveDB credit. Git path lists use NUL-delimited UTF8 and checked sequential effects; earlier failed guards retained without repeating comment/rewriting commit. No public/prod/provider effects or spore.
