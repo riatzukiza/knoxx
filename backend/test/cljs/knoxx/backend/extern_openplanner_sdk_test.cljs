@@ -6,6 +6,7 @@
             [cljs.test :refer [deftest is testing use-fixtures]]
             [knoxx.backend.extern.embedding :as embedding]
             [knoxx.backend.extern.openplanner-sdk :as xsdk]
+            [knoxx.backend.extern.openplanner-sdk-query-fixture :as query-fixture]
             [knoxx.backend.infra.clients.openplanner :as openplanner-client]
             [knoxx.backend.infra.clients.openplanner-mongo :as openplanner-mongo]))
 
@@ -579,44 +580,6 @@
           (if (nil? value) (js-delete js/process.env key) (aset js/process.env key value)))
         (await (xsdk/close-sdk!))))))
 
-(defn- native-query-cursor
-  "Keep actual cursor chaining and separately controlled native/fallback reads."
-  [rows failure]
-  (let [cursor #js {:toArray (^:async fn []
-                              (when failure (throw failure))
-                              (clj->js rows))}]
-    (aset cursor "sort" (fn [& _] cursor))
-    (aset cursor "limit" (fn [& _] cursor))
-    cursor))
-
-(defn- ^:async native-query-outcome
-  "Invoke unchanged Knoxx query through the genuine SDK's native fallback core."
-  [native-rows native-error fallback-rows]
-  (let [sdk (await (sdk-mod/createOpenPlannerSdk))
-        db (.-db (.-mongo sdk))
-        original-collection (.-collection db)
-        reads (atom [])
-        collection #js {:collectionName "owned-native-fallback"
-                        :aggregate (fn [_]
-                                     (swap! reads conj :aggregate)
-                                     (native-query-cursor native-rows native-error))
-                        :find (fn [_]
-                                (swap! reads conj :fallback)
-                                (native-query-cursor fallback-rows nil))}]
-    (sdk-mod/__setNativeQueryCore true)
-    (sdk-mod/__setPartitions
-     (clj->js [{:tier "hot" :model "qwen3-embedding:8b" :dimensions 1024
-               :collectionName "owned-native-fallback" :searchIndexName "owned-index"
-               :searchIndexStatus "ready"}]))
-    (try
-      (aset db "collection" (fn [& _] collection))
-      {:result (await (fixture-outcome #(xsdk/vector-search!
-                                         {:q "owned full query" :tier "hot" :quality "any"})))
-       :reads @reads}
-      (finally
-        (aset db "collection" original-collection)
-        (sdk-mod/__setNativeQueryCore false)))))
-
 (deftest ^:async native-sdk-query-catch-cannot-erase-a-recorded-row-refusal
   (let [valid {:_id "owned-valid-fallback" :parent_id "owned-source"
                :ts (js/Date. "2026-10-14T00:00:00Z") :source "owned-runtime" :kind "docs"
@@ -626,16 +589,16 @@
                :embedding (vec (repeat 1024 0.25)) :score 0.9}
         invalid (assoc valid :_id "owned-wrong-model-native" :embedding_model "gte-large-en-v1.5")]
     (doseq [fallback [[valid] []]]
-      (let [{:keys [result reads]} (await (native-query-outcome [invalid] nil fallback))]
+      (let [{:keys [result reads]} (await (query-fixture/native-query-outcome fixture-outcome [invalid] nil fallback))]
         (is (= :refused (:outcome result))
             "a native row contract failure refuses even after a healthy or empty fallback")
         (is (= [:aggregate :fallback] reads)
             "genuine SDK catch consumed the rejected native read and completed fallback")))
-    (let [{:keys [result reads]} (await (native-query-outcome [] (js/Error. "owned native transport unavailable") [valid]))]
+    (let [{:keys [result reads]} (await (query-fixture/native-query-outcome fixture-outcome [] (js/Error. "owned native transport unavailable") [valid]))]
       (is (= :accepted (:outcome result)) "native transport failure still permits valid cosine fallback")
       (is (= [["owned-source"]] (get-in result [:value :result :ids])))
       (is (= [:aggregate :fallback] reads)))
-    (let [{:keys [result reads]} (await (native-query-outcome [valid] nil []))]
+    (let [{:keys [result reads]} (await (query-fixture/native-query-outcome fixture-outcome [valid] nil []))]
       (is (= :accepted (:outcome result)) "healthy native results remain admitted")
       (is (= [["owned-source"]] (get-in result [:value :result :ids])))
       (is (= [:aggregate] reads)))))

@@ -6,8 +6,10 @@
    the singleton SDK instance and all interop; callers pass and receive CLJS
    data shaped exactly like the corresponding /v1 REST response bodies."
   (:require ["@open-hax/openplanner-sdk" :as sdk-mod]
-            ["@open-hax/openplanner-sdk/mongo-vectors" :as mongo-vectors]
-            [knoxx.backend.extern.json :as xjson]))
+            [knoxx.backend.extern.embedding :as embedding]
+            [knoxx.backend.extern.json :as xjson]
+            [knoxx.backend.extern.openplanner-sdk-vectors :as vectors]
+            [knoxx.backend.law.embedding :as embedding-law]))
 
 (defonce ^:private sdk-promise* (atom nil))
 
@@ -54,111 +56,18 @@
   ^js [^js sdk]
   #js {:mongo (.-mongo sdk)})
 
-(defn- configured-embedding-dimensions!
-  []
-  (let [raw (aget js/process.env "EMBED_PROVIDER_DIMENSIONS")
-        trimmed (when (string? raw) (.trim raw))
-        parsed (js/Number trimmed)]
-    (when-not (and (string? raw)
-                   (re-matches #"[1-9][0-9]*" trimmed)
-                   (js/Number.isInteger parsed)
-                   (pos? parsed))
-      (throw (ex-info
-              "EMBED_PROVIDER_DIMENSIONS must be configured as a positive integer"
-              {:status 503
-               :code "openplanner_embedding_dimensions_invalid"
-               :configured-value raw})))
-    parsed))
-
-(defn- finite-number?
-  [value]
-  (and (number? value) (js/Number.isFinite value)))
-
-(defn- valid-vector-row?
-  [expected-dimensions row]
-  (let [embedding (:embedding row)]
-    (and (vector? embedding)
-         (pos? (count embedding))
-         (= expected-dimensions (count embedding))
-         (= expected-dimensions (:embedding_dimensions row))
-         (every? finite-number? embedding))))
-
-(defn- checked-event-ids!
-  [event-ids]
-  (let [ids (vec (distinct event-ids))]
-    (when-let [invalid-input-ids
-               (seq (filterv #(not (and (string? %) (seq (.trim %)))) ids))]
-      (throw (ex-info "OpenPlanner vector verification requires event ids"
-                      {:status 500
-                       :code "openplanner_event_ids_invalid"
-                       :invalid-event-ids (vec invalid-input-ids)})))
-    ids))
-
-(defn- ^:async hot-vector-rows!
-  [^js sdk ids]
-  (let [hot-vectors (some-> sdk (.-mongo) (.-hotVectors))]
-    (when-not (and hot-vectors (fn? (.-find hot-vectors)))
-      (throw (ex-info "OpenPlanner hot-vector collection is unavailable"
-                      {:status 503
-                       :code "openplanner_hot_vectors_unavailable"
-                       :event-ids ids})))
-    (let [cursor (.find hot-vectors
-                        (clj->js {:parent_id {:$in ids}})
-                        (clj->js {:projection {:_id 1
-                                               :parent_id 1
-                                               :embedding 1
-                                               :embedding_dimensions 1}}))]
-      (xjson/to-cljs (await (.toArray cursor))))))
-
-(defn- vector-coverage
-  [ids expected-dimensions rows]
-  (let [rows-by-event (group-by :parent_id rows)
-        missing (filterv #(empty? (get rows-by-event %)) ids)
-        invalid (filterv (fn [id]
-                           (some #(not (valid-vector-row? expected-dimensions %))
-                                 (get rows-by-event id)))
-                         ids)]
-    {:missing-event-ids missing
-     :invalid-event-ids invalid}))
-
-(defn- assert-vector-coverage!
-  [ids expected-dimensions rows]
-  (let [{:keys [missing-event-ids invalid-event-ids]}
-        (vector-coverage ids expected-dimensions rows)]
-    (when (or (seq missing-event-ids) (seq invalid-event-ids))
-      (throw (ex-info
-              "OpenPlanner event vector indexing did not materialize the configured embedding shape"
-              {:status 503
-               :code "openplanner_event_vector_verification_failed"
-               :event-ids ids
-               :expected-dimensions expected-dimensions
-               :missing-event-ids missing-event-ids
-               :invalid-event-ids invalid-event-ids})))
-    {:ok true
-     :event-ids ids
-     :event-count (count ids)
-     :vector-count (count rows)
-     :embedding-dimensions expected-dimensions}))
-
-(defn- ^:async verify-event-vectors-with-sdk!
-  [^js sdk event-ids]
-  (let [ids (checked-event-ids! event-ids)]
-    (if (empty? ids)
-      {:ok true :event-ids [] :event-count 0 :vector-count 0}
-      (let [expected-dimensions (configured-embedding-dimensions!)
-            rows (await (hot-vector-rows! sdk ids))]
-        (assert-vector-coverage! ids expected-dimensions rows)))))
-
 (defn ^:async verify-event-vectors!
   "Fail closed unless every named event has materialized hot-vector chunks.
 
   This is public so an idempotent caller that finds an already-durable base
   event can verify its detached projection too; replay must not equate an
   event row with a usable embedding. Every chunk must carry a finite, nonempty
-  vector whose length and recorded dimension equal EMBED_PROVIDER_DIMENSIONS."
+  vector whose length and recorded dimension equal 1024, the admitted Qwen model,
+  and complete recorded chunk identity. SDK-owned source redaction remains explicit."
   [event-ids]
+  (embedding/configuration!)
   (let [sdk (await (get-sdk!))]
-    (await (verify-event-vectors-with-sdk! sdk event-ids))))
+    (await (vectors/verify-event-vectors! sdk event-ids))))
 
 (defn- events-collection!
   [^js sdk event-id]
@@ -260,160 +169,17 @@
        :event-id event-id
        :updated-fields (vec (keys (:missing before)))})))
 
-(defn- ^:async raw-event-rows!
-  [^js events ids]
-  (let [cursor (.find events
-                      (clj->js {:id {:$in ids}})
-                      (clj->js
-                       {:projection {:id 1 :ts 1 :source 1 :kind 1
-                                     :project 1 :session 1 :message 1
-                                     :role 1 :author 1 :model 1 :text 1
-                                     :extra 1}}))]
-    (await (.toArray cursor))))
-
-(defn- raw-events-in-id-order!
-  [ids raw-rows]
-  (let [by-id (into {} (map (fn [^js row] [(aget row "id") row]))
-                    (array-seq raw-rows))
-        missing (filterv #(nil? (get by-id %)) ids)]
-    (when (seq missing)
-      (throw (ex-info "OpenPlanner base event is missing during vector repair"
-                      {:status 503
-                       :code "openplanner_event_missing"
-                       :missing-event-ids missing})))
-    (mapv by-id ids)))
-
-(defn- unindexable-event-reason
-  [^js event]
-  (let [text (aget event "text")
-        kind (aget event "kind")]
-    (cond
-      (not (string? text)) :text-not-string
-      (empty? (.trim text)) :blank-text
-      (contains? #{"graph.node" "graph.edge"} kind) :excluded-kind
-      (not (sdk-mod/shouldIndexEventHotVectors event)) :sdk-declined
-      :else nil)))
-
-(defn- raw-event-labels
-  [^js extra]
-  (let [labels (some-> extra (aget "openplanner_labels") (aget "labels"))]
-    (if (js/Array.isArray labels)
-      (->> (array-seq labels)
-           (map #(-> (or % "") str .trim))
-           (remove empty?)
-           distinct
-           clj->js)
-      #js [])))
-
-(defn- nullish-default
-  [value fallback]
-  (if (nil? value) fallback value))
-
-(defn- embedding-scope
-  [^js event]
-  (let [scope #js {:source (aget event "source")
-                   :kind (aget event "kind")}
-        project (aget event "project")]
-    (when-not (nil? project)
-      (aset scope "project" project))
-    scope))
-
-(defn- index-metadata
-  [^js event ^js extra embedding-model]
-  (let [labels-root (some-> extra (aget "openplanner_labels"))]
-    #js {:ts (aget event "ts")
-         :source (aget event "source")
-         :kind (aget event "kind")
-         :project (aget event "project")
-         :session (aget event "session")
-         :author (nullish-default (aget event "author") "")
-         :role (nullish-default (aget event "role") "")
-         :model (nullish-default (aget event "model") "")
-         :embedding_model (nullish-default embedding-model "")
-         :search_tier "hot"
-         :visibility (nullish-default (some-> extra (aget "visibility"))
-                                      "internal")
-         :quality_label (nullish-default
-                         (some-> labels-root (aget "quality")) "")
-         :labels (raw-event-labels extra)
-         :title (nullish-default
-                 (some-> extra (aget "title"))
-                 (nullish-default (aget event "message")
-                                  (aget event "id")))}))
-
-(defn- assert-indexable-event!
-  [^js event]
-  (when-let [reason (unindexable-event-reason event)]
-    (throw (ex-info "OpenPlanner base event cannot produce a hot vector"
-                    {:status 422
-                     :code "openplanner_event_not_vector_indexable"
-                     :event-id (aget event "id")
-                     :kind (aget event "kind")
-                     :reason reason}))))
-
-(defn- ^:async index-event-vector!
-  [^js sdk ^js event]
-  (assert-indexable-event! event)
-  (let [scope (embedding-scope event)
-        hot (some-> sdk (.-embeddingRuntime) (.-hot))
-        extra (or (aget event "extra") #js {})
-        embedding-model (.getModel hot scope)
-        embedding-function (.getBackgroundEmbeddingFunction hot scope)]
-    (try
-      (await
-       (mongo-vectors/indexTextInMongoVectors
-        #js {:mongo (.-mongo sdk)
-             :tier "hot"
-             :parentId (aget event "id")
-             :text (aget event "text")
-             :extra extra
-             :metadata (index-metadata event extra embedding-model)
-             :embeddingFunction embedding-function}))
-      (catch :default err
-        (throw (ex-info "OpenPlanner event vector repair failed"
-                        {:status 503
-                         :code "openplanner_event_vector_repair_failed"
-                         :event-id (aget event "id")
-                         :detail (or (.-message err) (str err))}
-                        err))))))
-
-(defn- ^:async repair-event-vectors!
-  [^js sdk raw-events]
-  (loop [remaining raw-events]
-    (when-let [event (first remaining)]
-      (await (index-event-vector! sdk event))
-      (recur (next remaining)))))
-
-(defn- ^:async ensure-event-vectors-with-sdk!
-  [^js sdk event-ids]
-  (let [ids (checked-event-ids! event-ids)]
-    (if (empty? ids)
-      {:ok true :event-ids [] :event-count 0 :vector-count 0
-       :repaired-event-ids []}
-      (let [dimensions (configured-embedding-dimensions!)
-            rows (await (hot-vector-rows! sdk ids))
-            coverage (vector-coverage ids dimensions rows)
-            repair-set (set (concat (:missing-event-ids coverage)
-                                    (:invalid-event-ids coverage)))
-            repair-ids (filterv repair-set ids)]
-        (when (seq repair-ids)
-          (let [events (events-collection! sdk (first repair-ids))
-                raw-rows (await (raw-event-rows! events repair-ids))]
-            (await (repair-event-vectors!
-                    sdk (raw-events-in-id-order! repair-ids raw-rows)))))
-        (assoc (await (verify-event-vectors-with-sdk! sdk ids))
-               :repaired-event-ids repair-ids)))))
-
 (defn ^:async ensure-event-vectors!
   "Materialize missing/invalid hot vectors from immutable base event rows.
 
-  No base event is reinserted. Re-indexing uses the SDK's current scoped model,
-  background embedding function, event metadata rules and transactional vector
-  replacement, then performs the same strict dimensional verification as an
-  awaited ingest. Blank text and SDK-excluded event kinds fail explicitly."
+  No base event is reinserted. SDK scope resolution must select the admitted model;
+  its indexing core receives the same checked provider used for ingest and query.
+  SDK metadata/chunking and transactional vector replacement stay in the SDK,
+  followed by model, dimensional and complete chunk verification. Blank text and SDK-excluded event kinds fail explicitly."
   [event-ids]
+  (embedding/configuration!)
   (let [sdk (await (get-sdk!))]
-    (await (ensure-event-vectors-with-sdk! sdk event-ids))))
+    (await (vectors/ensure-event-vectors! sdk event-ids))))
 
 (defn ^:async events!
   "Ingest event envelopes. Same response shape as POST /v1/events.
@@ -424,22 +190,82 @@
   ([events]
    (await (events! events {})))
   ([events {:keys [await-index?]}]
-   (let [sdk (await (get-sdk!))
-         result (await (.ingestEvents sdk (clj->js events)))
+   (let [configuration (embedding/configuration!)
+         sdk (await (get-sdk!))
+         checked-runtime (embedding/runtime (.-embeddingRuntime sdk) configuration)
+         result (await (sdk-mod/ingestEvents
+                        #js {:mongo (.-mongo sdk) :embeddingRuntime (:handle checked-runtime)
+                             :log #js {:warn (fn [_obj msg] (js/console.warn "[openplanner-sdk]" msg))}}
+                        (clj->js events)))
          background-indexing (aget result "backgroundIndexing")]
-     (when (and await-index? background-indexing)
-       (await background-indexing))
+     ;; The SDK catches some detached generation failures. Waiting plus retained
+     ;; runtime evidence prevents those failures from becoming successful completion.
+     (when background-indexing (await background-indexing))
+     (embedding/assert-complete! checked-runtime
+                                 (select-keys (xjson/to-cljs result)
+                                              [:count :ids :projectedGraphEdges :queuedEventVectors :queuedGraphNodeEmbeddings]))
      (when await-index?
-       (await (ensure-event-vectors-with-sdk! sdk (mapv :id events))))
+       (await (vectors/ensure-event-vectors! sdk (mapv :id events))))
      (js-delete result "acceptedEvents")
      (js-delete result "backgroundIndexing")
      (xjson/to-cljs result))))
 
+(defn- checked-read-cursor
+  "Decorate read cursors only; retain SDK queries, ordering, limits and native rows."
+  [^js cursor checked-runtime check-row!]
+  (let [wrapped #js {:toArray (^:async fn []
+                              (let [rows (await (.toArray cursor))]
+                                (doseq [row (xjson/to-cljs rows)]
+                                  (try (check-row! row)
+                                       (catch :default error
+                                         (throw (embedding/retain-failure! checked-runtime error)))))
+                                rows))}]
+    (doseq [method ["sort" "limit" "project"]]
+      (aset wrapped method
+            (fn [& args]
+              (.apply (aget cursor method) cursor (clj->js args))
+              wrapped)))
+    wrapped))
+
+(defn- checked-query-collection
+  [^js collection checked-runtime check-row!]
+  (let [wrapped (js/Object.create collection)]
+    (doseq [method ["find" "aggregate"]]
+      (aset wrapped method
+            (fn [& args]
+              (checked-read-cursor
+               (.apply (aget collection method) collection (clj->js args)) checked-runtime check-row!))))
+    wrapped))
+
+(defn- checked-query-mongo
+  "Validate actual partition and vector reads in the SDK's existing query core.
+  This includes the core's second read and avoids a racy separate preflight."
+  [^js mongo checked-runtime]
+  (let [wrapped (js/Object.create mongo)
+        db (.-db mongo)
+        checked-db (js/Object.create db)]
+    (aset wrapped "vectorPartitions"
+          (checked-query-collection (.-vectorPartitions mongo) checked-runtime
+                                    #(embedding-law/assert-valid! ::embedding-law/partition %)))
+    (aset checked-db "collection"
+          (fn [name opts]
+            (checked-query-collection (.collection db name opts) checked-runtime embedding-law/assert-row!)))
+    (aset wrapped "db" checked-db)
+    wrapped))
+
 (defn ^:async vector-search!
   "Vector search. Same response shape as POST /v1/search/vector."
   [payload]
-  (let [sdk (await (get-sdk!))]
-    (xjson/to-cljs (await (.searchVector sdk (clj->js payload))))))
+  (embedding-law/assert-query! payload)
+  (let [configuration (embedding/configuration!)
+        sdk (await (get-sdk!))
+        checked-runtime (embedding/runtime (.-embeddingRuntime sdk) configuration)
+        result (await (sdk-mod/vectorSearchWithQuality
+                       #js {:mongo (checked-query-mongo (.-mongo sdk) checked-runtime)
+                            :embeddingRuntime (:handle checked-runtime)}
+                       (clj->js payload)))]
+    (embedding/assert-complete! checked-runtime {:operation :query})
+    (xjson/to-cljs result)))
 
 (defn ^:async session
   "Session detail. Same response shape as GET /v1/sessions/:id."
