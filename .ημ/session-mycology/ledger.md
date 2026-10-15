@@ -544,3 +544,12 @@
   spore: none
   receipt-refs: .ημ/receipts.edn#752f1cdf-2949-46fe-892b-842fa21fceee
   note: Source ac32871f qualifies six native P1 planning corrections within existing3+5. Pending segment/draft context, pre-passive load invalidation, held legacy options, option selection validity, genuine anonymous SFT auth boundary, and required coalesced post-snapshot refresh have causal unit and visibly synthetic browser obligations. Preserve native comments/event history and parent. Repeated process error: failed guard did not stop next mutation; exact terminal separator was canonical Rheos serialization, all comment content preserved, explicit POST-commit custody qualified. Every subsequent dependent effect must require actual exit/metadata guard before invocation. No app tests/runtime/readiness/merge claim; candidate0/no spore.
+- ts: 2026-10-15T13:01:14.270890945Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: PR16 reviewed thirteen-point lifecycle draft-refresh decomposition
+  p-efficiency: 0.68
+  p-friction: 0.62
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#e8226f6e-8c31-4723-a9b1-caa1576d6eba
+  note: Qualified LOCAL source a73ab71848f9ee849a9ecf0cbc75f874502928c3: exact root-read core5/newdraft5/locale3 split, actual UUIDv4 ae9a3cb7-a630-4d8d-8d60-c69b825d008d, native admission and single-key dependency. Preserve dirty D2 through all three submit/controller/form-sync paths while pristine external review rehydrates; explicit causal six-runner unmount/browser and bounded catch-up. New body scope only, no app execution. Fresh full native catalogs plus canonical bound unchanged source avoid a second board parser. Guard failures stopped before next effects; inspect real native result (create is text, read-task JSON) rather than repeat creation. Source/native-event and canonical provenance remain separate. Public push/body/replies/review requests held for root proof; no readiness/merge/runtime effects. Candidate0/no spore.
