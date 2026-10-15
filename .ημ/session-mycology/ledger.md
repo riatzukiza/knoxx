@@ -301,3 +301,12 @@
   spore: none
   receipt-refs: 752c53944338bf02a6e5fb8fb4ed2cc729680d6210fb18921a201f38a40c5ed7
   note: Read the whole existing card and its real history before deciding scope. The public-boundary and regression mandate admits the explicit auxiliary strict-Throwable evaluator subset; configured Rheos performed one lawful todo to in_progress transition with actual WIP checks. Preserve its native event root and write-ID without inventing creation history or task completion. Keep private source passes separate from composed full release and current native gates. Retain engine EOF normalization explicitly, all ledger prefixes, eight errors and 284 warnings. No model, DB, provider, PM2, deployment, push, request, new spore or promotion.
+- ts: 2026-10-15T01:53:56.463121594Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: Record translation test extraction on the existing active owner
+  p-efficiency: 0.80
+  p-friction: 0.57
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: /home/err/.local/share/openhax-codex/20261010/review-state/root-K0f-translation-test-boundaries-canonical-plan-comment-v1/canonical-receipt-event.edn
+  note: Canonical comment records the four-test-path slice with full existing regression coverage before implementation. Bind actual native comment/write-ID and preserve body/history; do not require an unchanged write-ID from a legitimate write operation. Existing JSON config deprecation retained. No runtime test, source adoption or production credit; no spore.
