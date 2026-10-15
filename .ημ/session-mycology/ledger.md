@@ -490,3 +490,12 @@
   spore: none
   receipt-refs: .ημ/receipts.edn#15044096-b98b-462f-925c-a9517eccc97a
   note: Actual normal UI browser read exposed All-only target choices despite a real Spanish work item. Plan unfiltered project/generation-bound inventory locales and preserve legacy choices; test selection retention, legacy failure and stale responses before implementation. Canonical composed views omit parent, so a zero unsupported parent query cannot prove absence; complete read-task census and whole-document custody closed dedup before commit. Canonical writer emits dependency[] with no omission surface; retain the upstream gap without a custom setter or invented relation. This commit is planning only: no ready/source/build/runtime/review/publication credit. Candidate zero, no spore.
+- ts: 2026-10-15T10:12:47.427960820Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: PR16 source-backed planning findings: explicit fixture, ordering and project-boundary verification
+  p-efficiency: 0.71
+  p-friction: 0.56
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#006da400-04de-409f-8860-85a7276f5af7
+  note: Accepted all six real Codex planning findings. Make fixture ownership, exact order, immediate installed-state hiding/All reset, existing request deltas and nl-outside-fallback causality executable in the bounded 3-point plan. Keep planning review and implementation proof separate; preserve original browser failures and SDK source-family CI limitation. Candidate0; no spore or runtime/model/content action.
