@@ -526,3 +526,12 @@
   spore: none
   receipt-refs: .ημ/receipts.edn#1fa5beaf-9c49-4017-877c-a34359f4caf5
   note: Source-backed planning scope grew beyond3points; root reviewed the full21,384B proposal before an explicit+5 split. Native fresh265-card parent census/261 shared-byte equivalents+3 reads found no duplicate. Native incoming→accepted→breakdown P0/5 sibling and locale3 dependency preserve full view closure, operation-owned saving, original six server sequences, pending current load and controlled human race proof. Parentaccepted8 unchanged/open; no app/runtime effect, no silent model/provider or release pass. Keep old MiMo failures/approvals and all eleven native settlements. Candidate0/no spore; source commit c36d0f314596c10c4fee4a09fa001a654064707f separate from provenance.
+- ts: 2026-10-15T11:33:50.340967482Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: PR16 body review5532308090: installed context state and explicit read-only export feedback
+  p-efficiency: 0.87
+  p-friction: 0.38
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#9e006db8-050c-4cd4-bbd0-9e465b471370
+  note: Root reviewed precise6018B boundary addition before adding read-only SFT shared feedback to existing5point lifecycle. Keep original read/download bytes+filename, no retarget/reissue/saving ownership; six mutations remain6. Distinguish project/filter/work synchronous retained/excluded state, already-installed feedback and causal pre-passive unit/controlled browser evidence. Native body findings remain obligations even when status omits them. Preserve3point locale dependency/accepted8 parent and14 native Fixed roots. No app/runtime or provider/content effect; source d63ebe4c628a6b3c487f9453da8479cc73dc2488 separate from RR/SM. Candidate0, no spore.
