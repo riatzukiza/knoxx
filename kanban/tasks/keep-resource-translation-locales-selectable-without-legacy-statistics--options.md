@@ -4,7 +4,7 @@ labels: "tasks, 3sp, has-parent, regression, translations, frontend, cms"
 dependency: ["knoxx-translation-review-current-view-mutation-lifecycle"]
 parent: "knoxx-translation-review-chat-panel"
 type: "task"
-write-id: "1792062790907-0.2x1cq2d5dc76qjso02f"
+write-id: "1792063877384-0.akiqsjvz8m9zj5ejvo8"
 points: "3"
 title: "Keep resource translation locales selectable without legacy statistics"
 priority: "P0"
@@ -213,7 +213,11 @@ matrix: installed A rows/detail/actions → first B render, deferred A mutation 
 B held load, same-project es → fr and row A → B stale closure/detail, all six
 runners' success/error/finally, old A completion versus a new B saving owner,
 original payload/approval→reconcile preservation, and the existing unchanged
-same-project refresh/selection test. Its controlled browser race phase must
+same-project refresh/selection test. Its refined boundary also excludes installed
+feedback and old filtered/detail/segment/form state at the first filter/work
+render. Its separate read-only SFT policy fences shared feedback by captured
+project generation/filter while preserving the original request/download; six
+mutation runners remain six. Its controlled browser race phase must
 exercise those reviewed invariants through normal controls with held synthetic
 responses and a live-mutation abort backstop. These requirements remain blocking
 for the repair and are not replaced by locale-only or mocked unit evidence.
@@ -281,5 +285,7 @@ Planning refinement for native current-head Codex review5531594405 on69235c23641
 Planning refinement for native Codex review 5531746779 on cd4e45d6b049d69d45ec88cadd25e3ebbeff703c: accept P1 roots 4281890603 and 4281890616. Root reviewed exact 5,733-byte delta SHA256 c5f164933d723f3ca0cc9106ff513d147042ed3dac82cc6a77ed3594536d5c72. Refine only this same P0/3-point breakdown child: synchronously exclude old document rows at project change, and bind the six existing mutation runners' UI completion/reload callbacks to the current project generation. Preserve already issued A mutation payloads and required server follow-up sequence; no cancellation, retargeting or reissue. Add a separate deferred API-stub A-dispatch/B-pending regression, legacy detail completion and stale UI lifecycle callbacks; passive boundary/filter cases still have zero mutation calls. Preserve all nine prior Fixed histories, exact fixture cardinalities and controlled-manifest UI-only evidence boundaries. No app implementation/readiness, live mutation, runtime/model/content/production or merge effect. Commit the card/native-event source separately from canonical RR/SM provenance.
 
 Planning split for native PR16 Codex review 5531973258 on c7b64025fdb0bb5c755e5edb13ebbb9f4f70bed8: accept genuine P1 roots 4282077748/4282077754/4282077767. Root read and admitted complete 21,384-byte source/scope proposal SHA256 07d31d1c1a6a948effbb876ba68f4c050a85ae92369c16c4c653200e74886a05. Fresh canonical parent-family dedup read all 265 PW tasks; shared K has 261 identical canonical-source cards and three distinct native reads, no equivalent sibling. Retain this P0/breakdown locale child at 3 points; native dependency now requires knoxx-translation-review-current-view-mutation-lifecycle, newly admitted incoming→accepted→breakdown P0/5. Explicit +5 discovery gives repair 3+5=8; broader accepted8 parent stays unchanged/open with remaining obligations. Transfer whole-view actual reload/detail closure, all six original server payload/follow-up sequences, operation-owned saving, current pending-load conservation, and visibly synthetic run-owned browser race mode with abort backstop and zero live mutation/provider/publication into that mandatory sibling without weakening acceptance. Preserve existing same-project refresh/selection regression, real-inventory locale phase/default18/opt-in20 cardinalities, all eleven Fixed histories, failed tours/502 and source-family Sandbox SDK failure. Body remains hand-authored first-class Markdown; all board metadata/status/dependency/events use native Rheos. No app implementation, runtime, model/content/production or merge/readiness effect.
+
+Native PR16 body review5532308090 is handled in mandatory lifecycle predecessor knoxx-translation-review-current-view-mutation-lifecycle: first project/filter/work boundary excludes installed stale feedback/detail/segment/form with retained state distinguished; separate read-only SFT shared feedback fences captured project generation/filter and preserves original request/download. This locale story retains3points/P0/breakdown, same dependency and live-inventory locale/default18/optin20 scope. Lifecycle stays5; six mutation runners remain6. Root-approved exact proposal7c76aa884431f3f673bffea62fbdaf4e0d23e947b76bfae7eb030684146ddef8. Preserve native fourteen settled roots and source-family/browser limits; no implementation/readiness/runtime/provider/content/publication effect.
 
 ---

@@ -4,7 +4,7 @@ labels: "tasks, 5sp, has-parent, regression, translations, frontend, cms"
 dependency: []
 parent: "knoxx-translation-review-chat-panel"
 type: "task"
-write-id: "1792062802588-0.2q2gipi7j9nz2h74xyo"
+write-id: "1792063865579-0.tt8ffu0sy8aeil11hty"
 points: "5"
 title: "Keep translation review mutations bound to the current view"
 priority: "P0"
@@ -22,7 +22,9 @@ outlive the project, language filter or selected work where they began. Native
 PR16 roots 4281890616, 4282077748, 4282077754 and 4282077767 identify stale
 reload/detail callbacks, pending ownership leakage and missing browser race
 proof. The original locale projection story must not absorb this larger repair
-or leave these safety invariants as an unowned footnote.
+or leave these safety invariants as an unowned footnote. Native body review
+5532308090 additionally requires synchronous installed feedback/filter/work
+boundary exclusion and an explicit read-only export feedback policy.
 
 ## Outcome
 
@@ -31,15 +33,26 @@ mutation is pending. Authorized server work keeps its original payload and
 required follow-up sequence. The page presents only the current context, a
 current operation owns its own saving state, and an older completion cannot
 replace current detail, reload captured coordinates or strand/clear a new
-operation's pending state.
+operation's pending state. An already requested SFT export keeps its original
+read/download coordinates and bytes; only its shared notice/error completion
+is fenced by the captured project generation and target filter.
 
 ## Scope
 
 - At effective project change, synchronously exclude installed old rows,
-  selected work/detail/segment/draft and controls; invalidate old detail loads
-  before any passive loader effect. Reset the filter to All and hide the old
-  manifest. The dependent locale slice additionally resets its introduced
-  resource-locale projection at this same boundary.
+  selected work/detail/segment/draft, notice/error and controls; invalidate old
+  detail loads before any passive loader effect. Reset the filter to All and
+  hide the old manifest. The dependent locale slice additionally resets its
+  introduced resource-locale projection at this same boundary.
+- At a same-project target-filter change, preserve the intended new filter,
+  project-wide manifest and unfiltered resource-locale choices, but synchronously
+  exclude the old filtered rows/selection/detail/segment/draft, feedback and
+  pending ownership. Do not reset the reviewer's new filter to All.
+- At a work-identity change, preserve the current project/filter/list and locale
+  choices, but synchronously exclude old detail/segment/draft, notice/error and
+  pending ownership before the first B context can combine B scope with A detail
+  or segment. Keep B's safe selection and legitimate row-scoped controls; do not
+  strand B in saving or weaken the current same-project refresh/selection test.
 - Define a current view context covering effective project generation, target
   filter and selected work identity. Direct segment/form effects also require
   the submitted segment/form context still to be current; a later selection or
@@ -49,6 +62,13 @@ operation's pending state.
   all six existing runners. Preserve their already-issued server payloads and
   mandatory follow-ups, including approval → reconcile; do not retarget,
   cancel or reissue those operations because the view changed.
+- Treat `run-export!` as one separate read-only UI completion, not a seventh
+  mutation runner. Preserve its original SFT request and captured download
+  bytes/filename with no retarget or reissue. Only its shared notice/error
+  completion requires the captured effective-project generation and target
+  filter still to be current; a work-row change alone does not alter those
+  export inputs. It does not acquire mutation saving ownership. No SFT/export
+  content semantics, endpoint, provider or pipeline configuration change.
 - Replace bare saving ownership with a unique operation identity scoped to the
   current context. A context switch detaches old visible pending state before
   new controls are shown. A new B operation owns B's saving state; old A success,
@@ -83,9 +103,14 @@ reads; the controlled race phase is visibly separate.
 ## Acceptance criteria
 
 1. The first render identifying B exposes no A rows, detail, selected work,
-   old segment/draft or A-bound controls even while B's inventory/manifest is
-   pending, hung or failed. Reset visible pending ownership at this boundary.
-   The assertion must not rely on a later passive loading effect.
+   old segment/draft, notice/error or A-bound controls even while B's inventory/
+   manifest is pending, hung or failed. Seed already-settled A success and error
+   feedback before switching, as well as pending A operations. Reset visible
+   pending ownership at this boundary; no later passive effect may supply the
+   first-render exclusion. Apply the distinct filter/work boundary exclusions
+   above before their passive effects too: fr cannot expose old es rows/actions,
+   and B cannot combine its scope with A detail/segment/form. Retain current
+   same-project unfiltered choices/list where their boundary requires it.
 2. Start exactly one A mutation, switch project and hold B's initial load. Let
    A finish first. B's original pending load remains authoritative and can
    install; A starts no captured reload and writes no current detail, message,
@@ -109,12 +134,22 @@ reads; the controlled race phase is visibly separate.
    and old-finally versus new-B-saving ownership through normal controls. It
    fails on each violated invariant and captures screenshots/counters. No race
    is silently skipped because the locale branch normally exits before writes.
+   Include already-installed feedback and the first filter/work renders, not
+   only stale callbacks arriving after a switch.
+7. Deferred SFT success and rejection after project or locale change cannot
+   install stale shared notice/error. Assert exactly the original captured
+   request and original-coordinate download filename/bytes on success, with no
+   retarget/reissue, mutation or provider call. Exercise the same success/failure
+   policy through normal Export SFT in the visibly synthetic browser phase;
+   its held run-owned SFT response is never forwarded to a real content read.
 
 ## Verification
 
 Use controlled deferred API fixtures for causal RED. Add explicit cases for
-project, filter and work transitions, current-load preservation and old/new
-operation ownership. For the six runners, require a named success/error/finally
+project, filter and work transitions, current-load preservation, already-settled
+feedback, old/new operation ownership and read-only export success/rejection.
+First-render RED must be observed before loading/detail passive effects, not
+only after held replacement responses. For the six runners, require a named success/error/finally
 coverage table rather than claiming one dispatch test proves every implementation.
 Preserve existing tests; new/changed async tests use native `^:async` / `await`.
 The product checks remain the full relevant frontend test and lint commands with
@@ -157,9 +192,21 @@ The adapter must:
   Do not substitute a later polling assertion after loading hides the rows. If
   this source-bound checkpoint cannot be established, fail the controlled phase
   and retain the unit RED rather than granting browser invariant credit.
-  For language/row races, hold the current response, release stale completion
-  last and inspect the active selection and detail. For saving, expose B's
+  For the first filter render, use its resource-GET checkpoint; for the first
+  selected-B legacy detail render, inspect synchronously inside that expected
+  detail GET before the queued detail-loading render. Fixtures must reach those
+  actual requests, and an absent/unbound checkpoint fails rather than granting
+  credit. Seed prior installed notice/error too. For late language/row races,
+  hold the current response, release stale completion last and inspect the
+  active selection and detail. For saving, expose B's
   legitimate controlled action, hold B, finish A, then finish B.
+- In that same visibly synthetic phase, intercept the exact source-backed SFT
+  GET (project/optional target_lang/include_corrected from `api.cljs:96–101`),
+  hold a run-owned text response, use normal Export SFT and then change project
+  or filter. Release success and rejection in separate cases; capture the
+  original-coordinate download bytes/filename and current feedback. No real
+  export/content GET is forwarded, no mutation/provider request is introduced,
+  and owned download artifacts join the existing cleanup checks.
 - Keep real authentication and unauthenticated boundary checks separate from
   controlled UI state. Print that synthetic races prove presentation lifecycle
   only; no live mutation semantics, backend health, provider quality or durable
@@ -189,5 +236,7 @@ fail-closed separation and counters are acceptance requirements.
 
 ---
 Accepted five-point P0 planning sibling from the root-reviewed PR16 split proposal SHA256 07d31d1c1a6a948effbb876ba68f4c050a85ae92369c16c4c653200e74886a05, body SHA256 339b11a8088af8da26d7f7169792fab948a695ccb18012c4e6cb051c3ad3c864. Native incoming→accepted→breakdown completed without bypass; remains breakdown. Existing knoxx-translation-resource-locale-filter-options stays three points and depends on this story. Explicit new repair total 3+5=8 (+5 discovery); broader accepted eight-point parent remains unchanged and incomplete. Original current-c7 Codex P1 roots 4282077748/4282077754/4282077767 and prior 4281890616 retain their native history. Whole-view actual callback closure, operation-owned saving, original payload/follow-ups, pending-load conservation and controlled browser races are required implementation acceptance. No live mutation/provider/publication, app/runtime, readiness or broader parent completion is claimed by this planning admission.
+
+Planning refinement for native body-only Codex review5532308090 on b896ced5ad2785e776b39bcaf4a757f3ca7081ae: accept P2 export feedback, P2 installed feedback and P1 first filter/work-render state. Root read exact6,018B proposal SHA2567c76aa884431f3f673bffea62fbdaf4e0d23e947b76bfae7eb030684146ddef8 and explicitly admitted bounded read-only SFT shared feedback fencing, preserving original request/download bytes+filename/no retarget/reissue. Expand synchronous project/filter/work boundary exclusion with distinct retained state and installed notice/error; require causal pre-passive unit and visibly synthetic browser checkpoints plus controlled export success/rejection/download evidence. Six mutation runners stay six, source/test/verification files and lifecycle5/locale3 dependency unchanged; parentaccepted8 remains open/byte-unchanged. Canonical status omission of these actual body findings is not dismissal or clearance. Preserve all fourteen native Fixed histories, append-only provenance, pending MiMo and actual cooldown. Planning only: no application/test/browser/build/runtime/model/content/provider/publication/production effect. Separate source/event and canonical RR/portableSM commits.
 
 ---
