@@ -4,7 +4,7 @@ labels: "tasks, 3sp, has-parent, regression, translations, frontend, cms"
 dependency: ["knoxx-translation-review-current-view-mutation-lifecycle"]
 parent: "knoxx-translation-review-chat-panel"
 type: "task"
-write-id: "1792063877384-0.akiqsjvz8m9zj5ejvo8"
+write-id: "1792065744732-0.1f1xcqydp4rrxtxfb6z"
 points: "3"
 title: "Keep resource translation locales selectable without legacy statistics"
 priority: "P0"
@@ -57,13 +57,23 @@ Français, from the same project's choices.
 
 - Project the unfiltered successful resource inventory's target locales into
   presentation state before target filtering, bound to the effective server
-  project and the existing request-generation guards.
+  project and the existing request-generation guards. Install that locale
+  projection immediately after a successful current resource response, before
+  awaiting legacy document enrichment; a hung legacy request must not withhold
+  the real resource options.
 - Extend the pure locale-option helper with an exact order: for a nonnil
   current-project manifest, normalize language keys with the existing `name`
   conversion and sort their locale codes lexically; for a nil/unavailable
   manifest, preserve the historical fallback vector order exactly. Append valid
   resource-only locale codes in lexical order, excluding duplicates already in
   the legacy/fallback prefix.
+- Revalidate the selected target whenever the effective option set changes,
+  including same-project nil/fallback→settled-empty-manifest and resource option
+  updates. Preserve a still-represented selection; otherwise reset to All and
+  invalidate its old filtered load synchronously, then load the actual new
+  filter. Do not leave an invisible de filter or manufacture an unsupported
+  option to conceal it. Account for this automatic reset separately from the
+  settled-project manual filter request baseline.
 - Pass that project-bound projection to the existing header; keep legacy
   statistics display independent from resource work availability.
 - Keep legacy enrichment failure and superseded project/load responses from
@@ -155,8 +165,11 @@ are not consumed, completed or re-estimated by this allocation.
    Append only resource codes absent from that prefix, lexically sorted. Thus
    manifest `es`/`fr` plus resource `es`/`de`/`nl` yields exactly
    `["es" "fr" "de" "nl"]`, regardless of input iteration order.
-4. Failed legacy document enrichment cannot remove locale options from a
-   successful current resource inventory.
+4. A successful current resource response installs its unfiltered locale
+   options before legacy enrichment settles. Hold the matching-project legacy
+   request pending/never-resolving and require es/fr/nl choices while it remains
+   held, then select one without losing other real locales. Failure cannot erase
+   that projection either. Catch/finally-only installation is insufficient.
 5. On an effective project change, immediately exclude installed resource
    locale options and the previous legacy manifest, and reset Target Lang to All
    before the new document load. Pending, hung or failed replacement requests
@@ -165,6 +178,11 @@ are not consumed, completed or re-estimated by this allocation.
    selection/detail/segment/draft/actions in the first B render, whole-view
    completion/reload fencing and operation-owned saving. A's authorized server
    work and follow-ups remain original; current B load/UI ownership survives.
+   Project changes synchronously invalidate old document/manifest/detail
+   generations before replacement effects; resolve A in that interval, not only
+   after B starts. Filter changes invalidate document/detail loads while keeping
+   a valid project-only manifest alive without an extra manifest GET. The
+   predecessor owns this shared boundary.
 6. Locale projection preserves work/candidate identity, review state and
    authorization. In a successful settled-project fixture with no automatic
    project adoption, each existing `es` → `fr` → All filter change makes exactly
@@ -172,6 +190,12 @@ are not consumed, completed or re-estimated by this allocation.
    GETs. The projection adds no duplicate fetch, endpoint or mutation call.
    Initial project discovery/adoption remains a separate existing generation and
    is accounted for before these counters are reset.
+   Effective option changes also keep target selection valid: choose fallback-
+   only de before a deferred same-project empty manifest resolves with resource
+   es/fr/nl; afterwards de is absent and Target Lang must be All with no hidden de
+   request/rows. Preserve a selected es that remains represented, and cover an
+   analogous resource-projection option change. Treat the necessary All reload
+   as a distinct initialization/options generation, not a duplicate manual fetch.
 7. The ordinary UI browser path proves normal login/authenticated context,
    current-project load completion, visible/selectable Español, the exact
    Spanish work item and its split detail. Screenshots show those steps.
@@ -191,6 +215,18 @@ and require zero mutation calls. The current code must fail the first settled
 resource-locale assertion. This fixture exercises resource inventory rather
 than manufacturing legacy segments to conceal the failure.
 
+Add separate causal cases before changing the existing settled-empty RED:
+(1) after a successful resource es/fr/nl response and settled empty manifest,
+hold matching-project legacy list-documents indefinitely; options must already
+be visible and selectable before the legacy promise ever resolves/rejects;
+(2) select fallback-only de while the manifest is still nil, resolve that same-
+project manifest to an empty languages map, and require selection reset to All
+and old filtered-load invalidation before any new-context request. Keep a valid
+es selection unchanged in a companion case; repeat selection validity when a
+resource option disappears. These schedules need explicit deferred unit and
+visibly controlled browser checkpoints/counters, with no live mutation/provider
+calls. Preserve the original nl-outside-fallback settled-manifest RED as well.
+
 Add pure helper cases asserting exact ordered vectors, rather than sets:
 empty statistics; legacy-only codes sorted lexically; deduplication and sorted
 resource-only suffix under permuted inputs; and the unchanged nil fallback.
@@ -204,7 +240,10 @@ legacy failure, and stale generations arriving after the current response.
 Add an interaction case that installs A resource locale nl and legacy-only sv,
 selects nl, then switches effective project to B. Require old resource/manifest
 options absent and All reset before B's response; hold/fail B's manifest and
-resolve A responses last. This story owns the newly introduced locale projection;
+resolve A responses last. Add a separate pre-passive race that resolves A
+inventory/manifest after the project boundary but before any replacement effect
+starts B; require synchronous invalidation to block A then. Preserve valid same-
+project manifest work on filter changes. This story owns the new locale projection;
 consume the predecessor's synchronous row/detail/action boundary rather than
 reimplementing it. The first B resource GET must not carry nl.
 
@@ -221,6 +260,10 @@ mutation runners remain six. Its controlled browser race phase must
 exercise those reviewed invariants through normal controls with held synthetic
 responses and a live-mutation abort backstop. These requirements remain blocking
 for the repair and are not replaced by locale-only or mocked unit evidence.
+Its current-load conservation includes the required coalesced same-project
+refresh after a pre-mutation snapshot settles; simply skipping that refresh
+cannot leave the old rows installed indefinitely. Old-project A still cannot
+refresh B, and all catch-up reads revalidate the actual current context.
 
 For request-count assertions, settle the initial fixture with the server's
 project equal to the page project, then reset counters. After each successful
@@ -287,5 +330,7 @@ Planning refinement for native Codex review 5531746779 on cd4e45d6b049d69d45ec88
 Planning split for native PR16 Codex review 5531973258 on c7b64025fdb0bb5c755e5edb13ebbb9f4f70bed8: accept genuine P1 roots 4282077748/4282077754/4282077767. Root read and admitted complete 21,384-byte source/scope proposal SHA256 07d31d1c1a6a948effbb876ba68f4c050a85ae92369c16c4c653200e74886a05. Fresh canonical parent-family dedup read all 265 PW tasks; shared K has 261 identical canonical-source cards and three distinct native reads, no equivalent sibling. Retain this P0/breakdown locale child at 3 points; native dependency now requires knoxx-translation-review-current-view-mutation-lifecycle, newly admitted incoming→accepted→breakdown P0/5. Explicit +5 discovery gives repair 3+5=8; broader accepted8 parent stays unchanged/open with remaining obligations. Transfer whole-view actual reload/detail closure, all six original server payload/follow-up sequences, operation-owned saving, current pending-load conservation, and visibly synthetic run-owned browser race mode with abort backstop and zero live mutation/provider/publication into that mandatory sibling without weakening acceptance. Preserve existing same-project refresh/selection regression, real-inventory locale phase/default18/opt-in20 cardinalities, all eleven Fixed histories, failed tours/502 and source-family Sandbox SDK failure. Body remains hand-authored first-class Markdown; all board metadata/status/dependency/events use native Rheos. No app implementation, runtime, model/content/production or merge/readiness effect.
 
 Native PR16 body review5532308090 is handled in mandatory lifecycle predecessor knoxx-translation-review-current-view-mutation-lifecycle: first project/filter/work boundary excludes installed stale feedback/detail/segment/form with retained state distinguished; separate read-only SFT shared feedback fences captured project generation/filter and preserves original request/download. This locale story retains3points/P0/breakdown, same dependency and live-inventory locale/default18/optin20 scope. Lifecycle stays5; six mutation runners remain6. Root-approved exact proposal7c76aa884431f3f673bffea62fbdaf4e0d23e947b76bfae7eb030684146ddef8. Preserve native fourteen settled roots and source-family/browser limits; no implementation/readiness/runtime/provider/content/publication effect.
+
+Native PR16 current8b187 Codex5532537847 and CodeRabbit5532590232 planning correction: install current successful unfiltered resource locales before awaiting legacy enrichment; revalidate the selected target on fallback-to-manifest/resource option changes, retaining a represented selection or resetting to All with synchronous stale filtered-load invalidation. Add deferred causal unit and visibly controlled browser schedules. Shared pre-passive generations, segment/draft guards, actual anonymous SFT boundary and pending-snapshot catch-up belong to existing mandatory lifecycle predecessor. Exact locale body19529B sha256:f70a2218000c04e1056f16eb0835de63b182efa4f1b85600caaef74974e0e019; full delta17244B sha256:1a51a6fd7c1784998020f7dcd304c7f02fd8c9b1b76d2ad369a4be39d8552da7. Keep breakdown/P0/3points, same lifecycle dependency, scalar labels and accepted8 parent unchanged/open. Preserve default18 and optin20/18/1/1, real auth/inventory versus synthetic race distinction, all14 prior native roots/body review5532308090 and original browser/502/Sandbox limits. No app implementation/readiness/merge/runtime/provider/content/publication effects.
 
 ---

@@ -4,7 +4,7 @@ labels: "tasks, 5sp, has-parent, regression, translations, frontend, cms"
 dependency: []
 parent: "knoxx-translation-review-chat-panel"
 type: "task"
-write-id: "1792063865579-0.tt8ffu0sy8aeil11hty"
+write-id: "1792065744243-0.1p3ml27w0fqk28vi9oe"
 points: "5"
 title: "Keep translation review mutations bound to the current view"
 priority: "P0"
@@ -41,13 +41,18 @@ is fenced by the captured project generation and target filter.
 
 - At effective project change, synchronously exclude installed old rows,
   selected work/detail/segment/draft, notice/error and controls; invalidate old
-  detail loads before any passive loader effect. Reset the filter to All and
+  document, manifest and detail generations synchronously in the boundary
+  handler before replacement effects run. An old response resolving after the
+  boundary but before B's first request must already be stale. Reset the filter to All and
   hide the old manifest. The dependent locale slice additionally resets its
   introduced resource-locale projection at this same boundary.
 - At a same-project target-filter change, preserve the intended new filter,
   project-wide manifest and unfiltered resource-locale choices, but synchronously
   exclude the old filtered rows/selection/detail/segment/draft, feedback and
-  pending ownership. Do not reset the reviewer's new filter to All.
+  pending ownership. Invalidate old filtered-document/detail generations in
+  that same handler. Preserve the still-correct project-bound manifest request
+  and its generation: the manifest effect depends only on project and has no
+  filter replacement. Do not add a manifest refetch or reset the new filter.
 - At a work-identity change, preserve the current project/filter/list and locale
   choices, but synchronously exclude old detail/segment/draft, notice/error and
   pending ownership before the first B context can combine B scope with A detail
@@ -79,8 +84,15 @@ is fenced by the captured project generation and target filter.
   through the current context, preserving the existing same-project B-selection
   refresh regression unchanged. Never invoke the captured old project/filter
   reload, advance a pending current request's generation, or prevent its response
-  from installing. Coalesce or skip a refresh while that context has a pending
-  load; any later refresh must still revalidate the current context.
+  from installing. Defer/coalesce a required refresh while that context has a
+  pending load. If that pending snapshot predates an admitted same-project mutation
+  completion, coalesce a required refresh rather than dropping it: after the
+  pending request settles, perform one refresh from the still-current project/
+  filter/selection. A current request started after the completion may satisfy
+  that freshness obligation; superseded context must not run a captured reload.
+  Never invalidate the valid pending request, issue duplicate catch-up reads or
+  create an automatic retry loop. A stale-project A completion still cannot
+  refresh B. Any direct detail/form/feedback writes retain the full view fence.
 - Reuse the existing page/controller boundaries and `logic/same-work?`
   identity; add no generic async framework, endpoint, backend policy or second
   review law. Product/test scope is `review_controller.cljs`, `view.cljs`,
@@ -142,6 +154,31 @@ reads; the controlled race phase is visibly separate.
    retarget/reissue, mutation or provider call. Exercise the same success/failure
    policy through normal Export SFT in the visibly synthetic browser phase;
    its held run-owned SFT response is never forwarded to a real content read.
+8. Start a legacy segment submit on segment S1 with draft version D1. While it
+   is pending, select S2 and edit D2; separately edit a new draft on the same S1.
+   Resolve the old submit and captured detail request last, and cover rejection/
+   finally. Current segment and new draft remain intact, no old detail/form reset
+   wins and no second mutation is issued. The submitted segment/form context is
+   a real completion guard, not merely a three-part project/filter/work token.
+   Preserve the currently interactive segment/draft controls. Add these named
+   cases to both the six-runner matrix and controlled normal-UI browser phase.
+9. Before installing any synthetic interceptor, make an actual anonymous request
+   to the exact source-built SFT GET URL with the real effective project/filter
+   and include_corrected query. Use no cookies, bearer/API tokens or identity
+   headers. Under the authenticated/policy-enabled, export-route-ready verifier
+   preconditions require HTTP401/no_session, not merely any non-200 response.
+   An unexpected content response fails without logging its body; an unavailable
+   route/legacy503 cannot pass authentication and blocks this in-scope check.
+10. In the same project, start a current B inventory snapshot before one admitted
+    mutation completes and hold B's response. Complete the mutation, updating
+    only the synthetic server fixture, then release B's older rows. B's original
+    response installs without cancellation and its selection stays current;
+    exactly one coalesced current-context refresh afterwards reflects the
+    completed mutation. No refresh starts while B is held, no stale captured
+    project/filter reload runs, and multiple relevant completions coalesce
+    rather than duplicate the catch-up. This does not allow an old-project A
+    operation to refresh B. Cover the same ordering/counters in the controlled
+    browser phase, and retain current-context revalidation at the refresh start.
 
 ## Verification
 
@@ -149,14 +186,29 @@ Use controlled deferred API fixtures for causal RED. Add explicit cases for
 project, filter and work transitions, current-load preservation, already-settled
 feedback, old/new operation ownership and read-only export success/rejection.
 First-render RED must be observed before loading/detail passive effects, not
-only after held replacement responses. For the six runners, require a named success/error/finally
+only after held replacement responses. Add a distinct pre-passive response case:
+change A→B, hold replacement effects, then resolve pending A inventory/manifest
+before any B request starts. Neither may reinstall A; do not substitute the
+existing A-last-after-B-starts case. Filter changes invalidate only input-dependent
+loads, retaining a valid same-project manifest without refetch. Add segment-S1/
+new-S2-draft and same-segment-new-draft submit success/error/finally cases; a
+selected work token alone must fail their causal RED. For the six runners, require a named success/error/finally
 coverage table rather than claiming one dispatch test proves every implementation.
 Preserve existing tests; new/changed async tests use native `^:async` / `await`.
 The product checks remain the full relevant frontend test and lint commands with
 actual zero failures, errors and warnings. No unrelated red is waived.
 
-The human controlled race phase uses a private browser session after normal real
-UI authentication. Install the run-owned browser adapter before navigating to
+The human artifact first establishes real authenticated context/effective
+project and export-route readiness, then makes the explicit anonymous SFT GET
+above using an independent credential-free client before any interceptor. Source
+`backend/src/cljs/knoxx/backend/infra/routes/translation.cljs:102–110,251–252` checks compatibility
+readiness before authenticated context; `backend/src/cljs/knoxx/backend/infra/auth/authz.cljs:54–84` and
+`backend/src/cljs/knoxx/backend/infra/auth/session.cljs:331–335` define the policy-enabled no-cookie401/no_session
+path. Do not mistake an early503/unavailable proxy for proof of authentication.
+The exact URL/query comes from frontend `api.cljs:96–101`, not a guessed path.
+Preserve the existing anonymous inventory check and all real auth/inventory reads.
+
+The human controlled race phase then uses its private authenticated browser session. Install the run-owned browser adapter before navigating to
 the controlled translation view. The shared HTTP helper resolves `js/fetch`
 dynamically on every call (`frontend/lib/api.cljs:38–43`), so a session-local
 deferred fetch fixture is supported without changing application source.
@@ -207,6 +259,25 @@ The adapter must:
   original-coordinate download bytes/filename and current feedback. No real
   export/content GET is forwarded, no mutation/provider request is introduced,
   and owned download artifacts join the existing cleanup checks.
+- Reproduce segment-submit races through normal segment and draft controls:
+  hold S1 submit/captured legacy detail, select S2 and edit a recognizable D2,
+  release stale success/detail or rejection/finally and capture the unchanged S2
+  selection/D2. In a separate same-S1 case edit D2 before completion, proving the
+  draft version is also fenced. All submits and follow-ups remain synthetic and
+  run-owned, with exact payload counts and the existing mutation abort backstop.
+- Add the pre-passive stale-response order to the controlled fixture: record the
+  boundary and release pending A inventory/manifest before the first replacement
+  B request. The existing effective-server-project adoption path can provide a
+  normal-UI-triggered async boundary without adding a product test endpoint.
+  Record the actual order and assert A cannot install; if the driver/runtime
+  cannot establish this window, fail/report it rather than silently using the
+  later A-last steady-state case or granting browser credit.
+- Prove coalesced refresh after an older same-project snapshot: hold B before
+  a synthetic mutation completes, mutate only the private response fixture,
+  release B's older response and record its installation/current selection,
+  then require one fresh current-context read to show the completed result.
+  There is no cancellation or extra read while B is held, no duplicate catch-up
+  and no captured old coordinates. Distinct project A→B remains no-reload.
 - Keep real authentication and unauthenticated boundary checks separate from
   controlled UI state. Print that synthetic races prove presentation lifecycle
   only; no live mutation semantics, backend health, provider quality or durable
@@ -238,5 +309,7 @@ fail-closed separation and counters are acceptance requirements.
 Accepted five-point P0 planning sibling from the root-reviewed PR16 split proposal SHA256 07d31d1c1a6a948effbb876ba68f4c050a85ae92369c16c4c653200e74886a05, body SHA256 339b11a8088af8da26d7f7169792fab948a695ccb18012c4e6cb051c3ad3c864. Native incoming→accepted→breakdown completed without bypass; remains breakdown. Existing knoxx-translation-resource-locale-filter-options stays three points and depends on this story. Explicit new repair total 3+5=8 (+5 discovery); broader accepted eight-point parent remains unchanged and incomplete. Original current-c7 Codex P1 roots 4282077748/4282077754/4282077767 and prior 4281890616 retain their native history. Whole-view actual callback closure, operation-owned saving, original payload/follow-ups, pending-load conservation and controlled browser races are required implementation acceptance. No live mutation/provider/publication, app/runtime, readiness or broader parent completion is claimed by this planning admission.
 
 Planning refinement for native body-only Codex review5532308090 on b896ced5ad2785e776b39bcaf4a757f3ca7081ae: accept P2 export feedback, P2 installed feedback and P1 first filter/work-render state. Root read exact6,018B proposal SHA2567c76aa884431f3f673bffea62fbdaf4e0d23e947b76bfae7eb030684146ddef8 and explicitly admitted bounded read-only SFT shared feedback fencing, preserving original request/download bytes+filename/no retarget/reissue. Expand synchronous project/filter/work boundary exclusion with distinct retained state and installed notice/error; require causal pre-passive unit and visibly synthetic browser checkpoints plus controlled export success/rejection/download evidence. Six mutation runners stay six, source/test/verification files and lifecycle5/locale3 dependency unchanged; parentaccepted8 remains open/byte-unchanged. Canonical status omission of these actual body findings is not dismissal or clearance. Preserve all fourteen native Fixed histories, append-only provenance, pending MiMo and actual cooldown. Planning only: no application/test/browser/build/runtime/model/content/provider/publication/production effect. Separate source/event and canonical RR/portableSM commits.
+
+Native PR16 current8b187 reviews5532537847 and5532590232: require pending segment/draft completion guards, credential-free real SFT boundary before synthetic interception, synchronous old list/manifest/detail invalidation at the applicable project/filter boundary, and required coalesced catch-up after a pre-mutation same-project pending snapshot settles. Preserve valid project-only manifest on filter changes, all original server payloads/followups, pending request installation, and old-project no-reload. Exact authored lifecycle body20598B sha256:cde449c7e1e546a14bbff42cc22044088bd64f21d1097cc930d7cdd9f06fef0b; full six-finding delta17244B sha256:1a51a6fd7c1784998020f7dcd304c7f02fd8c9b1b76d2ad369a4be39d8552da7. Same breakdown/P0/5points/parent and six mutation runners; no metadata/status expansion, app implementation/browser/runtime/provider/content/publication effects. Prior14 native settlements and body review5532308090 history preserved. Current8b187 MiMo actual approved review5532648270 remains historical on correction push; no duplicated review request.
 
 ---
