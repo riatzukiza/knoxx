@@ -328,3 +328,12 @@
   spore: none
   receipt-refs: b7394f3917093492962621883bc6bf18b3c535a60667603b3a9470b353a918be,3384bab8f6bfd3828c415e5dd12a74b0ce667ea0
   note: Use a named portable field-map contract before native mutation and preserve original primitive/null property reads. Distinguish local full tests and clean owning lint from unqualified CI2025 negative and inherited full-lint gate. Preserve exact receipt source closure, independent review and original failing evidence. No spore or promotion.
+- ts: 2026-10-15T00:18:45.333267349Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: Commit explicit auxiliary evaluator without replacing primary lint policy
+  p-efficiency: 0.88
+  p-friction: 0.52
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: add837a367bac006b5a79ae63a1cfe344ce8e81826ec1b9b523d1158d2743843,d06cfc0ecff4741e0a5349b46863f0cd6c3b9870
+  note: Treat evaluator identity as an explicit pinned contract input. Preserve genuine negative predicates and both positive neighbors, primary tooling and offline restore ownership. Missing/wrong auxiliary fails visibly; incompatible historical analyzer gets no credit. Local tool provisioning does not clear inherited runtime lint or supply hosted admission. No spore/promotion.
