@@ -378,3 +378,33 @@ test('shared helper refuses bad inputs and bounds failure/interrupt transports b
       console.log('CLEANUP owned transport fixtures removed.');
     }
   });
+
+// A real Java process supplies this isolation assertion; the pnpm double stops
+// before an SDK install and grants no SDK build/import success credit.
+test('actual JVM resolves the helper-owned fresh home before SDK lifecycle', { timeout: 30_000 }, async () => {
+  const base = process.env.KNOXX_SANDBOX_SDK_RUN_ROOT ?? tmpdir();
+  await mkdir(base, { recursive: true });
+  const owned = await mkdtemp(join(base, 'knoxx JVM home '));
+  try {
+    const env = await isolatedEnvironment(owned), tools = join(owned, 'tools');
+    await mkdir(tools);
+    const observed = join(owned, 'actual-jvm-properties.txt');
+    await writeFile(join(tools, 'pnpm'), `#!${process.execPath}\nimport fs from 'node:fs';import {spawnSync} from 'node:child_process';if(process.argv[2]==='--version'){console.log('10.20.0');process.exit(0);}const java=spawnSync('java',['-XshowSettings:properties','-version'],{encoding:'utf8'});if(java.status!==0)throw Error('actual JVM probe failed');fs.writeFileSync(${JSON.stringify(observed)},java.stdout+java.stderr);process.exit(23);\n`);
+    await chmod(join(tools, 'pnpm'), 0o700);
+    env.PATH = `${tools}:${env.PATH}`;
+    const run = join(owned, 'run with spaces');
+    const result = await execute(['/bin/bash', join(repo, 'scripts/build-sandbox-openplanner-sdk.sh'), 'prepare',
+      '--source', process.env.KNOXX_SANDBOX_SDK_SOURCE ?? resolve(repo, '../openplanner'), '--run-root', run],
+    { cwd: owned, env, stream: false });
+    assert.notEqual(result.code, 0, 'transport install intentionally refuses');
+    const outcome = JSON.parse(await readFile(join(run, 'evidence/outcome.json'), 'utf8'));
+    const properties = await readFile(observed, 'utf8');
+    assert.equal(properties.split('\n').find((line) => /^\s*user.home = /.test(line))?.trim(),
+      `user.home = ${join(run, 'home')}`, 'actual lifecycle JVM must resolve the fresh owned home, including spaces');
+    assert.equal(outcome.jvm_user_home, join(run, 'home'), 'helper preflight independently records verified JVM home');
+    assert.equal(outcome.before_lifecycle.jvm_user_home, join(run, 'home'));
+    assert.ok(outcome.java_version.split('\n').some((line) => line.trim() === `user.home = ${join(run, 'home')}`));
+    assert.equal(outcome.install, 'failure'); assert.equal(outcome.build, 'not-run');
+    console.log('REAL-JVM fresh owned user.home, including spaces, verified before refused transport install.');
+  } finally { await rm(owned, { recursive: true, force: true }); await assert.rejects(lstat(owned), { code: 'ENOENT' }); }
+});
