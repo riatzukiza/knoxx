@@ -1,5 +1,5 @@
 (ns knoxx.backend.agent-hydration-test
-  (:require [cljs.test :refer [async deftest is testing]]
+  (:require [cljs.test :refer [deftest is testing]]
             [knoxx.backend.extern.eta-mu :as eta-mu-extern]
             [knoxx.backend.infra.agent.hydration :as agent-hydration]
             [knoxx.backend.infra.clients.openplanner :as openplanner-client]
