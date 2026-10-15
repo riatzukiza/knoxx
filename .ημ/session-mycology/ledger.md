@@ -346,3 +346,12 @@
   spore: none
   receipt-refs: /home/err/.local/share/openhax-codex/20261010/review-state/Knoxx-K27763-agent-session-protocol-actual-GREEN-v1/canonical-plan-receipt-event.edn
   note: Fresh canonical owner read and exactly one scoped comment preserve in_progress and five points; actual write-ID/event read back, old card and event prefixes retained. Exact independent-reviewed seven-test-path patch remains unapplied. Use actual primary2025 lint RED before source application, then owning GREEN and registered gates. No release/production/provider credit or spore.
+- ts: 2026-10-15T03:19:52.171228082Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: Qualify complete opaque agent-session fixtures across lifecycle persistence tests
+  p-efficiency: 0.94
+  p-friction: 0.08
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: /home/err/.local/share/openhax-codex/20261010/review-state/Knoxx-K27763-agent-session-protocol-actual-GREEN-v1/canonical-result-receipt-event.edn
+  note: Exact approved seven test paths committed 1908bf7e. Genuine original owning lint RED reproduced eight protocol warnings; owning lint GREEN 0/0, registered typecheck and full tests pass with 1918 CLJS tests / 9921 assertions and 75 Node pass. No callback/assertion/default weakening. Complete full-lint delta removed only eight warnings; full release lint remains 7 errors / 266 unchanged warnings across 127 unchanged owning files. Prior seven qualified sources exact. Existing real Mongo DNS failure is retained without availability credit. All guards checked with NUL UTF8 Git paths, no unexpected qualification failure or repeated passing gate. No public/production/provider action or spore.
