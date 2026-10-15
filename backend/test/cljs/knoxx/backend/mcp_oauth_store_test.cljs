@@ -308,17 +308,14 @@
         db    #js {:collection (fn [_name] coll)}]
     (doto db (aset "docs" docs) (aset "calls" calls))))
 
-(def ^:private live-code
-  {"code-1" {:code "code-1"
-             :code_data {:clientId "c" :codeChallenge "ch"}
-             :expiresAt (js/Date. (+ (.now js/Date) 300000))}})
-
 (def ^:private fixture-loaded-at (clock-fixture/now-ms))
 
 (defn- live-code-fixture
-  "Return the code fixture for this individual exchange test."
+  "Mint a five-minute code fixture for this individual exchange test."
   []
-  live-code)
+  {"code-1" {:code "code-1"
+             :code_data {:clientId "c" :codeChallenge "ch"}
+             :expiresAt (clock-fixture/date (+ (clock-fixture/now-ms) 300000))}})
 
 (deftest ^:async a-code-can-be-consumed-once
   (testing "the first claim gets the data"
