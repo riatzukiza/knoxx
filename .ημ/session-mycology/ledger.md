@@ -310,3 +310,12 @@
   spore: none
   receipt-refs: /home/err/.local/share/openhax-codex/20261010/review-state/root-K0f-translation-test-boundaries-canonical-plan-comment-v1/canonical-receipt-event.edn
   note: Canonical comment records the four-test-path slice with full existing regression coverage before implementation. Bind actual native comment/write-ID and preserve body/history; do not require an unchanged write-ID from a legitimate write operation. Existing JSON config deprecation retained. No runtime test, source adoption or production credit; no spore.
+- ts: 2026-10-15T02:06:57.382576713Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: Qualified translation-test boundaries with complete retained regression coverage
+  p-efficiency: 0.86
+  p-friction: 0.61
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: /home/err/.local/share/openhax-codex/20261010/review-state/root-Kdde-translation-test-source-qualified-provenance-v1/canonical-receipt-event.edn
+  note: Cohesive suites and complete named protocol fixtures remove the selected hard error without policy weakening. All40 tests/167 assertion forms and pause/fault semantics retained;75Node and1918CLJS tests pass. Preserve setup failure and genuine unavailableMongo diagnostic separately. Whole backend still7errors280warnings; no combined release or live DB/CMS credit. No new spore/promotion.
