@@ -481,3 +481,15 @@
   spore: none
   receipt-refs: /home/err/.local/share/openhax-codex/20261010/review-state/Knoxx-b637-KW-KD-KE-private-source-composition-v1/canonical-pre-build-composition-receipt-event.edn
   note: Three ordinary detached-worktree merges in KW then KD then KE order preserve all2642 non-ledger tree entries and sole owned deletion. Only two ledger conflicts resolved by exact target prefix plus incoming post-base suffix; all histories/events retained without dedup/reorder/normalization. Independent audit agrees source union and ledger hashes. Original four source worktrees unchanged. Pre-build preparation only: no gates/dependencies/build/readiness/admission/board/provider/production effects; KWaccepted8 and other incoming scopes remain unadmitted. Candidate0/no spore.
+
+- ts: 2026-10-15T09:49:57.015Z
+  session: deployment-20261015-Sandbox-SDK-bootstrap-planning
+  task: prepare-the-pinned-openplanner-sdk-in-knoxx-sandbox-bundles
+  p-efficiency: 0.92
+  p-friction: 0.22
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#1c45612e-c583-4527-8275-a9868337dab3
+  note: A genuine dependency test can expose a latent workflow preparation gap without invalidating the test. Keep the real SDK import and fatal guard, then plan immutable source, filtered upstream build, complete retained closure and failure aggregation as a separate bounded bootstrap owner. A three-point planning card at breakdown is neither implementation readiness nor a waiver for the known base CI failure. Preserve tracked credential exclusions and distinguish declared source custody, actual cold execution and native review evidence.
+  canonical-event: |
+    #:event{:id "403156fb-d7d8-4e41-a02b-844a53c4df43", :type :session-mycology/reflection-recorded, :recorded-at "2026-10-15T09:49:57.015Z", :schema {:id :eta-mu.session-mycology/reflection-recorded, :version 1}, :producer {:eta-mu/version "0.1.0", :package/name "@eta-mu/session-mycology", :package/version "0.1.0", :command "Session Mycology package API / Knoxx Sandbox SDK bootstrap planning", :actor "codex/pr354_terminal_rerun_verify", :source/commit "619f0ba3ce0e3d1d47c94db7f2971eb43a81b8b7"}, :subject {:repo "open-hax/knoxx"}, :payload {:repo "open-hax/knoxx", :lesson "A genuine dependency test can expose a latent workflow preparation gap without invalidating the test. Keep the real SDK import and fatal guard, then plan immutable source, filtered upstream build, complete retained closure and failure aggregation as a separate bounded bootstrap owner. A three-point planning card at breakdown is neither implementation readiness nor a waiver for the known base CI failure. Preserve tracked credential exclusions and distinguish declared source custody, actual cold execution and native review evidence.", :session/id "deployment-20261015-Sandbox-SDK-bootstrap-planning", :task/id "prepare-the-pinned-openplanner-sdk-in-knoxx-sandbox-bundles", :receipt/refs [".ημ/receipts.edn#1c45612e-c583-4527-8275-a9868337dab3"]}}
