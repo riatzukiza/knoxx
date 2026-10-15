@@ -138,6 +138,17 @@ jobs:
           set -o pipefail
           pnpm -C backend run typecheck 2>&1 | tee "$OUT/logs/backend-typecheck.log"
 
+      - name: Prepare and retain the explicit native-error test evaluator
+        id: native_error_evaluator
+        if: always()
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -euo pipefail
+          node scripts/native-error-static-evaluator.mjs collect "$OUT"
+          evaluator="$(node scripts/native-error-static-evaluator.mjs restore "$OUT" "$RUNNER_TEMP/knoxx-native-error-evaluator")"
+          printf 'KNOXX_NATIVE_ERROR_KONDO=%s\n' "$evaluator" >> "$GITHUB_ENV"
+
       - name: Run backend tests and coverage
         id: backend_tests
         if: always()
@@ -264,9 +275,11 @@ jobs:
             if (spawnSync("clj-kondo", ["--version"]).error?.code !== "ENOENT")
               throw new Error("clj-kondo unexpectedly available before restoration");'
           bin="$(env PATH="$bootstrap" "$bootstrap/node" "$OUT/toolchain/sandbox-clj-kondo.mjs" restore "$OUT" "$restored")"
-          env PATH="$bin:$bootstrap" "$bootstrap/node" --test \
+          evaluator="$(env PATH="$bootstrap" "$bootstrap/node" "$OUT/toolchain/native-error-static-evaluator.mjs" restore "$OUT" "$restored")"
+          env PATH="$bin:$bootstrap" KNOXX_NATIVE_ERROR_KONDO="$evaluator" "$bootstrap/node" --test \
             backend/test/js/defroute-lint-hook.test.mjs \
             backend/test/js/kondo-file-size-hook.test.mjs \
+            backend/test/js/fastify-error-property-boundary-lint.test.mjs \
             2>&1 | tee "$OUT/logs/clj-kondo-restore.log"
 
       - name: Write bundle metadata and checksums
@@ -287,6 +300,7 @@ jobs:
           BABASHKA_ARCHIVE_OUTCOME: ${{ steps.collect_babashka.outcome }}
           CLJ_KONDO_ARCHIVE_OUTCOME: ${{ steps.collect_clj_kondo.outcome }}
           CLJ_KONDO_RESTORE_OUTCOME: ${{ steps.restore_clj_kondo.outcome }}
+          NATIVE_ERROR_EVALUATOR_OUTCOME: ${{ steps.native_error_evaluator.outcome }}
         shell: bash
         run: |
           set -euo pipefail
@@ -321,7 +335,9 @@ jobs:
             --arg babashka_archive "$BABASHKA_ARCHIVE_OUTCOME" \
             --arg clj_kondo_archive "$CLJ_KONDO_ARCHIVE_OUTCOME" \
             --arg clj_kondo_restore "$CLJ_KONDO_RESTORE_OUTCOME" \
+            --arg native_error_evaluator "$NATIVE_ERROR_EVALUATOR_OUTCOME" \
             --argjson clj_kondo "$(node scripts/sandbox-clj-kondo.mjs describe)" \
+            --argjson native_error_static "$(node scripts/native-error-static-evaluator.mjs describe)" \
             '{
               sandbox_bundle_version: 1,
               repository: $repository,
@@ -342,11 +358,13 @@ jobs:
                 clojure_archive: $clojure_archive,
                 babashka_archive: $babashka_archive,
                 clj_kondo_archive: $clj_kondo_archive,
-                clj_kondo_restore: $clj_kondo_restore
+                clj_kondo_restore: $clj_kondo_restore,
+                native_error_evaluator: $native_error_evaluator
               },
-              toolchain: {clj_kondo: $clj_kondo},
+              toolchain: {clj_kondo: $clj_kondo, native_error_static: $native_error_static},
               setup_commands: [
                 "sandbox_kondo_bin=\"$(node \"${KNOXX_SANDBOX_BUNDLE:?}/toolchain/sandbox-clj-kondo.mjs\" restore \"$KNOXX_SANDBOX_BUNDLE\" \"$KNOXX_SANDBOX_BUNDLE/restored-toolchain\")\" && export PATH=\"$sandbox_kondo_bin:$PATH\"",
+                "export KNOXX_NATIVE_ERROR_KONDO=\"$(node \"${KNOXX_SANDBOX_BUNDLE:?}/toolchain/native-error-static-evaluator.mjs\" restore \"$KNOXX_SANDBOX_BUNDLE\" \"$KNOXX_SANDBOX_BUNDLE/restored-toolchain\")\"",
                 "pnpm install --frozen-lockfile",
                 "pnpm -C backend install --frozen-lockfile",
                 "pnpm -C frontend install --frozen-lockfile",
@@ -423,6 +441,7 @@ jobs:
            steps.collect_babashka.outcome == 'failure' ||
            steps.collect_clj_kondo.outcome == 'failure' ||
            steps.restore_clj_kondo.outcome == 'failure' ||
+           steps.native_error_evaluator.outcome == 'failure' ||
            steps.finalize_bundle.outcome == 'failure')
         shell: bash
         run: exit 1

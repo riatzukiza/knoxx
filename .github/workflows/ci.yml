@@ -117,6 +117,14 @@ jobs:
           pnpm -C _deps/openplanner --filter @open-hax/openplanner-sdk... install --frozen-lockfile
           pnpm -C _deps/openplanner --filter @open-hax/openplanner-sdk... run build
 
+      - name: Prepare the explicit native-error test evaluator
+        run: |
+          set -euo pipefail
+          bundle="$RUNNER_TEMP/knoxx-native-error-evaluator-bundle"
+          node scripts/native-error-static-evaluator.mjs collect "$bundle"
+          evaluator="$(node scripts/native-error-static-evaluator.mjs restore "$bundle" "$RUNNER_TEMP/knoxx-native-error-evaluator")"
+          printf 'KNOXX_NATIVE_ERROR_KONDO=%s\n' "$evaluator" >> "$GITHUB_ENV"
+
       - name: Install Knoxx packages
         run: |
           pnpm install --frozen-lockfile

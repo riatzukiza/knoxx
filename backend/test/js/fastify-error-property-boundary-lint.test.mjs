@@ -5,18 +5,19 @@ import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import test from 'node:test';
+import { requireNativeErrorEvaluator } from '../../../scripts/native-error-static-evaluator.mjs';
 
 const backend = fileURLToPath(new URL('../../', import.meta.url));
 const owners = ['extern/fastify.cljs', 'infra/http.cljs', 'infra/routes/mcp/params.cljs']
   .map(path => resolve(backend, 'src/cljs/knoxx/backend', path));
 
 /** Analyze real error owners and a disposable caller with the unchanged backend rules. */
-function lintCaller(t, body, sourceFiles = owners) {
+function lintCaller(t, body, sourceFiles = owners, evaluator = 'clj-kondo') {
   const directory = mkdtempSync(join(tmpdir(), 'knoxx-fastify-error-lint-'));
   t.after(() => rmSync(directory, { recursive: true, force: true }));
   const fixture = join(directory, 'error_caller.cljs');
   writeFileSync(fixture, body);
-  const result = spawnSync('clj-kondo', [
+  const result = spawnSync(evaluator, [
     '--config-dir', resolve(backend, '.clj-kondo'),
     '--cache-dir', join(directory, 'cache'),
     '--config', '{:output {:format :json}}',
@@ -29,7 +30,7 @@ function lintCaller(t, body, sourceFiles = owners) {
 }
 
 test('genuine HTTP and MCP exceptions are statically admitted by their named Fastify boundary', t => {
-  const result = lintCaller(t, `(ns error-caller
+  const body = `(ns error-caller
   (:require [knoxx.backend.extern.fastify :as fastify]
             [knoxx.backend.infra.http :as http]
             [knoxx.backend.infra.routes.mcp.params :as params]))
@@ -43,15 +44,20 @@ test('genuine HTTP and MCP exceptions are statically admitted by their named Fas
      :oauth-code (fastify/error-code oauth)
      :native-message (fastify/error-message native-data)
      :native-log (fastify/log-unclassified-failure! "error-probe" native-data)}))
-`);
-  assert.deepEqual(result.findings, [], result.stdout);
-  assert.equal(result.status, 0, result.stderr);
+`;
+  const auxiliary = requireNativeErrorEvaluator(process.env.KNOXX_NATIVE_ERROR_KONDO);
+  for (const evaluator of ['clj-kondo', auxiliary.binary]) {
+    const result = lintCaller(t, body, owners, evaluator);
+    assert.deepEqual(result.findings, [], result.stdout);
+    assert.equal(result.status, 0, result.stderr);
+  }
 });
 
 test('the same unchanged rules still reject array operations on genuine throwables', t => {
+  const auxiliary = requireNativeErrorEvaluator(process.env.KNOXX_NATIVE_ERROR_KONDO);
   const result = lintCaller(t, `(ns error-caller)
 (defn genuine-array-mismatch [] (aget (ex-info "boom" {}) "statusCode"))
-`, []);
+`, [], auxiliary.binary);
   assert.equal(result.findings.length, 1, result.stdout);
   assert.equal(result.findings[0].type, 'type-mismatch');
   assert.equal(result.findings[0].level, 'error');
