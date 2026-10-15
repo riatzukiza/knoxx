@@ -4,7 +4,7 @@ labels: "tasks, 5sp, has-parent, regression, translations, frontend, cms"
 dependency: ["knoxx-translation-review-legacy-fixture-auth-preflight"]
 parent: "knoxx-translation-review-chat-panel"
 type: "task"
-write-id: "1792092601718-0.c89d4s0ydc40aa1r4jx"
+write-id: "1792095292970-0.2746cnw4c4yz5qv7syk"
 points: "5"
 title: "Keep translation review mutations bound to the current view"
 priority: "P0"
@@ -25,6 +25,18 @@ proof. The original locale projection story must not absorb this larger repair
 or leave these safety invariants as an unowned footnote. Native body review
 5532308090 additionally requires synchronous installed feedback/filter/work
 boundary exclusion and an explicit read-only export feedback policy.
+
+## Current source location and historical custody
+
+The current Markdown path is `kanban/tasks/keep-translation-review-mutations-bound-to-the-current-view-lifecycle.md`.
+This is a current filename spelling correction with the same explicit UUID,
+metadata and history, not a claim that the creation event used this spelling.
+The native task-created event at2026-10-15T11:12:28.656Z records the original
+`...-view-ifecycle.md` path. Keep that event and all historical path/receipt/comment
+bytes unchanged; a later rename cannot repair an old commit-pinned review URL.
+Canonical Rheos must resolve exactly one current UUID to the new path, with no
+collision or duplicate card. Do not edit a source-path frontmatter/provenance
+field or rewrite ledger history to make it look current.
 
 ## Outcome
 
@@ -72,6 +84,15 @@ locale story depends on that successor and transitively on this one.
   all six existing runners. Preserve their already-issued server payloads and
   mandatory follow-ups, including approval → reconcile; do not retarget,
   cancel or reissue those operations because the view changed.
+- Changed modern-environment runner functions use `^:async` plus `await` with
+  explicit `try`/`catch`/`finally`, not retained Promise-chain implementations.
+  Convert the currently plain `run-segment-submit!`, `run-document-review!`,
+  `run-publication-approval!`, `run-translation-dispatch!` and `run-export!` while
+  preserving the already-async resource split/bulk runners. The six mutations
+  remain six and export remains separate/read-only. Keep original payloads,
+  response/error behavior, operation-owned finally release and required follow-up
+  order, especially approval -> reconcile; this is source form for the same
+  lifecycle changes, not an extra request/cancellation/async framework.
 - Treat `run-export!` as one separate read-only UI completion, not a seventh
   mutation runner. Preserve its original SFT request and captured download
   bytes/filename with no retarget or reissue. Only its shared notice/error
@@ -104,7 +125,7 @@ locale story depends on that successor and transitively on this one.
   `review_controller_test.cljs` and `page_interaction_test.cljs`. The related
   locale story owns `logic.cljs`, `logic_test.cljs` and locale projection wiring.
 - Consume mandatory prerequisite `knoxx-translation-review-legacy-fixture-auth-preflight` (5 points)
-  for the complete run-owned legacy fixture, real legacy POST auth-preflight,
+  for the complete run-owned legacy fixture, real legacy POST/detail-GET auth-preflight,
   named backend extern/tests, exact cleanup and registered shell/Python proof.
   This card retains its end-to-end auth acceptance but does not implement or
   estimate that backend/harness mechanism again. The prerequisite must qualify
@@ -152,6 +173,9 @@ reads; the controlled race phase is visibly separate.
    and required follow-up calls are unchanged, particularly successful approval
    still reconciling its original publication after navigation. UI staleness is
    not server cancellation. No extra dispatched/review/approval call is issued.
+   Changed runners/export use native `^:async`/`await` and explicit error/finally
+   structure; tests retain exact request counts/payloads, captured downloads,
+   stale/current setter behavior and required approval -> reconcile ordering.
 6. The human artifact visibly exercises installed-A → B-pending exclusion,
    pending-A mutation → B, same-project locale and selected-row transitions,
    and old-finally versus new-B-saving ownership through normal controls. It
@@ -192,8 +216,12 @@ reads; the controlled race phase is visibly separate.
 
 10. Consume the completed source-bound artifact from prerequisite
     `knoxx-translation-review-legacy-fixture-auth-preflight` before navigation or interception.
-    Both exact legacy POST routes must prove401/no_session with unchanged real
-    state/counter and checked owned cleanup; a mocked, unavailable, unready or
+    Both exact legacy POST routes and the exact frontend-built legacy detail GET
+    must prove401/no_session with unchanged real state/counter and checked owned
+    cleanup. The fixture prerequisite proves authenticated detail readiness and
+    the credential-free detail request while its owned segment still exists,
+    before cleanup/navigation/interception; manifest/list/SFT checks cannot
+    substitute. A mocked, unavailable, unready or
     mismatched phase cannot satisfy this acceptance. Core integration preserves
     the existing resource bulk/SFT gates, default18 and locale20/18/1/1, and
     starts no synthetic race until that prerequisite's fixture is gone.
@@ -201,7 +229,7 @@ reads; the controlled race phase is visibly separate.
 ### Separate fixture/auth ownership
 
 The native4286589102 discovery transfers the entire backend seed/read/cleanup,
-named extern/test, real legacy POST probes and registered shell/Python/live
+named extern/test, real legacy POST/detail-GET probes and registered shell/Python/live
 qualification intact to the new prerequisite5. This card's original frontend
 fences, six runners, read-only SFT policy and unit/browser obligations stay5.
 No accepted implementation, auth result or parent completion is implied.
@@ -224,7 +252,10 @@ pending-operation -> unmount -> success/error/finally matrix and an unmount ->
 remount/new-B-pending case. Spy on the actual callbacks the runners would invoke;
 the missing mounted-lifetime guard must produce RED. For the six runners, require a named success/error/finally
 coverage table rather than claiming one dispatch test proves every implementation.
-Preserve existing tests; new/changed async tests use native `^:async` / `await`.
+Preserve existing tests; new/changed async functions as well as tests use native
+`^:async` / `await`. Causal runner regressions must observe the same original
+requests/follow-ups and error/finally ownership after the source-form conversion;
+a Promise-chain rewrite alone supplies no lifecycle correctness evidence.
 The product checks remain the full relevant frontend test and lint commands with
 actual zero failures, errors and warnings. No unrelated red is waived.
 
@@ -239,7 +270,9 @@ The exact URL/query comes from frontend `api.cljs:96–101`, not a guessed path.
 Preserve the existing anonymous inventory check and all real auth/inventory reads.
 
 The mandatory prerequisite `knoxx-translation-review-legacy-fixture-auth-preflight` owns the real
-legacy fixture/auth phase formerly described here. Consume its independently
+legacy fixture/auth phase formerly described here, including the exact legacy
+detail GET's authenticated readiness and independent401/no_session proof while
+that run-owned fixture exists. Consume its independently
 source-bound preflight/cleanup result before installing this card's controlled
 browser adapter; do not duplicate the backend/harness implementation or claim
 its two real POSTs are synthetic. This story still proves real SFT authentication
@@ -385,5 +418,7 @@ Native CMS16 Codex body-only P1 review5535724920 on18125604b5cc499e6616ec65cbe76
 Accepted root-reviewed planning split for native Codex5537788801/root4286589102 at7722bb23d7c2baa7006f7d2627ee2b4ec7cf338f. New prerequisite knoxx-translation-review-legacy-fixture-auth-preflight owns5points for the complete run-owned legacy seed/read/cleanup named Mongo boundary, two real auth probes, registered shell/Python/backend controls and genuine checked live cleanup. Transfer those mandatory mechanisms intact; core retains5points for all frontend context/lifetime/saving/six-runner/SFT and unit/browser obligations, consuming the qualified prerequisite before controlled races. Native single-key core dependency added; current repair total18 (fixture5+core5+draft5+locale3), explicit new+5 discovery beyond13. Existing metadata/status/parent and historical comments remain; accepted8 parent unchanged/open. Correct the short fetch-helper source reference without diagnosing the HOST ripgrep failure. Exact newBODY13705B SHA1bc5d4858cca428ee1d0ae338685614c44b6c55f340c47d047e5d1a9bf4661c1 and3BODYpatch20309B SHA10a2d22792ac07199e497debea1c200a23314baae53c2767bea85d0d18059696. Local planning only: no implementation, auth/fixture probe, test/build/browser/model/runtime, readiness, review approval or release credit.
 
 Root-reviewed local planning correction for native Codex5538651862 body-only Export SFT unmount finding atb19f9fc8f2c7bcb9d345bddb3a6883f9c5166fb1. Add explicit pending Export SFT -> normal router unmount -> success/rejection schedules to callback-spy RED and controlled browser AC7/verification. Preserve exactly one original captured request and successful download bytes/filename after unmount; rejection downloads nothing; abandoned notice/error setters and translation reload receive no calls; export acquires/clears no mutation saving owner. Browser route/download/counters and actual unit callback spies are distinct proof, with zero real forwarded synthetic SFT/content/mutation requests. Existing core5 already owns read-only export mounted lifetime; fixture5/draft5/locale3, dependencies/status/metadata/parent/history and18total remain unchanged. Exact reviewed two-BODY patch12325B SHA712e15a1ca8457faa0d59017839b3c0c00d4836b0a213909442de49430328a7f. Local planning only; no source implementation/test/browser/model/runtime/readiness/release credit.
+
+Root-reviewed local planning correction for native Codex5539062909/current0429, roots4287621750 and4287621762: require ^:async/await/try-catch-finally for all changed segment/document/approval/dispatch/export runners, preserving existing async resource split/bulk, request counts/payloads, saving ownership and approval->reconcile order. Consume fixture5 exact legacy detailGET readiness/auth refusal before synthetic browser interception. Correct only the current Markdown filename from -ifecycle to -lifecycle; native creation already recorded -ifecycle, so preserve its exact source-path row, every historical comment/receipt/pinned URL and UUID without source-path frontmatter mutation. Canonical readback must identify one current UUID/path. Same core5, dependencies/history/18total unchanged; planning only/no app/test/public/runtime effects.
 
 ---

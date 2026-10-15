@@ -4,7 +4,7 @@ labels: "tasks, 5sp, has-parent, verification, translations, cms"
 dependency: []
 parent: "knoxx-translation-review-chat-panel"
 type: "task"
-write-id: "1792092597215-0.5yc25fpugdsh3beaorm"
+write-id: "1792095253623-0.puzgjk2wh8q34np33hk"
 points: "5"
 title: "Seed run-owned legacy review fixtures and prove auth preflight"
 priority: "P0"
@@ -34,8 +34,9 @@ core5; no cycle or new application/server feature is introduced.
 ## Outcome
 
 Before frontend-controlled verification starts, a reviewer can create exactly
-one safely owned legacy Spanish segment, prove both real legacy review routes
-refuse a credential-free caller without any effective write, and remove exactly
+one safely owned legacy Spanish segment, prove both real legacy review POSTs
+and the exact legacy document-detail GET refuse a credential-free caller without
+any effective write, and remove exactly
 that fixture with checked cleanup. The resulting artifact has exact source,
 run/DB/tenant/document/segment identity, truthful failure evidence and zero
 remaining owned labels/segments. It preserves the resource fixture cardinalities.
@@ -78,6 +79,30 @@ intact; no second review, authorization, schema, tenant or cleanup law is added.
 Document this system-named child in the existing boundary inventory where required;
 no use-case-named generic extern or opaque raw-Mongo escape hatch is introduced.
 
+Add the pure named law `knoxx.backend.law.translation-review-verification-fixture`
+in `backend/src/cljs/knoxx/backend/law/translation_review_verification_fixture.cljc`,
+with `FixtureAction`, `FixtureSettings`, `FixtureScope`, `FixtureOwnership`,
+`FixtureRequest` and action-dispatched `FixtureResult` Malli schemas. Expose
+`assert-request!` and `assert-result!` with named `::request` / `::result` contract
+IDs, called by every public adapter operation for its actual action. Cover all existing seed/cleanup/memory/
+materialization and new legacy-seed/read/cleanup actions, required scoped IDs,
+nonsecret run/source/DB identity and successful/partial cleanup results. Compose
+existing translation/tenant/segment contracts at the extern boundary; do not copy
+review, authorization or tenant policy into this fixture law. Every public adapter
+entry validates its complete request before client construction/connection or any
+read/write, and validates converted result data before returning. Native handles,
+unknown actions, missing/malformed identity and scope, or malformed results refuse.
+Validation errors retain the contract ID/field paths and original failure category
+without logging URI/settings values, cookies, keys, content or native objects.
+For any client already constructed, finally-close still runs when action or result
+validation fails. A request rejected before construction performs zero client,
+connect, query, mutation or close side effects. A secondary validation/cleanup
+failure never replaces an already recorded action first cause. Add pure schema
+regressions in `backend/test/cljs/knoxx/backend/law/translation_review_verification_fixture_test.cljs`
+and adapter controls proving invalid requests perform zero client/query/mutation
+effects, invalid results cannot return success, and close/original-failure custody.
+These are input/output contracts for the same already-owned fixture boundary.
+
 Before a seed attempt, register run ownership and cleanup intent in the existing
 trap. Derive a distinct document ID from the helper's fresh run namespace, carry
 the actual org/project, garden (including a real nil legacy coordinate) and es target,
@@ -88,23 +113,34 @@ Never adopt an ambient record or treat an upsert of an existing record as a fres
 owned seed. Legacy review contracts require a nonblank project: if the actual
 server scope cannot supply it, fail the precondition instead of inventing one
 or sending a malformed payload and calling its response authentication proof. An authenticated source-built document/detail and segment read must
-recover that exact ID and scope from the live backend before any anonymous POST;
+recover that exact ID and scope from the live backend before any anonymous probe;
 this also detects a helper database different from the selected live client.
+Use the exact frontend `api/get-document` encoded document/target-language path
+and optional project/garden query (`api.cljs:19–36`). While this owned legacy
+fixture still exists, first prove that authenticated detail GET is ready and
+returns the owned segment/scope, then send exactly one independent empty-cookie,
+no-Authorization/API/identity-header GET to that same URL before interception.
+Require401/no_session; unexpected200/400/404/503, redirects, missing error code,
+unknown identity or unavailable readiness fails without logging content bodies.
+Snapshot and compare authenticated state/hidden counter across this probe too.
+This detail-read check belongs here before exact fixture cleanup, not after the
+fixture is gone or only behind the later synthetic browser adapter.
 REST mode or unavailable/mismatched Mongo storage cannot silently pass or fall
 back to somebody else's data.
 
 Run this prerequisite as a distinct real auth-preflight phase before translation navigation,
 synthetic interception, or manual filter request counters. Snapshot the owned
 segment's status/labels and document review summary through authenticated reads,
-and its stored label_version_counter through the exact owned helper read. The
-API's segment-view does not expose that counter; do not pretend an HTTP snapshot
+and its stored label_version_counter through the exact owned helper read before
+any anonymous detail GET or POST. The API's segment-view does not expose that counter; do not pretend an HTTP snapshot
 covers a failed label attempt that changed only the counter. Use the frontend's actual encoded paths/scope and contract-valid reject
 payloads (`overall:"reject"`, no corrected text; the segment label also carries
 the normal adequacy/fluency/terminology/risk fields). Rejection is deliberate:
 these two existing paths invoke graph-memory writes only for approved outcomes.
 Send exactly one credential-free POST per route from an independent empty-cookie
 client, require401/no_session, and compare the same authenticated state after
-each probe. Capture only scope/IDs, response status/error code, counts/digests
+each probe. Keep the one anonymous detail GET and the two anonymous POST counts
+separate; neither manifest/list/SFT readiness nor their401s substitute for detail. Capture only scope/IDs, response status/error code, counts/digests
 and equality outcomes, never credentials or unexpected content.
 
 Remove only labels belonging to the recorded segment ID and org/project, then
@@ -145,7 +181,12 @@ cleanup starts nor an ordinary thrown cleanup error. Boundary tests separately
 assert connect/query/decode/close custody (including connect/action failure), no
 native handle crossing, and missing-label re-entry versus mismatched ownership.
 The auth harness must fail on 200,400,404,
-503, missing no_session, changed state, wrong live database or missing readback;
+503, missing no_session, changed state, wrong live database or missing readback.
+Add the causal detail-open control: all other preflights return401 but this exact
+anonymous detail GET returns200; the phase must fail, log no response content and
+complete checked cleanup. Its ready authenticated response and independent
+credential-free request must use the same encoded owned URL/scope before any
+interceptor or fixture removal; no synthetic response supplies auth evidence;
 no such response supplies auth credit. A deliberately failing cleanup must not
 mask the original probe failure. The normal resource fixture remains18 before
 and after this preflight and opt-in locale mode remains20/18/1/1. Register real
@@ -164,8 +205,8 @@ No application feature, translation/review/publication semantic change, new
 server API, OpenPlanner companion, provider/model call, judgment/approval,
 source-event insertion, shared legacy cleanup or production rollout. This
 fixture/auth phase is genuine integration evidence, separate from the
-frontend stories' explicitly synthetic races. Its two anonymous POSTs are real
-requests expected to have no effect; synthetic race requests remain entirely
+frontend stories' explicitly synthetic races. Its two anonymous POSTs and exact
+detail GET are real requests expected to have no effect; synthetic race requests remain entirely
 intercepted. Fixture creation/cleanup writes only the recorded run-owned rows.
 A planning card, mock pass or unpublished model summary proves none of this.
 
@@ -187,20 +228,28 @@ A planning card, mock pass or unpublished model summary proves none of this.
     named assertions within the existing auth step; preserve default18 and locale
     opt-in20/18/1/1 scenario counts and the separate SFT401 preflight.
 
-2. Seed/register ownership before any possibly partial insert. Refuse collisions
+2. In that same real preflight, while the recorded fixture is present, require
+   authenticated readiness/identity at the exact frontend-built legacy detail
+   GET, then one independent credential-free request to that exact URL returning
+   401/no_session before interception. Check unchanged authenticated state and
+   hidden counter, zero credential/redirect leakage and checked cleanup; a
+   detail200 must fail even if every other preflight returns401. Keep exact counts
+   one detail GET plus the two separate POSTs; manifest/list/SFT checks do not
+   replace this affected read-surface proof.
+3. Seed/register ownership before any possibly partial insert. Refuse collisions
    and ambiguous upserts without adopting or modifying prior rows. Retain exact
    IDs/full scope after partial failures, and verify the selected live backend
    actually reads that same database/segment before using any auth result.
-3. Each anonymous probe compares authenticated review/label state and the
+4. Each anonymous probe compares authenticated review/label state and the
    actual stored label_version_counter before/after. No API-only comparison
    pretends the hidden counter is covered. Unknown comparison or readiness
    cannot qualify. Capture status/error codes and equality/digests, never keys,
    cookies, credentials or unexpected content bodies.
-4. Checked cleanup removes only the exact recorded labels/segment with full
+5. Checked cleanup removes only the exact recorded labels/segment with full
    ownership/scope guards, preserves foreign data, proves absence from stored
    rows and authenticated document listing, then finishes before the resource
    browser workflow. Default18 and locale20/18/1/1 remain unchanged.
-5. Registered unit/process controls cover empty-store seed/read/cleanup,
+6. Registered unit/process controls cover empty-store seed/read/cleanup,
    collision refusal, partial setup, scope/DB mismatch, foreign preservation,
    cleanup failure and interruption, including TERM after actual owned-label
    deletion but before segment deletion, then exact fresh-process recovery from
@@ -209,7 +258,7 @@ A planning card, mock pass or unpublished model summary proves none of this.
    missing no_session, changed state/counter, missing readback or wrong live
    source. Cleanup failure preserves the original failure and causes nonzero
    status; retained ownership supports operator recovery without a broad sweep.
-6. A genuine source-built live run passes the two route probes and exact cleanup
+7. A genuine source-built live run passes both POST probes, the detail GET and exact cleanup
    after actual source/environment preconditions are established. No ambient
    fixture, mocked auth response, skipped route or production service is used
    as a substitute. The artifact names what was proved and its limits.
@@ -220,7 +269,8 @@ Register meaningful causal RED before implementation using the existing entry
 and process suite; no fabricated dist, skipped failure or new shadow validator.
 Run the affected backend test build/typecheck and required build with zero
 failures/errors/warnings, the registered Python process suite and shell syntax,
-then the genuine owned live phase with complete exit/cleanup evidence. Preserve
+then the genuine owned live phase with complete exit/cleanup evidence, including its
+one exact detail GET and both legacy POST auth checks. Preserve
 all existing tests and default consumers. The integration artifact is runnable
 through the existing scripts and documented verification page per AGENTS85–100.
 A future source failure outside this bounded fixture mechanism remains visible;
@@ -231,7 +281,7 @@ this card silently.
 
 Five points for the system-named Mongo boundary and complete existing/new helper
 lifecycle/fault tests, source-built live-DB correspondence, two real auth probes
-with hidden-counter comparison,
+with hidden-counter comparison plus the same-fixture detail GET preflight,
 signal-safe shell/Python aggregation and actual cleanup qualification. One
 bounded verification outcome reuses the existing entry/helper/routes; splitting
 it into backend-only and probe-only cards would add a handoff across the same
@@ -261,5 +311,7 @@ actual application contracts.
 
 ---
 Root-reviewed local planning correction for native Codex5538651862 atb19f9fc8f2c7bcb9d345bddb3a6883f9c5166fb1, inline roots4287284040/4287284069. Put the complete existing/new touched-helper Mongo lifecycle (client construction/connect/database/query/conversion/delete/finally-close) inside system-named extern.openplanner-translation-mongo.verification-fixture with a CLJS-data action/settings/scope/result API and no script-created/native DB handle crossing. Preserve production stores/contracts and existing resource fixture semantics. Add genuine TERM after exact owned-label deletion before segment removal, retained exact ownership outside scratch, fresh-process exact cleanup reentry, zero owned residue/foreign preservation and original partial/failure evidence. This refines this existing5-point lifecycle/signal-safe teardown outcome; no new owner or estimate. Exact reviewed two-BODY patch12325B SHA712e15a1ca8457faa0d59017839b3c0c00d4836b0a213909442de49430328a7f. Preserve metadata/status/points/dependencies/parent/history and repair18total; no application implementation, fixture/auth probe, test/build/browser/model/runtime, readiness or release credit.
+
+Root-reviewed local planning correction for native Codex5539062909/current0429, roots4287621731 and4287621771: explicitly name pure law.translation-review-verification-fixture action/settings/scope/ownership/request/action-dispatched-result schemas and assert-request!/assert-result! boundaries; invalid pre-construction request has zero client/connect/query/mutation/close effects, while an already constructed client closes on action/result refusal with original first cause preserved. Add the exact authenticated legacy document-detail GET readiness plus independent credential-free401/no_session on the same owned URL/scope before cleanup and any synthetic interception, with unchanged-state/count/failure evidence. These refine this existing fixture/auth5 outcome; preserve all metadata/dependencies/points/history and total18. No application implementation, fixture/auth/test/browser/model/runtime/readiness/release credit.
 
 ---
