@@ -535,3 +535,12 @@
   spore: none
   receipt-refs: .ημ/receipts.edn#3b1497f9-9186-4dc9-8e9c-4953fb141fb7
   note: Knoxx17 source7f5f5e51 closes four planning findings: cite historical lint receipt, share filtering/inventory with install/build, isolate real cold integration from default tests, require actionlint. Preserve SDK5 metadata/history. Native comment legitimately generated a write-id; an overstrict guard failed and driver still applied the admitted body. Exact bytes were revalidated without replay; only own added EOF-LF removed. Future guards stop dependents. No product tests or public effects; candidate0. Native reflectioncf6e3402-8cde-4d43-9df1-087d504f8fb6.
+- ts: 2026-10-15T20:48:14.386596285Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-sandbox-sdk-bootstrap-plan-over-19f-v1
+  task: SDK17 full bootstrap implementation with retained cold-integration failure
+  p-efficiency: 0.45
+  p-friction: 0.9
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#8c5a07e6-9dda-41e1-b2e4-c17411f7e9f2
+  note: Source a22 remains partial: standalone isolated SDK build and actionlint pass; full integration 3/4 passes then fixture900000ms SIGTERM while Maven TLS resolution waits. Typecheck/coverage/lint unrun; registry WARNs retained. Isolate actual JVM user.home before lifecycle and allow outer cleanup grace to exceed inner grace; meaningful causal RED controls are committed. Preserve failed capture/build bytes, exact source/deadlines and in_progress5/lint3 completion dependency. No retry/public/deploy effect; native SM known unsupported route not retried, this is portable candidate0/no spore.
