@@ -1,10 +1,10 @@
 ---
 category: "tasks"
-labels: "bug, translation, publication, 5sp"
+labels: "bug, translation, publication, 5sp, has-parent"
 dependency: []
 parent: "knoxx-translation-split-memory-feedback"
 type: "task"
-write-id: "1792053287658-0.y0w4w0fe2lecutbwbiz"
+write-id: "1792054479327-0.nizfpgzebs6dityink"
 points: "5"
 title: "Preserve source-owned trailing whitespace at translation split boundaries"
 priority: "P1"
