@@ -517,3 +517,12 @@
   spore: none
   receipt-refs: .ημ/receipts.edn#4a394adb-7844-4d4a-88a8-04128a9bd7ce
   note: Keep first-render row exclusion separate from passive loader side effects, and distinguish zero-new-mutation passive tests from an already pending one-call API-stub case. Guard stale UI completion/reload while preserving already-authorized server operation semantics. Qualified source18f4647 committed separately from this provenance. No app/runtime/live model/content effect; preserve current actual MiMo run and historical trace rejection. Candidate0/no spore.
+- ts: 2026-10-15T11:15:24.737530104Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: PR16 reviewed split: locale3 plus current-view lifecycle5, three genuine P1s
+  p-efficiency: 0.79
+  p-friction: 0.62
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#1fa5beaf-9c49-4017-877c-a34359f4caf5
+  note: Source-backed planning scope grew beyond3points; root reviewed the full21,384B proposal before an explicit+5 split. Native fresh265-card parent census/261 shared-byte equivalents+3 reads found no duplicate. Native incoming→accepted→breakdown P0/5 sibling and locale3 dependency preserve full view closure, operation-owned saving, original six server sequences, pending current load and controlled human race proof. Parentaccepted8 unchanged/open; no app/runtime effect, no silent model/provider or release pass. Keep old MiMo failures/approvals and all eleven native settlements. Candidate0/no spore; source commit c36d0f314596c10c4fee4a09fa001a654064707f separate from provenance.
