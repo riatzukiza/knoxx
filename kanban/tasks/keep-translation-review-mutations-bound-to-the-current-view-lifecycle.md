@@ -4,7 +4,7 @@ labels: "tasks, 5sp, has-parent, regression, translations, frontend, cms"
 dependency: ["knoxx-translation-review-legacy-fixture-auth-preflight"]
 parent: "knoxx-translation-review-chat-panel"
 type: "task"
-write-id: "1792097679272-0.zlotofapijexxb3zse"
+write-id: "1792099190069-0.kvpmgitgtgitorex9xv"
 points: "5"
 title: "Keep translation review mutations bound to the current view"
 priority: "P0"
@@ -74,8 +74,15 @@ locale story depends on that successor and transitively on this one.
   pending ownership before the first B context can combine B scope with A detail
   or segment. Keep B's safe selection and legitimate row-scoped controls; do not
   strand B in saving or weaken the current same-project refresh/selection test.
+  The same exclusion applies when an admitted inventory refresh omits the current
+  work: nil selection must synchronously hide the vanished work's detail, segment,
+  annotation/form, feedback and mutation controls before passive effects. Preserve
+  the refreshed list and current project/filter; do not select an ambient fallback.
 - Define the base current-view context by effective project generation, target
-  filter, selected work identity and mounted lifetime. Bind it to actual UI and
+  filter value plus its monotonically advancing boundary generation, selected
+  work identity and mounted lifetime. Advance the filter generation on every
+  effective filter transition, including a return to a prior value; an ordinary
+  refresh at the same filter is not a transition. Bind it to actual UI and
   reload/detail closures, not only to a token beside them. Use `logic/same-work?`:
   a refreshed map with the same logical work identity is not a work-navigation
   boundary. The successor adds the submitted segment/draft-version guard and
@@ -96,7 +103,7 @@ locale story depends on that successor and transitively on this one.
 - Treat `run-export!` as one separate read-only UI completion, not a seventh
   mutation runner. Preserve its original SFT request and captured download
   bytes/filename with no retarget or reissue. Only its shared notice/error
-  completion requires the captured effective-project generation/target filter
+  completion requires the captured effective-project generation, target-filter value/generation
   and mounted lifetime still to be current; a work-row change alone does not alter those
   export inputs. After router unmount, an already-issued successful export still
   completes exactly the captured download bytes/filename, while success/error
@@ -164,7 +171,14 @@ reads; the controlled race phase is visibly separate.
    old completion/detail last. Fr remains the active filter, B remains selected,
    and neither old filter inventory nor A detail appears. The real current
    reload/detail closure is checked. The existing same-project refresh/selection
-   regression still passes unchanged, including its refresh count.
+   regression still passes unchanged, including its refresh count. Separately
+   select work A with a visible segment/draft, then release an inventory response
+   omitting A without a row click. Inspect the first committed post-refresh render
+   before detail/form passive effects: no A segment, annotation/form, labels,
+   feedback or stale mutation controls are exposed beside nil selection. Attempt
+   a normal submit at that boundary and require zero stale mutation requests;
+   preserve the new list and do not invent replacement selection. Exercise this
+   disappearance schedule in unit/controller and synthetic browser checkpoints.
 4. After leaving pending A, B's legitimate controls are actionable. Start B's
    own operation, resolve/reject A while B is pending, and require B to remain
    saving/disabled. Complete B and require only B's saving to release. Cover both
@@ -193,7 +207,13 @@ reads; the controlled race phase is visibly separate.
    mutation/provider call or acquired/cleared mutation saving owner. Exercise
    these policies through normal Export SFT; the held run-owned SFT response is
    never forwarded to a real content read. The six mutation-runner matrix in AC8
-   does not substitute for these separate read-only completion cases.
+   does not substitute for these separate read-only completion cases. Also hold
+   an es export, choose fr then es in the same project, and only then release
+   original success or rejection. The changed filter generation must deny both
+   stale feedback setters even though the final filter value again equals es.
+   Success still performs exactly one original captured es download; rejection
+   downloads nothing. Cover this ABA schedule in callback and synthetic browser
+   checks, with no extra export, translation reload or mutation/saving effect.
 8. For each of the six runners, start exactly one operation and unmount the
    translation page before success, rejection or finally. Actual abandoned-view
    setter and reload callbacks receive no calls after cleanup, and no new
@@ -462,5 +482,7 @@ Root-reviewed local planning correction for native Codex5538651862 body-only Exp
 Root-reviewed local planning correction for native Codex5539062909/current0429, roots4287621750 and4287621762: require ^:async/await/try-catch-finally for all changed segment/document/approval/dispatch/export runners, preserving existing async resource split/bulk, request counts/payloads, saving ownership and approval->reconcile order. Consume fixture5 exact legacy detailGET readiness/auth refusal before synthetic browser interception. Correct only the current Markdown filename from -ifecycle to -lifecycle; native creation already recorded -ifecycle, so preserve its exact source-path row, every historical comment/receipt/pinned URL and UUID without source-path frontmatter mutation. Canonical readback must identify one current UUID/path. Same core5, dependencies/history/18total unchanged; planning only/no app/test/public/runtime effects.
 
 Root-reviewed local planning correction for Codex5539622567/currente9 root4288059104: independently require ONE real credential-free POST /api/publications/translations/dispatch using the frontend publication-only selector from authenticated run-owned resource inventory, source/route/auth/store readiness, no cookies/auth/API/identity headers or redirects,401/no_session and unchanged hidden owned writer state before interception/resource cleanup. Registered route/harness controls separately prove zero queue/agent/event-turn writer calls; live snapshots do not imply call-level proof. Add dispatch200/malformed/unavailable/missing-code and changed-state/writer adverse controls. Keep dispatch count separate from legacy2POST+detailGET/SFT/resource-review probes and preserve zero-forwarded synthetic Dispatch/Retry counts, original failure/checked cleanup. Do not run the standalone script real dispatch/provider steps. Samecore5/deps/status/history/18total; no application/test/auth/model/runtime/public effects.
+
+Root-reviewed local planning correction for Codex5539948033/current1c6282bd roots4288291874 and4288291902: explicitly cover inventory omission of current work with synchronous first-render exclusion of vanished detail/segment/form/feedback/actions before passive cleanup and zero stale submit; preserve refreshed list/current context without ambient fallback. Version effective filter transitions (including es->fr->es) so an earlier export cannot regain shared feedback authority by value equality; retain one original captured download/no reissue and add causal callback/browser schedules. Same existing core5 and dependency chain18total; preserve metadata/history and qualified earlier dispositions. Exact three-BODY patch11222B SHA41aec60aa05bcf77506315baa6bfb262cf5ff2811be06f73efc730089b289980. No application/test/auth/browser/model/runtime/readiness/release or public effect.
 
 ---

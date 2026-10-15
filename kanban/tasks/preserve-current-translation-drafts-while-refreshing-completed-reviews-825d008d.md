@@ -4,7 +4,7 @@ labels: "tasks, 5sp, has-parent, regression, translations, frontend, cms"
 dependency: ["knoxx-translation-review-current-view-mutation-lifecycle"]
 parent: "knoxx-translation-review-chat-panel"
 type: "task"
-write-id: "1792089695972-0.hxx9kbezwk9w8sn2ws"
+write-id: "1792099199121-0.6anr1z24k88lu712hg3"
 points: "5"
 title: "Preserve current translation drafts while refreshing completed reviews"
 priority: "P0"
@@ -78,6 +78,14 @@ qualify. All remain bounded children of the unchanged/open accepted8 parent
   segment and newer dirty draft while showing updated canonical review state.
   Actual work/segment/candidate-authority changes retain their established safe
   selection/reset/rehydration; never transplant old edits into a new authority.
+  Same work identity does not prove same candidate authority: when an inventory
+  refresh replaces C1 with C2 or removes the admitted candidate, synchronously
+  exclude C1 detail/segment/form and its submit controls in the first committed
+  render, before detail or form passive effects. Bind rendered/editable detail and
+  the submit path to the selected row's admitted candidate/manifest identity (and
+  existing source/translation revision coordinates where applicable); unavailable
+  or mismatched authority is noneditable, never a mixed C2-set/C1-split request.
+  Reuse the existing resource/legacy identity contracts, not a new server law.
   Add no cross-segment cache, autosave, durable draft store or conflict screen.
 - Distinguish draft revision from saving owner. Blocking D1's stale draft reset
   must still release its own saving when appropriate, and must never release a
@@ -135,6 +143,15 @@ and browser obligations are not waived by this story or by a shared adapter.
    correction and notes through a new review identity. Initial clean load and D1
    success without a newer edit retain legitimate reset/rehydration; actual
    candidate authority changes never submit/carry old edits under the new one.
+    Add distinct same-work inventory refreshes C1 -> C2 and C1 -> candidate absent.
+    Keep C1's selected split and dirty D2 installed, release only the new inventory,
+    and inspect the first committed render before detail/form passive effects.
+    C1 content/form/actions must already be absent or safely unavailable; a normal
+    submit at this point issues zero mixed-authority requests. Then allow actual
+    resource detail derivation/form effects and prove only valid C2 controls/data
+    can become editable, or no editor when authority is absent. Do not invent a
+    resource detail HTTP seam. Preserve pristine same-authority rehydration and
+    dirty-D2 preservation controls; clearing every same-work refresh cannot pass.
 4. Hold a current same-project B inventory snapshot started before an admitted
    mutation completes. Change only private synthetic server state on completion,
    release/install B's older rows and preserve current selection, then require
@@ -162,7 +179,12 @@ by `review_controller.cljs:121-137` from the refreshed resource inventory via
 actual resource inventory response, change immutable review fields, then await
 the real controller detail reset and form-sync effects. Only legacy has the
 captured `get-document` HTTP response. A stubbed-out form-sync or invented detail
-request would miss the cause and cannot qualify.
+request would miss the cause and cannot qualify. For candidate replacement or
+removal, the causal assertion is before those passive effects, not only after
+reset settles: exercise real resource inventory -> selected row -> layout/submit
+closures, then the actual locally derived detail and form-sync. The controlled
+browser repeats both schedules with run-owned C1/C2/split identities, captures the
+first render and attempted-submit request count, and forwards zero live writes.
 
 For each of the six runners, with both Dispatch and Retry entries, use AC1/2
 for success, rejection/finally, same-segment and changed-segment edits. The three
@@ -255,5 +277,7 @@ Accepted root-reviewed five-point P0 sibling for Codex5532975630. Canonical UUID
 Accepted root-reviewed coverage correction for Codex5534710816/root4284210917 at ed39af2915bf6e139a3497f3e0e1be6747cf3e30. Existing draft5 owns all six reload-producing runners and seven normal UI entries: legacy segment, resource split, resource bulk, document review, whole-output approval, Dispatch and Retry (one shared dispatch runner). Preserve direct legacy document detail/reload ordering, original approval -> reconcile, actual server-admitted Dispatch/Retry plus exact compatible editable legacy segments, pristine rehydration and true candidate-authority resets. Reuse the same dirty-draft/current-context/freshness mechanism and existing product/test/private adapter scope, original payloads/follow-ups/counts/auth and zero live effects. Exact admitted one-card patch10082B SHA2a5290235cc8be9f9a30e9e7657f16ccd9297bb16376147ba20de9a80eb1e241. Core5 -> draft5 -> locale3 remains13; accepted8 parent, all points/status/dependencies and prior history stay unchanged. Planning correction only; no application tests/browser/build/model/runtime/deployment success is claimed.
 
 Accepted root-reviewed estimate disclosure for native Codex5537788801/root4286589102 at7722bb23d7c2baa7006f7d2627ee2b4ec7cf338f. Draft/refresh remains5points with every six-runner form-preservation/catch-up obligation and its existing dependency on core unchanged. The separate prerequisite knoxx-translation-review-legacy-fixture-auth-preflight now owns fixture/auth5 and is consumed through core; disclose current repair total18 (fixture5+core5+draft5+locale3), explicit additional+5 beyond previous13. Only this BODY current-estimate paragraph changes here; all prior native history, metadata, accepted8 parent and source qualification obligations remain. Exact reviewed3BODYpatch20309B SHA10a2d22792ac07199e497debea1c200a23314baae53c2767bea85d0d18059696. Local planning only; no implementation, fixture/auth/test/browser/model/runtime/readiness or release effect.
+
+Root-reviewed local planning correction for Codex5539948033/current1c6282bd root4288291886: same-work refresh does not preserve candidate authority. Require synchronous first-render exclusion and submit guard for C1->C2 and C1->candidate-absent before actual detail/form passive effects; bind row/detail/split authority using existing identities, never mix C2 candidate_set_id with C1 split_id or transplant dirty edits. Add actual inventory->selected->layout/submit->locally-derived resource detail/form-sync unit and synthetic browser schedules, zero mixed requests; preserve same-authority dirty D2 and pristine rehydration controls. Same existing draft5/status/deps/history and repair18total. Exact three-BODY patch11222B SHA41aec60aa05bcf77506315baa6bfb262cf5ff2811be06f73efc730089b289980. No application/test/browser/model/runtime/readiness/release/public effect.
 
 ---

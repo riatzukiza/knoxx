@@ -4,7 +4,7 @@ labels: "tasks, 5sp, has-parent, verification, translations, cms"
 dependency: []
 parent: "knoxx-translation-review-chat-panel"
 type: "task"
-write-id: "1792097673224-0.mt5bhq2bloaomsatdxw"
+write-id: "1792099218297-0.ey67bh2mkbu7c49el2q"
 points: "5"
 title: "Seed run-owned legacy review fixtures and prove auth preflight"
 priority: "P0"
@@ -76,7 +76,25 @@ as well as the new legacy actions. Move the existing raw Mongo helpers/lifecycle
 out of `backend/scripts/translation_split_review_fixture.cljs`, not just new calls.
 Keep pure fixture construction and existing production store/domain contracts
 intact; no second review, authorization, schema, tenant or cleanup law is added.
-Document this system-named child in the existing boundary inventory where required;
+Move the touched entry's remaining host interop as well. Reuse the existing
+`knoxx.backend.extern.node-env/variable` for environment settings and
+`knoxx.backend.extern.clock/instant-iso` for both native timestamp sites. Add a
+small Node CLI boundary `knoxx.backend.extern.node-cli` in
+`backend/src/cljs/knoxx/backend/extern/node_cli.cljs`, with CLJS-data argument,
+output/error and exit-status operations: it owns native JSON encoding, stdout/
+stderr/console calls, native error-property decoding and process exitCode. The
+script orchestrates only CLJS action/settings/results and safe failure data;
+no remaining `aget`, `js/process`, `js/Date`, `js/JSON`, `clj->js`, `js->clj`,
+`#js`, native property access or direct native-method calls live in the touched
+non-extern script. The Mongo child still exclusively owns native DB objects;
+do not export a generic native handle or shift pure fixture policy into CLI code.
+Give every public adapter call a named boundary contract and safe error mapping;
+never print settings/URI, credentials or unexpected content on either stream.
+Add automatically discovered `backend/test/cljs/knoxx/backend/extern/node_cli_test.cljs`
+conversion/output/exit regressions, preserving original failure category/status
+and checked cleanup. Reuse clock/node-env tests and the existing process harness
+for settings, output and failure custody, without duplicating their policy.
+Document these system boundaries in the existing boundary inventory where required;
 no use-case-named generic extern or opaque raw-Mongo escape hatch is introduced.
 Its already owned typed read action also supplies exact run-owned resource
 dispatch/claim/batch/receipt snapshots to core5's separate dispatch auth assertion,
@@ -298,8 +316,10 @@ it into backend-only and probe-only cards would add a handoff across the same
 ownership/teardown contract without reducing the required proof. The native
 5538651862 refinements make this existing lifecycle and signal-safe teardown
 contract explicit; they do not add a new product behavior, prerequisite owner or
-estimate. The full resource-fixture behavior remains unchanged while its raw Mongo
-interop moves behind the same system boundary.
+estimate. The full resource-fixture behavior remains unchanged while the touched
+entry's complete Mongo and Node host interop move behind their named system
+boundaries, reusing existing environment/clock adapters and adding only the small
+CLI encoding/error/exit adapter needed by this same entry.
 
 This is explicit +5 discovery. Preserve core5 + draft5 + locale3 =13 as the
 previous allocation; add this fixture/auth5 for a current repair total18.
@@ -325,5 +345,7 @@ Root-reviewed local planning correction for native Codex5538651862 atb19f9fc8f2c
 Root-reviewed local planning correction for native Codex5539062909/current0429, roots4287621731 and4287621771: explicitly name pure law.translation-review-verification-fixture action/settings/scope/ownership/request/action-dispatched-result schemas and assert-request!/assert-result! boundaries; invalid pre-construction request has zero client/connect/query/mutation/close effects, while an already constructed client closes on action/result refusal with original first cause preserved. Add the exact authenticated legacy document-detail GET readiness plus independent credential-free401/no_session on the same owned URL/scope before cleanup and any synthetic interception, with unchanged-state/count/failure evidence. These refine this existing fixture/auth5 outcome; preserve all metadata/dependencies/points/history and total18. No application implementation, fixture/auth/test/browser/model/runtime/readiness/release credit.
 
 Root-reviewed local planning correction for Codex5539622567/currente9 root4288059113: explicitly require pnpm -C backend run lint, retaining the full src/cljs+test/cljs clj-kondo --fail-level warning pathset, complete actual output/exit and zero errors/warnings alongside test/server compiles; no narrowing, suppression or historical-red waiver. The already owned typed verification read may expose only exact run-owned resource/publication+tenant/source-bound dispatch/claim/batch/receipt snapshots for core5. Extend action-dispatched request/result schemas as needed, validate before DB access and return safe state/equality/count data only, never handles/content/credentials or a generic read escape. Samefixture5/status/dependencies/history/18total; no new fixture/API/model/writer, app/test/auth/runtime/readiness or public effect.
+
+Root-reviewed local planning correction for Codex5539948033/current1c6282bd root4288291896: extend the already-owned complete touched fixture-entry extern boundary beyond Mongo. Reuse actual extern.node-env/variable and extern.clock/instant-iso; add only named extern.node-cli encoding/output/error/exit adapter with explicit CLJS contracts/tests so the script retains no raw host interop/native handles. Preserve pure fixture/domain/tenant semantics, safe errors/first cause/checked cleanup, full backend zero-warning gates and all existing resource actions. Same fixture5/status/deps/history and repair18total; no new fixture family/endpoint/product behavior. Exact three-BODY patch11222B SHA41aec60aa05bcf77506315baa6bfb262cf5ff2811be06f73efc730089b289980. No app/auth/test/browser/model/runtime/readiness/release/public effect.
 
 ---
