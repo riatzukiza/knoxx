@@ -481,3 +481,57 @@
   spore: none
   receipt-refs: /home/err/.local/share/openhax-codex/20261010/review-state/Knoxx-b637-KW-KD-KE-private-source-composition-v1/canonical-pre-build-composition-receipt-event.edn
   note: Three ordinary detached-worktree merges in KW then KD then KE order preserve all2642 non-ledger tree entries and sole owned deletion. Only two ledger conflicts resolved by exact target prefix plus incoming post-base suffix; all histories/events retained without dedup/reorder/normalization. Independent audit agrees source union and ledger hashes. Original four source worktrees unchanged. Pre-build preparation only: no gates/dependencies/build/readiness/admission/board/provider/production effects; KWaccepted8 and other incoming scopes remain unadmitted. Candidate0/no spore.
+
+- ts: 2026-10-15T09:49:57.015Z
+  session: deployment-20261015-Sandbox-SDK-bootstrap-planning
+  task: prepare-the-pinned-openplanner-sdk-in-knoxx-sandbox-bundles
+  p-efficiency: 0.92
+  p-friction: 0.22
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#1c45612e-c583-4527-8275-a9868337dab3
+  note: A genuine dependency test can expose a latent workflow preparation gap without invalidating the test. Keep the real SDK import and fatal guard, then plan immutable source, filtered upstream build, complete retained closure and failure aggregation as a separate bounded bootstrap owner. A three-point planning card at breakdown is neither implementation readiness nor a waiver for the known base CI failure. Preserve tracked credential exclusions and distinguish declared source custody, actual cold execution and native review evidence.
+  canonical-event: |
+    #:event{:id "403156fb-d7d8-4e41-a02b-844a53c4df43", :type :session-mycology/reflection-recorded, :recorded-at "2026-10-15T09:49:57.015Z", :schema {:id :eta-mu.session-mycology/reflection-recorded, :version 1}, :producer {:eta-mu/version "0.1.0", :package/name "@eta-mu/session-mycology", :package/version "0.1.0", :command "Session Mycology package API / Knoxx Sandbox SDK bootstrap planning", :actor "codex/pr354_terminal_rerun_verify", :source/commit "619f0ba3ce0e3d1d47c94db7f2971eb43a81b8b7"}, :subject {:repo "open-hax/knoxx"}, :payload {:repo "open-hax/knoxx", :lesson "A genuine dependency test can expose a latent workflow preparation gap without invalidating the test. Keep the real SDK import and fatal guard, then plan immutable source, filtered upstream build, complete retained closure and failure aggregation as a separate bounded bootstrap owner. A three-point planning card at breakdown is neither implementation readiness nor a waiver for the known base CI failure. Preserve tracked credential exclusions and distinguish declared source custody, actual cold execution and native review evidence.", :session/id "deployment-20261015-Sandbox-SDK-bootstrap-planning", :task/id "prepare-the-pinned-openplanner-sdk-in-knoxx-sandbox-bundles", :receipt/refs [".ημ/receipts.edn#1c45612e-c583-4527-8275-a9868337dab3"]}}
+
+- ts: 2026-10-15T10:09:34.524Z
+  session: deployment-20261015-Sandbox-SDK-task-label-triage
+  task: prepare-the-pinned-openplanner-sdk-in-knoxx-sandbox-bundles
+  p-efficiency: 0.92
+  p-friction: 0.22
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#8a402090-1283-4bc0-8e5f-63e791af4451
+  note: A mixed review finding can contain one real metadata gap and one unsupported format request. Native filtered reads proved the omitted tasks category, while explicit user instructions and actual Rheos normalization proved comma-separated scalar support. Correct the single category through Rheos, preserve body/status/estimate and original native root, and leave the mixed finding unresolved rather than claiming a partial Fixed reply settles the whole thread. No spore; no application implementation or deployment credit.
+  canonical-event: |
+    #:event{:id "db960bba-9acb-49e8-93ea-5cad6e203c2f", :type :session-mycology/reflection-recorded, :recorded-at "2026-10-15T10:09:34.524Z", :schema {:id :eta-mu.session-mycology/reflection-recorded, :version 1}, :producer {:eta-mu/version "0.1.0", :package/name "@eta-mu/session-mycology", :package/version "0.1.0", :command "Session Mycology package API / Knoxx Sandbox SDK bootstrap planning", :actor "codex/pr354_terminal_rerun_verify", :source/commit "71896b991140fd718070e33d81d83dca798b8f9c"}, :subject {:repo "open-hax/knoxx"}, :payload {:repo "open-hax/knoxx", :lesson "A mixed review finding can contain one real metadata gap and one unsupported format request. Native filtered reads proved the omitted tasks category, while explicit user instructions and actual Rheos normalization proved comma-separated scalar support. Correct the single category through Rheos, preserve body/status/estimate and original native root, and leave the mixed finding unresolved rather than claiming a partial Fixed reply settles the whole thread. No spore; no application implementation or deployment credit.", :session/id "deployment-20261015-Sandbox-SDK-task-label-triage", :task/id "prepare-the-pinned-openplanner-sdk-in-knoxx-sandbox-bundles", :receipt/refs [".ημ/receipts.edn#8a402090-1283-4bc0-8e5f-63e791af4451"]}}
+
+- ts: 2026-10-15T15:20:23.254Z
+  session: deployment-20261015-Knoxx17-fivepoint-planning-refinement
+  task: prepare-the-pinned-openplanner-sdk-in-knoxx-sandbox-bundles
+  p-efficiency: 0.92
+  p-friction: 0.22
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#3588a4d6-c0ae-492e-b751-de4bc93300c9
+  note: A bootstrap planning repair must bind its first executable build to the same filtered immutable source/config boundary promised for cold restore. Re-estimate the existing bounded owner after discovering that security/control/shared-action work; name zero-error zero-warning completion gates, preserve the real source RED, use native single-key metadata plus append-only scope evidence, and keep review settlement distinct from implementation/deployment. Candidate0, no spore.
+  canonical-event: |
+    #:event{:id "2d051036-a4d8-4e0e-a452-81ccce1d0bf0", :type :session-mycology/reflection-recorded, :recorded-at "2026-10-15T15:20:23.254Z", :schema {:id :eta-mu.session-mycology/reflection-recorded, :version 1}, :producer {:eta-mu/version "0.1.0", :package/name "@eta-mu/session-mycology", :package/version "0.1.0", :command "Session Mycology package API / Knoxx Sandbox SDK bootstrap planning", :actor "codex/pr354_terminal_rerun_verify", :source/commit "4aad9da388f0eb0ba3151b03488fca9740fa0cb9"}, :subject {:repo "open-hax/knoxx"}, :payload {:repo "open-hax/knoxx", :lesson "A bootstrap planning repair must bind its first executable build to the same filtered immutable source/config boundary promised for cold restore. Re-estimate the existing bounded owner after discovering that security/control/shared-action work; name zero-error zero-warning completion gates, preserve the real source RED, use native single-key metadata plus append-only scope evidence, and keep review settlement distinct from implementation/deployment. Candidate0, no spore.", :session/id "deployment-20261015-Knoxx17-fivepoint-planning-refinement", :task/id "prepare-the-pinned-openplanner-sdk-in-knoxx-sandbox-bundles", :receipt/refs [".ημ/receipts.edn#3588a4d6-c0ae-492e-b751-de4bc93300c9"]}}
+- ts: 2026-10-15T16:04:45.496402120Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: Knoxx17 strict lint dependency planning correction
+  p-efficiency: 0.87
+  p-friction: 0.3
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#b1166d1f-2e56-44f1-8878-a54249ebe770
+  note: Knoxx17 current-f52 native CodexP2 root4284964819/review5535643111 exposed a planning dependency gap: SDK5 requires a strict full backend lint pass while inherited registered lint remains historically13errors283warnings. Sourcec0cb2b7ff3c044e1746bf00561fa6e3a2dad8df5 adds only the existing todo3 zero-warning owner as dependency plus one Scope bullet through native Rheos comment/frontmatter and authored Markdown. Keep all strict full-lint/typecheck/coverage/genuine-source RED-GREEN gates; do not import remediation, invent missing lint-owner AC, change scalar CSVlabels, claim automatic dependency enforcement or mark readiness. Native f52 MiMo38759885344 independently failed: HOSTread91 used a nonexistent double-knoxx path, corrected94 cannot erase it; page7 read but unassessed caused stage121 refusal; single process0/missing submission/acceptednull supplies no retry or approval. Freeze first-cause artifact before future push can repeat it. Retain one incorrect comment-section custody guard and own added EOF-LF repair; neither successful native effect was replayed. Local source and provenance only; mixedroot4281571531 stays open. No application tests, lint pass, new model, credential/account/App change, public effect, source adoption, runtime or deployment claim. Candidate0/no spore. Native reflectionb2c48ef1-1b0d-4505-b3fa-2d07e2901c0f.
+- ts: 2026-10-15T17:23:16.148128607Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: Knoxx17 four planning review corrections
+  p-efficiency: 0.82
+  p-friction: 0.35
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#3b1497f9-9186-4dc9-8e9c-4953fb141fb7
+  note: Knoxx17 source7f5f5e51 closes four planning findings: cite historical lint receipt, share filtering/inventory with install/build, isolate real cold integration from default tests, require actionlint. Preserve SDK5 metadata/history. Native comment legitimately generated a write-id; an overstrict guard failed and driver still applied the admitted body. Exact bytes were revalidated without replay; only own added EOF-LF removed. Future guards stop dependents. No product tests or public effects; candidate0. Native reflectioncf6e3402-8cde-4d43-9df1-087d504f8fb6.
