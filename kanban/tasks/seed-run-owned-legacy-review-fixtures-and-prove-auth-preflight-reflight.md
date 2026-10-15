@@ -4,7 +4,7 @@ labels: "tasks, 5sp, has-parent, verification, translations, cms"
 dependency: []
 parent: "knoxx-translation-review-chat-panel"
 type: "task"
-write-id: "1792089635020-0.83ou78fe01y7bmv6rd7"
+write-id: "1792092597215-0.5yc25fpugdsh3beaorm"
 points: "5"
 title: "Seed run-owned legacy review fixtures and prove auth preflight"
 priority: "P0"
@@ -61,14 +61,22 @@ Own only this legacy fixture/auth-preflight mechanism and its tests/artifact:
 
 Extend the existing `backend/scripts/translation_split_review_fixture.cljs`
 entry point and shell helper with explicit legacy-seed/read/cleanup actions.
-Keep new raw Mongo interop in the named Knoxx verification boundary
-`backend/src/cljs/knoxx/backend/extern/translation_review_verification_fixture.cljs`,
-with its automatically discovered regression namespace
-`backend/test/cljs/knoxx/backend/extern/translation_review_verification_fixture_test.cljs`.
-The boundary accepts the existing owned database handle and Clojure-shaped scope,
-reuses the existing translation request contracts/segment representation, and
-adds no independent review, authorization, schema or tenant policy. Document this
-named extern boundary where the existing boundary inventory requires it.
+Put the complete Mongo lifecycle of this touched entry behind the system-named
+child `knoxx.backend.extern.openplanner-translation-mongo.verification-fixture`
+(`backend/src/cljs/knoxx/backend/extern/openplanner_translation_mongo/verification_fixture.cljs`),
+with the automatically discovered regression namespace in
+`backend/test/cljs/knoxx/backend/extern/openplanner_translation_mongo/verification_fixture_test.cljs`.
+The public boundary accepts Clojure-shaped action/settings/scope data and returns
+Clojure-shaped results; it neither accepts a database handle constructed by the
+script nor returns a native client/database/collection/cursor. The adapter owns
+MongoClient construction, connect/database selection, collection/query/result
+conversion, deletion and finally-close for the entry's existing resource actions
+as well as the new legacy actions. Move the existing raw Mongo helpers/lifecycle
+out of `backend/scripts/translation_split_review_fixture.cljs`, not just new calls.
+Keep pure fixture construction and existing production store/domain contracts
+intact; no second review, authorization, schema, tenant or cleanup law is added.
+Document this system-named child in the existing boundary inventory where required;
+no use-case-named generic extern or opaque raw-Mongo escape hatch is introduced.
 
 Before a seed attempt, register run ownership and cleanup intent in the existing
 trap. Derive a distinct document ID from the helper's fresh run namespace, carry
@@ -109,8 +117,15 @@ removed. Complete and verify this cleanup before starting the ordinary resource
 browser workflow, preserving default18 and locale20/18/1/1 cardinalities and all
 existing durable candidate evidence. EXIT/INT/TERM also attempts the same exact
 owned cleanup after setup, probe or interruption failure. A cleanup failure keeps
-the original failure and makes an otherwise successful artifact nonzero; retain
-owned IDs/partial outcome for operator recovery rather than claim teardown.
+the original failure and makes an otherwise successful artifact nonzero. Retain
+the exact run/source/DB/full-scope/segment ownership record outside disposable
+scratch until absence is verified; cleanup interruption must not erase that
+record. Explicit cleanup re-entry consumes that same record, validates its source,
+DB and complete scope, and resumes only the exact recorded labels/segment. A
+missing already-removed owned label is idempotent; changed or unknown ownership
+refuses before further deletion. Preserve the original interruption/failure and
+each partial cleanup result, even if later explicit recovery succeeds. No broad
+sweep or ambient-row adoption is a recovery mechanism.
 
 Extend the existing registered process-test surface
 `scripts/test-cms-verifier-preconditions.py` for split-review auth-preflight
@@ -119,7 +134,17 @@ its existing CI invocation stays the owning harness gate. Boundary unit tests
 cover a clean empty store seed/read/cleanup, collision refusal
 without modifying the prior row, partial seed failure/retained ownership,
 org/project/garden mismatch refusal, preserved foreign rows/labels, cleanup
-failure, and interruption after seed. The auth harness must fail on 200,400,404,
+failure, and interruption after seed. Add a distinct causal process schedule:
+create an owned segment/label plus foreign controls in isolated storage, execute
+the actual cleanup helper, and synchronize on completion of its exact label
+removal while the segment still exists. Deliver TERM before segment deletion;
+retain the real terminated/partial outcome and ownership record. Re-enter cleanup
+in a fresh process using only that recorded identity, then prove zero owned
+labels/segment and unchanged foreign rows/labels. This is neither a signal before
+cleanup starts nor an ordinary thrown cleanup error. Boundary tests separately
+assert connect/query/decode/close custody (including connect/action failure), no
+native handle crossing, and missing-label re-entry versus mismatched ownership.
+The auth harness must fail on 200,400,404,
 503, missing no_session, changed state, wrong live database or missing readback;
 no such response supplies auth credit. A deliberately failing cleanup must not
 mask the original probe failure. The normal resource fixture remains18 before
@@ -177,7 +202,10 @@ A planning card, mock pass or unpublished model summary proves none of this.
    browser workflow. Default18 and locale20/18/1/1 remain unchanged.
 5. Registered unit/process controls cover empty-store seed/read/cleanup,
    collision refusal, partial setup, scope/DB mismatch, foreign preservation,
-   cleanup failure and interruption. The auth phase fails for200/400/404/503,
+   cleanup failure and interruption, including TERM after actual owned-label
+   deletion but before segment deletion, then exact fresh-process recovery from
+   retained ownership. Prove the partial state before re-entry and zero owned
+   residue/unchanged foreign controls afterward. The auth phase fails for200/400/404/503,
    missing no_session, changed state/counter, missing readback or wrong live
    source. Cleanup failure preserves the original failure and causes nonzero
    status; retained ownership supports operator recovery without a broad sweep.
@@ -201,12 +229,17 @@ this card silently.
 
 ## Estimate and custody
 
-Five points for the named Mongo boundary and lifecycle/fault tests, source-built
-live-DB correspondence, two real auth probes with hidden-counter comparison,
+Five points for the system-named Mongo boundary and complete existing/new helper
+lifecycle/fault tests, source-built live-DB correspondence, two real auth probes
+with hidden-counter comparison,
 signal-safe shell/Python aggregation and actual cleanup qualification. One
 bounded verification outcome reuses the existing entry/helper/routes; splitting
 it into backend-only and probe-only cards would add a handoff across the same
-ownership/teardown contract without reducing the required proof.
+ownership/teardown contract without reducing the required proof. The native
+5538651862 refinements make this existing lifecycle and signal-safe teardown
+contract explicit; they do not add a new product behavior, prerequisite owner or
+estimate. The full resource-fixture behavior remains unchanged while its raw Mongo
+interop moves behind the same system boundary.
 
 This is explicit +5 discovery. Preserve core5 + draft5 + locale3 =13 as the
 previous allocation; add this fixture/auth5 for a current repair total18.
@@ -225,3 +258,8 @@ is introduced. Shared helper/verifier paths are changed first here; core5,
 draft5 and locale3 consume them in dependency order, never overlapping source
 implementation blindly. Persistent product correctness remains owned by its
 actual application contracts.
+
+---
+Root-reviewed local planning correction for native Codex5538651862 atb19f9fc8f2c7bcb9d345bddb3a6883f9c5166fb1, inline roots4287284040/4287284069. Put the complete existing/new touched-helper Mongo lifecycle (client construction/connect/database/query/conversion/delete/finally-close) inside system-named extern.openplanner-translation-mongo.verification-fixture with a CLJS-data action/settings/scope/result API and no script-created/native DB handle crossing. Preserve production stores/contracts and existing resource fixture semantics. Add genuine TERM after exact owned-label deletion before segment removal, retained exact ownership outside scratch, fresh-process exact cleanup reentry, zero owned residue/foreign preservation and original partial/failure evidence. This refines this existing5-point lifecycle/signal-safe teardown outcome; no new owner or estimate. Exact reviewed two-BODY patch12325B SHA712e15a1ca8457faa0d59017839b3c0c00d4836b0a213909442de49430328a7f. Preserve metadata/status/points/dependencies/parent/history and repair18total; no application implementation, fixture/auth probe, test/build/browser/model/runtime, readiness or release credit.
+
+---

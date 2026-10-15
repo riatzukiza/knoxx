@@ -4,7 +4,7 @@ labels: "tasks, 5sp, has-parent, regression, translations, frontend, cms"
 dependency: ["knoxx-translation-review-legacy-fixture-auth-preflight"]
 parent: "knoxx-translation-review-chat-panel"
 type: "task"
-write-id: "1792089694227-0.rxi2bqhqkehf2u6sdiw"
+write-id: "1792092601718-0.c89d4s0ydc40aa1r4jx"
 points: "5"
 title: "Keep translation review mutations bound to the current view"
 priority: "P0"
@@ -77,8 +77,11 @@ locale story depends on that successor and transitively on this one.
   bytes/filename with no retarget or reissue. Only its shared notice/error
   completion requires the captured effective-project generation/target filter
   and mounted lifetime still to be current; a work-row change alone does not alter those
-  export inputs. It does not acquire mutation saving ownership. No SFT/export
-  content semantics, endpoint, provider or pipeline configuration change.
+  export inputs. After router unmount, an already-issued successful export still
+  completes exactly the captured download bytes/filename, while success/error
+  feedback makes no abandoned-view setter call. Rejection downloads nothing.
+  It does not acquire mutation saving ownership. No SFT/export content semantics,
+  endpoint, provider or pipeline configuration change.
 - Replace bare saving ownership with a unique operation identity scoped to the
   current context. A context switch detaches old visible pending state before
   new controls are shown. A new B operation owns B's saving state; old A success,
@@ -157,11 +160,16 @@ reads; the controlled race phase is visibly separate.
    Include already-installed feedback and the first filter/work renders, not
    only stale callbacks arriving after a switch.
 7. Deferred SFT success and rejection after project or locale change cannot
-   install stale shared notice/error. Assert exactly the original captured
-   request and original-coordinate download filename/bytes on success, with no
-   retarget/reissue, mutation or provider call. Exercise the same success/failure
-   policy through normal Export SFT in the visibly synthetic browser phase;
-   its held run-owned SFT response is never forwarded to a real content read.
+   install stale shared notice/error. Add the separate pending Export SFT ->
+   router unmount -> success/rejection schedule in callback tests and the
+   controlled browser phase. Spy on actual notice/error setters: neither is
+   called after unmount. Success still completes exactly one original-coordinate
+   download with captured bytes/filename; rejection produces no download. Assert
+   exactly the original request, no retarget/reissue, translation reload,
+   mutation/provider call or acquired/cleared mutation saving owner. Exercise
+   these policies through normal Export SFT; the held run-owned SFT response is
+   never forwarded to a real content read. The six mutation-runner matrix in AC8
+   does not substitute for these separate read-only completion cases.
 8. For each of the six runners, start exactly one operation and unmount the
    translation page before success, rejection or finally. Actual abandoned-view
    setter and reload callbacks receive no calls after cleanup, and no new
@@ -203,6 +211,9 @@ No accepted implementation, auth result or parent completion is implied.
 Use controlled deferred API fixtures for causal RED. Add explicit cases for
 project, filter and work transitions, current-load preservation, already-settled
 feedback, old/new operation ownership and read-only export success/rejection.
+For export, include actual callback-spy RED for pending -> unmount -> success
+and rejection, independently of the six mutation cases; preserve the successful
+captured download while suppressing only abandoned-view notice/error callbacks.
 First-render RED must be observed before loading/detail passive effects, not
 only after held replacement responses. Add a distinct pre-passive response case:
 change A→B, hold replacement effects, then resolve pending A inventory/manifest
@@ -283,10 +294,15 @@ The adapter must:
 - In that same visibly synthetic phase, intercept the exact source-backed SFT
   GET (project/optional target_lang/include_corrected from `api.cljs:96–101`),
   hold a run-owned text response, use normal Export SFT and then change project
-  or filter. Release success and rejection in separate cases; capture the
-  original-coordinate download bytes/filename and current feedback. No real
-  export/content GET is forwarded, no mutation/provider request is introduced,
-  and owned download artifacts join the existing cleanup checks.
+  or filter. Add a separate normal Export SFT -> CMS router unmount -> completion
+  pair, with the translation view absent before success/rejection is released.
+  Release success and rejection in separate cases; success completes the one
+  original-coordinate download bytes/filename despite unmount, rejection creates
+  none, and the new surface receives no stale feedback. Record exactly one SFT
+  request and no post-unmount translation reload; direct no-setter-call proof
+  remains in the unit spies. No real export/content GET is forwarded, no
+  mutation/provider request is introduced, and owned download artifacts join the
+  existing cleanup checks.
 - Exercise unmount through the existing CMS router link (`app.cljs:105`,
   `app_routes.cljs:17`, `/cms`), then return with the normal Translations link
   for the remount case. This is client-side router navigation, retaining the
@@ -367,5 +383,7 @@ Root-admitted native body-P1 Codex5535316442 correction at914ed5881c563b414addf1
 Native CMS16 Codex body-only P1 review5535724920 on18125604b5cc499e6616ec65cbe768ae5521518c: root reviewed exact two-card patch e40ce45100723de196647e1b629455dd8f009fe9908bdaa90825ce22853010d2. Existing core5 AC10 now explicitly owns one run-namespaced pending legacy es segment seed/live authenticated read/exact cleanup before browser navigation, named Knoxx extern helper/test and registered harness paths. Legacy documents derive from segments; no separate source event or OpenPlanner companion. Refuse collisions/ambiguous upsert or wrong live storage, retain exact partial ownership and cleanup failure, compare hidden label counter through owned helper plus authenticated review state. Real valid reject-payload anonymous POSTs require401/no_session before interception; no unexpected content logging. Preserve all six runners/seven entries, draft5, locale3,13points and accepted8 parent unchanged/open. Auth tests, fixture writes and implementation remain future qualification, not performed by this planning amendment. Local-only source/provenance scope; no public/readiness/review-rerun/model/account/runtime/deployment effect.
 
 Accepted root-reviewed planning split for native Codex5537788801/root4286589102 at7722bb23d7c2baa7006f7d2627ee2b4ec7cf338f. New prerequisite knoxx-translation-review-legacy-fixture-auth-preflight owns5points for the complete run-owned legacy seed/read/cleanup named Mongo boundary, two real auth probes, registered shell/Python/backend controls and genuine checked live cleanup. Transfer those mandatory mechanisms intact; core retains5points for all frontend context/lifetime/saving/six-runner/SFT and unit/browser obligations, consuming the qualified prerequisite before controlled races. Native single-key core dependency added; current repair total18 (fixture5+core5+draft5+locale3), explicit new+5 discovery beyond13. Existing metadata/status/parent and historical comments remain; accepted8 parent unchanged/open. Correct the short fetch-helper source reference without diagnosing the HOST ripgrep failure. Exact newBODY13705B SHA1bc5d4858cca428ee1d0ae338685614c44b6c55f340c47d047e5d1a9bf4661c1 and3BODYpatch20309B SHA10a2d22792ac07199e497debea1c200a23314baae53c2767bea85d0d18059696. Local planning only: no implementation, auth/fixture probe, test/build/browser/model/runtime, readiness, review approval or release credit.
+
+Root-reviewed local planning correction for native Codex5538651862 body-only Export SFT unmount finding atb19f9fc8f2c7bcb9d345bddb3a6883f9c5166fb1. Add explicit pending Export SFT -> normal router unmount -> success/rejection schedules to callback-spy RED and controlled browser AC7/verification. Preserve exactly one original captured request and successful download bytes/filename after unmount; rejection downloads nothing; abandoned notice/error setters and translation reload receive no calls; export acquires/clears no mutation saving owner. Browser route/download/counters and actual unit callback spies are distinct proof, with zero real forwarded synthetic SFT/content/mutation requests. Existing core5 already owns read-only export mounted lifetime; fixture5/draft5/locale3, dependencies/status/metadata/parent/history and18total remain unchanged. Exact reviewed two-BODY patch12325B SHA712e15a1ca8457faa0d59017839b3c0c00d4836b0a213909442de49430328a7f. Local planning only; no source implementation/test/browser/model/runtime/readiness/release credit.
 
 ---
