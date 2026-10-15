@@ -310,3 +310,12 @@
   spore: none
   receipt-refs: c97d13dbbe077da346e581457e61b957555ca65734c025ae4062f259267631d8,0f0d551625200ab1cf8ee3c96649aba041db5dca
   note: Exercise the actual pinned SDK catch/fallback rather than copy its policy into an alias. Preserve valid native and transport fallback neighbors while retaining row rejection independently. Distinguish complete tested dirty candidate from test-only parent commits and keep initial fixture mismatches as historical evidence. No spore/promotion.
+- ts: 2026-10-15T00:14:25.832648062Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: Commit checked shared runtime and genuine query refusal retention
+  p-efficiency: 0.85
+  p-friction: 0.65
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: c583d8b24928d3d55b9f82cb88e583474c783bad32bf4587d92799372b2bc2e8,784aef02dbab55ab6c5571ad9e41aedd300f3837
+  note: A lower SDK catch can turn validated malformed rows into successful fallback. Retain the original refusal per invocation while preserving true transport fallback. Bind full actual source, original RED predicates, fixture relocation, current compiled HTTP closure and explicit EOF-only corrections; local source qualification does not grant live integration or release admission. No spore or promotion.
