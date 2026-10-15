@@ -625,3 +625,12 @@
   spore: none
   receipt-refs: .ημ/receipts.edn#298db334-b449-4a50-a7ea-df27045ea256
   note: Source48296e06ed5d25c6a131744848a7462968022676; nativeCodex5539948033 four roots. First-render omission/candidate safety, filter-ABA export fence, complete Node/Mongo extern scope; same18points/history. Three BODYs/nativecomments and2645otherinputs preserved. NativeSMaed9cde5-e3a4-42a4-8e85-148d4c36b743. Canonical parser/custody only; no app/auth/browser/model/runtime/public effects. Candidate0/no spore.
+- ts: 2026-10-15T21:53:23.773497876Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-native-resource-locale-filter-plan-19f-v1
+  task: CMS16 strict fixture-entry boundary verification planning
+  p-efficiency: 0.92
+  p-friction: 0.15
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#6b4466cc-e247-43a5-b9c1-11183d3c6576
+  note: Source7adf11002889e11abb036627063b870dba73a6dd; nativeCodex5540235261/root4288525597. Exact fixture-entry strict assertion with each forbidden-category actual-checker controls, missing/unreadable refusal, unchanged legacy allowlist. Samefixture5/18points/history; oneBODY/nativeevent,2647otherinputs preserved. NativeSMefefc438-582a-4058-9553-7bda02916712. Canonical parser/custody only; tests/implementation/public/runtime remain unexecuted. Candidate0/no spore.
