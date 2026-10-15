@@ -580,3 +580,12 @@
   spore: none
   receipt-refs: .ημ/receipts.edn#5d1029b9-f8b7-400e-9317-220e4538d450
   note: Source19180ed14c53dc38a8dbf77ed2f18eb8b70cfee1; Codex5535724920 inline4285031557/body-only P1; exact approved patch e40ce45100723de196647e1b629455dd8f009fe9908bdaa90825ce22853010d2. Core5 fixture lifecycle and locale3 real anonymous GET preflight, draft5/13points/parent8 preserved. Native reflection80f6b6a1-9f4a-4f13-a5d4-5096bd9f9978. Planning-source custody only; no app/auth probe/fixture/build/browser/public/runtime effect. Preserve failed private read-only reader invocation and no-replay recovery. Candidate0/no spore.
+- ts: 2026-10-15T18:46:19.941520678Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: CMS16 separate five-point legacy fixture auth prerequisite
+  p-efficiency: 0.90
+  p-friction: 0.19
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#cddbfbe6-5ace-42cf-8229-4fdfb37e8265
+  note: Source70495d6fa5531cf05afe1cc8fd74bcf8e930772f; Codex5537788801/root4286589102. Newfixture/auth5->core5->draft5->locale3 total18/new+5; accepted8parent/history unchanged. Native7events, exact4BODYs/canonicalparser,2644otherinputs retained. Native reflection24171718-e3ee-4711-980a-a835715e3b00. Plan only/no fixture/auth/test/build/browser/model/public/runtime effects. Preserve refused772 HOSTtrace and Gitlink baseline-reader refusal/correction. Candidate0/no spore.
