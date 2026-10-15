@@ -598,3 +598,12 @@
   spore: none
   receipt-refs: .ημ/receipts.edn#510fcf8e-ae13-4855-b44a-4dd87c2c1ce4
   note: Source9a62cde06ac2fc0d3dc8777fb8a186f0c5ca12bd; Codex5538651862 roots4287284040/4069 and body-only export-unmount. Two native scope comments + exact two BODYs; all2649physical/Git inputs/modes and2646otherinputs preserved; metadata/history/dependencies/18total unchanged. Full system-named Mongo lifecycle and exact TERM mid-cleanup recovery; separate export-unmount callbacks/browser with captured download kept. Native reflectionc4a72401-74a3-4bbd-963b-3de723220f1f. Planning only/no implementation/app/fixture/auth/test/build/browser/model/runtime/public effects. Originalb19 UnknownError remains failed; conditional retry neverexecuted. Candidate0/no spore.
+- ts: 2026-10-15T20:23:01.716259650Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-native-resource-locale-filter-plan-19f-v1
+  task: CMS16 fixture contracts and async readiness planning
+  p-efficiency: 0.87
+  p-friction: 0.23
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#e97124e7-d61c-4155-aa1a-198062371b20
+  note: Source47316dde30e504d622e5dfc1185e9db27d40b185; Codex5539062909 four roots. Two BODYs/currentfilename+2nativecomments, uniqueUUID/currentpath, originalcreation/ledger/comment prefixes and2646otherinputs preserved. Fixture assertions/exact detailGET and changed-runner async/await planned;18total/metadata/deps unchanged. NativeSM919b6746-1de8-4550-ae09-58c970228f0a. No app/test/public/runtime effects. Read-only wrapper failures retained; candidate0/no spore.
