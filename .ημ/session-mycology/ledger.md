@@ -508,3 +508,12 @@
   spore: none
   receipt-refs: .ημ/receipts.edn#9c06a569-fd27-425c-9fac-0adb0c2a2fb0
   note: Accept three source-backed current-head findings: control and disclose exact project manifest response in private opt-in browser scenario with teardown, await empty-map render/nl witness before RED, and clear installed selected work/detail with generation invalidation at project change. Keep causal UI fixture evidence separate from genuine backend/provider health. MiMo model submit completed but invocation trace guard failed; retain native failure without credential fallback. No app/runtime effect, candidate0.
+- ts: 2026-10-15T10:46:29.022132541Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: PR16 two-P1 plan: immediate inventory boundary and pending mutation UI guard
+  p-efficiency: 0.81
+  p-friction: 0.44
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#4a394adb-7844-4d4a-88a8-04128a9bd7ce
+  note: Keep first-render row exclusion separate from passive loader side effects, and distinguish zero-new-mutation passive tests from an already pending one-call API-stub case. Guard stale UI completion/reload while preserving already-authorized server operation semantics. Qualified source18f4647 committed separately from this provenance. No app/runtime/live model/content effect; preserve current actual MiMo run and historical trace rejection. Candidate0/no spore.
