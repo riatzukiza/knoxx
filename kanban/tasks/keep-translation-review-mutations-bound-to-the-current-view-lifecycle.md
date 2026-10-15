@@ -4,7 +4,7 @@ labels: "tasks, 5sp, has-parent, regression, translations, frontend, cms"
 dependency: ["knoxx-translation-review-legacy-fixture-auth-preflight"]
 parent: "knoxx-translation-review-chat-panel"
 type: "task"
-write-id: "1792095292970-0.2746cnw4c4yz5qv7syk"
+write-id: "1792097679272-0.zlotofapijexxb3zse"
 points: "5"
 title: "Keep translation review mutations bound to the current view"
 priority: "P0"
@@ -213,6 +213,18 @@ reads; the controlled race phase is visibly separate.
    preconditions require HTTP401/no_session, not merely any non-200 response.
    An unexpected content response fails without logging its body; an unavailable
    route/legacy503 cannot pass authentication and blocks this in-scope check.
+   Also send exactly one independent credential-free
+   `POST /api/publications/translations/dispatch` for the existing run-owned
+   resource publication before its cleanup and any synthetic adapter. Use the
+   exact frontend-built `{:publication <owned-publication-id>}` wire payload,
+   no revision/retry flag, empty cookie jar and no Authorization/API/identity
+   headers; require401/no_session. Establish source/route/auth/store readiness,
+   unchanged real owned writer state, including hidden dispatch/claim/batch/receipt
+   state as applicable to
+   the configured runner. Unavailable proof fails. Count this dispatch probe
+   separately from SFT, split-review probes and fixture5's two legacy POSTs plus
+   one detail GET. Dispatch/Retry UI races remain synthetic with original counts
+   and zero live forwarding.
 
 10. Consume the completed source-bound artifact from prerequisite
     `knoxx-translation-review-legacy-fixture-auth-preflight` before navigation or interception.
@@ -269,14 +281,42 @@ path. Do not mistake an early503/unavailable proxy for proof of authentication.
 The exact URL/query comes from frontend `api.cljs:96–101`, not a guessed path.
 Preserve the existing anonymous inventory check and all real auth/inventory reads.
 
+Add that dispatch assertion inside this artifact's existing real pre-interception
+phase. Resolve the publication and effective tenant/project from its authenticated
+run-owned resource inventory, not placeholders, a legacy segment, empty body or
+whole-corpus selection (`api.cljs:62–71`). Verify the exact serving backend/route,
+enabled auth/policy and configured stores; do not dispatch authenticated work to
+prove readiness. The separate `verify-translation-dispatch.sh:278–288` has older
+anonymous checks but is not invoked here, and its later real dispatch/provider
+steps must not be run merely to inherit them. Use an independent no-cookie,
+no-auth/API/identity-header client, forbid redirects and retain no sensitive
+request headers/content. The existing named verification read boundary supplies
+source-backed before/after owned dispatch/claim/batch/receipt snapshots for the
+configured verification runner. Registered route/harness controls separately spy
+on the actual queue/agent/event-turn writer dependencies and require zero calls
+when authentication refuses; do not infer that call-level result from live HTTP
+or unchanged snapshots. API/UI equality cannot stand in for the live hidden-state
+comparison; an unavailable observation fails the precondition. No new fixture family,
+public endpoint, provider/model call or writer is introduced. The legacy
+prerequisite completes its own checked cleanup before controlled navigation;
+this separate dispatch probe runs while the resource fixture is still present
+and before that resource fixture's checked cleanup.
+Add registered harness adverse controls: all other preflights401 but dispatch
+returns200/400/404/503 or lacks no_session must fail;401/no_session with changed
+hidden state or a writer invocation must also fail. Preserve the original probe
+failure and exact retained ownership if cleanup fails. Report safe status/code,
+counts/equality and cleanup facts only. Keep the existing label-counter/legacy
+counts under fixture5 and keep these real auth results separate from the later
+synthetic adapter and frontend callback tests.
+
 The mandatory prerequisite `knoxx-translation-review-legacy-fixture-auth-preflight` owns the real
 legacy fixture/auth phase formerly described here, including the exact legacy
 detail GET's authenticated readiness and independent401/no_session proof while
 that run-owned fixture exists. Consume its independently
 source-bound preflight/cleanup result before installing this card's controlled
 browser adapter; do not duplicate the backend/harness implementation or claim
-its two real POSTs are synthetic. This story still proves real SFT authentication
-above and the zero-forwarded controlled races below. All source-built payload,
+its two real POSTs are synthetic. This story separately proves real SFT and
+dispatch authentication above and the zero-forwarded controlled races below. All source-built payload,
 readiness,401/no_session, unchanged-state/counter, default-count and exact
 cleanup obligations remain in the named prerequisite's acceptance.
 
@@ -420,5 +460,7 @@ Accepted root-reviewed planning split for native Codex5537788801/root4286589102 
 Root-reviewed local planning correction for native Codex5538651862 body-only Export SFT unmount finding atb19f9fc8f2c7bcb9d345bddb3a6883f9c5166fb1. Add explicit pending Export SFT -> normal router unmount -> success/rejection schedules to callback-spy RED and controlled browser AC7/verification. Preserve exactly one original captured request and successful download bytes/filename after unmount; rejection downloads nothing; abandoned notice/error setters and translation reload receive no calls; export acquires/clears no mutation saving owner. Browser route/download/counters and actual unit callback spies are distinct proof, with zero real forwarded synthetic SFT/content/mutation requests. Existing core5 already owns read-only export mounted lifetime; fixture5/draft5/locale3, dependencies/status/metadata/parent/history and18total remain unchanged. Exact reviewed two-BODY patch12325B SHA712e15a1ca8457faa0d59017839b3c0c00d4836b0a213909442de49430328a7f. Local planning only; no source implementation/test/browser/model/runtime/readiness/release credit.
 
 Root-reviewed local planning correction for native Codex5539062909/current0429, roots4287621750 and4287621762: require ^:async/await/try-catch-finally for all changed segment/document/approval/dispatch/export runners, preserving existing async resource split/bulk, request counts/payloads, saving ownership and approval->reconcile order. Consume fixture5 exact legacy detailGET readiness/auth refusal before synthetic browser interception. Correct only the current Markdown filename from -ifecycle to -lifecycle; native creation already recorded -ifecycle, so preserve its exact source-path row, every historical comment/receipt/pinned URL and UUID without source-path frontmatter mutation. Canonical readback must identify one current UUID/path. Same core5, dependencies/history/18total unchanged; planning only/no app/test/public/runtime effects.
+
+Root-reviewed local planning correction for Codex5539622567/currente9 root4288059104: independently require ONE real credential-free POST /api/publications/translations/dispatch using the frontend publication-only selector from authenticated run-owned resource inventory, source/route/auth/store readiness, no cookies/auth/API/identity headers or redirects,401/no_session and unchanged hidden owned writer state before interception/resource cleanup. Registered route/harness controls separately prove zero queue/agent/event-turn writer calls; live snapshots do not imply call-level proof. Add dispatch200/malformed/unavailable/missing-code and changed-state/writer adverse controls. Keep dispatch count separate from legacy2POST+detailGET/SFT/resource-review probes and preserve zero-forwarded synthetic Dispatch/Retry counts, original failure/checked cleanup. Do not run the standalone script real dispatch/provider steps. Samecore5/deps/status/history/18total; no application/test/auth/model/runtime/public effects.
 
 ---

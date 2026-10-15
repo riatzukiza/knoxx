@@ -4,7 +4,7 @@ labels: "tasks, 5sp, has-parent, verification, translations, cms"
 dependency: []
 parent: "knoxx-translation-review-chat-panel"
 type: "task"
-write-id: "1792095253623-0.puzgjk2wh8q34np33hk"
+write-id: "1792097673224-0.mt5bhq2bloaomsatdxw"
 points: "5"
 title: "Seed run-owned legacy review fixtures and prove auth preflight"
 priority: "P0"
@@ -78,6 +78,10 @@ Keep pure fixture construction and existing production store/domain contracts
 intact; no second review, authorization, schema, tenant or cleanup law is added.
 Document this system-named child in the existing boundary inventory where required;
 no use-case-named generic extern or opaque raw-Mongo escape hatch is introduced.
+Its already owned typed read action also supplies exact run-owned resource
+dispatch/claim/batch/receipt snapshots to core5's separate dispatch auth assertion,
+using the same request/result and read-only/tenant guards. It adds no fixture,
+public API, dispatch/provider call or legacy probe count.
 
 Add the pure named law `knoxx.backend.law.translation-review-verification-fixture`
 in `backend/src/cljs/knoxx/backend/law/translation_review_verification_fixture.cljc`,
@@ -192,8 +196,14 @@ mask the original probe failure. The normal resource fixture remains18 before
 and after this preflight and opt-in locale mode remains20/18/1/1. Register real
 RED before the implementation, then require zero failures/errors/warnings from
 the existing backend test build and typecheck (`pnpm -C backend exec shadow-cljs
-compile test`, `pnpm -C backend typecheck`), the affected backend build where
-required, shell syntax and the genuine live preflight with exact source custody.
+compile test`, `pnpm -C backend typecheck`), explicitly registered full backend
+lint `pnpm -C backend run lint`, the affected backend build where required,
+shell syntax and the genuine live preflight with exact source custody.
+The lint script (`backend/package.json:26`) runs clj-kondo over all `src/cljs`
+and `test/cljs` with `--fail-level warning`; typecheck at line32 only compiles
+server and cannot substitute. Retain complete lint output and actual native exit;
+require zero errors and zero warnings without narrowing paths, suppressing
+warnings or waiving a historical failure for this story's law/extern/test work.
 Run `python3 scripts/test-cms-verifier-preconditions.py` as its registered gate.
 These backend/helper gates belong to this separately estimated prerequisite.
 The dependent frontend stories retain their own unit/browser gates; this
@@ -313,5 +323,7 @@ actual application contracts.
 Root-reviewed local planning correction for native Codex5538651862 atb19f9fc8f2c7bcb9d345bddb3a6883f9c5166fb1, inline roots4287284040/4287284069. Put the complete existing/new touched-helper Mongo lifecycle (client construction/connect/database/query/conversion/delete/finally-close) inside system-named extern.openplanner-translation-mongo.verification-fixture with a CLJS-data action/settings/scope/result API and no script-created/native DB handle crossing. Preserve production stores/contracts and existing resource fixture semantics. Add genuine TERM after exact owned-label deletion before segment removal, retained exact ownership outside scratch, fresh-process exact cleanup reentry, zero owned residue/foreign preservation and original partial/failure evidence. This refines this existing5-point lifecycle/signal-safe teardown outcome; no new owner or estimate. Exact reviewed two-BODY patch12325B SHA712e15a1ca8457faa0d59017839b3c0c00d4836b0a213909442de49430328a7f. Preserve metadata/status/points/dependencies/parent/history and repair18total; no application implementation, fixture/auth probe, test/build/browser/model/runtime, readiness or release credit.
 
 Root-reviewed local planning correction for native Codex5539062909/current0429, roots4287621731 and4287621771: explicitly name pure law.translation-review-verification-fixture action/settings/scope/ownership/request/action-dispatched-result schemas and assert-request!/assert-result! boundaries; invalid pre-construction request has zero client/connect/query/mutation/close effects, while an already constructed client closes on action/result refusal with original first cause preserved. Add the exact authenticated legacy document-detail GET readiness plus independent credential-free401/no_session on the same owned URL/scope before cleanup and any synthetic interception, with unchanged-state/count/failure evidence. These refine this existing fixture/auth5 outcome; preserve all metadata/dependencies/points/history and total18. No application implementation, fixture/auth/test/browser/model/runtime/readiness/release credit.
+
+Root-reviewed local planning correction for Codex5539622567/currente9 root4288059113: explicitly require pnpm -C backend run lint, retaining the full src/cljs+test/cljs clj-kondo --fail-level warning pathset, complete actual output/exit and zero errors/warnings alongside test/server compiles; no narrowing, suppression or historical-red waiver. The already owned typed verification read may expose only exact run-owned resource/publication+tenant/source-bound dispatch/claim/batch/receipt snapshots for core5. Extend action-dispatched request/result schemas as needed, validate before DB access and return safe state/equality/count data only, never handles/content/credentials or a generic read escape. Samefixture5/status/dependencies/history/18total; no new fixture/API/model/writer, app/test/auth/runtime/readiness or public effect.
 
 ---
