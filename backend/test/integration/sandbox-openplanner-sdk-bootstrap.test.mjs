@@ -409,3 +409,35 @@ test('actual JVM resolves the helper-owned fresh home before SDK lifecycle', { t
     console.log('REAL-JVM fresh owned user.home, including spaces, verified before refused transport install.');
   } finally { await rm(owned, { recursive: true, force: true }); await assert.rejects(lstat(owned), { code: 'ENOENT' }); }
 });
+
+test('fixture interruption lets the nested helper stop its owned TERM-ignore SDK child', { timeout: 30_000 }, async () => {
+  const base = process.env.KNOXX_SANDBOX_SDK_RUN_ROOT ?? tmpdir(); await mkdir(base, { recursive: true });
+  const owned = await mkdtemp(join(base, 'knoxx-sdk-nested-interrupt-'));
+  let pid, timer;
+  try {
+    const env = await isolatedEnvironment(owned), tools = join(owned, 'tools'), ready = join(owned, 'child.pid');
+    await mkdir(tools);
+    await writeFile(join(tools, 'pnpm'), `#!${process.execPath}\nimport fs from 'node:fs';if(process.argv[2]==='--version'){console.log('10.20.0');process.exit(0);}fs.writeFileSync(${JSON.stringify(ready)},String(process.pid));process.on('SIGTERM',()=>{});setInterval(()=>{},1000);\n`);
+    await chmod(join(tools, 'pnpm'), 0o700); env.PATH = `${tools}:${env.PATH}`;
+    let sent = false, failure;
+    timer = setInterval(async () => {
+      if (!sent && await readFile(ready).catch(() => null)) { sent = true; pid = Number(await readFile(ready, 'utf8')); process.kill(process.pid, 'SIGTERM'); }
+    }, 50);
+    try {
+      await execute(['/bin/bash', join(repo, 'scripts/build-sandbox-openplanner-sdk.sh'), 'prepare',
+        '--source', process.env.KNOXX_SANDBOX_SDK_SOURCE ?? resolve(repo, '../openplanner'), '--run-root', join(owned, 'run')],
+      { cwd: owned, env, timeout: 20_000, stream: false });
+    } catch (error) { failure = error; }
+    clearInterval(timer); assert.equal(sent, true); assert.equal(failure?.result?.interrupted, 'SIGTERM');
+    await assertStopped(pid);
+    assert.equal(failure.result.code, 143, 'outer cleanup allows helper to retain its interrupted outcome');
+    assert.equal(failure.result.signal, null);
+    const outcome = JSON.parse(await readFile(join(owned, 'run/evidence/outcome.json'), 'utf8'));
+    assert.equal(outcome.interrupted, 'SIGTERM'); assert.equal(outcome.commands.at(-1).owned_group_kill_sent, true);
+    console.log('NESTED-INTERRUPT actual fixture→helper→TERM-ignore transport exits143 with no live SDK child and retained outcome.');
+  } finally {
+    clearInterval(timer);
+    if (pid) try { process.kill(pid, 'SIGKILL'); } catch (error) { if (error.code !== 'ESRCH') throw error; }
+    await rm(owned, { recursive: true, force: true }); await assert.rejects(lstat(owned), { code: 'ENOENT' });
+  }
+});
