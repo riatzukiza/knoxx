@@ -4,7 +4,7 @@ labels: "tasks, 5sp, has-parent, regression, translations, frontend, cms"
 dependency: ["knoxx-translation-review-current-view-mutation-lifecycle"]
 parent: "knoxx-translation-review-chat-panel"
 type: "task"
-write-id: "1792076096320-0.3jmueuyn4x7oirmpbcf"
+write-id: "1792089695972-0.hxx9kbezwk9w8sn2ws"
 points: "5"
 title: "Preserve current translation drafts while refreshing completed reviews"
 priority: "P0"
@@ -240,13 +240,20 @@ Five points for one same-view reload/form preservation slice: all six existing
 reload-producing runners (Dispatch/Retry share one), bounded coalesced refresh
 and their own unit/browser evidence,
 using core's existing context fence and private adapter. No persistence, provider
-or server work is added. Explicit discovery is +5 beyond prior3+5=8: core5 +
-this5 + locale3 = 13. Accepted8 parent stays unchanged/open. Further independent
-risk must be recorded/replanned rather than silently widening this story.
+or server work is added. That prior draft discovery was +5 beyond3+5=8,
+allocating core5 + this5 + locale3 =13. Native4286589102 now adds the separate
+`knoxx-translation-review-legacy-fixture-auth-preflight` prerequisite5: current
+repair total18, explicit new+5 discovery. This story remains5 and consumes its
+fixture/auth artifact through its existing core dependency; no frontend scope
+is transferred or implementation added here. Accepted8 parent stays unchanged/
+open. Further independent risk must be recorded/replanned rather than silently
+widening this story.
 
 ---
 Accepted root-reviewed five-point P0 sibling for Codex5532975630. Canonical UUIDv4 generated once, substitution manifest983930b5d45ba8fe83eee775afc3d3729d70ef0f5fbd70a714a70d52715f3299 preserves all existing IDs. Own legacy/resource-split/resource-bulk dirty draft preservation through actual controller detail reset/form-sync, pristine external-review preservation, and required coalesced current-context post-snapshot freshness. Own causal unit and visibly synthetic normal-UI browser proof, no fabricated resource detail HTTP endpoint. Depends existing core5; locale3 depends both. Explicit +5 discovery beyond prior8 gives13 repair points; accepted8 parent stays unchanged/open. Exact reviewed body11969B SHA3a6390af117eaa6c3b5224b8d1416e99725893fbf6ff44eae4e7411947117140. Local planning only; no implementation/readiness/push/review/runtime/model/content/publication effects.
 
 Accepted root-reviewed coverage correction for Codex5534710816/root4284210917 at ed39af2915bf6e139a3497f3e0e1be6747cf3e30. Existing draft5 owns all six reload-producing runners and seven normal UI entries: legacy segment, resource split, resource bulk, document review, whole-output approval, Dispatch and Retry (one shared dispatch runner). Preserve direct legacy document detail/reload ordering, original approval -> reconcile, actual server-admitted Dispatch/Retry plus exact compatible editable legacy segments, pristine rehydration and true candidate-authority resets. Reuse the same dirty-draft/current-context/freshness mechanism and existing product/test/private adapter scope, original payloads/follow-ups/counts/auth and zero live effects. Exact admitted one-card patch10082B SHA2a5290235cc8be9f9a30e9e7657f16ccd9297bb16376147ba20de9a80eb1e241. Core5 -> draft5 -> locale3 remains13; accepted8 parent, all points/status/dependencies and prior history stay unchanged. Planning correction only; no application tests/browser/build/model/runtime/deployment success is claimed.
+
+Accepted root-reviewed estimate disclosure for native Codex5537788801/root4286589102 at7722bb23d7c2baa7006f7d2627ee2b4ec7cf338f. Draft/refresh remains5points with every six-runner form-preservation/catch-up obligation and its existing dependency on core unchanged. The separate prerequisite knoxx-translation-review-legacy-fixture-auth-preflight now owns fixture/auth5 and is consumed through core; disclose current repair total18 (fixture5+core5+draft5+locale3), explicit additional+5 beyond previous13. Only this BODY current-estimate paragraph changes here; all prior native history, metadata, accepted8 parent and source qualification obligations remain. Exact reviewed3BODYpatch20309B SHA10a2d22792ac07199e497debea1c200a23314baae53c2767bea85d0d18059696. Local planning only; no implementation, fixture/auth/test/browser/model/runtime/readiness or release effect.
 
 ---

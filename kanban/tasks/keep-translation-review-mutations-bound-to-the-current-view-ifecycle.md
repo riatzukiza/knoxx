@@ -1,10 +1,10 @@
 ---
 category: "tasks"
 labels: "tasks, 5sp, has-parent, regression, translations, frontend, cms"
-dependency: []
+dependency: ["knoxx-translation-review-legacy-fixture-auth-preflight"]
 parent: "knoxx-translation-review-chat-panel"
 type: "task"
-write-id: "1792083441051-0.89rut0uezkg74s6h383"
+write-id: "1792089694227-0.rxi2bqhqkehf2u6sdiw"
 points: "5"
 title: "Keep translation review mutations bound to the current view"
 priority: "P0"
@@ -100,24 +100,16 @@ locale story depends on that successor and transitively on this one.
   review law. Product/test scope is `review_controller.cljs`, `view.cljs`,
   `review_controller_test.cljs` and `page_interaction_test.cljs`. The related
   locale story owns `logic.cljs`, `logic_test.cljs` and locale projection wiring.
-- Verification scope includes the existing API verifier
-  `scripts/verify-translation-split-review.sh`, shared fixture helper,
-  `scripts/verify-translation-split-review-tour.sh` and
-  `docs/verification/translation-split-review.md`. Extend their existing auth
-  step with named anonymous checks for both actual legacy mutation routes;
-  retain the resource bulk check but label its exact route accurately. Preserve
-  default consumers, scenario counts and existing default full-tour behavior.
-- Before synthetic interception, require real credential-free POST probes for
-  legacy segment labels and legacy document review under verified auth-enabled,
-  legacy-route-ready conditions. Use an independent empty cookie jar and no
-  Authorization, API-key or identity headers. Bind IDs, project/garden scope,
-  URL encoding, query and payload to the actual source-built run-owned fixture
-  and current frontend API. Require HTTP401/no_session and authenticated before/
-  after evidence that fixture review state is unchanged with no effective write.
-  Other non-200, validation400, absent404, legacy503 or unready responses cannot
-  prove auth; fail closed without logging unexpected content/body. These probes
-  are real unauthenticated POST requests. Separately, the later controlled phase
-  must still forward zero mutation/provider/publication requests.
+- Consume mandatory prerequisite `knoxx-translation-review-legacy-fixture-auth-preflight` (5 points)
+  for the complete run-owned legacy fixture, real legacy POST auth-preflight,
+  named backend extern/tests, exact cleanup and registered shell/Python proof.
+  This card retains its end-to-end auth acceptance but does not implement or
+  estimate that backend/harness mechanism again. The prerequisite must qualify
+  before core completion or any controlled browser phase.
+- Core-owned human verification remains the shared fixture helper/tour/guide's
+  private deferred browser adapter and its lifecycle checkpoints, plus the real
+  SFT boundary check. Preserve default consumers/cardinalities and keep the two
+  real prerequisite POSTs separate from zero-forwarded synthetic race counters.
 
 ## Non-goals
 
@@ -190,108 +182,21 @@ reads; the controlled race phase is visibly separate.
    An unexpected content response fails without logging its body; an unavailable
    route/legacy503 cannot pass authentication and blocks this in-scope check.
 
-10. In the existing real auth preflight, before any synthetic interceptor,
-    send exactly one credential-free POST to each source-built legacy route:
-    `/api/translations/segments/:id/labels` and
-    `/api/translations/documents/:documentId/:targetLang/review`. Resolve the
-    encoded run-owned IDs and valid scope/payload from the actual legacy fixture
-    and frontend API, not literal placeholder IDs or the resource bulk endpoint.
-    Independently establish enabled auth and compatibility/route readiness.
-    An empty cookie jar and absent Authorization/API/identity headers are
-    mandatory. Both must return401/no_session, and authenticated before/after
-    reads must prove unchanged labels/review state and no effective write.
-    A400/404/503, unavailable prerequisite, unknown state comparison or unexpected
-    content fails this check without logging the body. Keep the existing resource
-    bulk anonymous check as a distinct accurately named assertion. Add these
-    named assertions within the existing auth step; preserve default18 and locale
-    opt-in20/18/1/1 scenario counts and the separate SFT401 preflight.
+10. Consume the completed source-bound artifact from prerequisite
+    `knoxx-translation-review-legacy-fixture-auth-preflight` before navigation or interception.
+    Both exact legacy POST routes must prove401/no_session with unchanged real
+    state/counter and checked owned cleanup; a mocked, unavailable, unready or
+    mismatched phase cannot satisfy this acceptance. Core integration preserves
+    the existing resource bulk/SFT gates, default18 and locale20/18/1/1, and
+    starts no synthetic race until that prerequisite's fixture is gone.
 
+### Separate fixture/auth ownership
 
-### Run-owned legacy auth fixture lifecycle
-
-For native body-only Codex review5535724920, AC10 owns a bounded legacy fixture
-lifecycle in this same five-point current-view verification slice. The current
-shared resource writer and candidate seed do not create legacy segments. Add
-only one pending Spanish legacy segment for a fresh run-namespaced document;
-legacy document detail/list is derived from segments, so no separate source-event
-or document record, OpenPlanner companion change, new server API, provider call,
-approval or publication is needed. Keep draft/refresh5 and locale3 unchanged in
-estimate and implementation responsibility; core5 + draft5 + locale3 remains13.
-This is a missing executable mechanism for this card's existing AC10, not a new
-product outcome or permission to enlarge the accepted eight-point parent.
-
-Extend the existing `backend/scripts/translation_split_review_fixture.cljs`
-entry point and shell helper with explicit legacy-seed/read/cleanup actions.
-Keep new raw Mongo interop in the named Knoxx verification boundary
-`backend/src/cljs/knoxx/backend/extern/translation_review_verification_fixture.cljs`,
-with its automatically discovered regression namespace
-`backend/test/cljs/knoxx/backend/extern/translation_review_verification_fixture_test.cljs`.
-The boundary accepts the existing owned database handle and Clojure-shaped scope,
-reuses the existing translation request contracts/segment representation, and
-adds no independent review, authorization, schema or tenant policy. Document this
-named extern boundary where the existing boundary inventory requires it.
-
-Before a seed attempt, register run ownership and cleanup intent in the existing
-trap. Derive a distinct document ID from the helper's fresh run namespace, carry
-the actual org/project, garden (including a real nil legacy coordinate) and es target,
-and refuse an existing/colliding row. Persist exactly one valid pending segment
-with run-owned fixed synthetic source/translation text and no labels. Retain its
-actual Mongo ObjectId and full scoped identity even on a partial seed failure.
-Never adopt an ambient record or treat an upsert of an existing record as a fresh
-owned seed. Legacy review contracts require a nonblank project: if the actual
-server scope cannot supply it, fail the precondition instead of inventing one
-or sending a malformed payload and calling its response authentication proof. An authenticated source-built document/detail and segment read must
-recover that exact ID and scope from the live backend before any anonymous POST;
-this also detects a helper database different from the selected live client.
-REST mode or unavailable/mismatched Mongo storage cannot silently pass or fall
-back to somebody else's data.
-
-Run AC10 as a distinct real auth-preflight phase before translation navigation,
-synthetic interception, or manual filter request counters. Snapshot the owned
-segment's status/labels and document review summary through authenticated reads,
-and its stored label_version_counter through the exact owned helper read. The
-API's segment-view does not expose that counter; do not pretend an HTTP snapshot
-covers a failed label attempt that changed only the counter. Use the frontend's actual encoded paths/scope and contract-valid reject
-payloads (`overall:"reject"`, no corrected text; the segment label also carries
-the normal adequacy/fluency/terminology/risk fields). Rejection is deliberate:
-these two existing paths invoke graph-memory writes only for approved outcomes.
-Send exactly one credential-free POST per route from an independent empty-cookie
-client, require401/no_session, and compare the same authenticated state after
-each probe. Capture only scope/IDs, response status/error code, counts/digests
-and equality outcomes, never credentials or unexpected content.
-
-Remove only labels belonging to the recorded segment ID and org/project, then
-the exact owned segment with ID + complete doc/org/project/garden/locale identity.
-Validate ownership before deletion and prove zero remaining owned labels/segments
-plus absence of this document from an authenticated scoped list. Do not delete
-source events, resource rows, shared legacy data, whole collections or any broad
-namespace. The aggregated legacy document disappears when its sole segment is
-removed. Complete and verify this cleanup before starting the ordinary resource
-browser workflow, preserving default18 and locale20/18/1/1 cardinalities and all
-existing durable candidate evidence. EXIT/INT/TERM also attempts the same exact
-owned cleanup after setup, probe or interruption failure. A cleanup failure keeps
-the original failure and makes an otherwise successful artifact nonzero; retain
-owned IDs/partial outcome for operator recovery rather than claim teardown.
-
-Extend the existing registered process-test surface
-`scripts/test-cms-verifier-preconditions.py` for split-review auth-preflight
-ordering/status/error/cookie isolation and original-failure/cleanup aggregation;
-its existing CI invocation stays the owning harness gate. Boundary unit tests
-cover a clean empty store seed/read/cleanup, collision refusal
-without modifying the prior row, partial seed failure/retained ownership,
-org/project/garden mismatch refusal, preserved foreign rows/labels, cleanup
-failure, and interruption after seed. The auth harness must fail on 200,400,404,
-503, missing no_session, changed state, wrong live database or missing readback;
-no such response supplies auth credit. A deliberately failing cleanup must not
-mask the original probe failure. The normal resource fixture remains18 before
-and after this preflight and opt-in locale mode remains20/18/1/1. Register real
-RED before the implementation, then require zero failures/errors/warnings from
-the existing backend test build and typecheck (`pnpm -C backend exec shadow-cljs
-compile test`, `pnpm -C backend typecheck`), the affected backend build where
-required, shell syntax and the genuine live preflight with exact source custody.
-Run `python3 scripts/test-cms-verifier-preconditions.py` as its registered gate.
-These future backend-helper gates are additional to the existing frontend and
-browser qualification; this planning amendment executes none of them.
+The native4286589102 discovery transfers the entire backend seed/read/cleanup,
+named extern/test, real legacy POST probes and registered shell/Python/live
+qualification intact to the new prerequisite5. This card's original frontend
+fences, six runners, read-only SFT policy and unit/browser obligations stay5.
+No accepted implementation, auth result or parent completion is implied.
 
 ## Verification
 
@@ -322,36 +227,18 @@ path. Do not mistake an early503/unavailable proxy for proof of authentication.
 The exact URL/query comes from frontend `api.cljs:96–101`, not a guessed path.
 Preserve the existing anonymous inventory check and all real auth/inventory reads.
 
-For native body-only Codex review5535316442, extend the existing API verifier's
-auth step and the shared tour/guide with the two exact legacy POST checks in
-AC10. Frontend `api.cljs:38-45,82-90` defines their source-built paths/body scope;
-`view.cljs:180-200,234-254` uses existing `logic/prepare-label-payload` and
-`logic/legacy-review-scope` for the original form/status and selected row's
-project/garden/document/locale coordinates. Reuse those exact builders. The existing verifier's `BULK_REVIEWS_URL` check at231-232 is resource
-bulk review, not the legacy document route: retain it and correct its label and
-guide description. Use valid run-owned persisted legacy segments and document
-scope under the actual enabled-auth/legacy-route-ready preconditions. Establish
-an authenticated before snapshot, make each real POST using the independent
-empty-cookie client with no auth/API/identity header, then read the same fixture
-authenticated and compare review/label state and effective-write evidence.
-Only401/no_session plus unchanged fixture state qualifies; status alone or a
-request that cannot reach the intended ready route does not. On an unexpected
-result, stop without printing content/body, including a mistaken success reply.
-Unavailable route/fixture or inability to establish non-mutation remains a
-visible failure, never an auth pass or a manufactured completed checkpoint.
-
-Run these named checks before installing any synthetic browser/fetch interceptor.
-Record their two real unauthenticated POST counts separately from the existing
-SFT GET and resource-auth checks. The controlled race phase retains its own zero
-forwarded mutation/provider/publication counters and exact abort allowlists; do
-not describe the whole artifact as issuing zero POST requests. The current
-planning amendment executes no probes and claims neither an auth vulnerability
-nor a tested auth result. The core5/draft5/locale3 estimates and boundaries stay
-unchanged; these are missing assertions for already affected legacy runners.
+The mandatory prerequisite `knoxx-translation-review-legacy-fixture-auth-preflight` owns the real
+legacy fixture/auth phase formerly described here. Consume its independently
+source-bound preflight/cleanup result before installing this card's controlled
+browser adapter; do not duplicate the backend/harness implementation or claim
+its two real POSTs are synthetic. This story still proves real SFT authentication
+above and the zero-forwarded controlled races below. All source-built payload,
+readiness,401/no_session, unchanged-state/counter, default-count and exact
+cleanup obligations remain in the named prerequisite's acceptance.
 
 The human controlled race phase then uses its private authenticated browser session. Install the run-owned browser adapter before navigating to
 the controlled translation view. The shared HTTP helper resolves `js/fetch`
-dynamically on every call (`frontend/lib/api.cljs:38–43`), so a session-local
+dynamically on every call (`frontend/src/cljs/knoxx/frontend/lib/api.cljs:38–43`), so a session-local
 deferred fetch fixture is supported without changing application source.
 The installed driver's static route/body facility (`browser.js:386–405`) has no
 held-response control; do not pretend an immediate route override reproduces a
@@ -458,9 +345,13 @@ freshness scheduler, with their existing proof obligations, to the separately
 estimated five-point successor; add resource split/bulk form-sync coverage there.
 This is not a verification-only follow-up or a way to call incomplete lifecycle
 work finished. Each story owns executable unit and controlled-browser proof for
-its behavior. The repair becomes 5 + 5 + locale3 = 13: explicit +5 discovery
-beyond the previously published 3+5=8. The broader accepted8 parent remains
-unchanged and open; no estimate or completion is silently consumed from it.
+its behavior. That prior split allocated core5 + draft5 + locale3 =13,
+including explicit +5 draft discovery beyond the earlier3+5=8. The new
+`knoxx-translation-review-legacy-fixture-auth-preflight` independently owns fixture/auth5:
+current repair total18, explicit additional+5 discovery. Core depends on that
+prerequisite; draft depends on core and locale depends on core+draft. The broader
+accepted8 parent remains unchanged/open; no estimate or completion is consumed
+from it. All historical native comments retain their original dated estimates.
 
 ---
 Accepted five-point P0 planning sibling from the root-reviewed PR16 split proposal SHA256 07d31d1c1a6a948effbb876ba68f4c050a85ae92369c16c4c653200e74886a05, body SHA256 339b11a8088af8da26d7f7169792fab948a695ccb18012c4e6cb051c3ad3c864. Native incoming→accepted→breakdown completed without bypass; remains breakdown. Existing knoxx-translation-resource-locale-filter-options stays three points and depends on this story. Explicit new repair total 3+5=8 (+5 discovery); broader accepted eight-point parent remains unchanged and incomplete. Original current-c7 Codex P1 roots 4282077748/4282077754/4282077767 and prior 4281890616 retain their native history. Whole-view actual callback closure, operation-owned saving, original payload/follow-ups, pending-load conservation and controlled browser races are required implementation acceptance. No live mutation/provider/publication, app/runtime, readiness or broader parent completion is claimed by this planning admission.
@@ -474,5 +365,7 @@ Root-reviewed Codex5532975630 split keeps core5/P0/breakdown for synchronous pro
 Root-admitted native body-P1 Codex5535316442 correction at914ed5881c563b414addf1926d79bc5dcd50d3f2. Existing core5 planning requires both exact source-built legacy anonymous POST routes (segment labels and document review) before synthetic interception, under auth-enabled/legacy-route-ready preconditions, independent empty-cookie/no-auth/API/identity-header transport, HTTP401/no_session and authenticated unchanged-state/no-effective-write evidence. Non200/400/404/503/unready cannot pass; never log unexpected content/body. Retain resource bulk anonymous assertion with accurate route naming, SFT401 preflight, normal payloads/follow-ups,6runner/7UIentry coverage, zero forwarded controlled writes and default18/locale20/18/1/1 counts. Add existing API verifier to the named future verification files alongside helper/tour/guide. Core5->draft5->locale3=13, accepted8 parent, all points/status/dependencies/other cards and history stay unchanged. Planning prose only: no probes, tests, auth-vulnerability/result, browser/model/runtime/deployment success claimed.
 
 Native CMS16 Codex body-only P1 review5535724920 on18125604b5cc499e6616ec65cbe768ae5521518c: root reviewed exact two-card patch e40ce45100723de196647e1b629455dd8f009fe9908bdaa90825ce22853010d2. Existing core5 AC10 now explicitly owns one run-namespaced pending legacy es segment seed/live authenticated read/exact cleanup before browser navigation, named Knoxx extern helper/test and registered harness paths. Legacy documents derive from segments; no separate source event or OpenPlanner companion. Refuse collisions/ambiguous upsert or wrong live storage, retain exact partial ownership and cleanup failure, compare hidden label counter through owned helper plus authenticated review state. Real valid reject-payload anonymous POSTs require401/no_session before interception; no unexpected content logging. Preserve all six runners/seven entries, draft5, locale3,13points and accepted8 parent unchanged/open. Auth tests, fixture writes and implementation remain future qualification, not performed by this planning amendment. Local-only source/provenance scope; no public/readiness/review-rerun/model/account/runtime/deployment effect.
+
+Accepted root-reviewed planning split for native Codex5537788801/root4286589102 at7722bb23d7c2baa7006f7d2627ee2b4ec7cf338f. New prerequisite knoxx-translation-review-legacy-fixture-auth-preflight owns5points for the complete run-owned legacy seed/read/cleanup named Mongo boundary, two real auth probes, registered shell/Python/backend controls and genuine checked live cleanup. Transfer those mandatory mechanisms intact; core retains5points for all frontend context/lifetime/saving/six-runner/SFT and unit/browser obligations, consuming the qualified prerequisite before controlled races. Native single-key core dependency added; current repair total18 (fixture5+core5+draft5+locale3), explicit new+5 discovery beyond13. Existing metadata/status/parent and historical comments remain; accepted8 parent unchanged/open. Correct the short fetch-helper source reference without diagnosing the HOST ripgrep failure. Exact newBODY13705B SHA1bc5d4858cca428ee1d0ae338685614c44b6c55f340c47d047e5d1a9bf4661c1 and3BODYpatch20309B SHA10a2d22792ac07199e497debea1c200a23314baae53c2767bea85d0d18059696. Local planning only: no implementation, auth/fixture probe, test/build/browser/model/runtime, readiness, review approval or release credit.
 
 ---

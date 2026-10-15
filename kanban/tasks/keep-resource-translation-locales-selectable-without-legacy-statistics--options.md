@@ -4,7 +4,7 @@ labels: "tasks, 3sp, has-parent, regression, translations, frontend, cms"
 dependency: ["knoxx-translation-review-current-view-mutation-lifecycle", "ae9a3cb7-a630-4d8d-8d60-c69b825d008d"]
 parent: "knoxx-translation-review-chat-panel"
 type: "task"
-write-id: "1792083442017-0.33uduzdd206dmyyl016"
+write-id: "1792089697492-0.n70pl59w9mectz1lrh3"
 points: "3"
 title: "Keep resource translation locales selectable without legacy statistics"
 priority: "P0"
@@ -142,8 +142,13 @@ six-runner operation ownership, unmount and read-only export feedback with its
 own unit/browser proof. The new five-point draft/refresh successor owns legacy,
 resource-split and bulk dirty-draft retention through controller/form-sync plus
 required post-snapshot catch-up, also with its own proof. The first split added
-five points (3+5=8); this second discovery adds five more: core5 + draft/refresh5
-+ locale3 = 13. The broader accepted eight-point parent remains unchanged/open;
+five points (3+5=8), and the second draft discovery added five more, giving the
+prior core5 + draft/refresh5 + locale3 =13. Native4286589102 now separates
+`knoxx-translation-review-legacy-fixture-auth-preflight` as an additional fixture/auth5
+prerequisite of core: current repair total18, explicit new+5 discovery. This
+locale3 already depends on core+draft and therefore consumes that prerequisite
+transitively; no redundant cycle or extra locale implementation is introduced.
+The broader accepted eight-point parent remains unchanged/open;
 its case/receipt/chat/memory/publication obligations are not consumed, completed
 or silently re-estimated by these repair estimates.
 
@@ -381,5 +386,7 @@ Native PR16 current8b187 Codex5532537847 and CodeRabbit5532590232 planning corre
 Root-reviewed Codex5532975630 correction preserves locale3/P0/breakdown, ordering/unfiltered/early options/valid-target/native-auth-inventory/default18-optin20 scope. ONE SINGLE-KEY native dependency edit preserves core5 and adds UUIDv4 draft/refresh5 ae9a3cb7-a630-4d8d-8d60-c69b825d008d. Both predecessor proofs remain mandatory: boundary/operation/unmount/export in core, three-runner dirty draft/controller/form-sync and bounded freshness in successor. Exact UUID-bound body20223B SHAc96f3d60e2953d336ac02005ffacc9fb2dc58394d9742020d44affaf73ea2d2d. Total13 repair points is explicit+5 beyond prior8; broader accepted8 parent unchanged/open. Preserve20 settled native roots, all histories and original browser/502/Sandbox limitations. Local planning only; hold all public PR/body/reply/review/push/merge/readiness effects.
 
 Native CMS16 Codex P1 root4285031557/threadPRRT_kwDOU4VeEc6s2Lri/review5535724920 on18125604b5cc499e6616ec65cbe768ae5521518c: root reviewed exact two-card patch e40ce45100723de196647e1b629455dd8f009fe9908bdaa90825ce22853010d2. Existing locale3 owns exact frontend-built manifest and legacy-document-list real credential-free GETs before any synthetic interception; establish authenticated200 route readiness and require401/no_session with an empty-cookie/header-free client. Exposure200/unready503/400/404 or intercepted/omitted probes cannot pass. Extend shared API verifier and existing registered process tests; retain UI-only empty-manifest evidence and distinguish probe/init/filter counts. Preserve default18/optin20/18/1/1, core5->draft5->locale3=13, all metadata/history and accepted8 parent unchanged/open. Core owns temporary legacy fixture teardown before navigation; no app implementation/auth probe/test/runtime/model/publication or readiness credit. Local-only planning source and separate provenance; public effects held.
+
+Accepted root-reviewed estimate disclosure for native Codex5537788801/root4286589102 at7722bb23d7c2baa7006f7d2627ee2b4ec7cf338f. Locale remains3points with its real locale-read auth and locale UI/projection obligations and existing core+draft dependencies unchanged. New knoxx-translation-review-legacy-fixture-auth-preflight independently owns fixture/auth5 as core prerequisite; locale consumes it transitively. Current repair total18 (fixture5+core5+draft5+locale3), explicit new+5 discovery beyond previous13; accepted8 parent stays unchanged/open. Exact reviewed3BODYpatch20309B SHA10a2d22792ac07199e497debea1c200a23314baae53c2767bea85d0d18059696. Preserve all historical comments/metadata and failed evidence; this local planning correction executes no fixture/auth/test/browser/model/runtime operation and supplies no readiness, approval or release credit.
 
 ---
