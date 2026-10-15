@@ -17,9 +17,10 @@ bash scripts/build-sandbox-openplanner-sdk.sh verify \
 The initially absent run root and its parent must be owned by your user and
 must not traverse symlinks. `verify` seeds and removes its own cold fixtures;
 its retained `evidence/verify.log` and `outcome.json` explain failures. SIGINT,
-SIGTERM and command deadlines escalate to KILL after two seconds for owned
-process groups, even when the leader has exited and descendants closed their
-output streams. Native Node waits/reaps direct children; the host reaps orphaned
+SIGTERM and command deadlines escalate to KILL for owned process groups,
+even when the leader has exited and descendants closed their output streams.
+The SDK command gets two seconds, its fixture supervisor five seconds, and the
+outer `verify` command eight seconds; outer layers permit inner cleanup first. Native Node waits/reaps direct children; the host reaps orphaned
 nonchildren. Controls verify no owned descendant remains live. Do not remove evidence until children have exited.
 
 The explicit registered equivalent is `pnpm -C backend test:sandbox-sdk-bootstrap`

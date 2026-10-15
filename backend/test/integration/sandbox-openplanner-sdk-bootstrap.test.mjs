@@ -30,7 +30,7 @@ async function execute(args, { cwd, env, timeout = 15 * 60_000, stream = true } 
   };
   const boundedStop = () => {
     stop('SIGTERM');
-    escalation ??= new Promise((done) => { hard = setTimeout(() => { stop('SIGKILL'); done(); }, 2000); });
+    escalation ??= new Promise((done) => { hard = setTimeout(() => { stop('SIGKILL'); done(); }, 5000); });
   };
   const timer = setTimeout(() => { timedOut = true; boundedStop(); }, timeout);
   const interrupt = (signal) => { interrupted ??= signal; boundedStop(); };

@@ -59,7 +59,7 @@ async function makeEvidence() {
   assert.ok(stat.isDirectory() && stat.uid === process.getuid() && !stat.isSymbolicLink());
   assert.equal(await fs.realpath(evidence), evidence);
 }
-async function command(argv, { cwd = run, env, log = null, bytes = false, timeout = 15 * 60_000 } = {}) {
+async function command(argv, { cwd = run, env, log = null, bytes = false, timeout = 15 * 60_000, grace = 2000 } = {}) {
   if (interrupted) throw new Error(`SDK interrupted by ${interrupted}`);
   const child = spawn(argv[0], argv.slice(1), { cwd, env, detached: true, stdio: ['ignore', 'pipe', 'pipe'] });
   const output = [], errors = [];
@@ -72,7 +72,7 @@ async function command(argv, { cwd = run, env, log = null, bytes = false, timeou
       try { process.kill(-child.pid, 'SIGKILL'); groupKillSent = true; }
       catch (error) { if (error.code !== 'ESRCH') throw error; }
       done();
-    }, 2000); });
+    }, grace); });
   };
   const handle = { stop }; children.add(handle);
   const timer = setTimeout(() => { timedOut = true; stop('SIGTERM'); }, timeout);
@@ -85,7 +85,7 @@ async function command(argv, { cwd = run, env, log = null, bytes = false, timeou
       child.once('error', reject); child.once('close', (code, signal) => done({ code, signal }));
     });
     const stdout = Buffer.concat(output), stderr = Buffer.concat(errors);
-    record = { argv, code: result.code, signal: result.signal, timed_out: timedOut,
+    record = { argv, termination_grace_ms: grace, code: result.code, signal: result.signal, timed_out: timedOut,
       stop_requested: stopRequested, stdout_bytes: stdout.length, stdout_sha256: sha(stdout),
       stderr_bytes: stderr.length, stderr_sha256: sha(stderr) };
     state.commands.push(record);
@@ -210,7 +210,7 @@ try {
   if (mode === 'verify') {
     await command([process.execPath, '--test', join(dirname(self), '../backend/test/integration/sandbox-openplanner-sdk-bootstrap.test.mjs')],
       { cwd: resolve(dirname(self), '..'), env: { ...env,
-        KNOXX_SANDBOX_SDK_SOURCE: options['--source'], KNOXX_SANDBOX_SDK_RUN_ROOT: run }, log: join(evidence, 'verify.log'), timeout: 45 * 60_000 });
+        KNOXX_SANDBOX_SDK_SOURCE: options['--source'], KNOXX_SANDBOX_SDK_RUN_ROOT: run }, log: join(evidence, 'verify.log'), timeout: 45 * 60_000, grace: 8000 });
     state.outcome = 'success';
   } else {
     const snapshot = join(run, 'selected-source'), filtered = join(run, 'filtered-build');
