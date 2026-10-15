@@ -571,3 +571,12 @@
   spore: none
   receipt-refs: .ημ/receipts.edn#bf5324e7-2a60-4b5c-bac3-920b247d4ca5
   note: CMS16 native body-only P1 review5535316442 is repaired in planning source0afa8141a68dd582649732686ee648cb7018b3ee: name and cover the exact legacy segment-label and document-review anonymous POST routes, not a resource-bulk request mislabeled document review. Preserve auth-enabled/legacy-route-ready preconditions, independent empty-cookie/no-auth/API/identity headers, source-built scope/query/payload,401/no_session plus authenticated unchanged-state/no-effective-write evidence; false non200/400/404/503/unready responses cannot qualify and unexpected content is not logged. Real anonymous probes precede synthetic interceptors and have explicit counts, while controlled races retain zero forwarded writes. Existing SFT/default18/locale20/13points/parent8/sixrunner-sevenentry and all other cards remain unchanged. Root admitted scope, native owner/inventory and all2648 original tracked inputs qualified; exact card/event source commit is separate from provenance. Retain the supervised read-only cleanup error and warning-carrier guard failure; never replay known successful comment/body effects. Candidate0/no spore; no application test/probe/browser/model/runtime/deployment/auth-result claim. Native reflection9a609682-ee6f-4de1-8b70-f9e5e809925b.
+- ts: 2026-10-15T17:00:30.247785569Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: CMS16 two-owner legacy fixture and locale-read planning correction
+  p-efficiency: 0.88
+  p-friction: 0.21
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#5d1029b9-f8b7-400e-9317-220e4538d450
+  note: Source19180ed14c53dc38a8dbf77ed2f18eb8b70cfee1; Codex5535724920 inline4285031557/body-only P1; exact approved patch e40ce45100723de196647e1b629455dd8f009fe9908bdaa90825ce22853010d2. Core5 fixture lifecycle and locale3 real anonymous GET preflight, draft5/13points/parent8 preserved. Native reflection80f6b6a1-9f4a-4f13-a5d4-5096bd9f9978. Planning-source custody only; no app/auth probe/fixture/build/browser/public/runtime effect. Preserve failed private read-only reader invocation and no-replay recovery. Candidate0/no spore.
