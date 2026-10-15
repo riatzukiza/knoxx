@@ -553,3 +553,12 @@
   spore: none
   receipt-refs: .ημ/receipts.edn#e8226f6e-8c31-4723-a9b1-caa1576d6eba
   note: Qualified LOCAL source a73ab71848f9ee849a9ecf0cbc75f874502928c3: exact root-read core5/newdraft5/locale3 split, actual UUIDv4 ae9a3cb7-a630-4d8d-8d60-c69b825d008d, native admission and single-key dependency. Preserve dirty D2 through all three submit/controller/form-sync paths while pristine external review rehydrates; explicit causal six-runner unmount/browser and bounded catch-up. New body scope only, no app execution. Fresh full native catalogs plus canonical bound unchanged source avoid a second board parser. Guard failures stopped before next effects; inspect real native result (create is text, read-task JSON) rather than repeat creation. Source/native-event and canonical provenance remain separate. Public push/body/replies/review requests held for root proof; no readiness/merge/runtime effects. Candidate0/no spore.
+- ts: 2026-10-15T14:58:13.419962026Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: CMS16 P1 all-reload-runner planning coverage
+  p-efficiency: 0.91
+  p-friction: 0.20
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#385f8746-ef8f-4fcf-ae46-e289481ca253
+  note: CMS16 P1 planning coverage correction closes all six reload-producing runners and seven normal-UI entries inside one existing draft5 mechanism. Trace every actual inventory/direct-detail/form-sync consumer; require actual Dispatch/Retry editable legacy-bridge eligibility, keep dirty/pristine synchronization and true candidate-authority reset, original approval->reconcile, payloads/follow-ups/counts/auth and bounded freshness. Root read exact proposal/patch before native owner comment and BODY-only repair. Qualified source64b94c8e0e17bdb927efe7c6d6e2af0f853da160 changes only owner card/native comment event; all2647 physical inputs checked. Keep current Rheos read-board rather than unsupported legacy count; retain actual failure. Candidate0/no spore. Native reflection84cbf3b5-767f-4deb-a418-9bd4d3c3651f is actual, one invocation; no product/test/browser/model/runtime/deployment success. Personal advance and native public settlement remain separate pending effects.
