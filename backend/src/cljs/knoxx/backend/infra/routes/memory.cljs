@@ -161,16 +161,21 @@
 
 (defn ^:async fetch-and-cache-memory-sessions!
   [cache-key fetch-fn]
-  (try
-    (let [value (await (fetch-fn))]
-      (write-memory-sessions-cache! cache-key value)
-      {:value value
-       :cache {:hit false
-               :tier "miss"
-               :stale false
-               :age_ms 0}})
-    (finally
-      (swap! memory-sessions-cache-promises* dissoc cache-key))))
+  (let [value (await (fetch-fn))]
+    (write-memory-sessions-cache! cache-key value)
+    {:value value
+     :cache {:hit false
+             :tier "miss"
+             :stale false
+             :age_ms 0}}))
+
+(defn- forget-owned-memory-sessions-promise!
+  [cache-key promise]
+  (swap! memory-sessions-cache-promises*
+         (fn [pending]
+           (if (identical? promise (get pending cache-key))
+             (dissoc pending cache-key)
+             pending))))
 
 (defn ^:async cached-memory-sessions-source!
   [cache-key fetch-fn]
@@ -182,7 +187,10 @@
         (await pending)
         (let [promise (fetch-and-cache-memory-sessions! cache-key fetch-fn)]
           (swap! memory-sessions-cache-promises* assoc cache-key promise)
-          (await promise))))))
+          (try
+            (await promise)
+            (finally
+              (forget-owned-memory-sessions-promise! cache-key promise))))))))
 
 
 (defn- fetch-session-filter-rows!
