@@ -4,7 +4,7 @@ labels: "tasks, 5sp, has-parent, regression, translations, frontend, cms"
 dependency: []
 parent: "knoxx-translation-review-chat-panel"
 type: "task"
-write-id: "1792065744243-0.1p3ml27w0fqk28vi9oe"
+write-id: "1792069076389-0.k1m6tvi1k731v6v9l2"
 points: "5"
 title: "Keep translation review mutations bound to the current view"
 priority: "P0"
@@ -28,14 +28,18 @@ boundary exclusion and an explicit read-only export feedback policy.
 
 ## Outcome
 
-A reviewer may change project, language filter or selected work while a prior
-mutation is pending. Authorized server work keeps its original payload and
-required follow-up sequence. The page presents only the current context, a
-current operation owns its own saving state, and an older completion cannot
-replace current detail, reload captured coordinates or strand/clear a new
-operation's pending state. An already requested SFT export keeps its original
-read/download coordinates and bytes; only its shared notice/error completion
-is fenced by the captured project generation and target filter.
+This first five-point slice makes project, target-filter, work-identity and
+unmount boundaries safe while operations remain pending. Authorized server work
+keeps its original payload and required follow-up sequence; only the current
+view may receive UI completion and a current operation owns saving state.
+Read-only SFT retains its original request/download and fences shared feedback.
+
+The separate five-point successor
+`ae9a3cb7-a630-4d8d-8d60-c69b825d008d` owns same-view segment/draft
+preservation through direct completion, detail reload and form rehydration, plus
+coalesced freshness after a pre-mutation pending snapshot. Those obligations are
+transferred intact, not dropped or claimed complete by this first slice. The
+locale story depends on that successor and transitively on this one.
 
 ## Scope
 
@@ -58,11 +62,12 @@ is fenced by the captured project generation and target filter.
   pending ownership before the first B context can combine B scope with A detail
   or segment. Keep B's safe selection and legitimate row-scoped controls; do not
   strand B in saving or weaken the current same-project refresh/selection test.
-- Define a current view context covering effective project generation, target
-  filter and selected work identity. Direct segment/form effects also require
-  the submitted segment/form context still to be current; a later selection or
-  edit is not the submitted draft. Bind this context to actual callbacks and
-  closures, not only to a token recorded beside them.
+- Define the base current-view context by effective project generation, target
+  filter, selected work identity and mounted lifetime. Bind it to actual UI and
+  reload/detail closures, not only to a token beside them. Use `logic/same-work?`:
+  a refreshed map with the same logical work identity is not a work-navigation
+  boundary. The successor adds the submitted segment/draft-version guard and
+  dirty-form synchronization policy within that same view.
 - Guard direct detail, form reset, notice/error and saving completion across
   all six existing runners. Preserve their already-issued server payloads and
   mandatory follow-ups, including approval → reconcile; do not retarget,
@@ -70,29 +75,26 @@ is fenced by the captured project generation and target filter.
 - Treat `run-export!` as one separate read-only UI completion, not a seventh
   mutation runner. Preserve its original SFT request and captured download
   bytes/filename with no retarget or reissue. Only its shared notice/error
-  completion requires the captured effective-project generation and target
-  filter still to be current; a work-row change alone does not alter those
+  completion requires the captured effective-project generation/target filter
+  and mounted lifetime still to be current; a work-row change alone does not alter those
   export inputs. It does not acquire mutation saving ownership. No SFT/export
   content semantics, endpoint, provider or pipeline configuration change.
 - Replace bare saving ownership with a unique operation identity scoped to the
   current context. A context switch detaches old visible pending state before
   new controls are shown. A new B operation owns B's saving state; old A success,
   error or finally cannot clear it or install A status. Current B completion
-  releases it normally. Unmount also invalidates UI callbacks.
+  releases it normally. Unmount cleanup invalidates mounted UI completion and
+  the old document/manifest/detail generations; queued refresh in the successor
+  must use that same lifetime fence.
 - A stale-project completion starts no reload. For same-project selection or
-  filter changes, suppress stale direct effects and route any permitted refresh
-  through the current context, preserving the existing same-project B-selection
-  refresh regression unchanged. Never invoke the captured old project/filter
-  reload, advance a pending current request's generation, or prevent its response
-  from installing. Defer/coalesce a required refresh while that context has a
-  pending load. If that pending snapshot predates an admitted same-project mutation
-  completion, coalesce a required refresh rather than dropping it: after the
-  pending request settles, perform one refresh from the still-current project/
-  filter/selection. A current request started after the completion may satisfy
-  that freshness obligation; superseded context must not run a captured reload.
-  Never invalidate the valid pending request, issue duplicate catch-up reads or
-  create an automatic retry loop. A stale-project A completion still cannot
-  refresh B. Any direct detail/form/feedback writes retain the full view fence.
+  filter changes, suppress stale direct effects and route permitted refresh
+  through the actual current context, preserving the existing same-project
+  B-selection refresh regression and its count. Never invoke captured old
+  project/filter coordinates or invalidate a valid pending current request;
+  its original response must still install. Required post-snapshot freshness,
+  coalescing and draft preservation belong to the named successor. There is no
+  permission to permanently drop that freshness obligation; the full successor
+  must qualify before the locale repair or full lifecycle can be adopted.
 - Reuse the existing page/controller boundaries and `logic/same-work?`
   identity; add no generic async framework, endpoint, backend policy or second
   review law. Product/test scope is `review_controller.cljs`, `view.cljs`,
@@ -154,14 +156,18 @@ reads; the controlled race phase is visibly separate.
    retarget/reissue, mutation or provider call. Exercise the same success/failure
    policy through normal Export SFT in the visibly synthetic browser phase;
    its held run-owned SFT response is never forwarded to a real content read.
-8. Start a legacy segment submit on segment S1 with draft version D1. While it
-   is pending, select S2 and edit D2; separately edit a new draft on the same S1.
-   Resolve the old submit and captured detail request last, and cover rejection/
-   finally. Current segment and new draft remain intact, no old detail/form reset
-   wins and no second mutation is issued. The submitted segment/form context is
-   a real completion guard, not merely a three-part project/filter/work token.
-   Preserve the currently interactive segment/draft controls. Add these named
-   cases to both the six-runner matrix and controlled normal-UI browser phase.
+8. For each of the six runners, start exactly one operation and unmount the
+   translation page before success, rejection or finally. Actual abandoned-view
+   setter and reload callbacks receive no calls after cleanup, and no new
+   translation inventory/detail request starts. Already-issued server work and
+   required original follow-ups, including approval -> reconcile, still finish
+   unchanged. A separate unmount -> remount case starts B's legitimate pending
+   operation, then finishes old A; B stays pending until its own completion.
+   The controlled browser uses normal router navigation with the held synthetic
+   operation, records the abandoned view's disappearance before completion and
+   proves no translation reload or stale feedback reaches the new surface.
+   Direct no-setter-call proof belongs to the causal unit spies, not an inference
+   from an absent DOM or missing React warning.
 9. Before installing any synthetic interceptor, make an actual anonymous request
    to the exact source-built SFT GET URL with the real effective project/filter
    and include_corrected query. Use no cookies, bearer/API tokens or identity
@@ -169,16 +175,6 @@ reads; the controlled race phase is visibly separate.
    preconditions require HTTP401/no_session, not merely any non-200 response.
    An unexpected content response fails without logging its body; an unavailable
    route/legacy503 cannot pass authentication and blocks this in-scope check.
-10. In the same project, start a current B inventory snapshot before one admitted
-    mutation completes and hold B's response. Complete the mutation, updating
-    only the synthetic server fixture, then release B's older rows. B's original
-    response installs without cancellation and its selection stays current;
-    exactly one coalesced current-context refresh afterwards reflects the
-    completed mutation. No refresh starts while B is held, no stale captured
-    project/filter reload runs, and multiple relevant completions coalesce
-    rather than duplicate the catch-up. This does not allow an old-project A
-    operation to refresh B. Cover the same ordering/counters in the controlled
-    browser phase, and retain current-context revalidation at the refresh start.
 
 ## Verification
 
@@ -190,9 +186,10 @@ only after held replacement responses. Add a distinct pre-passive response case:
 change A→B, hold replacement effects, then resolve pending A inventory/manifest
 before any B request starts. Neither may reinstall A; do not substitute the
 existing A-last-after-B-starts case. Filter changes invalidate only input-dependent
-loads, retaining a valid same-project manifest without refetch. Add segment-S1/
-new-S2-draft and same-segment-new-draft submit success/error/finally cases; a
-selected work token alone must fail their causal RED. For the six runners, require a named success/error/finally
+loads, retaining a valid same-project manifest without refetch. Add a causal
+pending-operation -> unmount -> success/error/finally matrix and an unmount ->
+remount/new-B-pending case. Spy on the actual callbacks the runners would invoke;
+the missing mounted-lifetime guard must produce RED. For the six runners, require a named success/error/finally
 coverage table rather than claiming one dispatch test proves every implementation.
 Preserve existing tests; new/changed async tests use native `^:async` / `await`.
 The product checks remain the full relevant frontend test and lint commands with
@@ -259,12 +256,16 @@ The adapter must:
   original-coordinate download bytes/filename and current feedback. No real
   export/content GET is forwarded, no mutation/provider request is introduced,
   and owned download artifacts join the existing cleanup checks.
-- Reproduce segment-submit races through normal segment and draft controls:
-  hold S1 submit/captured legacy detail, select S2 and edit a recognizable D2,
-  release stale success/detail or rejection/finally and capture the unchanged S2
-  selection/D2. In a separate same-S1 case edit D2 before completion, proving the
-  draft version is also fenced. All submits and follow-ups remain synthetic and
-  run-owned, with exact payload counts and the existing mutation abort backstop.
+- Exercise unmount through the existing CMS router link (`app.cljs:105`,
+  `app_routes.cljs:17`, `/cms`), then return with the normal Translations link
+  for the remount case. This is client-side router navigation, retaining the
+  private window's held fixture promises. Capture the new route and absence of
+  the translation view before releasing A success/rejection/finally. Translation
+  inventory/detail counters must not grow while it is abandoned, the new
+  surface must receive no A feedback, and a fresh B pending owner after remount
+  must survive A. Target-page reads are explicitly allowed/read-only; the
+  session-wide non-read abort backstop rejects any unexpected write, including
+  target-page effects, rather than forwarding it or granting a pass.
 - Add the pre-passive stale-response order to the controlled fixture: record the
   boundary and release pending A inventory/manifest before the first replacement
   B request. The existing effective-server-project adoption path can provide a
@@ -272,12 +273,10 @@ The adapter must:
   Record the actual order and assert A cannot install; if the driver/runtime
   cannot establish this window, fail/report it rather than silently using the
   later A-last steady-state case or granting browser credit.
-- Prove coalesced refresh after an older same-project snapshot: hold B before
-  a synthetic mutation completes, mutate only the private response fixture,
-  release B's older response and record its installation/current selection,
-  then require one fresh current-context read to show the completed result.
-  There is no cancellation or extra read while B is held, no duplicate catch-up
-  and no captured old coordinates. Distinct project A→B remains no-reload.
+- The successor extends this same fail-closed adapter with its own legacy,
+  resource-split and resource-bulk draft/reload schedules and pending-snapshot
+  catch-up schedule. It owns their causal unit and browser results; the base
+  adapter or a project-switch demonstration cannot claim those cases passed.
 - Keep real authentication and unauthenticated boundary checks separate from
   controlled UI state. Print that synthetic races prove presentation lifecycle
   only; no live mutation semantics, backend health, provider quality or durable
@@ -297,13 +296,27 @@ itself runs none of it.
 
 ## Risks
 
-Current-context refresh can accidentally advance the loader sequence and cancel
-a valid current request; test the original held request actually installs.
+A base context token cannot preserve a newer draft or guarantee post-snapshot
+freshness by itself; the named successor remains mandatory. Current-context
+refresh can accidentally cancel a valid request; conserve its actual install.
 Project-only tokens miss locale and work changes. An unconditional old finally
 can unlock a newer operation, while dropping it without boundary reset can lock
 the view forever. A browser fixture that forwards an unknown POST or silently
 stubs native inventory in the locale phase would misrepresent evidence; its
 fail-closed separation and counters are acceptance requirements.
+
+## Estimate and split custody
+
+Keep this story at five points for the bounded current-view/mounted-lifetime
+fence, operation ownership, six existing runners, read-only export feedback and
+its own causal/browser qualification. Move the old AC8 draft cases and AC10
+freshness scheduler, with their existing proof obligations, to the separately
+estimated five-point successor; add resource split/bulk form-sync coverage there.
+This is not a verification-only follow-up or a way to call incomplete lifecycle
+work finished. Each story owns executable unit and controlled-browser proof for
+its behavior. The repair becomes 5 + 5 + locale3 = 13: explicit +5 discovery
+beyond the previously published 3+5=8. The broader accepted8 parent remains
+unchanged and open; no estimate or completion is silently consumed from it.
 
 ---
 Accepted five-point P0 planning sibling from the root-reviewed PR16 split proposal SHA256 07d31d1c1a6a948effbb876ba68f4c050a85ae92369c16c4c653200e74886a05, body SHA256 339b11a8088af8da26d7f7169792fab948a695ccb18012c4e6cb051c3ad3c864. Native incoming→accepted→breakdown completed without bypass; remains breakdown. Existing knoxx-translation-resource-locale-filter-options stays three points and depends on this story. Explicit new repair total 3+5=8 (+5 discovery); broader accepted eight-point parent remains unchanged and incomplete. Original current-c7 Codex P1 roots 4282077748/4282077754/4282077767 and prior 4281890616 retain their native history. Whole-view actual callback closure, operation-owned saving, original payload/follow-ups, pending-load conservation and controlled browser races are required implementation acceptance. No live mutation/provider/publication, app/runtime, readiness or broader parent completion is claimed by this planning admission.
@@ -311,5 +324,7 @@ Accepted five-point P0 planning sibling from the root-reviewed PR16 split propos
 Planning refinement for native body-only Codex review5532308090 on b896ced5ad2785e776b39bcaf4a757f3ca7081ae: accept P2 export feedback, P2 installed feedback and P1 first filter/work-render state. Root read exact6,018B proposal SHA2567c76aa884431f3f673bffea62fbdaf4e0d23e947b76bfae7eb030684146ddef8 and explicitly admitted bounded read-only SFT shared feedback fencing, preserving original request/download bytes+filename/no retarget/reissue. Expand synchronous project/filter/work boundary exclusion with distinct retained state and installed notice/error; require causal pre-passive unit and visibly synthetic browser checkpoints plus controlled export success/rejection/download evidence. Six mutation runners stay six, source/test/verification files and lifecycle5/locale3 dependency unchanged; parentaccepted8 remains open/byte-unchanged. Canonical status omission of these actual body findings is not dismissal or clearance. Preserve all fourteen native Fixed histories, append-only provenance, pending MiMo and actual cooldown. Planning only: no application/test/browser/build/runtime/model/content/provider/publication/production effect. Separate source/event and canonical RR/portableSM commits.
 
 Native PR16 current8b187 reviews5532537847 and5532590232: require pending segment/draft completion guards, credential-free real SFT boundary before synthetic interception, synchronous old list/manifest/detail invalidation at the applicable project/filter boundary, and required coalesced catch-up after a pre-mutation same-project pending snapshot settles. Preserve valid project-only manifest on filter changes, all original server payloads/followups, pending request installation, and old-project no-reload. Exact authored lifecycle body20598B sha256:cde449c7e1e546a14bbff42cc22044088bd64f21d1097cc930d7cdd9f06fef0b; full six-finding delta17244B sha256:1a51a6fd7c1784998020f7dcd304c7f02fd8c9b1b76d2ad369a4be39d8552da7. Same breakdown/P0/5points/parent and six mutation runners; no metadata/status expansion, app implementation/browser/runtime/provider/content/publication effects. Prior14 native settlements and body review5532308090 history preserved. Current8b187 MiMo actual approved review5532648270 remains historical on correction push; no duplicated review request.
+
+Root-reviewed Codex5532975630 split keeps core5/P0/breakdown for synchronous project/filter/work/mounted boundaries, all six original runners/payloads/followups, operation saving ownership and separate read-only SFT feedback/auth checks. AC8 now explicitly requires pending->unmount->success/error/finally unit callback spies and normal CMS/router/remount browser checkpoints. Old draft AC8 and catch-up AC10 transfer intact to actual five-point sibling ae9a3cb7-a630-4d8d-8d60-c69b825d008d, extended to resource split/bulk and real controller/form-sync resets. UUID-bound body21206B SHA92d3e22312ac0bfdb627cbd1fdde1471e63bc5df6d9cfb061f50cedd94368c02 differs from root-reviewed body only by frozen prospective-symbol substitution. Core5+draft5+locale3=13, explicit+5 discovery; accepted8 parent unchanged/open. Each story owns unit/browser proof; no obligation waived, no product/runtime/publication effect.
 
 ---

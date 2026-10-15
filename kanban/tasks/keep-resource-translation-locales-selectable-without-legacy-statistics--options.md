@@ -1,10 +1,10 @@
 ---
 category: "tasks"
 labels: "tasks, 3sp, has-parent, regression, translations, frontend, cms"
-dependency: ["knoxx-translation-review-current-view-mutation-lifecycle"]
+dependency: ["knoxx-translation-review-current-view-mutation-lifecycle", "ae9a3cb7-a630-4d8d-8d60-c69b825d008d"]
 parent: "knoxx-translation-review-chat-panel"
 type: "task"
-write-id: "1792065744732-0.1f1xcqydp4rrxtxfb6z"
+write-id: "1792069076946-0.u2ecva8t63pdcmqkaqh"
 points: "3"
 title: "Keep resource translation locales selectable without legacy statistics"
 priority: "P0"
@@ -38,7 +38,8 @@ resource reviews by the selected locale before installing document rows, so
 using only those filtered rows for options would hide other real choices after
 selecting one locale.
 
-Mandatory predecessor: `knoxx-translation-review-current-view-mutation-lifecycle`.
+Mandatory predecessor: `ae9a3cb7-a630-4d8d-8d60-c69b825d008d`,
+which depends on `knoxx-translation-review-current-view-mutation-lifecycle`.
 Parent: `knoxx-translation-review-chat-panel`. Product anchor:
 `knoxx-knowledge-ops-translation-document-review-v2`. This is a bounded child of
 the existing accepted eight-point UI owner; it does not complete that owner.
@@ -83,12 +84,13 @@ Français, from the same project's choices.
   to All before the new document load. Generic historical fallback choices may
   remain; they are not evidence of the previous project's resource inventory.
   Consume the mandatory predecessor
-  `knoxx-translation-review-current-view-mutation-lifecycle` for synchronous
-  exclusion of old rows/selected detail/segment/draft/actions, actual current-view
-  refresh/detail closures, operation-owned saving and pending-load conservation.
-  Its six-runner and controlled human race requirements are transferred intact,
-  not waived or declared satisfied by this locale projection. This story cannot
-  complete while that predecessor is unqualified.
+  `ae9a3cb7-a630-4d8d-8d60-c69b825d008d` and its current-view
+  lifecycle predecessor. The lifecycle slice owns synchronous exclusion of old
+  rows/detail/actions, actual view/mounted completion and operation ownership;
+  the draft/refresh slice owns segment/draft retention through reload/form-sync
+  and coalesced post-snapshot freshness. Their six-runner, unmount, read-only
+  export and controlled-browser obligations remain intact. This story cannot
+  complete while either prerequisite is unqualified.
 - Limit product/test changes to the existing translation page files below:
 
   - `frontend/src/cljs/knoxx/frontend/pages/translations/logic.cljs`
@@ -135,12 +137,15 @@ This planning change edits none of those implementation/verification files.
 Estimate: retain three points for unfiltered locale presentation, its own
 project-boundary projection, causal helper/controller/UI regressions and bounded
 real-inventory locale helper/tour/documentation. The separately estimated
-five-point mandatory lifecycle predecessor owns the six mutation lifecycles,
-operation-owned saving and controlled human race mode. This split records an
-explicit +5-point scope discovery: the repair is now 3+5=8, rather than silently
-packing eight points into three. The broader accepted eight-point parent remains
-unchanged/open; its remaining case/receipt/chat/memory/publication obligations
-are not consumed, completed or re-estimated by this allocation.
+five-point current-view lifecycle slice owns boundary/mounted completion,
+six-runner operation ownership, unmount and read-only export feedback with its
+own unit/browser proof. The new five-point draft/refresh successor owns legacy,
+resource-split and bulk dirty-draft retention through controller/form-sync plus
+required post-snapshot catch-up, also with its own proof. The first split added
+five points (3+5=8); this second discovery adds five more: core5 + draft/refresh5
++ locale3 = 13. The broader accepted eight-point parent remains unchanged/open;
+its case/receipt/chat/memory/publication obligations are not consumed, completed
+or silently re-estimated by these repair estimates.
 
 ## Non-goals
 
@@ -247,10 +252,14 @@ project manifest work on filter changes. This story owns the new locale projecti
 consume the predecessor's synchronous row/detail/action boundary rather than
 reimplementing it. The first B resource GET must not carry nl.
 
-The mandatory five-point predecessor owns the complete transferred API-stub
-matrix: installed A rows/detail/actions → first B render, deferred A mutation →
-B held load, same-project es → fr and row A → B stale closure/detail, all six
-runners' success/error/finally, old A completion versus a new B saving owner,
+The two mandatory five-point lifecycle predecessors jointly own the complete
+transferred API-stub matrix. Current-view core owns installed A rows/detail/
+actions -> first B render, deferred A mutation -> B held load, same-project
+es -> fr and row A -> B stale closure/detail, all six runners' success/error/
+finally, old A completion versus a new B saving owner and explicit unmount.
+Draft/refresh owns legacy/resource-split/resource-bulk segment/draft edits through
+actual reload/detail/form-sync, preserving current segment and draft revision.
+The remaining shared requirements include
 original payload/approval→reconcile preservation, and the existing unchanged
 same-project refresh/selection test. Its refined boundary also excludes installed
 feedback and old filtered/detail/segment/form state at the first filter/work
@@ -260,10 +269,11 @@ mutation runners remain six. Its controlled browser race phase must
 exercise those reviewed invariants through normal controls with held synthetic
 responses and a live-mutation abort backstop. These requirements remain blocking
 for the repair and are not replaced by locale-only or mocked unit evidence.
-Its current-load conservation includes the required coalesced same-project
-refresh after a pre-mutation snapshot settles; simply skipping that refresh
-cannot leave the old rows installed indefinitely. Old-project A still cannot
-refresh B, and all catch-up reads revalidate the actual current context.
+The draft/refresh successor owns required coalesced same-project freshness
+after a pre-mutation snapshot settles; core conserves its original pending load.
+Simply skipping that refresh cannot leave old rows installed indefinitely.
+Old-project A still cannot refresh B; all catch-up reads revalidate current
+context, and neither predecessor can claim the other's browser cases passed.
 
 For request-count assertions, settle the initial fixture with the server's
 project equal to the page project, then reset counters. After each successful
@@ -332,5 +342,7 @@ Planning split for native PR16 Codex review 5531973258 on c7b64025fdb0bb5c755e5e
 Native PR16 body review5532308090 is handled in mandatory lifecycle predecessor knoxx-translation-review-current-view-mutation-lifecycle: first project/filter/work boundary excludes installed stale feedback/detail/segment/form with retained state distinguished; separate read-only SFT shared feedback fences captured project generation/filter and preserves original request/download. This locale story retains3points/P0/breakdown, same dependency and live-inventory locale/default18/optin20 scope. Lifecycle stays5; six mutation runners remain6. Root-approved exact proposal7c76aa884431f3f673bffea62fbdaf4e0d23e947b76bfae7eb030684146ddef8. Preserve native fourteen settled roots and source-family/browser limits; no implementation/readiness/runtime/provider/content/publication effect.
 
 Native PR16 current8b187 Codex5532537847 and CodeRabbit5532590232 planning correction: install current successful unfiltered resource locales before awaiting legacy enrichment; revalidate the selected target on fallback-to-manifest/resource option changes, retaining a represented selection or resetting to All with synchronous stale filtered-load invalidation. Add deferred causal unit and visibly controlled browser schedules. Shared pre-passive generations, segment/draft guards, actual anonymous SFT boundary and pending-snapshot catch-up belong to existing mandatory lifecycle predecessor. Exact locale body19529B sha256:f70a2218000c04e1056f16eb0835de63b182efa4f1b85600caaef74974e0e019; full delta17244B sha256:1a51a6fd7c1784998020f7dcd304c7f02fd8c9b1b76d2ad369a4be39d8552da7. Keep breakdown/P0/3points, same lifecycle dependency, scalar labels and accepted8 parent unchanged/open. Preserve default18 and optin20/18/1/1, real auth/inventory versus synthetic race distinction, all14 prior native roots/body review5532308090 and original browser/502/Sandbox limits. No app implementation/readiness/merge/runtime/provider/content/publication effects.
+
+Root-reviewed Codex5532975630 correction preserves locale3/P0/breakdown, ordering/unfiltered/early options/valid-target/native-auth-inventory/default18-optin20 scope. ONE SINGLE-KEY native dependency edit preserves core5 and adds UUIDv4 draft/refresh5 ae9a3cb7-a630-4d8d-8d60-c69b825d008d. Both predecessor proofs remain mandatory: boundary/operation/unmount/export in core, three-runner dirty draft/controller/form-sync and bounded freshness in successor. Exact UUID-bound body20223B SHAc96f3d60e2953d336ac02005ffacc9fb2dc58394d9742020d44affaf73ea2d2d. Total13 repair points is explicit+5 beyond prior8; broader accepted8 parent unchanged/open. Preserve20 settled native roots, all histories and original browser/502/Sandbox limitations. Local planning only; hold all public PR/body/reply/review/push/merge/readiness effects.
 
 ---
