@@ -15,7 +15,7 @@ created_at: "2026-05-27T00:00:00Z"
 
 ## Context
 
-Existing owner `knoxx-knoxx-backend-lint-zero-warning-gate` is native `todo`, P1, three points. Its May 2026 imported body ended at an empty Goals heading and references a retired `specs/` path. No planning-review or acceptance proof is present in that card. Its legacy parent is the still-open forty-point epic `knoxx-knoxx-backend-cljs-lint-remediation`; this refinement preserves that epic and the existing remediation owners.
+Before this planning readmission, existing owner `knoxx-knoxx-backend-lint-zero-warning-gate` was native `todo`, P1, three points. Its May 2026 imported body ended at an empty Goals heading and references a retired `specs/` path. No planning-review or acceptance proof is present in that card. Its legacy parent is the still-open forty-point epic `knoxx-knoxx-backend-cljs-lint-remediation`; this refinement preserves that epic and the existing remediation owners.
 
 The registered `pnpm -C backend lint` script is `clj-kondo --lint src/cljs test/cljs --fail-level warning`. Historical Receipt River event `e03bab12-ee99-45ad-b6ff-725bcf42f01c`, recorded at `2026-10-15T00:14:25.723Z` for source `784aef02dbab55ab6c5571ad9e41aedd300f3837`, retains a genuine failed EC101 run: 13 errors, 283 warnings, 296 diagnostics across 139 files, exit3 and complete cleanup. The earlier bd29 result was 8 errors and 282 warnings across 136 diagnostic owners. Neither is a fresh baseline for the next candidate.
 
