@@ -1,32 +1,70 @@
 ---
-uuid: "knoxx-knoxx-backend-lint-zero-warning-gate"
-title: "Knoxx Backend Lint — Zero Warning Gate"
-status: todo
-priority: P1
+category: "tasks"
 labels: ["tasks", "3sp"]
-created_at: "2026-05-27T00:00:00Z"
+write-id: "1792100369639-0.e6wmgwc1qnnnhz4z49g"
+points: "3"
 source: "specs/tasks/knoxx-backend-lint-zero-warning-gate.md"
-points: 3
-category: tasks
+title: "Knoxx Backend Lint — Zero Warning Gate"
+priority: "P1"
+status: "breakdown"
+uuid: "knoxx-knoxx-backend-lint-zero-warning-gate"
+created_at: "2026-05-27T00:00:00Z"
 ---
 
 # Knoxx Backend Lint — Zero Warning Gate
 
-> Source: `specs/tasks/knoxx-backend-lint-zero-warning-gate.md`
-> Points: 3
+## Context
 
-Date: 2026-05-27
-Status: todo
-Parent epic: `specs/epics/knoxx-backend-cljs-lint-remediation.md`
-Story points: 3
+Before this planning readmission, existing owner `knoxx-knoxx-backend-lint-zero-warning-gate` was native `todo`, P1, three points. Its May 2026 imported body ended at an empty Goals heading and references a retired `specs/` path. No planning-review or acceptance proof is present in that card. Its legacy parent is the still-open forty-point epic `knoxx-knoxx-backend-cljs-lint-remediation`; this refinement preserves that epic and the existing remediation owners.
 
-## Purpose
+The registered `pnpm -C backend lint` script is `clj-kondo --lint src/cljs test/cljs --fail-level warning`. Historical Receipt River event `e03bab12-ee99-45ad-b6ff-725bcf42f01c`, recorded at `2026-10-15T00:14:25.723Z` for source `784aef02dbab55ab6c5571ad9e41aedd300f3837`, retains a genuine failed EC101 run: 13 errors, 283 warnings, 296 diagnostics across 139 files, exit3 and complete cleanup. The earlier bd29 result was 8 errors and 282 warnings across 136 diagnostic owners. Neither is a fresh baseline for the next candidate.
 
-Close the lint-remediation epic with a clean, reproducible verification record that proves the backend satisfies Knoxx's zero-warning policy.
+Current-source observation at 2026-10-15T18:39:31.661887+00:00: exact SDK planning source `642c680a86353b79afcfd7a5ea64f8f27250a9d6` ran the registered `pnpm -C backend lint` once with CI-pinned clj-kondo2025.07.28, Node24.14.1 and pnpm10.20.0. It failed with **7 errors, 258 warnings and 265 diagnostics across124 files**, innerexit3/outer0 and complete local cleanup/untruncated capture. All seven errors are the configured source file-length limit; no syntax/arity/unresolved-name/type/protocol error was reported. Capture `/home/err/.local/share/openhax-codex/20261010/review-state/services-02128b-native-review-readback-v1/agent-SDK17-current642-ACTUAL-registered-pnpm-full-backend-lint-ONCE-v1.stdout` is31789B, SHA256 `1becb287c454d6e1c59be349a89430e363a23ffbfb70c0b8b2f79c2e2d9955dc`. All780 selected input bytes/modes stayed exact and only the fresh owned cache was removed. Native pnpm notices remain retained. This is current failed evidence, distinct from EC101/bd29; no repair, new dependency preparation or fresh pass is implied.
 
-## Problem
+The reviewed SDK5 owner `prepare-the-pinned-openplanner-sdk-in-knoxx-sandbox-bundles` already depends on this UUID. Its PR17 planning head `642c680a86353b79afcfd7a5ea64f8f27250a9d6` has actual MiMo, CodeRabbit and Codex approval and a passing planning gate. SDK implementation and this lint prerequisite remain separately unqualified.
 
-A lint cleanup is not complete when the most visible errors disappear. Knoxx's house rules require zero warnings in CI, so the final task must rerun the canonical gates from a clean enough working state and record exact evidence.
+## Outcome
 
-## Goals
+Produce a reproducible, independently reviewed full-backend zero-error/zero-warning verification record for one explicit Knoxx integration commit. Hand that exact qualified source and evidence to SDK5, which must implement its cold-source bootstrap and verify its own final candidate separately.
 
+## Scope
+
+- Preserve this UUID, P1 and three points. Return the existing card to breakdown through lawful native Rheos transitions before editing its settled body; then obtain planning review and later lawful readiness. Preserve original card/event history, metadata and imported source reference. No transition is implied by this proposal.
+- Recover the accepted repairs and their source/review evidence before creating more work. Existing `knoxx-knoxx-backend-lint-async-workflows-src` and `knoxx-knoxx-backend-lint-test-boundaries` remain separate active five-point owners; `knoxx-knoxx-backend-lint-unused-and-final-warnings` and `knoxx-knoxx-backend-lint-coverage-characterization` remain separate five-point planning owners. Their status, and historical done-card notes, do not establish current integrated qualification. Preserve their scope and ownership.
+- Select and freeze the actual integration commit/tree, included repair commits, command/config/hook bytes, tool versions, genuine dependency preparation, worktree/index state and capture hashes. Use an owned isolated qualification checkout and preserve unrelated source, refs and dirt. Recover the complete current diagnostic inventory; give every remaining finding an actual source-level disposition and existing owner.
+- Before qualification, require independently reviewed prerequisite source that effectively enforces every warning class mandated by AGENTS.md: `:missing-docstring`, `:unused-value`, `:shadowed-var`, `:used-underscored-binding`, `:warn-on-reflection`, `:unsorted-required-namespaces` and `:refer`. Inspect effective pinned-tool behavior and the prerequisite owner’s causal controls; unknown or unsupported enforcement is a blocker, never an implicitly enabled rule. The actual base configuration does not explicitly enable these classes. Enabling or repairing enforcement remains separately owned remediation; this three-point verification card may not accept an unchanged configuration solely because its reported count reaches zero.
+- Wire the existing full `pnpm -C backend lint` command into the required CI job on the qualified integration, retaining its warning failure level, all registered inputs and existing checks. Verify the actual hosted step and outcome on that same commit; the current shared-markup-only CI step is insufficient. This bounded existing-command wiring is part of final-gate delivery, not a new runner.
+- Execute the full registered lint command at warning failure level and retain its real result. Relevant included backend changes must also satisfy AGENTS on the integrated source: zero-warning typecheck and passing registered tests/coverage with unchanged failure propagation. Missing dependency preparation remains a blocker; do not assume the unimplemented SDK5 helper supplies it.
+- Write `docs/verification/backend-zero-warning-gate.md` with exact source/review/capture links, commands, toolchain/dependency preparation, actual outcomes and limits, plus canonical append-only evidence. It identifies the qualified source for SDK5. No new command, runner or parser is required.
+
+## Non-goals
+
+Application refactoring, a generic cleanup campaign, SDK bootstrap/helper/workflow implementation, lint-policy or threshold changes (including implementation of the separately reviewed required-linter prerequisite), exclusions or suppressions, child package-manager changes, copied SDK logic, fabricated generated output, relaxed assertions/fatal/coverage guards, runtime/model/provider/database/content operations and deployment are outside this final-verification card. Existing remediation owners retain implementation and review. Completing this card does not complete SDK5 or the forty-point epic.
+
+## Acceptance criteria
+
+- [ ] Native identity, estimate and existing ownership remain intact. The refinement has its own lawful planning readmission and current-head review; imported status and related SDK approval supply no substitute.
+- [ ] One exact integration commit/tree and included repair commits bind the evidence. Registered command/config/hook changes, source scope, toolchain, real dependency preparation and worktree/index state are independently reviewed and inspectable. Historical results remain dated facts.
+- [ ] The accepted prerequisite source and its actual pinned-tool controls demonstrate effective enforcement of every AGENTS-mandated warning class listed above. Retain configuration/hook/tool hashes and explicit ownership/source review. A missing, ignored or unsupported class blocks completion. No historical count or silent default supplies this evidence.
+- [ ] Required CI on this exact integration actually executes full-backend `pnpm -C backend lint` as a blocking step. Preserve all existing unrelated checks and retain native run/job/step/source identity and actual zero-diagnostic result. A one-off local pass or shared-markup lint cannot substitute.
+- [ ] `pnpm -C backend lint` executes over all registered `src/cljs` and `test/cljs` inputs with `--fail-level warning`, exits0 and reports exactly zero errors and zero warnings. Complete stdout/stderr, actual inner/outer exits, summary counts, elapsed time, cleanup and hashes are retained. Unavailable, skipped, truncated, nonzero or diagnostic-bearing execution blocks completion.
+- [ ] No diagnostic disappears through weakened levels, moved-out-of-scope files, exclusions, removed assertions, baseline allowances or error/coverage suppression. A genuine analyzer/macro-contract repair has a separate actual owner, independent review and causal evidence against runtime semantics before inclusion.
+- [ ] Included code/test repairs retain CLJS domain/shape/law/infra and raw-JS extern boundaries, exact test discovery and assertions, genuine SDK import and fatal/coverage guards. The final integration has zero-warning `pnpm -C backend typecheck`, the exact mandated `pnpm -C backend exec shadow-cljs compile test`, registered `pnpm -C backend test:coverage`, and registered `pnpm -C backend boundary:check` evidence. Both test builds must report zero compiler/test warnings as well as zero failures/errors and complete actual test/assertion counters; successful exits alone are insufficient. Inspect complete outputs, status, cleanup and existing fatal/coverage guards. The boundary command must pass with its full registered scope. Include any further existing gate required by a repair.
+- [ ] The document and canonical evidence provide an exact-source SDK handoff with failures/limitations preserved. SDK5 must rerun full lint, typecheck, tests/coverage, its cold-source fixture and workflow gates on its own implementation candidate. No reverse dependency on unimplemented SDK5 is introduced; no epic completion, release or production adoption is inferred.
+
+## Verification
+
+Recover actual accepted source and qualified evidence from the existing owners, then review the proposed integration. When execution is admitted, run one genuine full registered lint baseline on that frozen source and preserve PASS or FAIL without retry/stress or artificial RED. Causal RED/GREEN for a repair remains with that repair's owner. After qualification of included repairs and effective required-linter enforcement, execute full lint, backend typecheck, the exact `pnpm -C backend exec shadow-cljs compile test`, `pnpm -C backend test:coverage` and `pnpm -C backend boundary:check` on the integrated source using genuine declared dependency preparation and the repository's package-manager/runtime policy. Require zero actual compiler/test warnings in both test outputs, not just command success. Qualify the required full-backend lint CI step on the same source. Preserve full outputs, exits, warnings, counts, cleanup and hashes. Another checkout's generated SDK output supplies no cold-source bootstrap proof. No application service or production operation is needed for this gate.
+
+Planning verification is native dedup/readback, exact body/metadata scope, source command/config/history evidence, historical capture custody, diff checks, append-only provenance and independent planning review. It supplies no new lint, application-test or deployment result.
+
+## Risks and estimate
+
+Three points covers source/evidence reconciliation, wiring the one existing full-backend lint command into required CI, final gate execution and exact-source handoff after remediation qualifies. Required-linter enablement and any resulting diagnostic cleanup remain separately reviewed remediation prerequisites; missing ownership or enforcement blocks this card. Existing test and boundary commands are reused without a new harness. Repairing 296 historical diagnostics across 139 files exceeds that estimate and is not included. Thirteen historical owner files already differ in the reviewed SDK planning source; changed bytes do not prove their findings disappeared. Recover current diagnostics and accepted repairs before separately refining any remaining remediation. Root coordinates that existing work; preserve native states, points, history and foreign ownership. Readiness metadata does not prove dependency satisfaction, and green lint does not grant release adoption.
+
+---
+Root-admitted existing lint3 planning refinement only. Preserve UUID/P1/3points, all other metadata/history and existing SDK5 dependency. Return todo→in_progress→breakdown through native FSM/WIP before authoring reviewed BODY; no implementation/readiness claim. Current exact642 registered lint ran once at 2026-10-15T18:39:31.661887+00:00 with CI2025.07.28/Node24/pnpm10.20:7errors258warnings265diagnostics/124files, exit3/normalcleanup/untruncated; all780inputbytes+modes preserved and only fresh owned cache removed. Keep EC10113/283 and bd298/282 historical. Existing active remediation owners retain code/review; lint3 remains bounded final verification/source+evidence reconciliation/SDK handoff. No new owner/points/formal parent/blanket dependency, codefix, suppression, install, public/model/runtime/deployment effect.
+
+Root-admitted planning-only refinement for five genuine Codex review5540129138 findings at source62a4017a4f341921f749a4b8f1c2a283cac539f1: roots4288436904,4288436908,4288436913,4288436921,4288436930. Preserve this existing UUID/P1/3points/breakdown, original labels/dependencies/history and SDK5 relation. The reviewed BODY now requires separately owned, independently reviewed effective enforcement of all seven AGENTS warning classes, exact compile test and zero actual warnings in both test builds, the existing boundary:check gate, and one blocking CI step running the existing full pnpm -C backend lint command. Unsupported or unowned enforcement blocks completion; enablement and resulting diagnostic repairs are not silently absorbed into lint3. Three points remains final integration qualification, bounded CI wiring and exact-source SDK handoff after remediation. No product/config/CI implementation, test execution, new formal dependency/owner, readiness, public review settlement or deployment is claimed. Keep own walkthrough4288405256 unresolved; this comment is source-scope history only.
+
+---
