@@ -391,3 +391,12 @@
   spore: none
   receipt-refs: /home/err/.local/share/openhax-codex/20261010/review-state/Knoxx-K1c70-run-steps-actual-GREEN-v1/canonical-result-receipt-event.edn
   note: Actual original RED0errors6warnings, exact approved one-file GREEN0/0, registered typecheck0warnings and full75Node/1918CLJS/9921assertions/0failures0errors0compilerwarnings. Complete full primary lint delta removes only6warnings:7errors259warnings remain with125ownerbytes unchanged. Preserve11tests/10async/37rawassertions/15callbacks and all15priorqualified files. Actual Mongo DNS failure retains availability limit; no probe. One-source-path commit separate from result provenance; full owner/epic/CMSrelease incomplete. No public/provider/production effect, no repeated gate, candidate0 and no spore.
+- ts: 2026-10-14T21:31:00.878158539Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: private-native-WebSocket-migration-browser-proof
+  p-efficiency: 0.88
+  p-friction: 0.48
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: root-private-frontend-native-browser-canonical-receipt.edn
+  note: Actual native460/2101 andoptimized8controlgroups support thefrontendmigration, notproduction. Keep controlledfixture/seededmetrics andoriginalAVA failure separate. Correctsource-lineattribution beforecausalclaims: bothpredecessor/candidate reachAudit sessions butmiss fork-run-active, causedbyignoredkeywordPromise.then callback introducedJune13. Preserveunchangedassertions/timeouts andrequireactualboundaryregressionbeforeminimalrepair. No spore/promotion.
