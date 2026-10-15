@@ -1,9 +1,9 @@
 ---
 category: "tasks"
 labels: "tasks, knoxx, sandbox, ci, sdk-bootstrap, source-custody, 5sp"
-dependency: []
+dependency: ["knoxx-knoxx-backend-lint-zero-warning-gate"]
 type: "task"
-write-id: "1792077388853-0.wao4w5t1dpbyubgssef"
+write-id: "1792079986197-0.vo3ytm2uny8hb36809h"
 points: "5"
 title: "Prepare the pinned OpenPlanner SDK in Knoxx Sandbox bundles"
 priority: "P1"
@@ -26,6 +26,7 @@ A cold, owned Knoxx Sandbox preparation builds the exact genuine SDK dependency 
 
 ## Scope
 
+- Depend on existing lint owner `knoxx-knoxx-backend-lint-zero-warning-gate` for full-backend zero-warning remediation and qualification; that work remains outside this five-point bootstrap. The retained full-lint record has 13 errors and 283 warnings, not a fresh passing run. This card cannot complete until that prerequisite is satisfied and the actual SDK candidate passes `pnpm -C backend lint` with zero errors and warnings alongside all remaining acceptance gates.
 - Bind the existing Sandbox checkout to exact SDK07085d6557b75834ce6f50e6c54b8ca47e1c7c08. Use pnpm10.20.0, Java21 and Node24; retain frozen lockfiles and actual tool versions. Run the existing upstream commands, in order: `pnpm -C <sdk-root> --filter @open-hax/openplanner-sdk... install --frozen-lockfile`, then the same filter's `run build`.
 - Prepare and retain the actual source closure SDK→packages/stores/document-hydration→packages/stores/cache, their real build inputs and root package/workspace/lock metadata. Record exact revision/tree, selected source/archive hashes, package-manager version and generated export hashes. A new source dependency must be made explicit; no neighbor's installed or generated products may fill a gap.
 - Before the first SDK install, lifecycle hook or build, derive the declared immutable source closure into an owned filtered build tree. Both the initial build and the cold-restored build use that filtered tree, with tracked root .env, .npmrc/auth/config stores, .git history, installed trees and prior generated output excluded. Use an isolated home/config environment and no inherited registry/provider credentials. Verify excluded paths are absent/unavailable without reading credential values; retain the policy and selected inventory. The raw checkout is source-selection input only and is never the SDK install/build working directory.
@@ -59,5 +60,7 @@ SDK build depends on its actual CLJS hydration/cache closure as well as TypeScri
 
 ---
 Admitted five-point planning correction after native findings4281673153,4281673165,4281673177,4281673189 and4281729824. Existing standalone owner remains breakdown; no ready or implementation transition. Native single-key points3to5 and matching scalar3sp-to5sp labels preserve all other metadata. The authored body will require initial and cold-restored SDK builds from the declared filtered exact07085 source closure before the first lifecycle/install/build, isolated home/config and hostile-config absence controls without actual credential-value reads; one shared native-command helper for Sandbox and the existing pinned setup action; named zero-failure/error/warning fixture,typecheck,coverage,lint gates; and explicit ci/action/helper recipe inventory. Preserve genuine missing-export RED, SDK-to-hydration-to-cache custody/restore, source/output hashes, failed-prep aggregation, real import/fatal/coverage guards and known Sandbox failure. SDK6cc1 and all status/dependency/parent/type metadata remain untouched. The standing deployment authorization remains subject to source qualification and release gates. No model,SDK build,credentials,provider,App,account,runtime,production,merge or review-rerun effect is included.
+
+Admitted narrow planning correction for current-head native CodexP2 root4284964819/review5535643111 at f52a6a1e0eb8028dc606fa0a39c77541181e7d74: declare the existing knoxx-knoxx-backend-lint-zero-warning-gate as the one dependency and add the reviewed Scope bullet while this SDK owner remains breakdown5. Full-backend lint remediation and qualification stay with that existing todo3 owner; its imported empty Goals heading and absent referenced spec are not invented acceptance. Retained13errors/283warnings is historical blocking evidence, not a new run. Keep every existing SDK acceptance gate, source/filter/cold-restore contract, genuine import/fatal guards and scalar CSV labels. Prerequisite satisfaction plus an actual SDK-candidate full lint run at zero diagnostics remains required; the dependency vector is not claimed to enforce readiness automatically. Preserve SDK6cc1, all other metadata/cards/history and mixedroot4281571531. Native f52 MiMo38759885344 is frozen separately: failed HOST read followed by unassessed page7 refusal, missing submission and acceptedInvocationnull; no model/key diagnosis or retry credit. This local planning correction supplies no application tests, lint pass, source readiness, review approval, push/PR update, model/rerun, runtime or deployment effect.
 
 ---
