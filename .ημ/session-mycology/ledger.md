@@ -481,3 +481,12 @@
   spore: none
   receipt-refs: /home/err/.local/share/openhax-codex/20261010/review-state/Knoxx-b637-KW-KD-KE-private-source-composition-v1/canonical-pre-build-composition-receipt-event.edn
   note: Three ordinary detached-worktree merges in KW then KD then KE order preserve all2642 non-ledger tree entries and sole owned deletion. Only two ledger conflicts resolved by exact target prefix plus incoming post-base suffix; all histories/events retained without dedup/reorder/normalization. Independent audit agrees source union and ledger hashes. Original four source worktrees unchanged. Pre-build preparation only: no gates/dependencies/build/readiness/admission/board/provider/production effects; KWaccepted8 and other incoming scopes remain unadmitted. Candidate0/no spore.
+- ts: 2026-10-15T08:05:33.292526952Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: Plan native CMS paragraph boundary repair with exact historical replay custody
+  p-efficiency: 0.72
+  p-friction: 0.48
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#eb8c9a1d-5881-49a7-8daf-8289e0540d05
+  note: Retained actual source/candidate showed three paragraphs composed as one. Shared pair-for also replays durable candidates: normalize new provider bytes only in complete-missing and guard only genuinely absent accepted members, preserving accepted prefix and strict completed replay. Existing owner recovered and one3point canonical child created at breakdown for planning review. Native create/clear emits empty dependency vector; retain upstream writer gap, no customsetter or universal halt. Source implementation/production unchanged; no spore.
