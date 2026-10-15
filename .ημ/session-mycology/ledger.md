@@ -472,3 +472,12 @@
   spore: none
   receipt-refs: c583d8b24928d3d55b9f82cb88e583474c783bad32bf4587d92799372b2bc2e8,784aef02dbab55ab6c5571ad9e41aedd300f3837
   note: A lower SDK catch can turn validated malformed rows into successful fallback. Retain the original refusal per invocation while preserving true transport fallback. Bind full actual source, original RED predicates, fixture relocation, current compiled HTTP closure and explicit EOF-only corrections; local source qualification does not grant live integration or release admission. No spore or promotion.
+- ts: 2026-10-15T04:20:41.709549587Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: Freeze exact private K plus websocket durable embedding source composition before build
+  p-efficiency: 0.97
+  p-friction: 0.03
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: /home/err/.local/share/openhax-codex/20261010/review-state/Knoxx-b637-KW-KD-KE-private-source-composition-v1/canonical-pre-build-composition-receipt-event.edn
+  note: Three ordinary detached-worktree merges in KW then KD then KE order preserve all2642 non-ledger tree entries and sole owned deletion. Only two ledger conflicts resolved by exact target prefix plus incoming post-base suffix; all histories/events retained without dedup/reorder/normalization. Independent audit agrees source union and ledger hashes. Original four source worktrees unchanged. Pre-build preparation only: no gates/dependencies/build/readiness/admission/board/provider/production effects; KWaccepted8 and other incoming scopes remain unadmitted. Candidate0/no spore.
