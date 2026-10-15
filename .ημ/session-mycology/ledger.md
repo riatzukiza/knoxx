@@ -481,3 +481,12 @@
   spore: none
   receipt-refs: /home/err/.local/share/openhax-codex/20261010/review-state/Knoxx-b637-KW-KD-KE-private-source-composition-v1/canonical-pre-build-composition-receipt-event.edn
   note: Three ordinary detached-worktree merges in KW then KD then KE order preserve all2642 non-ledger tree entries and sole owned deletion. Only two ledger conflicts resolved by exact target prefix plus incoming post-base suffix; all histories/events retained without dedup/reorder/normalization. Independent audit agrees source union and ledger hashes. Original four source worktrees unchanged. Pre-build preparation only: no gates/dependencies/build/readiness/admission/board/provider/production effects; KWaccepted8 and other incoming scopes remain unadmitted. Candidate0/no spore.
+- ts: 2026-10-15T09:40:59.394703833Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: Plan resource-backed translation locale filter repair under existing UI owner
+  p-efficiency: 0.62
+  p-friction: 0.74
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#15044096-b98b-462f-925c-a9517eccc97a
+  note: Actual normal UI browser read exposed All-only target choices despite a real Spanish work item. Plan unfiltered project/generation-bound inventory locales and preserve legacy choices; test selection retention, legacy failure and stale responses before implementation. Canonical composed views omit parent, so a zero unsupported parent query cannot prove absence; complete read-task census and whole-document custody closed dedup before commit. Canonical writer emits dependency[] with no omission surface; retain the upstream gap without a custom setter or invented relation. This commit is planning only: no ready/source/build/runtime/review/publication credit. Candidate zero, no spore.
