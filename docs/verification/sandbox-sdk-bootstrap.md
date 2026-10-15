@@ -57,10 +57,13 @@ are expected to differ across runs. Source snapshots precede lifecycle work.
 Use the retained helper and archive for restoration:
 
 ```bash
+if [[ -e ../openplanner && ! -L ../openplanner ]]; then
+  printf 'Refusing an existing real OpenPlanner sibling.\n' >&2
+  exit 1
+fi
 sdk="$(bash /path/to/bundle/sdk/build-sandbox-openplanner-sdk.sh restore \
   --bundle /path/to/bundle/sdk \
   --run-root /tmp/my-owned-sdk-review/restored)"
-# Refuse any existing real ../openplanner directory before building; preserve it.
 # Only after successful restoration, expose the owned sibling for Knoxx installs.
 ln -sfn "$sdk" ../openplanner
 pnpm -C backend install --frozen-lockfile
