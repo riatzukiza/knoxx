@@ -1,5 +1,6 @@
 (ns knoxx.backend.message-source-test
   (:require [cljs.test :refer [deftest is testing]]
+            [knoxx.backend.extern.openplanner-history-fixture :as history-fixture]
             [knoxx.backend.infra.stores.message-source :refer [IMessageSource fetch-messages!]]
             [knoxx.backend.infra.stores.composite-message-source :refer [->CompositeMessageSource]]
             [knoxx.backend.infra.stores.mongo-message-source :refer [->MongoMessageSource]]
@@ -113,16 +114,10 @@
         (is (= [] result))))))
 
 (defn- stub-op-client [rows]
-  (reify openplanner-client/IOpenPlannerClient
-    (enabled? [_] true)
-    (session! [_ _conversation-id _opts]
-      (js/Promise.resolve {:rows rows}))))
+  (history-fixture/message-client rows))
 
 (defn- failing-op-client []
-  (reify openplanner-client/IOpenPlannerClient
-    (enabled? [_] true)
-    (session! [_ _conversation-id _opts]
-      (js/Promise.reject (js/Error. "OpenPlanner request failed")))))
+  (history-fixture/failing-message-client))
 
 (deftest ^:async openplanner-source-maps-rows-to-messages
   (let [src    (->OpenPlannerMessageSource
