@@ -69,3 +69,29 @@
     (is (= 1 (:exit-code capture)))
     (is (empty? (:stdout capture)))
     (is (= 1 (count (:stderr capture))))))
+
+(deftest ^:async throwing-native-code-accessors-remain-observable-without-replacing-primary
+  (doseq [null? [false true]]
+    (let [primary (fixture/code-getter-failure null?)
+          capture (await (fixture/capture-cli! #(throw primary)))
+          text (first (:stderr capture))]
+      (is (= 1 (:exit-code capture)))
+      (is (empty? (:stdout capture)))
+      (is (= 1 (count (:stderr capture))))
+      (is (str/includes? text "\"native_code_unavailable\":true"))
+      (is (str/includes? text "\"primary_error_present\":true"))
+      (is (str/includes? text "\"code\":\"unclassified\""))
+      (is (not (str/includes? text "do-not-print"))))
+    (let [primary (fixture/code-getter-failure null?)
+          combined (ex-info "do-not-print-cleanup-message"
+                            {:code :verification-primary-and-cleanup-failed
+                             :primary-thrown? true :primary-error-present? true
+                             :cleanup-failed? true} primary)
+          capture (await (fixture/capture-cli! #(throw combined)))
+          text (first (:stderr capture))]
+      (is (= 1 (:exit-code capture)))
+      (is (= 1 (count (:stderr capture))))
+      (is (str/includes? text "\"native_code_unavailable\":true"))
+      (is (str/includes? text "verification-primary-and-cleanup-failed"))
+      (is (str/includes? text "\"cleanup_failed\":true"))
+      (is (not (str/includes? text "do-not-print"))))))
