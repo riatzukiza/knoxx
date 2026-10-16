@@ -7,7 +7,7 @@ export function installDeferred(config, world = globalThis) {
   if (new URL(config.origin).origin !== world.location.origin) fail('core-origin-invalid');
   const original = world.fetch;
   const pending = new Map(), consumed = new Set(), records = [], checkpoints = [], commits = new Map(), background = [];
-  let active = true, failed = false;
+  let active = true, failed = false, completion;
   const stable = value => {
     if (Array.isArray(value)) return '[' + value.map(stable).join(',') + ']';
     if (value && typeof value === 'object') return '{' + Object.keys(value).sort().map(k => JSON.stringify(k) + ':' + stable(value[k])).join(',') + '}';
@@ -79,7 +79,8 @@ export function installDeferred(config, world = globalThis) {
   }
   function report() {
     return { runId: config.runId, active, failed, pending: [...pending.keys()], consumed: [...consumed],
-      records: [...records], background: [...background], checkpoints: checkpoints.map(x => ({ ...x })) };
+      records: [...records], background: [...background], checkpoints: checkpoints.map(x => ({ ...x })),
+      ...(completion ? { completion: { ...completion } } : {}) };
   }
   const api = {
     report,
@@ -117,6 +118,8 @@ export function installDeferred(config, world = globalThis) {
       steps = steps.concat(additions);
     },
     assertComplete() {
+      // Synchronous pre-assertion snapshot; report it without changing the scheduler.
+      completion = { failed, pendingCount: pending.size, consumedCount: consumed.size, stepCount: steps.length };
       if (failed || pending.size || consumed.size !== steps.length) fail('core-incomplete');
       if (!ordered()) fail('core-required-order-missing');
       if ((config.requiredCheckpoints ?? []).some(id => !checkpoints.some(x => x.id === id && x.ok))) fail('core-checkpoint-missing');

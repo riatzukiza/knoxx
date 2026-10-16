@@ -131,7 +131,17 @@ async function install(io, config) {
   assert.equal(report.active, true); assert.equal(io.guardReport().phase, 'controlled');
 }
 async function finish(io, shot) {
-  const report = await adapter(io, 'assertComplete');
+  let report;
+  try { report = await adapter(io, 'assertComplete'); }
+  catch (error) {
+    // Read only the saved four counters, before scenario cleanup restores the adapter.
+    // Diagnostics run after rejection and must never replace its original value.
+    try {
+      const completion = await evaluate(io, 'window.__knoxxControlledCore.report().completion');
+      await io.onCompletionFailure?.(completion);
+    } catch { /* Retain the original assertion/CLI failure, including null. */ }
+    throw error;
+  }
   await io.cli('screenshot', shot); await adapter(io, 'restore'); return report;
 }
 async function releaseMutation(io, prefix, wire, mode) {

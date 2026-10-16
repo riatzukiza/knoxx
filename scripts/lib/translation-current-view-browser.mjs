@@ -56,6 +56,15 @@ export function safeDiagnostic(error, progress) {
   return result;
 }
 
+/** Four scheduler counters only; no IDs, text, messages, stacks or accessors. */
+export function safeCompletionReport(value) {
+  const failed = diagnosticValue(value, 'failed');
+  const keys = ['pendingCount', 'consumedCount', 'stepCount'];
+  const counts = keys.map(key => diagnosticValue(value, key));
+  if (typeof failed !== 'boolean' || counts.some(x => !Number.isSafeInteger(x) || x < 0)) return undefined;
+  return { failed, pendingCount: counts[0], consumedCount: counts[1], stepCount: counts[2] };
+}
+
 function exactOrigin(value) {
   const url = new URL(value);
   assert.ok(['127.0.0.1', '[::1]', 'localhost'].includes(url.hostname));
@@ -288,7 +297,7 @@ function cliFor(config, stopped = () => false) {
 
 export async function runBrowserProof(config) {
   let owner, cli, downloads, primary = null, interrupted = false;
-  const resources = [], scenarioCleanupErrors = []; let results, signalReject, failureProgress;
+  const resources = [], scenarioCleanupErrors = []; let results, signalReject, failureProgress, completionFailure;
   const progress = { stage: 'validate', completedCases: 0 };
   const signal = new Promise((_, reject) => { signalReject = reject; });
   signal.catch(() => {});
@@ -319,6 +328,7 @@ export async function runBrowserProof(config) {
     results = await Promise.race([runCoreScenarios({ cli, config, installSource: installDeferred.toString(),
       onCase: value => Object.assign(progress, safeProgress(value)),
       onCleanupError: name => scenarioCleanupErrors.push(name),
+      onCompletionFailure: value => { completionFailure = safeCompletionReport(value); },
       guardReport: () => owner.guard.report(), ...downloads }), signal]);
     progress.completedCases = results.length;
     assert.equal(owner.guard.report().blocked, 0, 'Controlled traffic escaped the window adapter');
@@ -331,7 +341,8 @@ export async function runBrowserProof(config) {
   process.removeListener('SIGINT', interrupt); process.removeListener('SIGTERM', interrupt);
   const proof = { sourceCommit: config.sourceCommit, runId: config.runId, synthetic: true,
     results, progress: failureProgress ?? safeProgress(progress), guard: owner?.guard.report(),
-    downloadFailures: downloads?.report() ?? [], ...cleanup };
+    downloadFailures: downloads?.report() ?? [],
+    ...(completionFailure ? { completionFailure } : {}), ...cleanup };
   if (owner) await writeFile(path.join(config.evidenceDir, 'core-browser-proof.json'), JSON.stringify(proof, null, 2), { mode: 0o600, flag: 'wx' });
   if (primary || !cleanup.cleanupComplete) refuse('core-browser-proof-failed'); return proof;
 }
