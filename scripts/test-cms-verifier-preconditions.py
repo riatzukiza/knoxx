@@ -238,7 +238,8 @@ elif auth and path.startswith('/api/publications/'):
 elif not auth:
  status=200 if s['mode']=='detail-open' and method=='GET' else int(s['mode'].split('-')[1]) if s['mode'].startswith('status-') else 401
  if s['mode']=='counter-change':s['counter']+=1;save()
- body={'error':'missing_error' if s['mode']=='missing-error' else 'no_session','unexpected_content':'DO_NOT_LOG_SYNTHETIC_SECRET'}
+ body={'detail':'Not authenticated','error_code':'missing_error' if s['mode']=='missing-error' else 'no_session','unexpected_content':'DO_NOT_LOG_SYNTHETIC_SECRET'}
+ if s['mode']=='error-only':body={'detail':'Not authenticated','error':'no_session','unexpected_content':'DO_NOT_LOG_SYNTHETIC_SECRET'}
 elif path=='/api/translations/documents':status=200;body={'documents':[] if not s['present'] else [{'document_id':os.environ['VERIFY_LEGACY_DOCUMENT_ID']}]}
 else:
  i=identity();segment=dict(id=i['segment_id'],document_id=i['document_id'],org_id=i['org_id'],project=i['project'],garden_id=None,target_lang='es',status='pending',labels=[],source_text='synthetic source',translated_text='synthetic translation')
@@ -320,7 +321,7 @@ printf 'RESOURCE_NAVIGATION_ALLOWED\\n'
             self.assertEqual(1,sum(e['kind']=='helper' and e['action']=='legacy-cleanup' for e in events))
 
     def test_wrong_auth_status_error_counter_and_live_identity_refuse(self):
-        for mode in ['status-200','status-302','status-307','status-400','status-404','status-503','missing-error','counter-change','wrong-live-database','missing-readback']:
+        for mode in ['status-200','status-302','status-307','status-400','status-404','status-503','missing-error','error-only','counter-change','wrong-live-database','missing-readback']:
             with self.subTest(mode=mode),self.legacy_phase(mode) as (result,events,state,ownership):
                 self.assertNotEqual(0,result.returncode,result.stdout+result.stderr)
                 self.assertTrue(any(e['kind']=='helper' and e['action']=='legacy-seed' for e in events),
