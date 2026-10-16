@@ -789,3 +789,12 @@
   spore: none
   receipt-refs: .ημ/receipts.edn#0f4c5167-fe25-44b4-85f4-b9ed0dea9263
   note: Preserve compiled reader arities and awaited fault lifetime; assert actual invocation and Error/null primary identity with secondary close; refuse malformed receipts before destructive cleanup. Owning gates pass; inherited lint and 36 boundary sites plus combined-source and real runtime qualification remain. No spore.
+- ts: 2026-10-16T09:02:15.258620590Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-cms16-core-browser-instrumentation-over-64c-v1
+  task: Qualify core browser instrumentation and real-route unauthorized writer refusal controls
+  p-efficiency: 0.6
+  p-friction: 0.5
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#2f6d8930-9c72-47d8-ab6c-a5b4cb30ac9c
+  note: Source2315d697 has final Node24, registered backend2064/11795, Python15 and explicit inherited lint/timing limits. Distinguish controlled-prop observer evidence from React scheduler proof; no CMS browser/readiness/deployment credit.
