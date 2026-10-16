@@ -888,3 +888,12 @@
   spore: none
   receipt-refs: .ημ/receipts.edn#705fce80-a5d8-4b4d-bbee-50f8cc24db57
   note: Generic native CLI data unwrapping may correctly return an object: use the exact installed wire contract and preserve its object/type/own-field invariants before comparing the owned URL. Start with behavior-identical extraction and genuine positive/adverse causal tests. A missing required test evaluator selector is a harness prerequisite failure, preserve it and restore only the proven original setting; do not reinterpret it as product RED. Retain global failures and dated runtime limits; no browser replay or spore.
+- ts: 2026-10-16T18:36:19.877899208Z
+  session: codex:cms16-exact-background-fixtures
+  task: Bind synthetic CMS backgrounds to exact owned public chat identity
+  p-efficiency: 0.94
+  p-friction: 0.10
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#2487cb26-77f5-48af-9d35-18a432a53e7e
+  note: Trace actual mounted callers before adding exact synthetic background fixtures; pathname aggregates do not prove query values. Initialize only a fresh owned public chat identity before navigation rather than accepting arbitrary runtime IDs or overriding randomness. Native status GET can recover workers, so never forward it in a closed proof. Assert actual native and window no-forward behavior, adverse method/body/fragment/query/identity refusal and preservation of later app-updated public snapshots. Keep historical runtime evidence separate from new source and retain full quality failures. No spore.
