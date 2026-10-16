@@ -1,11 +1,13 @@
 (ns knoxx.backend.extern.bluesky-tools-fixture
   "Owned inert Bluesky boundary fixture; never reads credential files or sends HTTP."
-  (:require [knoxx.backend.domain.bluesky.bluesky :as api]
+  (:require [knoxx.backend.domain.bluesky.bluesky :as decisions]
             [knoxx.backend.domain.bluesky.client :as client]
             [knoxx.backend.domain.media :as media]
             [knoxx.backend.extern.fetch :as fetch]
             [knoxx.backend.infra.actor.credentials :as credentials]
-            [knoxx.backend.infra.auth.authz :as authz]))
+            [knoxx.backend.infra.auth.authz :as authz]
+            [knoxx.backend.infra.bluesky.api :as api]
+            [knoxx.backend.infra.bluesky.tools :as factory]))
 
 (def runtime :bluesky-fixture-runtime)
 (def config {:fixture true})
@@ -116,16 +118,16 @@
   (filterv #(= op (:op %)) (calls world)))
 
 (defn tools "Construct the real original factory, including permission filtering." [context]
-  (api/create-bluesky-custom-tools runtime config context))
+  (factory/create-bluesky-custom-tools runtime config context))
 
 (defn descriptors "Decode real native tool metadata, excluding callable handles." [native-tools]
   (mapv #(dissoc (js->clj % :keywordize-keys true) :execute) (array-seq native-tools)))
 
 (defn schemas "Return the thirteen actual public parameter schema values." []
-  [api/publish-params api/profile-params api/search-params api/feed-params
-   api/timeline-params api/post-uri-params api/actor-params api/thread-params
-   api/notifications-params api/chat-send-params api/chat-list-params
-   api/chat-read-params api/chat-react-params])
+  [decisions/publish-params decisions/profile-params decisions/search-params decisions/feed-params
+   decisions/timeline-params decisions/post-uri-params decisions/actor-params decisions/thread-params
+   decisions/notifications-params decisions/chat-send-params decisions/chat-list-params
+   decisions/chat-read-params decisions/chat-react-params])
 
 (defn- update-callback [world slot]
   (when slot

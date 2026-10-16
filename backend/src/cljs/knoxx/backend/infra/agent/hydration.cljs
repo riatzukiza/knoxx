@@ -20,7 +20,7 @@
             [knoxx.backend.domain.music :as music]
             [knoxx.backend.domain.voice.tools :as voice]
             [knoxx.backend.domain.media.blaze :as blaze]
-            [knoxx.backend.domain.bluesky.bluesky :as bluesky]
+            [knoxx.backend.infra.bluesky.tools :as bluesky]
             [knoxx.backend.domain.media.multimodal :as multimodal]
             [knoxx.backend.domain.media.workspace :as workspace-media]
             [knoxx.backend.domain.sandbox-container :as sandbox]
