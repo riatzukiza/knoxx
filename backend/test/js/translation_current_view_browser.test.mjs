@@ -540,3 +540,151 @@ test('project case refuses A completion before committed B even when request and
   assert.ok(records.indexOf('release:mutation-A') < records.indexOf('request:B-inventory'));
   assert.equal(proof.forwarded, 0);
 });
+
+
+// Synthetic public-runner fixture: no Chromium, app, HTTP authentication or DB.
+// The two clients share only the modeled native download directory. Actual
+// copyFile exercises the same missing-original-artifact boundary as Playwright.
+async function inertPublicDownloadOwner({ saveFailure, verifyMissing = false,
+  sendFailure, detachFailure } = {}) {
+  const fs = await import('node:fs/promises'), sync = await import('node:fs');
+  const path = await import('node:path'), os = await import('node:os');
+  const { createHash, randomUUID } = await import('node:crypto');
+  const { EventEmitter } = await import('node:events');
+  const { createServer: createPort } = await import('node:net');
+  const root = await fs.mkdtemp(path.join(os.tmpdir(), 'cms-owned-download-unit-'));
+  const key = randomUUID(), evidence = path.join(root, 'evidence');
+  const implicit = path.join(root, 'implicit-owner'), remote = path.join(root, 'second-CDP');
+  const stateFile = path.join(root, 'synthetic-state.json');
+  const text = 'controlled public export unit bytes\n', filename = 'controlled-translations.jsonl';
+  const getState = () => JSON.parse(sync.readFileSync(stateFile, 'utf8'));
+  const change = fn => { const state = getState(); fn(state); sync.writeFileSync(stateFile, JSON.stringify(state)); };
+  const event = value => change(state => state.events.push(value));
+  await fs.mkdir(implicit); await fs.mkdir(remote);
+  await fs.writeFile(stateFile, JSON.stringify({ events: [], destination: implicit }), { mode: 0o600 });
+  let launchOptions, messageReads = 0;
+  const sentinel = saveFailure === 'null' ? null : Object.freeze(Object.defineProperties(Error(), {
+    message: { get() { messageReads += 1; throw Error('SYNTHETIC-PRIVATE'); } },
+    cause: { value: Object.freeze(Object.assign(Error('SYNTHETIC-CAUSE'), { code: 'ENOENT' })) },
+  }));
+  const page = new EventEmitter();
+  page.url = () => 'about:blank'; page.goto = async () => {};
+  page.evaluate = async (fn, argument) => {
+    if (typeof argument === 'string') change(state => { state.nonce = argument; });
+    if (fn.toString().includes("fetch('/api/auth/context'")) return { status: 200, orgId: 'synthetic-org', email: 'synthetic@unit.invalid' };
+    return { restored: false };
+  };
+  const originalOn = page.on;
+  page.on = function (name, listener) {
+    originalOn.call(this, name, listener);
+    if (name === 'download') {
+      event('download-listener');
+      sync.writeFileSync(path.join(getState().destination, 'synthetic-guid'), text, { mode: 0o600 });
+      this.emit('download', {
+        suggestedFilename: () => filename,
+        saveAs: async target => {
+          if (saveFailure) throw sentinel;
+          await fs.copyFile(path.join(launchOptions.downloadsPath ?? implicit, 'synthetic-guid'), target);
+          if (verifyMissing) await fs.unlink(target);
+        },
+      });
+    }
+    return this;
+  };
+  const context = { pages: () => [page], route: async () => {}, routeWebSocket: async () => {},
+    addInitScript: async () => {}, setExtraHTTPHeaders: async () => {},
+    close: async () => event('context-close'), browser: () => nativeBrowser };
+  const nativeBrowser = { contexts: () => [context], newBrowserCDPSession: async () => ({
+    send: async (method, parameters) => {
+      assert.equal(method, 'Browser.setDownloadBehavior');
+      event('claim');
+      if (sendFailure) throw sendFailure;
+      assert.equal(parameters.behavior, 'allowAndName'); assert.equal(parameters.eventsEnabled, true);
+      change(state => { state.destination = parameters.downloadPath; state.claimed = parameters.downloadPath; });
+    },
+    detach: async () => { event('detach'); if (detachFailure) throw detachFailure; },
+  }) };
+  const registry = globalThis.__cmsSyntheticDownloadOwners ??= new Map();
+  registry.set(key, { launch: async (profile, options) => { launchOptions = options; return context; } });
+  const moduleFile = path.join(root, 'synthetic-playwright.mjs');
+  await fs.writeFile(moduleFile, `export const chromium = { launchPersistentContext: globalThis.__cmsSyntheticDownloadOwners.get(${JSON.stringify(key)}).launch };`);
+  const executable = path.join(root, 'synthetic-cli.cjs');
+  await fs.writeFile(executable, `#!${process.execPath}\nconst fs=require('node:fs');const file=${JSON.stringify(stateFile)};const a=process.argv.slice(2),op=a[5];const state=JSON.parse(fs.readFileSync(file,'utf8'));let value;let success=true;if(op==='eval'&&a[6]==='window.__coreOwner'){state.events.push('nonce');value=state.nonce;}else if(op==='get'){state.events.push('url');value={url:${JSON.stringify(origin + '/cms')}};}else if(op==='set'){state.events.push('media');state.destination=${JSON.stringify(remote)};value=true;}else if(op==='close'){state.events.push('cli-close');value=true;}else if(op==='eval'&&a[6].includes('const a=window.__knoxxControlledCore')){value=true;}else{state.events.push('scenario-stop');success=false;}fs.writeFileSync(file,JSON.stringify(state));process.stdout.write(JSON.stringify({success,data:{result:value}}));\n`, { mode: 0o700 });
+  const source = path.join(root, 'synthetic-source');
+  await fs.mkdir(path.join(source, 'backend/dist'), { recursive: true });
+  await fs.mkdir(path.join(source, 'frontend/dist'), { recursive: true });
+  const server = path.join(source, 'backend/dist/server.js'), browsers = path.join(root, 'browsers.json');
+  await fs.writeFile(server, '// inert unit artifact, never imported\n'); await fs.writeFile(browsers, '{}');
+  const sha = value => createHash('sha256').update(value).digest('hex');
+  const token = path.join(root, 'synthetic-key'); await fs.writeFile(token, 'SYNTHETIC-NOT-A-CREDENTIAL-123456', { mode: 0o600 });
+  const sourceCommit = 'a'.repeat(40), project = 'synthetic-project';
+  const preflight = path.join(root, 'synthetic-preflight.json'), writer = path.join(root, 'synthetic-writer.json');
+  await fs.writeFile(preflight, JSON.stringify({ source_commit: sourceCommit, run_id: runId, org_id: 'synthetic-org',
+    project, sft_anonymous_status: 401, dispatch_anonymous_status: 401, state_unchanged: true, state_sha256: 'b'.repeat(64) }));
+  await fs.writeFile(writer, JSON.stringify({ sourceCommit, normalExit: 0, calls: { queue: 0, agent: 0, eventTurn: 0 }, actualRouteGuards: true }));
+  const port = createPort(); await new Promise(resolve => port.listen(0, '127.0.0.1', resolve));
+  const cdpPort = port.address().port; await new Promise(resolve => port.close(resolve));
+  const { runBrowserProof } = await browser();
+  try {
+    await assert.rejects(runBrowserProof({ ...config, sourceRoot: source, sourceCommit, evidenceDir: evidence,
+      profileDir: path.join(evidence, 'profile'), cdpPort, orgId: 'synthetic-org', project,
+      email: 'synthetic@unit.invalid', orgSlug: 'synthetic-org', apiKeyFile: token,
+      playwrightEntry: moduleFile, chromiumExecutable: '/inert-no-browser', agentBrowserExecutable: executable,
+      frozenFiles: [{ path: server, sha256: sha(await fs.readFile(server)) }, { path: browsers, sha256: sha(await fs.readFile(browsers)) }],
+      preflight: { path: preflight, sha256: sha(await fs.readFile(preflight)) },
+      writerProof: { path: writer, sha256: sha(await fs.readFile(writer)) },
+    }), /core-browser-proof-failed/);
+    const proof = JSON.parse(await fs.readFile(path.join(evidence, 'core-browser-proof.json'), 'utf8'));
+    const copy = await fs.readFile(path.join(evidence, 'owned-export-0.jsonl')).catch(() => null);
+    return { proof, state: getState(), ownerPath: launchOptions.downloadsPath,
+      expectedPath: path.join(evidence, 'native-downloads'), copied: copy?.toString(), text,
+      messageReads, originalCauseIdentity: sentinel?.cause };
+  } finally { registry.delete(key); await fs.rm(root, { recursive: true, force: true }); }
+}
+
+test('public inert owner reclaims exact original download path after second CDP attach', async () => {
+  const result = await inertPublicDownloadOwner();
+  assert.equal(result.proof.cleanupComplete, true);
+  assert.equal(result.copied, result.text);
+  assert.equal(result.ownerPath, result.expectedPath); assert.equal(result.state.claimed, result.ownerPath);
+  const events = result.state.events;
+  assert.ok(events.indexOf('nonce') < events.indexOf('url'));
+  assert.ok(events.indexOf('url') < events.indexOf('media'));
+  assert.ok(events.indexOf('media') < events.indexOf('claim'));
+  assert.ok(events.indexOf('claim') < events.indexOf('download-listener'));
+  assert.ok(events.indexOf('download-listener') < events.indexOf('scenario-stop'));
+  assert.ok(events.includes('detach') && events.includes('cli-close') && events.includes('context-close'));
+});
+
+test('public inert owner preserves send failure and attempts detach CLI and context cleanup', async () => {
+  const cause = Object.freeze(Error('SYNTHETIC-PRIVATE-CAUSE'));
+  const primary = Object.freeze(Object.assign(TypeError('SYNTHETIC-PRIVATE-PRIMARY'), { cause }));
+  const result = await inertPublicDownloadOwner({ sendFailure: primary, detachFailure: Error('SYNTHETIC-PRIVATE-SECONDARY') });
+  assert.equal(result.proof.primary.stage, 'cli-downloads'); assert.equal(result.proof.primary.errorName, 'TypeError');
+  assert.deepEqual(result.proof.cleanupErrors, ['download-transport']);
+  assert.ok(result.state.events.includes('detach') && result.state.events.includes('cli-close') && result.state.events.includes('context-close'));
+  assert.equal(primary.cause, cause); assert.ok(!JSON.stringify(result.proof).includes('SYNTHETIC-PRIVATE'));
+});
+
+test('public inert owner retains safe save-as and cause metadata without reading raw messages', async () => {
+  const result = await inertPublicDownloadOwner({ saveFailure: 'error' });
+  assert.deepEqual(result.proof.downloadFailures, [{ index: 0, stage: 'save-as', thrownKind: 'object',
+    primary: { category: 'core-browser-failed', errorName: 'Error' },
+    cause: { category: 'core-browser-failed', errorName: 'Error', errorCode: 'ENOENT' } }]);
+  assert.deepEqual(result.proof.cleanupErrors, ['downloads']); assert.equal(result.messageReads, 0);
+  assert.equal(result.originalCauseIdentity.code, 'ENOENT'); assert.ok(!JSON.stringify(result.proof).includes('SYNTHETIC-'));
+});
+
+test('public inert owner retains null download rejection without replacing it or claiming cleanup', async () => {
+  const result = await inertPublicDownloadOwner({ saveFailure: 'null' });
+  assert.deepEqual(result.proof.downloadFailures, [{ index: 0, stage: 'save-as', thrownKind: 'null',
+    primary: { category: 'core-browser-failed' } }]);
+  assert.deepEqual(result.proof.cleanupErrors, ['downloads']); assert.equal(result.proof.cleanupComplete, false);
+});
+
+test('public inert owner distinguishes saved-copy verification absence from save-as failure', async () => {
+  const result = await inertPublicDownloadOwner({ verifyMissing: true });
+  assert.deepEqual(result.proof.downloadFailures, [{ index: 0, stage: 'verify-file', thrownKind: 'object',
+    primary: { category: 'core-browser-failed', errorName: 'Error', errorCode: 'ENOENT' } }]);
+  assert.deepEqual(result.proof.cleanupErrors, ['downloads']); assert.equal(result.copied, undefined);
+});
