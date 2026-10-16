@@ -303,7 +303,7 @@ HELPER_FILES = {"scripts/verify-production-mutation-evidence.py", "backend/deps.
 # Unknown compiler configuration refuses until its input set/hash is reviewed.
 # Ordinary .cljc application sources remain selectable S inputs.
 MACRO_FILES = {"backend/src/cljs/knoxx/backend/macros.cljc"}
-MACRO_CONFIG_SHA256 = "b182a2993c1e818a36dc9e39c011a8dd830cb097e0b624d95986ea3563165dcd"
+MACRO_CONFIG_SHA256 = "cb45b403d669710e33fabcf359af6d580548b9ebfa194a4d55e2c40a6cb08a51"
 CONFIG_NAMES = {"package.json", "pnpm-lock.yaml", "pnpm-workspace.yaml", ".npmrc",
                 ".pnpmfile.cjs", "pnpmfile.cjs", ".gitignore", ".gitattributes"}
 REPORT_NAMES = [f"batch-{index}.edn.json" for index in range(4)]
