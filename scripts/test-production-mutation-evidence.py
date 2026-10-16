@@ -880,6 +880,9 @@ class ProductionAuthenticationTests(unittest.TestCase):
         contents.update({prefix + "fixture.txt": b"tracked helper\n" for prefix in verifier.HELPER_PREFIXES})
         contents["backend/shadow-cljs.edn"] = (Path(__file__).resolve().parent.parent
                                               / "backend/shadow-cljs.edn").read_bytes()
+        contents.update({"scripts/build-sandbox-openplanner-sdk.sh": b"SDK preparation fixture\n",
+                         "scripts/native-error-static-evaluator.mjs": b"Native evaluator fixture\n",
+                         "scripts/sandbox-clj-kondo.mjs": b"Archive restoration fixture\n"})
         contents.update({"backend/src/cljs/knoxx/backend/macros.cljc":
                          b"(ns knoxx.backend.macros)\n(defmacro fixture [] true)\n",
                          "shared/src/cljs/fixture/macros.cljc":
@@ -907,6 +910,9 @@ class ProductionAuthenticationTests(unittest.TestCase):
         self.assertEqual([(Path("/inert-controller"), "ls-tree", "-r", "-z", "c" * 40),
                           (Path("/inert-controller"), "show", "c" * 40 + ":backend/shadow-cljs.edn")],
                          [observed.args for observed in transport.call_args_list])
+        for helper in ("scripts/build-sandbox-openplanner-sdk.sh",
+                       "scripts/native-error-static-evaluator.mjs", "scripts/sandbox-clj-kondo.mjs"):
+            self.assertIn(helper, entries, "The setup action executes this transitive helper")
         self.assertIn("backend/src/cljs/knoxx/backend/macros.cljc", entries)
         self.assertNotIn("shared/src/cljs/fixture/macros.cljc", entries)
         self.assertIn("backend/src/clj/fixture.clj", entries)
@@ -948,7 +954,9 @@ class ProductionAuthenticationTests(unittest.TestCase):
         for changed_path in ("backend/src/cljs/knoxx/backend/domain/fixture.cljc",
                              "shared/src/cljs/fixture/domain.cljc",
                              "backend/src/cljs/knoxx/backend/macros.cljc",
-                             "backend/shadow-cljs.edn", "backend/deps.edn"):
+                             "backend/shadow-cljs.edn", "backend/deps.edn",
+                             "scripts/build-sandbox-openplanner-sdk.sh",
+                             "scripts/native-error-static-evaluator.mjs", "scripts/sandbox-clj-kondo.mjs"):
             with self.subTest(path=changed_path), tempfile.TemporaryDirectory(prefix="knoxx-app-source-") as directory:
                 root = Path(directory)
                 application = root / "application"

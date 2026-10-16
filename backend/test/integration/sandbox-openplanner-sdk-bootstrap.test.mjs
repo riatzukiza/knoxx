@@ -228,7 +228,7 @@ test('shared helper refuses bad inputs and bounds failure/interrupt transports b
       const workflow = await readFile(join(repo, '.github/workflows/sandbox-bundle.yml'), 'utf8');
       const action = await readFile(join(repo, '.github/actions/knoxx-setup/action.yml'), 'utf8');
       const captures = [];
-      async function control(name, behavior, { source = raw, caller = null, interrupt = false, realSibling = false } = {}) {
+      async function control(name, behavior, { source = raw, caller = null, interrupt = false, realSibling = false, siblingLink = null } = {}) {
         const root = join(owned, name), tools = join(root, 'tools');
         await mkdir(tools, { recursive: true });
         const record = join(root, 'calls.jsonl'), pidFile = join(root, 'child.pid');
@@ -251,11 +251,21 @@ test('shared helper refuses bad inputs and bounds failure/interrupt transports b
           argv = ['/bin/bash', '--noprofile', '--norc', '-euo', 'pipefail', '-c', body];
           transportEnv.PWD = workspace;
           if (realSibling) { await mkdir(join(workspace, '../openplanner')); await writeFile(join(workspace, '../openplanner/preserve'), 'foreign sibling bytes'); }
+          const siblingTarget = join(root, 'preserved-sibling-target');
+          if (siblingLink) {
+            if (siblingLink === 'live') { await mkdir(siblingTarget); await writeFile(join(siblingTarget, 'preserve'), 'foreign link-target bytes'); }
+            await symlink(siblingTarget, join(workspace, '../openplanner'));
+          }
           const result = await execute(argv, { cwd: workspace, env: transportEnv, timeout: 30_000, stream: false });
           assert.notEqual(result.code, 0); assert.equal(result.signal, null);
-          if (realSibling) {
+          if (realSibling || siblingLink) {
             assert.match(result.stderr, /Refusing an existing real OpenPlanner sibling/);
-            assert.equal(await readFile(join(workspace, '../openplanner/preserve'), 'utf8'), 'foreign sibling bytes');
+            if (realSibling) assert.equal(await readFile(join(workspace, '../openplanner/preserve'), 'utf8'), 'foreign sibling bytes');
+            else {
+              assert.equal(await readlink(join(workspace, '../openplanner')), siblingTarget);
+              if (siblingLink === 'live') assert.equal(await readFile(join(siblingTarget, 'preserve'), 'utf8'), 'foreign link-target bytes');
+              else await assert.rejects(lstat(siblingTarget), { code: 'ENOENT' });
+            }
             await assert.rejects(readFile(record), { code: 'ENOENT' }); return;
           }
           const evidence = caller === 'Sandbox' ? join(out, 'sdk') : join(runner, 'knoxx-setup-sdk/evidence');
@@ -304,6 +314,8 @@ test('shared helper refuses bad inputs and bounds failure/interrupt transports b
       await control('export-absent', 'missing-export');
       await control('Sandbox-real-sibling', 'install-failure', { caller: 'Sandbox', realSibling: true });
       await control('setup-action-real-sibling', 'install-failure', { caller: 'action', realSibling: true });
+      await control('setup-action-live-sibling', 'install-failure', { caller: 'action', siblingLink: 'live' });
+      await control('setup-action-broken-sibling', 'install-failure', { caller: 'action', siblingLink: 'broken' });
       const sandboxControl = await control('Sandbox-caller', 'install-failure', { caller: 'Sandbox' });
       await control('setup-action-caller', 'install-failure', { caller: 'action' });
       for (const key of ['source_revision', 'source_tree', 'selected_inventory_sha256',
