@@ -122,7 +122,7 @@ The independently counted probes are:
 3. One anonymous POST to the encoded document's `/review` route, with the same
    scope and `overall:"reject"`.
 
-Each must return exactly `401` with `error:"no_session"`. A redirect, `200`,
+Each must return exactly `401` with `{detail:"Not authenticated",error_code:"no_session"}`; the verifier requires `error_code:"no_session"`. A redirect, `200`,
 `400`, `404`, `503`, missing error code, or transport/readback failure refuses.
 Before and after every probe, authenticated detail/segment JSON and the helper's
 actual stored `label_version_counter` must match. The API does not expose that

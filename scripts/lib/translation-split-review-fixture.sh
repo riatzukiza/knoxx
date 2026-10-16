@@ -407,7 +407,7 @@ translation_fixture_legacy_preflight() {
     response="$(translation_fixture_legacy_http "$method" "$path" anon "$payload")" \
       || { translation_fixture_legacy_fail "$label transport unavailable"; return 1; }
     status="${response%%$'\n'*}"
-    error="$(printf '%s' "${response#*$'\n'}" | jq -r 'if .error == "no_session" then "no_session" else "unexpected_error" end' 2>/dev/null)"
+    error="$(printf '%s' "${response#*$'\n'}" | jq -r 'if .error_code == "no_session" then "no_session" else "unexpected_error" end' 2>/dev/null)"
     [ "$status" = 401 ] && [ "$error" = no_session ] \
       || { translation_fixture_legacy_fail "$label requires 401/no_session (status ${status:-unknown})"; return 1; }
     translation_fixture_legacy_snapshot || return 1
