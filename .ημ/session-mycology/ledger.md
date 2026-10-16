@@ -942,3 +942,12 @@
   spore: none
   receipt-refs: sha256:06af50ba2a7c778bbcba98ed8b9d0d38b6b635d57dfdd666c6b2327bd25fa2ca,3c2d923441db8389279cd467ce3c64b044be8bb8,098c9409c55cfbba9e3740c46a4b65e67a4ce7dd
   note: Actual full browser stopped at56of57 with original core-incomplete but no saved scheduler completion report, leaving failed/pending/unconsumed UNKNOWN. Snapshot four scalars atomically at the existing check; read them only after rejection and retain identical original Error/null even if diagnostics fail. Two causal assertions RED then focused2/registered173 GREEN; registered first invocation omitted mandatory held clj-kondo env and is retained separately169PASS4FAIL, corrected exact prior invocation171PASS2causalFAIL. Reuse canonical prior argv before sanitizing away required tool selection. Original all57 schedules/predicates/success awaits and application source unchanged. Portable reflection only, candidate0/no spore/no promotion; no runtime/browser/model/production credit.
+- ts: 2026-10-16T23:18:44.257288707Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-app-route-facade-over17381-PREP-v1
+  task: CMS57 keep diagnostic provenance sufficient and bounded while preserving failed-run truth
+  p-efficiency: 0.76
+  p-friction: 0.64
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: sha256:60c07cd9bf889730de8c91a22bf8305e3d1fbd725f957a0fcfa308e4ea627c54,196b9a63431db45907b9345411ae5b76112f620e,650dae99b3a79bc978e4c11a12dfce305d0598eb
+  note: Four completion counters establish synchronous refusal but cannot identify first rejected request or failed observer conjunct. Preserve earliest allowlisted category at existing writes and freeze owned pending/record/checkpoint tokens at assertComplete; keep Boolean short-circuit and DOM reads unchanged. Lexical token grammar alone did not prove private-token omission, so peer review narrowed owner projection to finite case57 IDs, with counters-only fallback elsewhere and token-shaped secret adverses. Genuine focused4 RED1PASS3assertions/registered175 RED172PASS3same; exact source GREEN4/175PASS, original Error/null identity coverage retained. Reuse exact qualified Node/pnpm environment including mandatory kondo; retain raw native outcomes. Earlier v8 FAIL56 stays failed and first cause UNKNOWN. Portable reflection only, candidate0/no spore/no promotion; no browser/model/production credit.
