@@ -791,3 +791,54 @@ test('settled feedback retains missing stale observer and early held-response re
     if (options.observer === 'stale') assert.equal(proof.beforeBRelease.failed, true);
   }
 });
+
+
+// Preserve the original core-incomplete error and the state at its exact check.
+test('completion snapshot remains frozen after live scheduler changes', async () => {
+  const { installDeferred } = await deferred(); const { world } = inertWorld();
+  const adapter = installDeferred({ runId, origin,
+    steps: [step('held'), step('later', { hold: false })] }, world);
+  const held = world.fetch(origin + '/api/publications/translations/reviews');
+  let primary;
+  try { adapter.assertComplete(); } catch (error) { primary = error; }
+  assert.ok(primary instanceof Error); assert.equal(primary.message, 'core-incomplete');
+  const snapshot = adapter.report().completion;
+  assert.deepEqual(snapshot, { failed: false, pendingCount: 1, consumedCount: 1, stepCount: 2 });
+  adapter.release('held', 'success'); await held;
+  await world.fetch(origin + '/api/publications/translations/reviews');
+  assert.deepEqual(adapter.report().pending, []);
+  assert.equal(adapter.report().consumed.length, 2);
+  assert.deepEqual(adapter.report().completion, snapshot);
+  assert.equal(primary.message, 'core-incomplete');
+  assert.equal(adapter.assertComplete().ordered, true); adapter.restore();
+});
+
+test('completion diagnostic failures preserve original throw identity and omit private fields', async () => {
+  const { settledFeedbackCase } = await scenarios(); const { safeCompletionReport } = await browser();
+  const secret = 'PRIVATE-COMPLETION-DIAGNOSTIC';
+  const counters = { failed: true, pendingCount: 2, consumedCount: 3, stepCount: 5 };
+  for (const failure of ['report', 'observer']) for (const primary of [Error(secret), null]) {
+    let attempted = false, observed;
+    await assert.rejects(settledFeedbackCase({ config: { ...config, evidenceDir: '/inert-no-write' },
+      installSource: '() => true', guardReport: () => ({ phase: 'controlled' }),
+      downloadCount: () => 0, noDownload: async () => {},
+      onCompletionFailure: value => { observed = safeCompletionReport(value); throw Error(secret); },
+      cli: async (operation, source) => {
+        assert.equal(operation, 'eval');
+        if (source === 'window.__knoxxControlledCore.assertComplete()') throw primary;
+        if (source === 'window.__knoxxControlledCore.report().completion') {
+          attempted = true; if (failure === 'report') throw Error(secret);
+          return { ...counters, body: secret, message: secret, auth: secret };
+        }
+        if (source === 'window.__knoxxControlledCore.report()')
+          return { runId: runId + '-54', active: true };
+        return true;
+      },
+    }, 'error', 54), error => error === primary);
+    assert.equal(attempted, true);
+    assert.deepEqual(observed, failure === 'report' ? undefined : counters);
+    assert.ok(!JSON.stringify({ observed }).includes(secret));
+  }
+  const accessor = Object.defineProperty({}, 'failed', { get() { throw Error(secret); } });
+  assert.equal(safeCompletionReport(accessor), undefined);
+});
