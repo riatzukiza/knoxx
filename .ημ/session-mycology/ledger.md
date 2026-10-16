@@ -789,3 +789,12 @@
   spore: none
   receipt-refs: .ημ/receipts.edn#0f4c5167-fe25-44b4-85f4-b9ed0dea9263
   note: Preserve compiled reader arities and awaited fault lifetime; assert actual invocation and Error/null primary identity with secondary close; refuse malformed receipts before destructive cleanup. Owning gates pass; inherited lint and 36 boundary sites plus combined-source and real runtime qualification remain. No spore.
+- ts: 2026-10-16T08:05:16.732658400Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-resource-route-characterization-over-64c-PREP-v1
+  task: Qualify finite resource route extraction and safe watcher cleanup observations
+  p-efficiency: 0.84
+  p-friction: 0.24
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#58c9a118-550c-4bc8-9768-09802e394f9e
+  note: Characterize original string-key wire-value output before product changes; retain fixture mismatch separately. Require actual missing safe-observation RED while Error/null cleanup fallback and all closes already pass. Preserve exact route/arity/write semantics through bounded extraction and place portable files on the real classpath. Owning gates pass; global backend2/249, inherited36boundaries and root60/56 size still fail. No spore.
