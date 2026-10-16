@@ -789,3 +789,12 @@
   spore: none
   receipt-refs: .ημ/receipts.edn#0f4c5167-fe25-44b4-85f4-b9ed0dea9263
   note: Preserve compiled reader arities and awaited fault lifetime; assert actual invocation and Error/null primary identity with secondary close; refuse malformed receipts before destructive cleanup. Owning gates pass; inherited lint and 36 boundary sites plus combined-source and real runtime qualification remain. No spore.
+- ts: 2026-10-16T08:09:07.094578148Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-router-future-flag-tests-over64c-v1
+  task: Align existing router fixtures with application future options
+  p-efficiency: 0.9
+  p-friction: 0.2
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#c340d28c-0b1a-4f52-a6a8-fd7ee49ad401
+  note: Four existing test wrappers omitted flags already used by the app. Correct fixture configuration without suppression or assertion changes; the complete registered TypeScript suite now passes267tests/44files with41existingtodo and zero warnings. Preserve actual baseline and source/closure/lease custody. Native board ownership gap remains visible; no false lifecycle or full release claim. Source local only; no model/browser/deployment effect. Portable candidate0/no spore.
