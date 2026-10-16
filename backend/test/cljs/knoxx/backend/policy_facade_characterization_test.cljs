@@ -1,6 +1,7 @@
 (ns knoxx.backend.policy-facade-characterization-test
   (:require [cljs.test :refer [deftest is]]
             [knoxx.backend.extern.policy-facade-fixture :as fixture]
+            [knoxx.backend.infra.auth.authz :as authz]
             [knoxx.backend.infra.db.policy :as policy]))
 
 (def active-member
@@ -213,3 +214,27 @@
                    (is (:failed? result))
                    (is (= status (:status (fixture/error-summary (:error result)))))
                    (is (empty? (fixture/operations world #{:redeem-invite :create-user :audit}))))))))))
+
+(deftest ^:async stored-membership-deny-survives-hydration-into-request-authorization
+  (let [world (fixture/world
+               {:member-roles [{:membership_id "member" :role_id "developer" :slug "developer"}]
+                :roles-by-ids [{:id "developer" :slug "developer"}]
+                :permissions [{:role_id "developer" :code "docs.read"}]
+                :role-tools [{:role_id "developer" :tool_id "read" :effect "allow"}]
+                :member-tools [{:membership_id "member" :tool_id "read" :effect "deny"}]})
+        expected [{:tool-id "read" :effect "deny" :constraints {}}]]
+    (await (fixture/with-stores! world
+             (^:async fn []
+               (let [wire (first (await (policy/hydrate-memberships nil [active-member])))
+                     context (await (policy/build-request-context nil active-member))]
+                 (is (= expected (:toolPolicies wire)))
+                 (is (not (contains? wire :tool-policies)) "The established hydrated wire shape stays camelCase")
+                 (is (= expected (:membership-tool-policies context)))
+                 (is (= expected (:tool-policies context)))
+                 (is (false? (authz/system-admin? context)))
+                 (is (false? (authz/ctx-tool-allowed? context "read")))
+                 (is (false? (authz/ctx-tool-allowed? context "unknown")))
+                 (is (= ["docs.read"] (:permissions context)))
+                 (is (= ["org" "user" "member"]
+                        [(get-in context [:org :id]) (get-in context [:user :id])
+                         (get-in context [:membership :id])]))))))))
