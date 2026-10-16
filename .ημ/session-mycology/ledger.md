@@ -761,3 +761,12 @@
   spore: none
   receipt-refs: receipts.edn#a988d9a4-e746-45b8-884f-c940817b732b
   note: Bind verifier expectations to actual canonical error_code:no_session wire, retain causal RED30797 and GREENe5d69882038d59e8d54b94581997aee41a5e55a5, and keep genuine HTTP-Mongo behavior distinct from synthetic process controls. Root attempt3 completed60PASS/1knownboundary with exact fixture teardown, reaped groups and absent42580 port; no database dropped. Direct-seeded candidate supplies no model/worker-dispatch/browser/production proof. Retain attempts1/2 and tool/descriptor failures, full lint4errors255warnings/36boundarysites and remaining product/release/trusted-adoption/staging obligations. This append reuses evidence, not runtime effects. Candidate0/no spore; portable file reflection only, no native SM retry.
+- ts: 2026-10-16T06:06:10.913533007Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-cms16-fixture-auth-implementation-over-26e4-v1
+  task: Repair two inherited CMS fixture error boundaries with actual causal controls
+  p-efficiency: 0.63
+  p-friction: 0.62
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#0f4c5167-fe25-44b4-85f4-b9ed0dea9263
+  note: Preserve compiled reader arities and awaited fault lifetime; assert actual invocation and Error/null primary identity with secondary close; refuse malformed receipts before destructive cleanup. Owning gates pass; inherited lint and 36 boundary sites plus combined-source and real runtime qualification remain. No spore.
