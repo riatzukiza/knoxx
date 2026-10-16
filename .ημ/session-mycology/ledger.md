@@ -752,3 +752,12 @@
 - Limits: last measured full backend lint(v6)4errors/255warnings remains failed and36 error-boundary sites remain release blockers; no genuine auth/database/browser/provider/publication/deployment proof. Prior green runs do not qualify changed source. Source and provenance remain separate commits.
 - Better path: freeze the20paths once, verify each owned boundary in its supported runtime, keep primary/cleanup evidence independently durable, then qualify genuine run-owned auth and exact cleanup before story completion.
 - Evidence: /home/err/.local/share/openhax-codex/20261010/review-state/CMS16-fixture-auth-implementation-over-qualified26e4-v1/ACTUAL-v8-final-local-gates-and-retained-release-blockers.json; ACTUAL-v8b-all20-source-whitespace-clean-custody.json. Native Session Mycology unsupported path not retried; portable candidate0 only; no skill/spore creation or promotion.
+- ts: 2026-10-16T05:27:27.649617817Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-gateway-async5-over-a298-v1
+  task: Gateway portable decisions and native lifecycle observation extraction
+  p-efficiency: 0.72
+  p-friction: 0.37
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#85ba29e6-007f-46ce-b53a-b55b36ca4f0f
+  note: Characterize real public APIs on original source before moving effects; keep expectedPASS separate from genuine missing-observationRED. Preserve29APIarities/receivers/callbacks/Promiseorder,15safeobservations and true Error/nil fallback semantics. Nativeaudio fixture must distinguish primary error from terminal child close and await bounded owned streams/pipeline/child cleanup. Actualbaseline2058/11603/0/0 then observationRED2060/11708/30/0 and extracted explicit/normal/coverage2060/11708/0/0/0warnings; owninglint/server/JSboundary pass. Preserve first zero-test guard and lint1/2 failures. Full lint3/254 and fresh38boundaries (2inherited626f) remain blockers; no fullGREEN/readiness/ownercompletion/public/model/DB/deploy. Candidate0/noSpore; nativeSM not retried.
