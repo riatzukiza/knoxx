@@ -571,3 +571,12 @@
   spore: none
   receipt-refs: .ημ/receipts.edn#65342f58-5cfb-4acc-a9d0-859301031b54
   note: Characterize public tool wiring before moving effects; retain all13IDs/schemas/permissions/callbacks and existing reply sentinel/repeated attachment semantics. Function asyncmetadata belongs on fn symbol, with real compile/test counts before claiming qualification. Portable decisions receive quality/time observations; native effects remain outeradapters. Owninglint/typecheck/explicit/normal/coverage1988/10951/0/0/0warnings and JSboundary pass. Full lint5errors256warnings and36exact unchanged errorboundary sites remain real releaseblockers. Existingowner staysin_progress; candidate0/no spore, nativeSMnotretried, no public/runtime/model/deploy effect.
+- ts: 2026-10-16T02:24:34.715919380Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-bluesky-finite-extraction-over-789-v1
+  task: Bluesky tool portable decisions and runtime boundary extraction
+  p-efficiency: 0.7
+  p-friction: 0.5
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#ce4ca920-1646-4ff0-8e95-310293f76b75
+  note: Characterize public wiring on original source before moving effects. Preserve19tool IDs/order,13schemas/auth/callbacks and observed looseURI, reply root, facet order/UTF8, concurrent image/alt and clipped-vector behavior. Match compiled multi-arity ABI and preserve synchronous original constructor dispatch in test doubles; first fixture failure had no full counters/productREDcredit. Corrected baseline and extracted explicit/normal/coverage2013/11258/0/0/0warnings pass, Node84pass, owninglint/typecheck/JSboundary pass. Full lint4errors255warnings and36unchanged errorboundary sites remain blockers. Existingowner staysin_progress; candidate0/noSpore, nativeSMnotretried, no public/model/app-serving/deploy effect.
