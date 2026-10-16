@@ -326,10 +326,13 @@ export async function settledFeedbackCase(io, mode, number) {
   const b = makeWireFixture(runId, 'B', 'resource-split'), message = mode === 'success'
     ? 'SFT export downloaded.' : 'Controlled original operation rejection';
   const text = `settled-${runId}\n`;
+  const boundary = { project: b.project, committedProject: b.project,
+    absent: [a.title, message, a.detail.segments[0].translated_text], formAbsent: true };
   await install(io, { runId, origin: io.config.origin, steps: [...bootSteps(a),
     { id: 'settled-export', method: 'GET', path: '/api/translations/export/sft', query: [['project', a.project], ['include_corrected', 'true']],
-      hold: true, response: { status: 200, text } }, ...initialSteps(b, 'settled-B', { hold: true })],
-    requiredOrder: ['commit:settled-B', 'request:settled-B-inventory'] });
+      hold: true, response: { status: 200, text } }, ...initialSteps(b, 'settled-B', { hold: true, checkpoint: boundary })],
+    requiredCheckpoints: ['settled-B-inventory'],
+    requiredOrder: ['commit:settled-B', 'release:settled-B-inventory'] });
   await evaluate(io, domAction('route', '/translations')); await openWork(io, a);
   const downloads = io.downloadCount(); await evaluate(io, domAction('button', 'Export SFT'));
   await waitDom(io, `window.__knoxxControlledCore.report().pending.includes('settled-export')`, 'settled-export');
@@ -337,7 +340,7 @@ export async function settledFeedbackCase(io, mode, number) {
   if (mode === 'success') await io.checkDownload(downloads, `${a.project}-all-translations.jsonl`, text);
   else await io.noDownload(downloads);
   await waitDom(io, `document.body.innerText.includes(${js(message)})`, 'feedback-installed');
-  await adapter(io, 'watchCommit', 'settled-B', { project: b.project, committedProject: b.project, absent: [a.title, message, a.detail.segments[0].translated_text], formAbsent: true });
+  await adapter(io, 'watchCommit', 'settled-B', boundary);
   await evaluate(io, domAction('project', b.project));
   await waitDom(io, `window.__knoxxControlledCore.report().pending.includes('settled-B-inventory')`, 'settled-B');
   await adapter(io, 'release', 'settled-B-inventory', 'success'); await adapter(io, 'release', 'settled-B-manifest', 'success');
