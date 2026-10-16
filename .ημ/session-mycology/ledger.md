@@ -870,3 +870,12 @@
   spore: none
   receipt-refs: .ημ/receipts.edn#fe38150f-fa31-4085-8198-bcd1641c0dce
   note: Small argument-name hygiene can remove real policy warnings without changing arity, callback order, positive parameter reads or assertions. Use the actual native test EOF and exit, not an arbitrary FATAL substring ban: unchanged negative-path logging can contain that word. Preserve inherited diagnostics and recover read-only rather than replaying a passing suite. Existing namespace registration loads require a separate source audit before removing apparently unused imports. No spore.
+- ts: 2026-10-16T17:03:39.723559802Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-app-route-facade-over17381-PREP-v1
+  task: Split translation dispatch and observe its two degraded nil fallbacks
+  p-efficiency: 0.92
+  p-friction: 0.15
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#657832f5-5a36-4b79-9663-7c9855cf89d0
+  note: Keep the public fallback and observation-failure contract separate: a warning sink must never replace a deliberately preserved nil fallback. Trigger actual original catch sites through public APIs and assert bounded worker calls plus exact safe context. Preserve original ordered async and identity laws; source-only extraction review is followed by real causal RED and full source-bound GREEN. Retain all inherited release failures. Read Rheos actual same-section append representation; restore only known owned physical modes after live gates close. No spore.
