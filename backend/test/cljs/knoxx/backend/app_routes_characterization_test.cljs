@@ -1,6 +1,8 @@
 (ns knoxx.backend.app-routes-characterization-test
   (:require [cljs.test :refer [deftest is]]
+            [knoxx.backend.domain.error-observatory :as observatory]
             [knoxx.backend.extern.app-routes-fixture :as fixture]
+            [knoxx.backend.extern.memory-sessions-fixture :as memory-fixture]
             [knoxx.backend.infra.routes.app :as app]))
 
 (def member {:org-id "org" :roleSlugs ["worker"]
@@ -344,3 +346,43 @@
              (is (= {:source_app "knoxx" :model "m" :system_prompt nil :provider nil :conversation_id "c"
                      :fake_tools_enabled false :items [{:role "user" :content "q"}]}
                     (get-in (first (fixture/operations w #{:fetch})) [2 :json]))))))))
+
+(deftest ^:async current-turn-errors-are-observed-with-the-existing-zombie-fallback
+  (let [failure (fixture/error) observer-failure (fixture/error)]
+    (doseq [[value recover? observer-mode] [[nil true :ok] [:active false :ok]
+                                           [failure true :ok] [failure true :throw-error] [failure true :throw-null]]]
+      (let [observed (atom []) queued (atom [])
+            w (fixture/world {:agent-session :synthetic-agent
+                              :current-turn (fn [_] (if (identical? value failure) (throw failure) value))})]
+        (with-redefs [observatory/log-error! (fn [boundary context err]
+                                             (swap! observed conj [boundary context err])
+                                             (case observer-mode
+                                               :throw-error (throw observer-failure)
+                                               :throw-null (memory-fixture/throw-nil!)
+                                               nil))]
+          (await (fixture/with-ports! w (^:async fn []
+                   (await (fixture/with-clock! 60001 (^:async fn []
+                            (await (app/detect-zombies "c"
+                                     {:status "running" :updated_at "1970-01-01T00:00:00.000Z" :messages []}
+                                     "s" (fn [label] (swap! queued conj label)) {} :reply nil)))))))))
+        (is (= (if (identical? value failure)
+                 [["app.session-current-turn" {:phase :clear-ghost-turn} failure]
+                  ["app.session-current-turn" {:phase :runtime-processing-session} failure]] []) @observed))
+        (is (= recover? (boolean (seq @queued))))
+        (is (= (if recover? [:unregister :complete] [])
+               (mapv first (fixture/operations w #{:unregister :complete}))))
+        (is (= 2 (count (fixture/operations w #{:current-turn}))))
+        (when-not recover? (is (= 409 (:status (fixture/response w)))))))))
+
+(deftest ^:async non-error-current-turn-throws-retain-identity-and-do-not-recover
+  (let [failure (fixture/native {:synthetic "non-Error"}) observed (atom [])
+        w (fixture/world {:agent-session :synthetic-agent :current-turn (fn [_] (throw failure))})
+        result (with-redefs [observatory/log-error! (fn [& args] (swap! observed conj args))]
+                 (await (fixture/caught (^:async fn []
+                          (await (fixture/with-ports! w (^:async fn []
+                                   (await (app/detect-zombies "c" {:status "running"} "s" (fn [_] :unexpected) {} :reply nil)))))))))]
+    (is (true? (:failed? result)))
+    (is (identical? failure (:error result)))
+    (is (empty? @observed))
+    (is (empty? (fixture/operations w #{:unregister :complete})))
+    (is (empty? (fixture/replies w)))))
