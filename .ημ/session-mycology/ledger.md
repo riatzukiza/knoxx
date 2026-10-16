@@ -752,3 +752,13 @@
 - Limits: last measured full backend lint(v6)4errors/255warnings remains failed and36 error-boundary sites remain release blockers; no genuine auth/database/browser/provider/publication/deployment proof. Prior green runs do not qualify changed source. Source and provenance remain separate commits.
 - Better path: freeze the20paths once, verify each owned boundary in its supported runtime, keep primary/cleanup evidence independently durable, then qualify genuine run-owned auth and exact cleanup before story completion.
 - Evidence: /home/err/.local/share/openhax-codex/20261010/review-state/CMS16-fixture-auth-implementation-over-qualified26e4-v1/ACTUAL-v8-final-local-gates-and-retained-release-blockers.json; ACTUAL-v8b-all20-source-whitespace-clean-custody.json. Native Session Mycology unsupported path not retried; portable candidate0 only; no skill/spore creation or promotion.
+
+## 2026-10-16T05:44:39.235976+00:00 — CMS16 current-view local product repair
+
+- Context: source 2bd3ebdd0d56ef2d362c231cf7c4596818036045; base e5d69882038d59e8d54b94581997aee41a5e55a5; Receipt River .ημ/receipts.edn#0e8fcc87-b5a2-406f-b6e2-d51020048697.
+- Scores: efficiency 0.57; friction 0.72; skill-candidate 0; spore none.
+- Observed: synchronously change view generations before React effects, keep state updaters pure, and bind saving/finally to a unique operation. Preserve already-authorized payloads and approval followups while fencing stale UI completions.
+- Verification: 474 frontend tests/2240 assertions/zero failures/errors/compiler warnings; eight owning source paths lint0/0; real registered frontend build passed. Original protected interaction file stays byte-e5; moved causal tests on original production still fail six assertions.
+- Limits: whole frontend lint remains failed7errors/790warnings (original-tracked7/835), same seven untouched error locations. No browser/human race tour, hosted review, story completion or deployment. Tests/build preceded only two blank EOF-line removals, explicitly byte-bound.
+- Better path: freeze causal UI schedules before extraction, distinguish component prop-map syntax from children, and run full staged hygiene before commit. Preserve all failed captures and recover known successful effects without replay.
+- Evidence: /home/err/.local/share/openhax-codex/20261010/review-state/CMS16-current-view-RED-and-frontend-prerequisite-independent-review-v1/e5d-isolated-install-and-baseline-v1/current-view-RED-GREEN-implementation-v1/ACTUAL-current-view-qualified-local-source-commit.json; ACTUAL-source-built-frontend-dist-artifact-manifest.json. Native Session Mycology known null-cwd route not retried; portable candidate0 only, no spore creation/promotion.
