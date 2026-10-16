@@ -825,3 +825,12 @@
   spore: none
   receipt-refs: .ημ/receipts.edn#248646fa-0aae-4c23-86ca-316d79d28b2b
   note: Compile existing private-var consumers after facade extraction before claiming compatibility. Retain missing-binding compile failure and unused-private lint warning. Restore genuine production use through a fixed internal response-codec callback while preserving private one-arity metadata, public five-arity API, original assertions and target scope. Current owning lint, full normal and server build pass; backend1/248,36boundary violations and root59/56 plus missing-root-node_modules warning remain release blockers. No spore.
+- ts: 2026-10-16T13:23:53.524446906Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-app-route-facade-over17381-PREP-v1
+  task: Qualify app facade extraction and preserve fallback when boundary observers fail
+  p-efficiency: 0.78
+  p-friction: 0.49
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#22d4052e-c9ae-4646-b8a9-3a7da8dae49b
+  note: Run the actual new-source boundary inventory after extraction: path-bound baseline catches may become new failures. Preserve explicitfalse and foreign primarythrow identity when observing degraded reads; an observerError ornull must not replace fallback. Reuse the existing named compilednull fixture, retain genuine3assertionRED and all withdrawn static judgments. Owning checks pass; backend237warnings,36silentcatchsites and root58errors56warnings remain release blockers. Coverage runPASS measures78.64percent overall lines/statements with no configuredpercentageproof. One private latestfailure diagnostic is bounded/process-local and maystale. No spore.
