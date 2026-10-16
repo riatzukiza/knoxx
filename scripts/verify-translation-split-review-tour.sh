@@ -15,7 +15,7 @@ export PATH
 FRONTEND_URL="${KNOXX_FRONTEND_URL:-http://localhost:5173}"
 CONTRACTS_DIR="${KNOXX_CONTRACTS_DIR:-${REPO_ROOT}/contracts}"
 FIXTURE_DIR="${CONTRACTS_DIR}/_verify_translation_split_review_tour"
-RUN_ID="$(date -u +%Y%m%d%H%M%S)$$"
+RUN_ID="${VERIFY_RUN_ID:-$(date -u +%Y%m%d%H%M%S)$$}"
 VERIFY_TMP_DIR="$(mktemp -d)"
 VERIFY_ORG_ID="${VERIFY_ORG_ID:-${KNOXX_VERIFY_ORG_ID:-}}"
 KNOXX_PUBLICATION_CONTENT_ROOT="${KNOXX_PUBLICATION_CONTENT_ROOT:-}"
@@ -94,6 +94,7 @@ fill_review_text() {
 cleanup() {
   local code=$? signalled="${1:-}" cleanup_failed=0 durable_cleanup_succeeded=0
   [ -n "$signalled" ] && code="$signalled"
+  translation_fixture_legacy_cleanup || cleanup_failed=1
   ab close >/dev/null 2>&1
   if [ "$DURABLE_SEED_ATTEMPTED" -eq 1 ]; then
     if translation_fixture_helper cleanup >/dev/null 2>&1; then
@@ -115,7 +116,7 @@ trap cleanup EXIT
 trap 'trap - EXIT; cleanup 130' INT
 trap 'trap - EXIT; cleanup 143' TERM
 
-for tool in agent-browser jq clojure unzip curl node; do
+for tool in agent-browser jq clojure unzip curl node git realpath sha256sum; do
   command -v "$tool" >/dev/null 2>&1 || die "missing required tool: $tool"
 done
 transport_kind="$(knoxx_credential_transport_kind "$FRONTEND_URL" 2>/dev/null)" \
@@ -130,6 +131,9 @@ note "shots    ${SHOT_DIR#$REPO_ROOT/}"
 [ -x "${REPO_ROOT}/backend/node_modules/.bin/nbb" ] \
   || die "backend dependencies are absent; run pnpm install"
 [ -n "$VERIFY_ORG_ID" ] || die "VERIFY_ORG_ID must name the browser identity's organization"
+[[ "${VERIFY_SOURCE_COMMIT:-}" =~ ^[0-9a-f]{40}$ ]] \
+  && [ "$(git -C "$REPO_ROOT" rev-parse HEAD 2>/dev/null)" = "$VERIFY_SOURCE_COMMIT" ] \
+  || die "VERIFY_SOURCE_COMMIT must name this exact source checkout"
 [ -n "$KNOXX_PUBLICATION_CONTENT_ROOT" ] \
   || die "KNOXX_PUBLICATION_CONTENT_ROOT must equal the backend's content root"
 [ -d "$CONTRACTS_DIR" ] || die "contracts directory not found: $CONTRACTS_DIR"
@@ -199,6 +203,21 @@ if [ -z "$project" ] || [ "$project" = "__NONE__" ]; then
 else
   VERIFY_PROJECT="$project"
 fi
+
+translation_fixture_legacy_auth_http() {
+  local path_json result
+  path_json="$(jq -Rn --arg path "$2" '$path')"
+  result="$(ab eval "(async()=>{const r=await fetch($path_json,{credentials:'include',redirect:'error'});return {status:r.status,body:await r.json()};})()")" \
+    || return 1
+  printf '%s\n%s' "$(printf '%s' "$result" | jq -er .status)" \
+    "$(printf '%s' "$result" | jq -c .body)"
+}
+BASE_URL="$FRONTEND_URL"
+step "1b. exact legacy auth preflight before translation navigation or interception"
+translation_fixture_legacy_preflight \
+  || die "legacy auth preflight failed; checked cleanup retains exact recovery identity"
+note "legacy fixture removed after its independent detail GET and two POST auth checks"
+
 DURABLE_SEED_ATTEMPTED=1
 translation_fixture_helper seed >/dev/null || die "could not seed the production-shaped candidate"
 

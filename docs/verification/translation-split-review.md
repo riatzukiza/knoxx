@@ -73,6 +73,99 @@ meaningful evidence.
    well as access to the translation review routes. Reconciliation is a real
    public-content mutation, although every fixture path and resource id is
    unique to the run and the cleanup removes it.
+7. Export `VERIFY_SOURCE_COMMIT` as the full 40-character commit actually built
+   and served by the owned backend. Both scripts compare it with this checkout;
+   the live stack's build/launch custody must separately bind that same source.
+   A source string alone does not prove which backend image is serving requests.
+   The real resource topology and exact legacy detail/segment readbacks must
+   also succeed. Legacy compatibility must use the same Mongo database and a
+   real nonblank project returned by the authenticated resource inventory.
+   An absent project, REST-only storage, wrong database, missing live readback,
+   or disabled compatibility route refuses the phase; no project is invented.
+
+## Legacy auth prerequisite before the resource walkthrough
+
+The shared helper first seeds one separate pending Spanish legacy segment with
+fixed synthetic source/translation text and no labels. Its document ID is
+`${TRANSLATION_FIXTURE_NS}/legacy-auth`, distinct from all eighteen resource
+documents. The legacy garden defaults to the real nil coordinate
+(`VERIFY_LEGACY_GARDEN_ID=__NONE__`); an explicitly selected garden remains part
+of the exact scope. No source event or resource row is inserted for this legacy
+fixture. The ordinary resource count remains eighteen, and the dependent locale
+scenario retains its own `20/18/1/1` assertions.
+
+Before the possibly partial insert, the backend helper creates an exclusive
+`0600` ownership record with the actual Mongo ObjectId, run, source commit,
+nonsecret URI digest/database, org, project, document, garden, and locale.
+Existing ownership files and colliding rows refuse rather than being adopted.
+Set `VERIFY_LEGACY_OWNERSHIP_FILE` to an absolute durable path outside the
+checkout, the contract fixture and `VERIFY_TMP_DIR`. Its default is
+`$HOME/.local/state/knoxx-verification/legacy-${RUN_ID}.json`. Keep this record
+until both exact stored absence and authenticated scoped-list absence pass.
+
+The phase runs after the backend can see the run's resource topology and before
+resource candidate seeding, translation navigation, interception, or manual
+filter counters. The browser tour establishes its ordinary app session first;
+its authenticated readbacks use that real browser session, while every anonymous
+probe uses a separate curl process with an empty cookie jar and cleared
+Authorization/API/identity headers. Curl ignores curlrc and does not follow
+redirects. Both modes use the same encoded document/locale URL and project/garden
+query as `frontend/.../translations/api.cljs`.
+
+The independently counted probes are:
+
+1. One anonymous GET to the exact owned document detail URL, after authenticated
+   detail and segment readiness recover the recorded identity.
+2. One anonymous POST to `/api/translations/segments/:id/labels`, with the normal
+   evaluation fields, the live project/garden scope, `overall:"reject"`, and no
+   corrected text.
+3. One anonymous POST to the encoded document's `/review` route, with the same
+   scope and `overall:"reject"`.
+
+Each must return exactly `401` with `error:"no_session"`. A redirect, `200`,
+`400`, `404`, `503`, missing error code, or transport/readback failure refuses.
+Before and after every probe, authenticated detail/segment JSON and the helper's
+actual stored `label_version_counter` must match. The API does not expose that
+counter; the direct exact owned read is mandatory. Logs contain only named
+checks, status/error categories and equality outcomes, never response content,
+credentials, or connection settings. The existing resource bulk anonymous check
+remains a separate accurately named assertion.
+
+Checked cleanup removes only labels for the recorded segment/org/project, then
+the segment under its complete recorded identity. It verifies zero remaining
+owned rows and absence from the authenticated project/Spanish document list
+before retiring the ownership record and continuing the resource workflow.
+EXIT/INT/TERM also attempt this exact cleanup. A failed cleanup makes a successful
+run nonzero and retains ownership; it does not replace an earlier failure. The
+first safe failure, each actual helper exit status with known safe CLI flags,
+and each successful stored cleanup result remain in separate files beside
+ownership, including after a later recovery succeeds. Unknown stderr and error
+messages are redacted; these files contain no connection URI or translation text.
+
+Explicit recovery uses a **fresh process**, the same Mongo connection, original
+checkout/source and actual identity; it never sweeps a namespace or adopts a
+record:
+
+```bash
+VERIFY_SOURCE_COMMIT=<original-full-commit> \
+VERIFY_ORG_ID=<same-org> KNOXX_API_KEY=<same-authorized-key> \
+scripts/verify-translation-split-review.sh \
+  --cleanup-legacy /absolute/retained-ownership.json
+```
+
+Preserve the original terminal outcome and its adjacent failure/cleanup evidence
+even when recovery proves absence. A missing already-removed owned label is
+idempotent; changed source, database or scope must refuse before further deletion.
+
+`python3 scripts/test-cms-verifier-preconditions.py` is the registered process
+gate. Its shell HTTP/CLI controls are explicitly synthetic and prove ordering,
+cookie isolation, wrong-status/error refusal, hidden-counter comparison,
+cleanup aggregation and fresh-shell recovery. They supply **no live auth or
+database evidence**. The separate actual-adapter TERM schedule must synchronize
+after its owned-label deletion while its segment still exists, retain the
+terminated state/ownership, and reenter in a fresh process while preserving
+foreign controls. A source-built owned live run is still required for the real
+detail GET, both POSTs, and checked cleanup; no synthetic response qualifies it.
 
 Credential transport fails closed. `KNOXX_BASE_URL` and
 `KNOXX_FRONTEND_URL` may use plain HTTP only for the exact hosts `localhost`,

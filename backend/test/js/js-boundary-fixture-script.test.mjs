@@ -59,8 +59,13 @@ const forbidden = [
   ['native console', '(defn probe [] (js/console.error "unexpected"))'],
   ['native conversion', '(defn probe [value] (js->clj value))'],
   ['native conversion', '(defn probe [value] (clj->js value))'],
+  ['native conversion', '(defn probe [value] (cljs.core/js->clj value))'],
+  ['native conversion', '(defn probe [value] (cljs.core/clj->js value))'],
   ['native array access', '(defn probe [value] (aget value "status"))'],
   ['native array access', '(defn probe [value] (aset value "status" 1))'],
+  ['native array access', '(defn probe [value] (cljs.core/aget value "status"))'],
+  ['native array access', '(defn probe [value] (cljs.core/aset value "status" 1))'],
+  ['native host interop', '(defn probe [] (js* "process.exitCode = 1"))'],
   ['native literal', '(def value #js {:private true})'],
   ['native construction', '(defn probe [uri] (MongoClient. uri))'],
   ['native construction', '(defn probe [constructor] (new constructor))'],
@@ -70,6 +75,8 @@ const forbidden = [
   ['native property/method', '(defn probe [client] (. client connect))'],
   ['native module import', '(ns probe (:require ["mongodb" :refer [MongoClient]]))'],
   ['native module import', '(ns probe (:require ["node:process" :as process]))'],
+  ['native module import', `(ns probe)\n(require '["node:fs" :as fs])\n(defn probe [path] (fs/readFileSync path "utf8"))`],
+  ['native module import', `(ns probe)\n(cljs.core/require '["node:fs" :as fs])`],
   ['generic extern import', '(ns probe (:require [knoxx.backend.extern.js :as xjs]))'],
   ['generic extern import', '(ns probe (:require [knoxx.backend.extern.json :as xjson]))'],
 ];
@@ -129,6 +136,16 @@ test('the same real host interop stays legal inside its named extern adapter', t
   const result = fixture.run();
   assert.equal(result.status, 0, result.output);
 });
+
+for (const documentation of [
+  '(def explanation "knoxx.backend.extern.js and knoxx.backend.extern.json are implementation details")',
+  '; knoxx.backend.extern.js and knoxx.backend.extern.json are not imported here',
+]) {
+  test(`fixture documentation naming generic helpers is data: ${documentation}`, t => {
+    const result = layout(t, `${clean}\n${documentation}\n`).run();
+    assert.equal(result.status, 0, result.output);
+  });
+}
 
 test('ordinary generic-extern source imports still require their existing allowlist', t => {
   const source = '(ns knoxx.backend.infra.boundary-probe (:require [knoxx.backend.extern.js :as xjs]))\n';
