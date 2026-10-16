@@ -328,3 +328,51 @@ test('owned-page URL guard refuses wrong native types, missing data and every ot
     assert.throws(() => assertOwnedCLIURL(value, origin + '/cms'));
   }
 });
+
+
+const backgroundContracts = [
+  ['existing CMS recent10', '/api/memory/sessions?limit=10', { rows: [], total: 0, has_more: false }],
+  ['mounted chat recent20', '/api/memory/sessions?limit=20&excludeActorIds=eta-mu', { rows: [], total: 0, has_more: false }],
+  ['mounted chat docs browse', '/api/ingestion/browse?path=docs', { workspace_root: '/synthetic-core', current_path: 'docs', entries: [] }],
+  ['owned public chat status', `/api/knoxx/session/status?session_id=${runId}-cms-session&conversation_id=${runId}-cms-conversation`,
+    { session_id: runId + '-cms-session', conversation_id: runId + '-cms-conversation', status: 'not_found',
+      has_active_stream: false, can_send: true, reason: 'No session state found. Ready for new turn.' }],
+];
+for (const [name, url, expected] of backgroundContracts) test(name + ' is synthetic at both actual boundaries', async () => {
+  const { createNetworkGuard } = await browser(); const { backgroundResponses } = await scenarios();
+  const { installDeferred } = await deferred(); const background = backgroundResponses(runId);
+  const guard = createNetworkGuard({ ...config, background }); let body, aborted = 0, nativeCalls = 0;
+  await guard.route({ request: () => ({ method: () => 'GET', url: () => origin + url, postData: () => null }),
+    fulfill: async result => { body = JSON.parse(result.body); }, abort: async () => { aborted += 1; },
+    fetch: async () => { nativeCalls += 1; throw Error('uncontrolled'); } });
+  const { world, forwarded } = inertWorld(); const adapter = installDeferred({ runId, origin, steps: [], background }, world);
+  try {
+    const windowBody = await world.fetch(url).then(result => result.json(), () => null);
+    assert.deepEqual({ aborted, body, windowBody, nativeCalls, forwarded: forwarded() },
+      { aborted: 0, body: expected, windowBody: expected, nativeCalls: 0, forwarded: 0 });
+  } finally { adapter.restore(); }
+});
+
+test('background fixtures refuse every non-GET, body, fragment and unowned query at both boundaries', async () => {
+  const { createNetworkGuard } = await browser(); const { backgroundResponses } = await scenarios();
+  const { installDeferred } = await deferred(); const background = backgroundResponses(runId);
+  const guard = createNetworkGuard({ ...config, background }); const outcomes = []; let nativeCalls = 0;
+  const { world, forwarded } = inertWorld(); const adapter = installDeferred({ runId, origin, steps: [], background }, world);
+  const status = backgroundContracts[3][1];
+  try {
+    for (const [method, url, body] of [['HEAD', '/api/config'], ['POST', '/api/config'], ['GET', '/api/config', '{}'],
+      ['GET', '/api/config#fragment'], ['GET', '/api/config?extra=1'], ['GET', status.replace('-cms-session', '-foreign-session')],
+      ['GET', status.replace('-cms-conversation', '-foreign-conversation')], ['GET', status + '&session_id=duplicate'],
+      ['GET', '/api/ingestion/browse?path=..%2Fprivate'], ['GET', 'https://foreign.invalid/api/config']]) {
+      let aborted = false, fulfilled = false;
+      await guard.route({ request: () => ({ method: () => method, url: () => new URL(url, origin).href, postData: () => body ?? null }),
+        abort: async () => { aborted = true; }, fulfill: async () => { fulfilled = true; },
+        fetch: async () => { nativeCalls += 1; throw Error('uncontrolled'); } });
+      const refused = await world.fetch(url, { method, ...(body === undefined ? {} : { body }) }).then(() => false, () => true);
+      outcomes.push({ aborted, fulfilled, refused });
+    }
+    assert.deepEqual(outcomes, Array.from({ length: 10 }, () => ({ aborted: true, fulfilled: false, refused: true })));
+    assert.equal(nativeCalls, 0); assert.equal(forwarded(), 0);
+    assert.equal(guard.decide({ method: 'HEAD', url: origin + '/assets/actual.js' }), 'continue');
+  } finally { adapter.restore(); }
+});
