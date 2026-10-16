@@ -12,7 +12,7 @@ import { runCoreScenarios, backgroundResponses } from './translation-current-vie
 const digest = data => createHash('sha256').update(data).digest('hex');
 const refuse = category => { throw Object.assign(Error(category), { category }); };
 const safeCategories = new Set(['core-interrupted', 'core-cli-refused', 'core-browser-proof-failed']);
-const diagnosticStages = new Set(['validate', 'owner', 'auth', 'cli-nonce', 'cli-url', 'cli-media', 'scenarios']);
+const diagnosticStages = new Set(['validate', 'owner', 'auth', 'cli-nonce', 'cli-url', 'cli-media', 'cli-downloads', 'scenarios']);
 const diagnosticCases = new Set([
   ...['legacy-segment', 'resource-split', 'resource-bulk', 'legacy-document', 'whole-output', 'dispatch', 'retry']
     .flatMap(entry => ['project', 'unmount', 'remount'].flatMap(kind => ['success', 'error'].map(mode => `${entry}:${kind}-${mode}`))),
@@ -235,11 +235,13 @@ export function installOwnedChatStorage({ origin, runId }, world = globalThis) {
 async function startOwner(config, resources) {
   const module = await import(pathToFileURL(config.playwrightEntry).href);
   await mkdir(config.evidenceDir, { mode: 0o700 }); await mkdir(config.profileDir, { mode: 0o700 });
+  const downloadsDirectory = path.join(config.evidenceDir, 'native-downloads');
+  await mkdir(downloadsDirectory, { mode: 0o700 });
   // Port is owned only after the browser binds it. A pre-existing port must be
   // refused by the outer runtime controller, and the context/CDP identity checked.
   await availablePort(config.cdpPort);
   const context = await module.chromium.launchPersistentContext(config.profileDir, {
-    executablePath: config.chromiumExecutable, headless: true, serviceWorkers: 'block',
+    executablePath: config.chromiumExecutable, headless: true, serviceWorkers: 'block', downloadsPath: downloadsDirectory,
     env: browserEnvironment(process.env),
     colorScheme: 'dark', viewport: { width: 1600, height: 1000 },
     args: [`--remote-debugging-address=127.0.0.1`, `--remote-debugging-port=${config.cdpPort}`],
@@ -253,7 +255,7 @@ async function startOwner(config, resources) {
   const nonce = randomUUID(); await page.evaluate(value => { window.__coreOwner = value; }, nonce);
   await context.addInitScript(value => { window.__coreOwner = value; }, nonce);
   await context.addInitScript(installOwnedChatStorage, { origin: config.origin, runId: config.runId });
-  return { context, page, guard, nonce };
+  return { context, page, guard, nonce, downloadsDirectory };
 }
 
 async function authenticate(owner, config) {
@@ -285,7 +287,7 @@ function cliFor(config, stopped = () => false) {
 }
 
 export async function runBrowserProof(config) {
-  let owner, cli, primary = null, interrupted = false;
+  let owner, cli, downloads, primary = null, interrupted = false;
   const resources = [], scenarioCleanupErrors = []; let results, signalReject, failureProgress;
   const progress = { stage: 'validate', completedCases: 0 };
   const signal = new Promise((_, reject) => { signalReject = reject; });
@@ -299,7 +301,17 @@ export async function runBrowserProof(config) {
     progress.stage = 'cli-nonce'; assert.equal(await cli('eval', 'window.__coreOwner'), owner.nonce);
     progress.stage = 'cli-url'; assertOwnedCLIURL(await cli('get', 'url'), config.origin + '/cms');
     progress.stage = 'cli-media'; await cli('set', 'media', 'dark');
-    const downloads = downloadRecorder(owner.page, config.evidenceDir);
+    progress.stage = 'cli-downloads';
+    const nativeBrowser = owner.context.browser();
+    assert.equal(nativeBrowser.contexts().length, 1); assert.equal(nativeBrowser.contexts()[0], owner.context);
+    const downloadTransport = await nativeBrowser.newBrowserCDPSession();
+    resources.unshift({ name: 'download-transport', close: () => downloadTransport.detach() });
+    // A second CDP client's attach resets the default context download path.
+    // Reclaim the original owner's explicit path before any download is started.
+    await downloadTransport.send('Browser.setDownloadBehavior', {
+      behavior: 'allowAndName', downloadPath: owner.downloadsDirectory, eventsEnabled: true,
+    });
+    downloads = downloadRecorder(owner.page, config.evidenceDir);
     resources.unshift({ name: 'downloads', close: downloads.close });
     // This public context-owned cleanup remains available when interrupt stops CLI work.
     resources.unshift({ name: 'adapter', close: () => owner.page.evaluate(restoreOwnedAdapter, { runId: config.runId }) });
@@ -318,7 +330,8 @@ export async function runBrowserProof(config) {
   cleanup.cleanupComplete = cleanup.cleanupErrors.length === 0;
   process.removeListener('SIGINT', interrupt); process.removeListener('SIGTERM', interrupt);
   const proof = { sourceCommit: config.sourceCommit, runId: config.runId, synthetic: true,
-    results, progress: failureProgress ?? safeProgress(progress), guard: owner?.guard.report(), ...cleanup };
+    results, progress: failureProgress ?? safeProgress(progress), guard: owner?.guard.report(),
+    downloadFailures: downloads?.report() ?? [], ...cleanup };
   if (owner) await writeFile(path.join(config.evidenceDir, 'core-browser-proof.json'), JSON.stringify(proof, null, 2), { mode: 0o600, flag: 'wx' });
   if (primary || !cleanup.cleanupComplete) refuse('core-browser-proof-failed'); return proof;
 }
@@ -333,19 +346,29 @@ export function restoreOwnedAdapter(expected, world = globalThis) {
 }
 
 function downloadRecorder(page, directory) {
-  const pending = [];
+  const pending = [], failures = [];
   const received = download => {
     const number = pending.length;
     const promise = (async () => {
       const file = path.join(directory, `owned-export-${number}.jsonl`);
-      await download.saveAs(file);
-      return { filename: download.suggestedFilename(), digest: digest(await regular(file)) };
+      let stage = 'save-as';
+      try {
+        await download.saveAs(file); stage = 'verify-file';
+        return { filename: download.suggestedFilename(), digest: digest(await regular(file)) };
+      } catch (error) {
+        const cause = diagnosticValue(error, 'cause');
+        failures.push({ index: number, stage, thrownKind: error === null ? 'null' : typeof error,
+          primary: safeDiagnostic(error, {}), ...(cause === undefined ? {} : { cause: safeDiagnostic(cause, {}) }) });
+        throw error;
+      }
     })();
     promise.catch(() => {}); pending.push(promise);
   };
   page.on('download', received);
   return {
     downloadCount: () => pending.length,
+    report: () => failures.map(value => ({ ...value, primary: { ...value.primary },
+      ...(value.cause ? { cause: { ...value.cause } } : {}) })),
     async checkDownload(previous, filename, content) {
       for (let i = 0; i < 100 && pending.length === previous; i += 1)
         await new Promise(resolve => setTimeout(resolve, 50));
