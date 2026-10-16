@@ -17,7 +17,7 @@
                request-local scope and refuse when that actor owns none."
   (:require [cljs.test :refer [deftest is testing]]
             [clojure.string :as str]
-            [knoxx.backend.domain.discord.gateway :as gateway]
+            [knoxx.backend.infra.discord.gateway :as gateway]
             [knoxx.backend.e2e.discord-double :as discord-double]
             [knoxx.backend.e2e.harness :as harness]
             [knoxx.backend.e2e.mcp-client :as mcp]))

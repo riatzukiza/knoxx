@@ -761,3 +761,12 @@
   spore: none
   receipt-refs: receipts.edn#a988d9a4-e746-45b8-884f-c940817b732b
   note: Bind verifier expectations to actual canonical error_code:no_session wire, retain causal RED30797 and GREENe5d69882038d59e8d54b94581997aee41a5e55a5, and keep genuine HTTP-Mongo behavior distinct from synthetic process controls. Root attempt3 completed60PASS/1knownboundary with exact fixture teardown, reaped groups and absent42580 port; no database dropped. Direct-seeded candidate supplies no model/worker-dispatch/browser/production proof. Retain attempts1/2 and tool/descriptor failures, full lint4errors255warnings/36boundarysites and remaining product/release/trusted-adoption/staging obligations. This append reuses evidence, not runtime effects. Candidate0/no spore; portable file reflection only, no native SM retry.
+- ts: 2026-10-16T05:27:27.649617817Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-gateway-async5-over-a298-v1
+  task: Gateway portable decisions and native lifecycle observation extraction
+  p-efficiency: 0.72
+  p-friction: 0.37
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#85ba29e6-007f-46ce-b53a-b55b36ca4f0f
+  note: Characterize real public APIs on original source before moving effects; keep expectedPASS separate from genuine missing-observationRED. Preserve29APIarities/receivers/callbacks/Promiseorder,15safeobservations and true Error/nil fallback semantics. Nativeaudio fixture must distinguish primary error from terminal child close and await bounded owned streams/pipeline/child cleanup. Actualbaseline2058/11603/0/0 then observationRED2060/11708/30/0 and extracted explicit/normal/coverage2060/11708/0/0/0warnings; owninglint/server/JSboundary pass. Preserve first zero-test guard and lint1/2 failures. Full lint3/254 and fresh38boundaries (2inherited626f) remain blockers; no fullGREEN/readiness/ownercompletion/public/model/DB/deploy. Candidate0/noSpore; nativeSM not retried.
