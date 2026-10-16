@@ -238,3 +238,28 @@
                  (is (= ["org" "user" "member"]
                         [(get-in context [:org :id]) (get-in context [:user :id])
                          (get-in context [:membership :id])]))))))))
+
+(deftest ^:async context-credential-upsert-retains-target-scope-and-native-response-codec
+  (let [row {:id "credential" :user_id "target-user" :org_id "target-org"
+             :provider "discord_bot" :kind "bot-token" :account_identifier "account"
+             :secret_json (fixture/native-value {:botToken "synthetic"}) :status "active"}
+        world (fixture/world {:upsert-credential row})
+        context {:pool :ignored :bootstrap-user-id "operator"
+                 :bootstrap-membership-id "operator-member"}
+        payload {:org-id "target-org" :provider "discord_bot" :kind "bot-token"
+                 :account-identifier "account" :secret-json {:botToken "synthetic"}
+                 :status "active"}]
+    (await (fixture/with-stores! world
+             (^:async fn []
+               (let [result (await (policy/upsert-actor-credential-for-context!
+                                    context "target-user" payload))]
+                 (is (= [[:upsert-credential :db "target-user" "target-org" "discord_bot"
+                          {:kind "bot-token" :account-identifier "account"
+                           :secret-json {:botToken "synthetic"} :status "active"}]]
+                        (fixture/operations world #{:upsert-credential})))
+                 (is (= {:credential {:id "credential" :userId "target-user" :orgId "target-org"
+                                      :provider "discord_bot" :kind "bot-token"
+                                      :accountIdentifier "account" :status "active"
+                                      :secretJson {:botToken "synthetic"}
+                                      :configuredFields ["botToken"]}}
+                        result))))))))

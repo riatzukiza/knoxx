@@ -21,6 +21,9 @@
     (native/parse-role-slugs value)
     (catch :default _ [])))
 
+(defn- actor-credential-response [row]
+  (native/actor-credential-response row))
+
 (def promise-each connection/promise-each)
 (def upsert-actor-contract-best-effort! projections/upsert-actor-contract-best-effort!)
 (def db! connection/db!)
@@ -77,7 +80,9 @@
 (def sync-actor-contracts! projections/sync-actor-contracts!)
 (def sync-user-from-actor-contract! projections/sync-user-from-actor-contract!)
 (def update-user-actor! memberships/update-user-actor!)
-(def upsert-actor-credential! credential-db/upsert-actor-credential!)
+(defn upsert-actor-credential! [pool uid mid user-id options]
+  (credential-db/upsert-actor-credential!
+   actor-credential-response pool uid mid user-id options))
 (def get-actor-credential! credential-db/get-actor-credential!)
 (def ensure-bootstrap-allowlist-role! bootstrap/ensure-bootstrap-allowlist-role!)
 (def ensure-bootstrap-allowlist-user! bootstrap/ensure-bootstrap-allowlist-user!)

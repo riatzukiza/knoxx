@@ -53,7 +53,7 @@
 
 (defn ^:async upsert-actor-credential!
   "Upsert an actor credential by user-id + org-id + provider."
-  [_pool _uid _mid user-id {:keys [org-id provider kind account-identifier secret-json status]}]
+  [encode-response _pool _uid _mid user-id {:keys [org-id provider kind account-identifier secret-json status]}]
   (if-let [db (await (connection/ensure-mongo-policy-db!))]
     (let [row (await (mongo-actor-creds/upsert-actor-credential!
                       db user-id org-id provider
@@ -61,7 +61,7 @@
                        :account-identifier account-identifier
                        :secret-json (native/keyword-map (or secret-json {}))
                        :status status}))]
-      (native/actor-credential-response row))
+      (encode-response row))
     (throw (native/error "Mongo policy store unavailable"))))
 
 (defn ^:async get-actor-credential!

@@ -87,6 +87,7 @@
                 credentials/get-credential-by-user-org-provider-kind! (port world :password nil)
                 credentials/get-actor-credential-by-actor-and-provider! (port world :actor-credential nil)
                 credentials/list-actor-credentials-by-provider! (port world :provider-credentials [])
+                credentials/upsert-actor-credential! (port world :upsert-credential (fn [& _] (throw (native-error))))
                 lakes/list-data-lakes-by-org! (port world :lakes [])
                 audit/insert-event! (port world :audit nil)
                 store/get-session-by-token! (port world :session nil)
