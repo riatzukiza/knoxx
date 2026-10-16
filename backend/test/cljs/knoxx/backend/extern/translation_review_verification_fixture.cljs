@@ -116,7 +116,10 @@
 (defn ^:async with-receipt-reader!
   "Hold one inert parser fault through await and restore its actual Var finally."
   [read! operation]
-  (let [original reader/read-string]
-    (set! reader/read-string read!)
+  (let [original reader/read-string
+        replacement (fn
+                      ([encoded] (read! encoded))
+                      ([_options encoded] (read! encoded)))]
+    (set! reader/read-string replacement)
     (try (await (operation))
          (finally (set! reader/read-string original)))))

@@ -257,13 +257,17 @@
       (^:async fn [world]
         (let [{:keys [request artifact]} (fixture/resource-cleanup-world! world "inert encoded receipt")
               primary (ex-info "do-not-print-parser-primary" {})
-              parse! (if null? fixture/throw-nil! (fn [_] (throw primary)))
+              calls* (atom 0)
+              parse! (fn [_]
+                       (swap! calls* inc)
+                       (if null? (fixture/throw-nil!) (throw primary)))
               ;; The one reader fault is the inert malformed-receipt boundary.
               result (await (fixture/with-receipt-reader!
-                             (if null? (fn [_] (parse!)) parse!)
+                             parse!
                              #(outcome (fn [] (native/execute! request)))))
               failure (:error result)
               receipt-failure (ex-cause failure)]
+          (is (= 1 @calls*))
           (is (:failed? result))
           (is (= :verification-primary-and-cleanup-failed (:code (:data result))))
           (is (true? (:cleanup-failed? (:data result))))
