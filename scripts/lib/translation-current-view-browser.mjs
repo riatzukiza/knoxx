@@ -98,9 +98,13 @@ async function regular(file, expected) {
   const bytes = await readFile(file); if (expected) assert.equal(digest(bytes), expected); return bytes;
 }
 
-/** Preserve exact owned-page identity at the native CLI URL boundary. */
+/** Require the native CLI URL object and exact owned-page identity. */
 export function assertOwnedCLIURL(value, expected) {
-  assert.equal(value, expected);
+  assert.ok(value !== null && typeof value === 'object' && !Array.isArray(value));
+  assert.ok(Object.hasOwn(value, 'url'));
+  assert.equal(typeof value.url, 'string');
+  assert.ok(value.url.length > 0);
+  assert.equal(value.url, expected);
 }
 
 /** Caller supplies a source/dist/tool freeze produced after the combined QA gates. */
