@@ -803,7 +803,8 @@ test('completion snapshot remains frozen after live scheduler changes', async ()
   try { adapter.assertComplete(); } catch (error) { primary = error; }
   assert.ok(primary instanceof Error); assert.equal(primary.message, 'core-incomplete');
   const snapshot = adapter.report().completion;
-  assert.deepEqual(snapshot, { failed: false, pendingCount: 1, consumedCount: 1, stepCount: 2 });
+  assert.deepEqual(snapshot, { failed: false, pendingCount: 1, consumedCount: 1, stepCount: 2,
+    details: { pending: ['held'], records: ['request:held'], checkpoints: [] } });
   adapter.release('held', 'success'); await held;
   await world.fetch(origin + '/api/publications/translations/reviews');
   assert.deepEqual(adapter.report().pending, []);
@@ -841,4 +842,91 @@ test('completion diagnostic failures preserve original throw identity and omit p
   }
   const accessor = Object.defineProperty({}, 'failed', { get() { throw Error(secret); } });
   assert.equal(safeCompletionReport(accessor), undefined);
+});
+
+
+test('completion first failure preserves request and observer causes without extra DOM reads', async () => {
+  const { installDeferred } = await deferred();
+  for (const cause of ['rule', 'release', 'request', 'unexpected-first']) {
+    const { world, forwarded } = inertWorld(); let observed, reads = 0;
+    const stale = cause === 'rule' || cause === 'unexpected-first';
+    const input = { get value() { reads += 1; return 'B'; },
+      get defaultValue() { reads += 1; return 'B'; }, getAttribute: () => { reads += 1; return 'B'; } };
+    world.document.querySelector = () => { reads += 1; return input; };
+    world.document.querySelectorAll = () => { reads += 1; return []; };
+    Object.defineProperty(world.document.body, 'innerText', { get() { reads += 1; return stale ? 'OLD-A' : ''; } });
+    world.MutationObserver = class { constructor(fn) { observed = fn; } observe() {} disconnect() {} };
+    const adapter = installDeferred({ runId, origin, steps: [step('A-inventory'),
+      step('A-manifest', { path: '/api/translations/export/manifest' }), step('B-inventory', { hold: false })] }, world);
+    const settled = Promise.allSettled([world.fetch('/api/publications/translations/reviews'),
+      world.fetch('/api/translations/export/manifest')]);
+    try {
+      adapter.watchCommit('B', { project: 'B', committedProject: 'B', absent: ['OLD-A'], formAbsent: true },
+        { release: ['A-inventory', 'A-manifest'], beforeRequest: 'B-inventory' });
+      if (cause === 'release') adapter.release('A-manifest', 'success');
+      if (cause === 'request') await world.fetch('/api/publications/translations/reviews');
+      if (cause === 'unexpected-first') await assert.rejects(world.fetch('/api/not-configured'), /core-request-unexpected/);
+      observed();
+      const expectedReads = stale ? 5 : 6;
+      assert.equal(reads, expectedReads);
+      assert.throws(() => adapter.assertComplete(), /core-incomplete/);
+      const snapshot = adapter.report().completion;
+      const category = { rule: 'core-commit-rule', release: 'core-commit-release-not-pending',
+        request: 'core-commit-request-already-started', 'unexpected-first': 'core-request-unexpected' }[cause];
+      assert.deepEqual(snapshot.details?.firstFailure,
+        { category, ...(cause === 'unexpected-first' ? {} : { id: 'B' }) });
+      assert.deepEqual(snapshot.details?.pending, cause === 'release' ? ['A-inventory'] : ['A-inventory', 'A-manifest']);
+      assert.deepEqual(snapshot.details?.records, ['request:A-inventory', 'request:A-manifest',
+        ...(cause === 'release' ? ['release:A-manifest'] : []),
+        ...(cause === 'request' ? ['request:B-inventory'] : []), 'commit:B']);
+      assert.deepEqual(snapshot.details?.checkpoints,
+        [{ id: 'commit:B', ok: false, observation: 'first-mutation-observer-delivery' }]);
+      const saved = JSON.parse(JSON.stringify(snapshot));
+      // A later rejection, no-op observer delivery and caller mutation cannot replace the saved cause/state.
+      await assert.rejects(world.fetch('/api/not-configured-again'), /core-request-unexpected/);
+      observed(); assert.equal(reads, expectedReads);
+      snapshot.details.pending.length = 0; snapshot.details.records.length = 0;
+      assert.deepEqual(adapter.report().completion, saved);
+      assert.throws(() => adapter.assertComplete(), /core-incomplete/);
+      assert.deepEqual(adapter.report().completion.details.firstFailure, saved.details.firstFailure);
+      assert.equal(forwarded(), 0);
+    } finally { adapter.restore(); await settled; }
+  }
+});
+
+test('completion saved token projection is bounded, copied and accessor-free', async () => {
+  const { safeCompletionReport } = await browser();
+  const secret = 'PRIVATE-COMPLETION-PAYLOAD';
+  const counters = { failed: true, pendingCount: 2, consumedCount: 7, stepCount: 7 };
+  const details = { pending: ['A-inventory', 'A-manifest'],
+    records: ['request:A-inventory', 'request:A-manifest', 'request:B-inventory', 'commit:B'],
+    checkpoints: [{ id: 'commit:B', ok: false, observation: 'first-mutation-observer-delivery' }],
+    firstFailure: { category: 'core-commit-request-already-started', id: 'B' } };
+  const expected = { ...counters, details: JSON.parse(JSON.stringify(details)) };
+  const projected = safeCompletionReport({ ...counters, details, body: secret, message: secret, auth: secret });
+  assert.deepEqual(projected, expected);
+  details.pending.length = 0; details.checkpoints[0].ok = true; details.firstFailure.category = 'core-request-unexpected';
+  assert.deepEqual(projected, expected);
+  assert.deepEqual(safeCompletionReport(counters), counters);
+  const valid = () => JSON.parse(JSON.stringify(expected.details));
+  let accesses = 0;
+  const accessor = Object.defineProperty({}, 'id', { get() { accesses += 1; throw Error(secret); } });
+  const arrayAccessor = [];
+  Object.defineProperty(arrayAccessor, '0', { get() { accesses += 1; throw Error(secret); } });
+  const bad = [
+    { ...valid(), pending: ['https://private.invalid/' + secret] },
+    { ...valid(), pending: ['PRIVATE_COMPLETION_PAYLOAD'] },
+    { ...valid(), records: ['request:PRIVATE_COMPLETION_PAYLOAD'] },
+    { ...valid(), checkpoints: [{ id: 'commit:PRIVATE_COMPLETION_PAYLOAD', ok: false }] },
+    { ...valid(), firstFailure: { category: 'core-commit-rule', id: 'PRIVATE_COMPLETION_PAYLOAD' } },
+    { ...valid(), records: ['request:B\n'] },
+    { ...valid(), pending: Array(65).fill('A-inventory') },
+    { ...valid(), records: Array(257).fill('request:A-inventory') },
+    { ...valid(), checkpoints: Array(65).fill({ id: 'commit:B', ok: false }) },
+    { ...valid(), checkpoints: [accessor] },
+    { ...valid(), pending: arrayAccessor },
+    { ...valid(), firstFailure: { category: secret } },
+  ];
+  for (const value of bad) assert.deepEqual(safeCompletionReport({ ...counters, details: value }), counters);
+  assert.equal(accesses, 0); assert.ok(!JSON.stringify(projected).includes(secret));
 });
