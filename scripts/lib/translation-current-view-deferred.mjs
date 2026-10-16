@@ -7,7 +7,11 @@ export function installDeferred(config, world = globalThis) {
   if (new URL(config.origin).origin !== world.location.origin) fail('core-origin-invalid');
   const original = world.fetch;
   const pending = new Map(), consumed = new Set(), records = [], checkpoints = [], commits = new Map(), background = [];
-  let active = true, failed = false, completion;
+  let active = true, failed = false, completion, firstFailure;
+  function markFailure(category, id) {
+    failed = true;
+    if (!firstFailure) firstFailure = { category, ...(id === undefined ? {} : { id }) };
+  }
   const stable = value => {
     if (Array.isArray(value)) return '[' + value.map(stable).join(',') + ']';
     if (value && typeof value === 'object') return '{' + Object.keys(value).sort().map(k => JSON.stringify(k) + ':' + stable(value[k])).join(',') + '}';
@@ -40,14 +44,14 @@ export function installDeferred(config, world = globalThis) {
     if (!rule) return;
     const ok = matches(rule);
     checkpoints.push({ id: step.id, ok });
-    if (!ok) { failed = true; fail('core-first-render-checkpoint'); }
+    if (!ok) { markFailure('core-first-render-checkpoint', step.id); fail('core-first-render-checkpoint'); }
   }
   function response(step) {
     const body = Object.hasOwn(step.response, 'text') ? step.response.text : JSON.stringify(step.response.json);
     return new world.Response(body, { status: step.response.status,
       headers: { 'Content-Type': Object.hasOwn(step.response, 'text') ? 'application/x-ndjson' : 'application/json' } });
   }
-  function reject(category) { failed = true; return Promise.reject(Error(category)); }
+  function reject(category) { markFailure(category); return Promise.reject(Error(category)); }
   function fetchControlled(input, init = {}) {
     if (!active) return reject('core-adapter-inactive');
     if (typeof input !== 'string' || typeof init !== 'object' || init === null) return reject('core-request-invalid');
@@ -80,7 +84,7 @@ export function installDeferred(config, world = globalThis) {
   function report() {
     return { runId: config.runId, active, failed, pending: [...pending.keys()], consumed: [...consumed],
       records: [...records], background: [...background], checkpoints: checkpoints.map(x => ({ ...x })),
-      ...(completion ? { completion: { ...completion } } : {}) };
+      ...(completion ? { completion: JSON.parse(JSON.stringify(completion)) } : {}) };
   }
   const api = {
     report,
@@ -96,11 +100,15 @@ export function installDeferred(config, world = globalThis) {
         state.observer.disconnect();
         // Never release A from an event-return marker. This callback must first
         // observe B's DOM/source rule, both owned A handles and no B request.
-        state.ok = matches(rule) && releases.every(x => pending.has(x))
-          && (!actions.beforeRequest || !records.includes('request:' + actions.beforeRequest));
+        // Identify only the first false conjunct, preserving its short-circuit evaluation.
+        let category = 'core-commit-rule';
+        state.ok = matches(rule)
+          && (category = 'core-commit-release-not-pending', releases.every(x => pending.has(x)))
+          && (category = 'core-commit-request-already-started',
+            !actions.beforeRequest || !records.includes('request:' + actions.beforeRequest));
         records.push('commit:' + id);
         checkpoints.push({ id: 'commit:' + id, ok: state.ok, observation: state.observation });
-        if (!state.ok) failed = true;
+        if (!state.ok) markFailure(category, id);
         else for (const release of releases) api.release(release, 'success');
       });
       commits.set(id, state); state.observer.observe(world.document.body, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ['value'] });
@@ -118,8 +126,12 @@ export function installDeferred(config, world = globalThis) {
       steps = steps.concat(additions);
     },
     assertComplete() {
-      // Synchronous pre-assertion snapshot; report it without changing the scheduler.
-      completion = { failed, pendingCount: pending.size, consumedCount: consumed.size, stepCount: steps.length };
+      // Synchronous pre-assertion snapshot; bounded copies never become scheduler authority.
+      const details = pending.size <= 64 && records.length <= 256 && checkpoints.length <= 64
+        ? { pending: [...pending.keys()], records: [...records], checkpoints: checkpoints.map(x => ({ ...x })),
+          ...(firstFailure ? { firstFailure: { ...firstFailure } } : {}) } : undefined;
+      completion = { failed, pendingCount: pending.size, consumedCount: consumed.size, stepCount: steps.length,
+        ...(details ? { details } : {}) };
       if (failed || pending.size || consumed.size !== steps.length) fail('core-incomplete');
       if (!ordered()) fail('core-required-order-missing');
       if ((config.requiredCheckpoints ?? []).some(id => !checkpoints.some(x => x.id === id && x.ok))) fail('core-checkpoint-missing');

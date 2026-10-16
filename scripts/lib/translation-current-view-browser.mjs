@@ -56,13 +56,56 @@ export function safeDiagnostic(error, progress) {
   return result;
 }
 
-/** Four scheduler counters only; no IDs, text, messages, stacks or accessors. */
+const completionCategories = new Set(['core-adapter-inactive', 'core-request-invalid',
+  'core-request-outside-owner', 'core-request-unexpected', 'core-first-render-checkpoint',
+  'core-commit-rule', 'core-commit-release-not-pending', 'core-commit-request-already-started']);
+const completionIds = new Set(['A-adopt-project', 'A-initial-manifest', 'A-inventory', 'A-manifest',
+  'B-inventory', 'B-legacy', 'B-manifest', 'B']);
+const completionId = value => completionIds.has(value);
+function completionList(value, limit, project) {
+  if (!Array.isArray(value)) return undefined;
+  const length = diagnosticValue(value, 'length');
+  if (!Number.isSafeInteger(length) || length < 0 || length > limit) return undefined;
+  const result = [];
+  for (let index = 0; index < length; index += 1) {
+    const item = project(diagnosticValue(value, String(index)));
+    if (item === undefined) return undefined;
+    result.push(item);
+  }
+  return result;
+}
+function safeCompletionDetails(value) {
+  try {
+    const pending = completionList(diagnosticValue(value, 'pending'), 64, id => completionId(id) ? id : undefined);
+    const records = completionList(diagnosticValue(value, 'records'), 256, token =>
+      typeof token === 'string' && token.length <= 80 && /^(request|release|commit|boundary):/.test(token)
+        && completionId(token.slice(token.indexOf(':') + 1)) ? token : undefined);
+    const checkpoints = completionList(diagnosticValue(value, 'checkpoints'), 64, item => {
+      const id = diagnosticValue(item, 'id'), ok = diagnosticValue(item, 'ok');
+      const observation = diagnosticValue(item, 'observation');
+      if (id !== 'commit:B' || typeof ok !== 'boolean'
+          || (observation !== undefined && observation !== 'first-mutation-observer-delivery')) return undefined;
+      return { id, ok, ...(observation ? { observation } : {}) };
+    });
+    if (!pending || !records || !checkpoints) return undefined;
+    const failure = diagnosticValue(value, 'firstFailure'); let firstFailure;
+    if (failure !== undefined) {
+      const category = diagnosticValue(failure, 'category'), id = diagnosticValue(failure, 'id');
+      if (!completionCategories.has(category) || (id !== undefined && !completionId(id))) return undefined;
+      firstFailure = { category, ...(id === undefined ? {} : { id }) };
+    }
+    return { pending, records, checkpoints, ...(firstFailure ? { firstFailure } : {}) };
+  } catch { return undefined; }
+}
+/** Four-counter ABI plus optional finite case57 tokens; no DOM, URLs, bodies, errors or accessors. */
 export function safeCompletionReport(value) {
   const failed = diagnosticValue(value, 'failed');
   const keys = ['pendingCount', 'consumedCount', 'stepCount'];
   const counts = keys.map(key => diagnosticValue(value, key));
   if (typeof failed !== 'boolean' || counts.some(x => !Number.isSafeInteger(x) || x < 0)) return undefined;
-  return { failed, pendingCount: counts[0], consumedCount: counts[1], stepCount: counts[2] };
+  const details = safeCompletionDetails(diagnosticValue(value, 'details'));
+  return { failed, pendingCount: counts[0], consumedCount: counts[1], stepCount: counts[2],
+    ...(details ? { details } : {}) };
 }
 
 function exactOrigin(value) {
