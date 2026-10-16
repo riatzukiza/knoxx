@@ -98,6 +98,11 @@ async function regular(file, expected) {
   const bytes = await readFile(file); if (expected) assert.equal(digest(bytes), expected); return bytes;
 }
 
+/** Preserve exact owned-page identity at the native CLI URL boundary. */
+export function assertOwnedCLIURL(value, expected) {
+  assert.equal(value, expected);
+}
+
 /** Caller supplies a source/dist/tool freeze produced after the combined QA gates. */
 export async function validateRuntimeConfig(config) {
   assert.match(config.sourceCommit, /^[0-9a-f]{40}$/); exactOrigin(config.origin);
@@ -223,7 +228,7 @@ export async function runBrowserProof(config) {
     await authenticate(owner, config); cli = cliFor(config, () => interrupted);
     resources.unshift({ name: 'cli', close: () => cli('close') });
     assert.equal(await cli('eval', 'window.__coreOwner'), owner.nonce);
-    assert.equal(await cli('get', 'url'), config.origin + '/cms');
+    assertOwnedCLIURL(await cli('get', 'url'), config.origin + '/cms');
     await cli('set', 'media', 'dark');
     const downloads = downloadRecorder(owner.page, config.evidenceDir);
     resources.unshift({ name: 'downloads', close: downloads.close });

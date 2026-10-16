@@ -310,3 +310,21 @@ test('live input B with old value attribute A cannot release A responses', async
   assert.deepEqual(proof.afterObserver.pending, ['A-inventory', 'A-manifest']);
   assert.equal(proof.afterObserver.records.some(x => x.startsWith('release:')), false);
 });
+
+
+test('native CLI URL data object reaches the exact owned-page guard', async () => {
+  const { assertOwnedCLIURL } = await browser();
+  // agent-browser handleUrl -> successResponse -> cliFor's existing data unwrap.
+  const native = { id: 'owned-url', success: true, data: { url: origin + '/cms' } };
+  const value = native.data?.result ?? native.data ?? native;
+  assert.doesNotThrow(() => assertOwnedCLIURL(value, origin + '/cms'));
+});
+
+test('owned-page URL guard refuses wrong native types, missing data and every other URL', async () => {
+  const { assertOwnedCLIURL } = await browser();
+  for (const value of [null, [], origin + '/cms', {}, { url: null }, { url: 1 }, { url: '' },
+    { url: origin + '/translations' }, { url: 'https://foreign.invalid/cms' },
+    { url: origin + '/cms?changed=1' }, Object.create({ url: origin + '/cms' })]) {
+    assert.throws(() => assertOwnedCLIURL(value, origin + '/cms'));
+  }
+});
