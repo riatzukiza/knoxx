@@ -2,6 +2,7 @@
   "Original-public-API controls for the two inherited nil-fallback catches."
   (:require [cljs.test :refer [deftest is]]
             [knoxx.backend.extern.translation-dispatch-fixture :as fixture]
+            [knoxx.backend.extern.translation-dispatch-observation :as observation]
             [knoxx.backend.infra.translation-dispatch :as dispatch]
             [knoxx.backend.infra.translation-evidence-store :as store]))
 
@@ -96,3 +97,15 @@
     (is (= [(expected-warning :bind-batch false)
             (expected-warning :bind-batch false)
             (expected-warning :read-batch false)] @seen))))
+
+(deftest ^:async unavailable-observer-retains-only-explicit-safe-diagnostics
+  (doseq [failure [(fixture/error) nil]]
+    (await (fixture/with-warning-observer! (fn [_boundary _context]
+                                           (fixture/throw-value! failure))
+             (^:async fn []
+               (is (= {:observed? false :observation-unavailable? true
+                       :boundary "translation-dispatch.degraded"
+                       :context {:operation :bind-batch :fallback :nil
+                                 :primary-error-present? false}
+                       :observer-error-present? (some? failure)}
+                      (observation/degraded! :bind-batch nil))))))))
