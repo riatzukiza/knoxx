@@ -852,3 +852,12 @@
   spore: none
   receipt-refs: .ημ/receipts.edn#7b9e0a16-b635-40a0-a4e1-6595b6283d53
   note: Keep decode fallback and non-ENOENT read-error identity distinct. Exercise actual malformed EDN plus primary/observer Error/native-null through existing named ports before product; exact missing-observation RED must preserve all admission controls. Log only fixed sanitized context; observer failure cannot replace nil. One private latest diagnostic is bounded and may stale. Owning gates pass; global231warnings35ignoredcatches/root58errors56warnings remain blockers. Coverage measurements are not percentage-threshold proof. Retain private descriptor mistakes without replaying successful QA. No spore.
+- ts: 2026-10-16T15:42:31.709421568Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-app-route-facade-over17381-PREP-v1
+  task: Preserve ordered promise failure semantics during translation review extraction
+  p-efficiency: 0.68
+  p-friction: 0.55
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#46f0fc7f-90c9-4287-8ff2-fd3f21d403c0
+  note: Inspect the pinned promise implementation before assuming Promise.all semantics. Eager task start, ordered consumption and immediate native rejection observation are distinct obligations. A terminal-aware fixture must also avoid holding an earlier branch while awaiting a later ordered failure. Keep two-error identity controls and first-cause evidence; observe native tasks through the existing public constructor outside async helpers. Two cancellations provide no final test PASS; actual introduced unhandled-rejection failure stays retained. Final owning gates pass, while backend222warnings35ignoredcatches and root57errors56warnings remain release blockers. No spore.
