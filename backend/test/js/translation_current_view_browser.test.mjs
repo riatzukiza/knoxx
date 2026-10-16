@@ -47,7 +47,11 @@ test('actual exported route handler never forwards adverse requests to an owned 
       let aborted = false;
       const request = { method: () => method, url: () => local + '/assets/actual.js' };
       await guard.route({ request: () => request, abort: async () => { aborted = true; },
-        continue: async () => { await fetch(request.url(), { method }); } });
+        fetch: async options => {
+          assert.equal(options.maxRedirects, 0);
+          const response = await fetch(request.url(), { method, redirect: 'manual' });
+          return { status: () => response.status };
+        }, fulfill: async () => {} });
       assert.equal(aborted, method !== 'GET');
     }
     assert.deepEqual(received, ['GET']);
@@ -134,7 +138,7 @@ test('only exact payloads consume a step; duplicates and unknown releases refuse
   assert.throws(() => adapter.release('dispatch', 'success')); adapter.restore();
 });
 
-test('required pre-first-B order is recorded and rejects a late A completion', async () => {
+test('weaker explicit event markers record order but supply no DOM-commit evidence', async () => {
   const { installDeferred } = await deferred();
   const { world } = inertWorld();
   const adapter = installDeferred({ runId, origin, steps: [step('A'), step('B')],
@@ -172,4 +176,137 @@ test('seven UI entries cover six runners with publication-only Dispatch/Retry an
     if (entry.runner === 'dispatch') assert.deepEqual(wire.mutation.body, { publication: wire.publication });
     if (entry.runner === 'approval') assert.equal(wire.followup.path, '/api/publications/reconcile');
   }
+});
+
+test('authentication opens only exact context GET and is sealed before controlled traffic', async () => {
+  const { createNetworkGuard } = await browser(); const guard = createNetworkGuard(config);
+  const request = { method: 'GET', url: origin + '/api/auth/context' };
+  assert.equal(guard.decide(request), 'abort'); guard.authenticate();
+  assert.equal(guard.decide(request), 'continue');
+  assert.equal(guard.decide({ ...request, method: 'POST' }), 'abort');
+  assert.equal(guard.decide({ ...request, url: request.url + '?other=1' }), 'abort');
+  guard.seal(); assert.equal(guard.decide(request), 'abort');
+});
+
+test('read-only redirect refuses before following a foreign or unreviewed target', async () => {
+  const { createNetworkGuard } = await browser(); const guard = createNetworkGuard(config);
+  let aborted = 0, continued = 0, fetches = 0, fulfilled = 0;
+  await guard.route({ request: () => ({ method: () => 'GET', url: () => origin + '/assets/actual.js' }),
+    fetch: async options => { fetches += 1; assert.equal(options.maxRedirects, 0); return { status: () => 302 }; },
+    abort: async () => { aborted += 1; }, continue: async () => { continued += 1; },
+    fulfill: async () => { fulfilled += 1; } });
+  assert.deepEqual({ aborted, continued, fetches, fulfilled }, { aborted: 1, continued: 0, fetches: 1, fulfilled: 0 });
+});
+
+test('first observer result is sticky and an absent delivery never completes', async () => {
+  const { installDeferred } = await deferred(); const { world } = inertWorld();
+  const callbacks = [];
+  world.MutationObserver = class { constructor(fn) { callbacks.push(fn); } observe() {} disconnect() {} };
+  world.document.body.innerText = 'OLD';
+  const adapter = installDeferred({ runId, origin, steps: [] }, world);
+  adapter.watchCommit('B', { absent: ['OLD'] });
+  assert.throws(() => adapter.assertComplete(), /first-commit/);
+  callbacks[0](); world.document.body.innerText = '';
+  callbacks[0]();
+  assert.equal(adapter.report().checkpoints[0].ok, false);
+  assert.throws(() => adapter.assertComplete(), /incomplete/); adapter.restore();
+});
+
+test('only fixed background GET fixtures are available and never use native fetch', async () => {
+  const { installDeferred } = await deferred(); const { world, forwarded } = inertWorld();
+  const adapter = installDeferred({ runId, origin, steps: [], background: { '/api/config': { inert: true } } }, world);
+  assert.deepEqual(await (await world.fetch('/api/config')).json(), { inert: true });
+  assert.equal(adapter.report().background.length, 1); assert.equal(forwarded(), 0);
+  await assert.rejects(world.fetch('/api/config', { method: 'POST', body: '{}' }));
+  assert.equal(forwarded(), 0); adapter.restore();
+});
+
+test('websocket backstop closes known background sockets and latches unknown destinations', async () => {
+  const { createNetworkGuard } = await browser(); const guard = createNetworkGuard(config);
+  let closed = 0;
+  for (const url of ['ws://127.0.0.1:42591/ws/stream?session_id=controlled', 'wss://foreign.invalid/ws/stream',
+    'ws://127.0.0.1:42591/ws/stream?unreviewed=1']) guard.websocket({ url: () => url, close: () => { closed += 1; } });
+  assert.equal(closed, 3); assert.equal(guard.report().unknownWebsockets, 2);
+});
+
+test('unknown category strings cannot smuggle credential content into diagnostics', async () => {
+  const { safeDiagnostic } = await browser();
+  assert.deepEqual(safeDiagnostic({ category: 'core-secret-api-key-value' }), { category: 'core-browser-failed' });
+  assert.deepEqual(safeDiagnostic({ category: 'core-interrupted' }), { category: 'core-interrupted' });
+});
+
+test('direct owned adapter cleanup is available after CLI work has been stopped', async () => {
+  const { restoreOwnedAdapter } = await browser(); let restored = 0;
+  const world = { __knoxxControlledCore: { report: () => ({ runId: runId + '-12' }),
+    restore: () => { restored += 1; delete world.__knoxxControlledCore; } } };
+  assert.deepEqual(restoreOwnedAdapter({ runId }, world), { restored: true });
+  assert.equal(restored, 1);
+  assert.deepEqual(restoreOwnedAdapter({ runId }, world), { restored: false });
+  const foreign = { __knoxxControlledCore: { report: () => ({ runId: 'foreign-run-12' }), restore: () => { restored += 1; } } };
+  assert.throws(() => restoreOwnedAdapter({ runId }, foreign), /ownership/);
+  assert.equal(restored, 1);
+});
+
+test('browser process environment excludes tour, provider and account credentials', async () => {
+  const { browserEnvironment } = await browser();
+  const env = browserEnvironment({ PATH: '/owned/bin', TMPDIR: '/tmp/owned', KNOXX_API_KEY: 'SECRET',
+    OPENAI_API_KEY: 'SECRET', GH_TOKEN: 'SECRET', GITHUB_TOKEN: 'SECRET', HTTP_PROXY: 'SECRET', HOME: '/ambient' });
+  assert.equal(env.PATH, '/owned/bin'); assert.equal(env.TMPDIR, '/tmp/owned');
+  assert.equal(env.HTTP_PROXY, ''); assert.ok(!JSON.stringify(env).includes('SECRET'));
+  assert.equal(Object.hasOwn(env, 'HOME'), false);
+});
+
+async function observerReleaseSchedule(earlyB, committed = { value: 'B', attribute: 'B' }) {
+  const { installDeferred } = await deferred(); const { world, forwarded } = inertWorld(); let observed;
+  world.document.querySelector = () => ({ value: 'B', defaultValue: committed.value, getAttribute: () => committed.attribute });
+  world.MutationObserver = class { constructor(fn) { observed = fn; } observe() {} disconnect() {} };
+  const adapter = installDeferred({ runId, origin, steps: [step('A-inventory'),
+    step('A-manifest', { path: '/api/translations/export/manifest' }), step('B-inventory', { hold: false })],
+    requiredOrder: ['commit:B', 'release:A-inventory', 'release:A-manifest', 'request:B-inventory'] }, world);
+  const owned = [world.fetch('/api/publications/translations/reviews'), world.fetch('/api/translations/export/manifest')];
+  const settled = Promise.allSettled(owned);
+  try {
+    adapter.watchCommit('B', { project: 'B', committedProject: 'B', absent: ['OLD-A'], formAbsent: true },
+      { release: ['A-inventory', 'A-manifest'], beforeRequest: 'B-inventory' });
+    if (earlyB) await world.fetch('/api/publications/translations/reviews');
+    observed();
+    const afterObserver = adapter.report();
+    // Read before awaiting: old v5 leaves both A handles pending, so the causal
+    // positive assertion fails directly rather than manufacturing a timeout.
+    if (!earlyB && afterObserver.pending.length === 0) {
+      await settled; await world.fetch('/api/publications/translations/reviews');
+    }
+    let complete = false;
+    try { adapter.assertComplete(); complete = true; } catch { /* Explicit refusal returned as test evidence. */ }
+    return { afterObserver, complete, forwarded: forwarded() };
+  } finally { adapter.restore(); await settled; }
+}
+
+test('observer B checkpoint releases both A handles before the first B request', async () => {
+  const proof = await observerReleaseSchedule(false);
+  assert.deepEqual(proof.afterObserver.pending, []);
+  assert.equal(proof.complete, true); assert.equal(proof.forwarded, 0);
+  assert.deepEqual(proof.afterObserver.records.slice(-3), ['commit:B', 'release:A-inventory', 'release:A-manifest']);
+});
+
+test('B request before observer delivery refuses timing credit and retains A handles', async () => {
+  const proof = await observerReleaseSchedule(true);
+  assert.equal(proof.afterObserver.failed, true); assert.equal(proof.complete, false);
+  assert.deepEqual(proof.afterObserver.pending, ['A-inventory', 'A-manifest']);
+  assert.equal(proof.afterObserver.records.some(x => x.startsWith('release:')), false);
+  assert.equal(proof.forwarded, 0);
+});
+
+test('live input B with old defaultValue A cannot release A responses', async () => {
+  const proof = await observerReleaseSchedule(false, { value: 'A', attribute: 'B' });
+  assert.equal(proof.afterObserver.failed, true); assert.equal(proof.complete, false);
+  assert.deepEqual(proof.afterObserver.pending, ['A-inventory', 'A-manifest']);
+  assert.equal(proof.afterObserver.records.some(x => x.startsWith('release:')), false);
+});
+
+test('live input B with old value attribute A cannot release A responses', async () => {
+  const proof = await observerReleaseSchedule(false, { value: 'B', attribute: 'A' });
+  assert.equal(proof.afterObserver.failed, true); assert.equal(proof.complete, false);
+  assert.deepEqual(proof.afterObserver.pending, ['A-inventory', 'A-manifest']);
+  assert.equal(proof.afterObserver.records.some(x => x.startsWith('release:')), false);
 });

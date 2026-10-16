@@ -608,7 +608,7 @@ method,path,authorization=args[:3]
 status=200 if authorization=='auth' else 401
 body={}
 if authorization=='auth' and 'reviews' in path:body=dict(project='owned-project',reviews=[dict(publication='knoxx.verifysplit.rowned/doc01-es')])
-if authorization=='auth' and path=='/api/auth/context':body=dict(org_id='org',project='owned-project')
+if authorization=='auth' and path=='/api/auth/context':body=dict(org={'id':'org'},user={'email':'owned@example.invalid'})
 if authorization=='auth' and mode=='unready':status=503
 if authorization=='anonymous':
  if 'dispatch' in path and mode.startswith('dispatch-'):status=int(mode.split('-')[1])
@@ -631,7 +631,7 @@ translation_fixture_core_preflight "$inventory"
                 BOUNDARY=str(boundary),EVENTS=str(events),MODE=mode,CONTRACTS_DIR=str(root/'contracts'),
                 FIXTURE_DIR=str(root/'contracts/_verify_translation_split_review_core'),RUN_ID='owned',
                 VERIFY_ORG_ID='org',VERIFY_PROJECT='owned-project',VERIFY_SOURCE_COMMIT='a'*40,
-                BASE_URL='http://127.0.0.1:42591',LOOPBACK_HTTP='1')
+                BASE_URL='http://127.0.0.1:42591',LOOPBACK_HTTP='1',VERIFY_TMP_DIR=str(root))
             result=subprocess.run(['bash',str(shell)],env=environment,capture_output=True,text=True,timeout=10)
             return result,[json.loads(x) for x in events.read_text().splitlines()]
 

@@ -331,6 +331,38 @@ printf '%s' "$anonymous" | grep -qE '401|403' \
   || fail "anonymous inventory was not refused" "$anonymous"
 shot "final-revoked-state"
 
+if [ "${VERIFY_CURRENT_VIEW_RACES:-0}" = 1 ]; then
+  step "7. synthetic current-view races with an independent non-read backstop"
+  [ -n "${VERIFY_CORE_BROWSER_CONFIG:-}" ] && [ -f "$VERIFY_CORE_BROWSER_CONFIG" ] \
+    || die "VERIFY_CORE_BROWSER_CONFIG must name the reviewed source/dist/tool runtime freeze"
+  [ -n "${KNOXX_API_KEY:-}" ] \
+    || die "controlled fresh CDP session requires an explicit API key; the existing password tour remains separate"
+  [ "$FAIL_COUNT" -eq 0 ] || die "real prerequisite tour failed before controlled races"
+  [ "$API_KEY_SESSION" -eq 1 ] && ab set headers "$api_headers" >/dev/null
+  translation_fixture_core_auth_http() {
+    local path_json result
+    path_json="$(jq -Rn --arg path "$2" '$path')"
+    result="$(ab eval "(async()=>{const r=await fetch($path_json,{credentials:'include',redirect:'error'});const body=$path_json.startsWith('/api/translations/export/sft?')?{}:await r.json();return {status:r.status,body};})()")" || return 1
+    printf '%s\n%s' "$(printf '%s' "$result" | jq -er .status)" "$(printf '%s' "$result" | jq -c .body)"
+  }
+  VERIFY_CORE_PREFLIGHT_FILE="$SHOT_DIR/core-auth-preflight-${RUN_ID}.json"
+  translation_fixture_core_preflight "$(printf '%s' "$probe" | jq -c .body)" \
+    || die "core real authentication preflight refused; checked resource cleanup remains active"
+  (set -o noclobber; umask 077; printf '%s' "$KNOXX_API_KEY" > "$VERIFY_TMP_DIR/core-api-key") \
+    || die "private fresh-context credential handoff failed"
+  jq -cn --arg run "$RUN_ID" --arg source "$VERIFY_SOURCE_COMMIT" --arg org "$VERIFY_ORG_ID" \
+    --arg project "$VERIFY_PROJECT" --arg email "$USER_EMAIL" --arg slug "$ORG_SLUG" \
+    --arg root "$REPO_ROOT" --arg origin "$FRONTEND_URL" --arg key "$VERIFY_TMP_DIR/core-api-key" \
+    --arg preflight "$VERIFY_CORE_PREFLIGHT_FILE" \
+    '{runId:$run,sourceCommit:$source,orgId:$org,project:$project,email:$email,orgSlug:$slug,sourceRoot:$root,origin:$origin,apiKeyFile:$key,preflightFile:$preflight}' \
+    > "$VERIFY_TMP_DIR/core-handoff.json"
+  chmod 600 "$VERIFY_TMP_DIR/core-handoff.json"
+  node "$REPO_ROOT/scripts/lib/translation-current-view-browser.mjs" --from-tour \
+    "$VERIFY_CORE_BROWSER_CONFIG" "$VERIFY_TMP_DIR/core-handoff.json" \
+    || die "controlled core browser proof failed; no synthetic write may be forwarded"
+  pass "controlled core context/lifetime proof complete; draftD2 and catch-up remain separate"
+fi
+
 warn "candidate seeding bypasses model execution; this tour evaluates review behavior, not translation quality"
 printf '\nscreenshots: %s\n' "${SHOT_DIR#$REPO_ROOT/}"
 [ "$FAIL_COUNT" -eq 0 ] && printf 'tour completed with no failures\n\n' && exit 0

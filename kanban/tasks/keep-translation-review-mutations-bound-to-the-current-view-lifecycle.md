@@ -4,7 +4,7 @@ labels: "tasks, 5sp, has-parent, regression, translations, frontend, cms"
 dependency: ["knoxx-translation-review-legacy-fixture-auth-preflight"]
 parent: "knoxx-translation-review-chat-panel"
 type: "task"
-write-id: "1792136805063-0.bmvuwxvo0g8q7leso5a"
+write-id: "1792138748687-0.us9d1k6mg8fed3xm7rd"
 points: "5"
 title: "Keep translation review mutations bound to the current view"
 priority: "P0"
@@ -492,5 +492,7 @@ Finite core5 browser instrumentation continuation on isolated combined64c644c6e9
 Implement an independent method-aware browser-context abort backstop plus exact run-owned deferred public fetch/DOM fixtures, six mutation runners/seven real UI entries, first-render checkpoints and recorded pre-passive ordering, normal CMS-router unmount/remount and original SFT download/follow-up semantics. Unknown method/origin/path/query/payload or absent adapter/checkpoint fails closed; never poll a loading state as first-render proof, forward a synthetic mutation, log credentials/content or claim an unattained ordering. Separate real source-built SFT and publication-only dispatch auth preflights with exact401/no_session, readiness and unchanged scoped writer-state evidence before interception; retain distinct fixture5 counts and exact cleanup.
 
 This local phase permits only source authoring, genuine test-first causal controls and bounded Node/Python plus inert owned loopback tests. No browser/application runtime, real backend/DB/model/provider/public writes or deployment. Browser execution remains separately held for source/dist/runtime/cleanup qualification. Core may qualify its existing context/lifetime/conserved-B-load behavior before draft; D2 and trailing catch-up remain owned by successor ae9a3cb7-a630-4d8d-8d60-c69b825d008d and no predecessor completion or state transition is claimed. Scope marker CMS16-core-browser-eight-path64c-v1.
+
+Finite core5 auth-proof test extension CMS16-core-writer-spy64c-v1. Preserve in_progress/P0/5, dependencies, parent, scalar labels and all history. Add one bounded coverage-only test to existing backend/test/cljs/knoxx/backend/extern/fastify/translation_dispatch_test.cljs. Invoke actual registered SFT GET and publication-only dispatch POST routes through the actual with-request-context!/session no-cookie guard, with an inert configured policy handle and exact-arity spies on the real OpenPlanner batch/export, event writer, domain dispatch, agent enqueue and event-turn registration entry functions. Positive invocation controls prove the compiled spies are reached; both credential-free requests must return401/no_session with all guarded entry counts0. Preserve product source and all original assertions; run source-bound registered compile/normal under a fresh owned private cache/consumer lease using the accepted dependency closure. This is separate direct-call evidence from the real HTTP digest snapshot, whose writer_call_level_proof remains false. No server, CMS browser, DB/provider/model or public operation, no draft successor work or state transition.
 
 ---

@@ -324,3 +324,97 @@ Run [`scripts/verify-translation-dispatch.sh`](../../scripts/verify-translation-
 separately to inspect live agent dispatch/provider availability. Together the
 two artifacts distinguish “could the producer create work?” from “can a human
 review, correct, reject, approve, and reuse the produced work?”
+
+## Controlled current-view proof (core5)
+
+The optional controlled phase uses the production page, six mutation runners and
+seven normal UI entries: legacy Submit review, resource Approve split, resource
+Approve All, legacy document Approve All, whole-output approval, Dispatch and
+Retry. It verifies presentation lifetime, first-frame exclusion and pending
+ownership. Its response fixtures and downloads are visibly synthetic. It makes
+no translation-quality, live mutation, publication durability or deployment claim.
+Same-view dirtyD2 and trailing catch-up belong to the dependent draft5 story.
+
+Run only after the current fixture/auth prerequisite and the exact combined
+source have qualified. Preserve the ordinary eighteen-row tour; the opt-in phase
+runs afterward, before its existing checked cleanup. It separately requires real
+SFT GET and publication-only dispatch POST401/no_session and unchanged typed,
+run-scoped dispatch-state snapshots. Digest equality does not prove zero queue,
+agent or event-turn calls; a separate actual-route unit-spy artifact is mandatory.
+No authenticated dispatch/provider call is used to establish readiness.
+
+```bash
+VERIFY_RUN_ID=<fresh-reviewed-run-id> \
+VERIFY_SOURCE_COMMIT=<exact-current-40hex-head> \
+VERIFY_CURRENT_VIEW_RACES=1 \
+VERIFY_CORE_BROWSER_CONFIG=/absolute/private/reviewed-core-runtime.json \
+KNOXX_FRONTEND_URL=http://127.0.0.1:<owned-frontend-port> \
+./scripts/verify-translation-split-review-tour.sh
+```
+
+Use the existing private environment handoff for API key, database, organization,
+contracts and content root; do not place credentials in this command or logs.
+The opt-in phase requires an explicit API key and verifies a **new browser
+context's** real `/api/auth/context`200, exact organization and expected user.
+It never assumes that the original tour's headers/password session authenticated
+a later CDP connection. The default password tour is unchanged; password-only
+mode cannot silently pass this optional phase.
+
+The reviewed JSON runtime file pins `sourceRoot`, `sourceCommit`, `runId`,
+`origin`, `orgId`, `project`, `email`, `orgSlug`, fresh absent `evidenceDir` and
+`profileDir`, and a fresh loopback `cdpPort`. It names existing
+`playwrightEntry`, `chromiumExecutable`, `agentBrowserExecutable`, exact frozen
+asset URL paths, navigation paths `/`, `/cms`, `/translations`, and complete
+`frozenFiles` absolute path/SHA256 descriptors for tools and both compiled dist
+trees. Runtime dist symlink directories/leaves and a non-regular server entry
+are refused. The source HEAD must match and tracked source must be clean.
+`writerProof` supplies a pinned artifact with exact sourceCommit, normalExit0,
+actualRouteGuards true and actual queue/agent/eventTurn spy counts0. It must be
+backed by retained registered test output, not hand-written to waive a failure.
+The tour supplies its fresh preflight descriptor and private key-file path in a
+0600 handoff; their run/source/identity must match the reviewed runtime file.
+No browser installation or dependency changes occur in this phase.
+
+The browser owner uses public Playwright APIs to retain a method-aware
+context-wide abort backstop; the existing agent-browser CLI attaches through its
+public `--cdp` option. Every non-read or unknown origin/API request is aborted.
+Only exact frozen application assets/navigation can be forwarded; explicitly
+classified CMS background reads and WebSocket are inert controlled responses.
+The window-local deferred adapter holds expected public fetch promises, checks
+exact method/query/payload/owned IDs, and never forwards them. A lost adapter,
+unknown request or missing guard fails the proof. No generic POST exception exists.
+
+First-B inventory/detail checkpoints run **synchronously inside the intercepted
+fetch**, before its held promise returns. Project schedules additionally arm a
+one-shot public DOM observer before the input event and require its first
+delivery to precede the first B request. An absent, stale or later observer
+delivery fails; a later polling assertion cannot give first-frame credit.
+MutationObserver alone does not guarantee React passive-effect ordering. The
+inventory-omission case records its first observer delivery and zero stale submit
+requests separately; it must not be relabeled as independent pre-passive proof.
+The experimental pre-first-B schedule releases both held A responses only from
+the first observer callback after its B DOM rule passes and before a B request
+has been recorded. It requires `commit:B` -> both A releases -> first B request;
+an absent/late callback or missing A handle refuses release and fails explicitly.
+B project checks require both input.defaultValue and its `value` attribute to
+match B as well as the live value; the native DOM action changes only live.value.
+The observer includes only `value` attribute changes alongside child/text changes.
+This binds the observed control to the pinned React controlled-prop source.
+Here `commit:B` names that observer record. It does **not** independently prove a
+generic React commit or pre-passive semantic boundary.
+Neither this label nor a successful pure callback control supplies that core
+timing acceptance criterion; the actual browser observations retain this limit.
+Unmount uses the normal `/cms` link and returns via Translations, retaining held
+promises. Original whole approval still completes approve -> reconcile once.
+SFT success retains the original filename/bytes; rejection produces no download.
+Separate project, locale, es→fr→es and unmount schedules hold the original export;
+none permits a retarget, extra export or completion-triggered translation reload.
+
+The helper preserves safe request-kind/count/order/checkpoint metadata and dark
+screenshots under the fresh evidence directory. Unknown raw errors, headers,
+credentials and live content are not logged. Cleanup attempts all owned actions,
+retains primary failure alongside cleanup failures, closes its private CLI/CDP
+connection and browser context, and settles only owned fixture promises. No
+unknown operation is replayed. The existing tour still owns resource/legacy data
+and content cleanup. Any setup, checkpoint, count, screenshot or cleanup failure
+returns nonzero. Passing pure/inert controls alone does not complete core5.
