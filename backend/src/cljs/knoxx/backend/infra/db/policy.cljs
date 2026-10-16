@@ -489,7 +489,7 @@
   [membership detailed-roles]
   {:permissions (sort (unique (mapcat :permissions detailed-roles)))
    :tool-policies (merge-tool-policies (mapcat :tool-policies detailed-roles)
-                                       (:tool-policies membership))
+                                       (:toolPolicies membership))
    :role-slugs (sort-by #(- (rolePriority %)) (map :slug detailed-roles))})
 
 (defn- request-context-map
@@ -511,7 +511,7 @@
      :role-slugs role-slugs
      :permissions permissions
      :tool-policies tool-policies
-     :membership-tool-policies (:tool-policies membership)
+     :membership-tool-policies (:toolPolicies membership)
      :is-system-admin (boolean (some #{"system_admin" "system-admin"} role-slugs))}))
 
 (defn ^:async build-request-context
