@@ -4,11 +4,11 @@ labels: "tasks, 3sp, has-parent, regression, translations, frontend, cms"
 dependency: ["knoxx-translation-review-current-view-mutation-lifecycle", "ae9a3cb7-a630-4d8d-8d60-c69b825d008d"]
 parent: "knoxx-translation-review-chat-panel"
 type: "task"
-write-id: "1792089697492-0.n70pl59w9mectz1lrh3"
+write-id: "1792119292436-0.t8qism1o887jo6ykq9"
 points: "3"
 title: "Keep resource translation locales selectable without legacy statistics"
 priority: "P0"
-status: "breakdown"
+status: "ready"
 uuid: "knoxx-translation-resource-locale-filter-options"
 created_at: "2026-10-15T09:31:50.072Z"
 ---

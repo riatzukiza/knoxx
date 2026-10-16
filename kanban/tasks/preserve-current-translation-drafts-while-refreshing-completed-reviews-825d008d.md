@@ -4,11 +4,11 @@ labels: "tasks, 5sp, has-parent, regression, translations, frontend, cms"
 dependency: ["knoxx-translation-review-current-view-mutation-lifecycle"]
 parent: "knoxx-translation-review-chat-panel"
 type: "task"
-write-id: "1792099199121-0.6anr1z24k88lu712hg3"
+write-id: "1792119291941-0.nig6qycft7gfy4iwsxk"
 points: "5"
 title: "Preserve current translation drafts while refreshing completed reviews"
 priority: "P0"
-status: "breakdown"
+status: "ready"
 uuid: "ae9a3cb7-a630-4d8d-8d60-c69b825d008d"
 created_at: "2026-10-15T12:55:25.475Z"
 ---

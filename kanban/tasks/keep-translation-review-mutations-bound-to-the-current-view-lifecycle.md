@@ -4,11 +4,11 @@ labels: "tasks, 5sp, has-parent, regression, translations, frontend, cms"
 dependency: ["knoxx-translation-review-legacy-fixture-auth-preflight"]
 parent: "knoxx-translation-review-chat-panel"
 type: "task"
-write-id: "1792099190069-0.kvpmgitgtgitorex9xv"
+write-id: "1792119291417-0.eksfxpjp6y62ejinw1s"
 points: "5"
 title: "Keep translation review mutations bound to the current view"
 priority: "P0"
-status: "breakdown"
+status: "ready"
 uuid: "knoxx-translation-review-current-view-mutation-lifecycle"
 created_at: "2026-10-15T11:12:28.655Z"
 ---
