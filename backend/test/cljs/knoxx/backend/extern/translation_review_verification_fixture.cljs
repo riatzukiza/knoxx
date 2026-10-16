@@ -1,6 +1,7 @@
 (ns knoxx.backend.extern.translation-review-verification-fixture
   "Inert native driver and CLI boundaries for owned verification regressions."
-  (:require [knoxx.backend.extern.node-cli :as cli]
+  (:require [cljs.reader :as reader]
+            [knoxx.backend.extern.node-cli :as cli]
             [knoxx.backend.extern.openplanner-translation-mongo.verification-fixture :as native]
             [knoxx.backend.extern.translation-review-verification-client :as driver]
             [knoxx.backend.infra.stores.mongo-translation-evidence :as evidence-mongo]
@@ -111,3 +112,11 @@
   "Read one explicitly owned fixture artifact for preservation assertions."
   [artifact]
   (when (.existsSync fs artifact) (.readFileSync fs artifact "utf8")))
+
+(defn ^:async with-receipt-reader!
+  "Hold one inert parser fault through await and restore its actual Var finally."
+  [read! operation]
+  (let [original reader/read-string]
+    (set! reader/read-string read!)
+    (try (await (operation))
+         (finally (set! reader/read-string original)))))

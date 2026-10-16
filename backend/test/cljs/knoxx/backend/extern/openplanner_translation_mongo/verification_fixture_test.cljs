@@ -1,7 +1,6 @@
 (ns knoxx.backend.extern.openplanner-translation-mongo.verification-fixture-test
   "Actual adapter operations with inert driver effects and real owned records."
-  (:require [cljs.reader :as reader]
-            [clojure.string :as str]
+  (:require [clojure.string :as str]
             [cljs.test :refer [deftest is testing]]
             [knoxx.backend.extern.openplanner-translation-mongo.verification-fixture :as native]
             [knoxx.backend.extern.translation-review-verification-fixture :as fixture]
@@ -260,8 +259,9 @@
               primary (ex-info "do-not-print-parser-primary" {})
               parse! (if null? fixture/throw-nil! (fn [_] (throw primary)))
               ;; The one reader fault is the inert malformed-receipt boundary.
-              result (with-redefs [reader/read-string (if null? (fn [_] (parse!)) parse!)]
-                       (await (outcome #(native/execute! request))))
+              result (await (fixture/with-receipt-reader!
+                             (if null? (fn [_] (parse!)) parse!)
+                             #(outcome (fn [] (native/execute! request)))))
               failure (:error result)
               receipt-failure (ex-cause failure)]
           (is (:failed? result))
