@@ -115,7 +115,7 @@
 (deftest original-duplicate-credentials-start-before-inactive-stop-and-ordered-results
   (async done
     (finish! done (fixture/with-world {}
-      (^:async fn [world]
+      (^:async fn [_world]
         (let [order (atom [])
               make-manager (fn [actor] (fixture/actor-object (fn [token] (swap! order conj [:start actor token]) nil)
                                       (fn [] (swap! order conj [:stop actor])) {:actor actor}))]

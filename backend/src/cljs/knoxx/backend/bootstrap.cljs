@@ -13,7 +13,7 @@
             [knoxx.backend.infra.auth.session :as auth-session]
             [knoxx.backend.infra.clients.openplanner-mongo]
             [knoxx.backend.infra.core :as core]
-            [knoxx.backend.domain.discord.gateway :as discord-gateway]
+            [knoxx.backend.infra.discord.gateway :as discord-gateway]
             [knoxx.backend.domain.discord.discord-reaction-labels :as discord-reaction-labels]
             [knoxx.backend.domain.graph.policy-registry :as graph-policy-registry]
             [knoxx.backend.infra.graceful-shutdown :as graceful-shutdown]

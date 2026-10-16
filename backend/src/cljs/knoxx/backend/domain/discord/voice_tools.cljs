@@ -4,7 +4,7 @@
             [knoxx.backend.domain.agent.agent-context :as agent-ctx]
             [knoxx.backend.infra.actor.acting :as actor-acting]
             [knoxx.backend.infra.auth.authz :refer [ctx-tool-allowed?]]
-            [knoxx.backend.domain.discord.gateway :as dg]
+            [knoxx.backend.infra.discord.gateway :as dg]
             [knoxx.backend.domain.voice.client :as voice-client]
             [knoxx.backend.infra.clients.knoxx-control :as knoxx-client]
             [knoxx.backend.infra.stores.mongo-session-store :as session-store]

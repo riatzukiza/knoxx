@@ -1,6 +1,6 @@
 (ns knoxx.backend.extern.discord-gateway-fixture
   "Inert public SDK seams around the real original gateway factory. No login/network."
-  (:require [knoxx.backend.domain.discord.gateway :as api]
+  (:require [knoxx.backend.infra.discord.gateway :as api]
             [knoxx.backend.domain.error-observatory :as observatory]
             ["discord.js" :as discord]))
 
@@ -130,7 +130,7 @@
   (fn [boundary context]
     (swap! (:warnings world) conj [boundary context])
     (when-let [mode (:observer-error @(:options world))]
-      (if (= :nil mode) (throw nil) (fail! "inert-observer-failed")))
+      (if (= :nil mode) (js* "(function () { throw null; })()") (fail! "inert-observer-failed")))
     {:boundary boundary :context context}))
 (defn warning-rows [world] @(:warnings world))
 
