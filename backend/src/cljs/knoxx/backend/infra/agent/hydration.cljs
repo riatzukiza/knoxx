@@ -11,7 +11,7 @@
             [knoxx.backend.domain.text :refer [value->preview-text]]
             [knoxx.backend.domain.tools :as shared]
             [knoxx.backend.infra.openplanner.semantic :as semantic]
-            [knoxx.backend.domain.discord.tools :as discord]
+            [knoxx.backend.infra.discord.tools :as discord]
             [knoxx.backend.domain.discord.voice-tools :as discord-voice]
             [knoxx.backend.domain.event.tools :as events]
             [knoxx.backend.domain.actor.tools :as actors]

@@ -1,7 +1,9 @@
 (ns knoxx.backend.extern.discord-tools-fixture
   "Owned inert Discord API fixture; never reads credentials or uses network/files."
   (:require [knoxx.backend.domain.discord.rest-client :as rest]
-            [knoxx.backend.domain.discord.tools :as discord]
+            [knoxx.backend.infra.discord.api :as discord]
+            [knoxx.backend.infra.discord.attachments :as attachments]
+            [knoxx.backend.infra.discord.tools :as factory]
             [knoxx.backend.domain.media :as media]
             [knoxx.backend.infra.actor.credentials :as credentials]
             [knoxx.backend.infra.auth.authz :as authz]
@@ -145,7 +147,7 @@
   (filterv #(= op (:op %)) (calls world)))
 
 (defn tools "Construct the real current public runtime factory." [context]
-  (discord/create-discord-custom-tools runtime config context))
+  (factory/create-discord-custom-tools runtime config context))
 
 (defn descriptors "Project real native tool metadata without execute handles." [native-tools]
   (mapv #(dissoc (js->clj % :keywordize-keys true) :execute) (array-seq native-tools)))
@@ -183,13 +185,13 @@
   (await (discord/discord-send-message! runtime config channel text reply urls)))
 
 (defn ^:async attachment! [source index]
-  (let [row (await (discord/fetch-discord-upload-attachment! runtime config source index))]
+  (let [row (await (attachments/fetch-discord-upload-attachment! runtime config source index))]
     {:name (:name row) :mime-type (:mimeType row)
      :bytes (vec (array-seq (:buffer row))) :text (.toString (:buffer row) "utf8")}))
 
 (defn ^:async render-local! []
-  (let [original (await (discord/fetch-discord-upload-attachment! runtime config "file:///fixture/local.svg" 0))
-        result (await (discord/maybe-render-svg! original))]
+  (let [original (await (attachments/fetch-discord-upload-attachment! runtime config "file:///fixture/local.svg" 0))
+        result (await (attachments/maybe-render-svg! original))]
     {:same? (identical? original result) :name (:name result) :mime-type (:mimeType result)
      :bytes (vec (array-seq (:buffer result)))}))
 
