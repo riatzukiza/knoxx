@@ -816,3 +816,12 @@
   spore: none
   receipt-refs: .ημ/receipts.edn#2f6d8930-9c72-47d8-ab6c-a5b4cb30ac9c
   note: Source2315d697 has final Node24, registered backend2064/11795, Python15 and explicit inherited lint/timing limits. Distinguish controlled-prop observer evidence from React scheduler proof; no CMS browser/readiness/deployment credit.
+- ts: 2026-10-16T10:55:09.249316613Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-cms16-b21-policy-facade-composition-v1
+  task: Compose the policy consumer correction and preserve facade credential compatibility
+  p-efficiency: 0.82
+  p-friction: 0.32
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#248646fa-0aae-4c23-86ca-316d79d28b2b
+  note: Compile existing private-var consumers after facade extraction before claiming compatibility. Retain missing-binding compile failure and unused-private lint warning. Restore genuine production use through a fixed internal response-codec callback while preserving private one-arity metadata, public five-arity API, original assertions and target scope. Current owning lint, full normal and server build pass; backend1/248,36boundary violations and root59/56 plus missing-root-node_modules warning remain release blockers. No spore.
