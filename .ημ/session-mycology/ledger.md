@@ -562,3 +562,12 @@
   spore: none
   receipt-refs: .ημ/receipts.edn#8948502f-e271-4ebf-9b68-41f780e37f21
   note: Install a pending slot before its publisher owns cleanup; remove only the identical promise, preserving replacement generations. Match compiled multi-arity CLJS doubles and assert real invocation before trusting error fallback tests. Preserve exact key bytes, paging/authorization and safe warning fields; validate on actual current source. Local owning/behavior gates pass; unrelated full lint6errors257warnings and36 unchanged error-boundary sites remain. Initial failures/history retained; no owner completion, public/runtime effect, nativeSM retry or spore.
+- ts: 2026-10-16T01:04:50.814630836Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-discord-tools-finite-extraction-over-c754-v1
+  task: Discord tool portable decisions and runtime boundary extraction
+  p-efficiency: 0.7
+  p-friction: 0.4
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#65342f58-5cfb-4acc-a9d0-859301031b54
+  note: Characterize public tool wiring before moving effects; retain all13IDs/schemas/permissions/callbacks and existing reply sentinel/repeated attachment semantics. Function asyncmetadata belongs on fn symbol, with real compile/test counts before claiming qualification. Portable decisions receive quality/time observations; native effects remain outeradapters. Owninglint/typecheck/explicit/normal/coverage1988/10951/0/0/0warnings and JSboundary pass. Full lint5errors256warnings and36exact unchanged errorboundary sites remain real releaseblockers. Existingowner staysin_progress; candidate0/no spore, nativeSMnotretried, no public/runtime/model/deploy effect.
