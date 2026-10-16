@@ -25,23 +25,49 @@ runs:
         node scripts/native-error-static-evaluator.mjs collect "$bundle"
         evaluator="$(node scripts/native-error-static-evaluator.mjs restore "$bundle" "$RUNNER_TEMP/knoxx-native-error-evaluator")"
         printf 'KNOXX_NATIVE_ERROR_KONDO=%s\n' "$evaluator" >> "$GITHUB_ENV"
-    - uses: actions/checkout@v5
-      with:
-        repository: open-hax/openplanner
-        ref: 07085d6557b75834ce6f50e6c54b8ca47e1c7c08
-        path: _deps/openplanner
-        persist-credentials: false
+    - name: Fetch the pinned public OpenPlanner source
+      shell: bash
+      run: |
+        set -euo pipefail
+        [[ "$(realpath -e -- "$GITHUB_WORKSPACE")" == "$GITHUB_WORKSPACE" ]]
+        sibling="$(dirname -- "$GITHUB_WORKSPACE")/openplanner"
+        [[ ! -e "$sibling" && ! -L "$sibling" ]]
+        sdk_parent="$GITHUB_WORKSPACE/_deps"
+        [[ ! -e "$sdk_parent" && ! -L "$sdk_parent" ]]
+        mkdir -- "$sdk_parent"
+        [[ "$(realpath -e -- "$sdk_parent")" == "$sdk_parent" ]]
+        sdk_root="$sdk_parent/openplanner"
+        sdk_ref=07085d6557b75834ce6f50e6c54b8ca47e1c7c08
+        # Refuse an existing source destination; lifecycle runs only in the selected private build.
+        [[ ! -e "$sdk_root" && ! -L "$sdk_root" ]]
+        mkdir -- "$sdk_root"
+        [[ "$(realpath -e -- "$sdk_root")" == "$sdk_root" ]]
+        # Public HTTPS only, without inherited Git auth/config, templates or hooks.
+        sdk_git() {
+          env -i PATH="$PATH" GIT_CONFIG_NOSYSTEM=1 GIT_CONFIG_GLOBAL=/dev/null \
+            GIT_TERMINAL_PROMPT=0 GIT_ASKPASS=/bin/false SSH_ASKPASS=/bin/false \
+            git -C "$sdk_root" -c core.hooksPath=/dev/null -c core.fsmonitor=false \
+              -c gc.auto=0 -c maintenance.auto=false -c credential.helper= \
+              -c http.extraHeader= -c http.followRedirects=false \
+              -c protocol.allow=never -c protocol.https.allow=always "$@"
+        }
+        sdk_git init --template= --initial-branch=sdk-setup
+        sdk_git fetch --depth=1 --no-tags --no-write-fetch-head --no-recurse-submodules \
+          https://github.com/open-hax/openplanner.git "$sdk_ref"
+        [[ "$(sdk_git rev-parse --verify "$sdk_ref^{commit}")" == "$sdk_ref" ]]
+        sdk_git checkout --detach "$sdk_ref"
+        [[ "$(sdk_git rev-parse HEAD)" == "$sdk_ref" ]]
     - name: Prepare the pinned OpenPlanner SDK and install Knoxx
       shell: bash
       run: |
         set -euo pipefail
         sibling="$GITHUB_WORKSPACE/../openplanner"
-        if [[ -e "$sibling" && ! -L "$sibling" ]]; then
-          printf 'Refusing an existing real OpenPlanner sibling; preserve it and choose an owned workspace.\n' >&2
+        if [[ -e "$sibling" || -L "$sibling" ]]; then
+          printf 'Refusing an existing real OpenPlanner sibling or symlink; preserve it and choose an owned workspace.\n' >&2
           exit 1
         fi
         sdk="$(bash scripts/build-sandbox-openplanner-sdk.sh prepare --source "$GITHUB_WORKSPACE/_deps/openplanner" --run-root "$RUNNER_TEMP/knoxx-setup-sdk")"
-        ln -sfn "$sdk" "$GITHUB_WORKSPACE/../openplanner"
+        ln -sT -- "$sdk" "$sibling"
         pnpm install --frozen-lockfile
         pnpm -C backend install --frozen-lockfile
         pnpm -C frontend install --frozen-lockfile
