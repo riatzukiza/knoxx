@@ -455,3 +455,88 @@ for (const value of ['Error', 'null']) test(`scenario restore double failure ret
   assert.strictEqual(cleanup.primary, diagnostic); assert.equal(cleanup.cleanupComplete, true);
   assert.ok(!JSON.stringify({ diagnostic, cleanupNames, cleanup }).includes('PRIVATE'));
 });
+
+
+// Capture the actual first projectCase configuration through the real public
+// scenario entry; no copied requiredOrder/checkpoint or new product test seam.
+async function firstProjectCaseConfiguration() {
+  const { runInNewContext } = await import('node:vm');
+  const { runCoreScenarios } = await scenarios();
+  const stopped = Error('owned-first-project-configuration-captured'); let captured;
+  const world = { document: { querySelectorAll: () => [
+    { getAttribute: () => '/cms', click() {} },
+  ] }, __capture(value) { captured = JSON.parse(JSON.stringify(value)); throw stopped; } };
+  world.window = world;
+  await assert.rejects(runCoreScenarios({ config: { ...config, evidenceDir: '/inert-no-write' },
+    installSource: 'value => globalThis.__capture(value)',
+    cli: async (command, source) => {
+      assert.equal(command, 'eval'); return runInNewContext(source, world);
+    } }), error => error === stopped);
+  assert.ok(captured); return captured;
+}
+
+async function projectRequestObserverSchedule({ staleAtRequest = false, earlyA = false } = {}) {
+  const configuration = await firstProjectCaseConfiguration();
+  const { installDeferred } = await deferred(); const { world, forwarded } = inertWorld();
+  const inventory = configuration.steps.find(value => value.id === 'B-inventory');
+  const rule = inventory.checkpoint; let observed, current = 'A';
+  world.document.querySelector = () => ({ value: current, defaultValue: current,
+    getAttribute: () => current });
+  world.MutationObserver = class { constructor(fn) { observed = fn; } observe() {} disconnect() {} };
+  const adapter = installDeferred(configuration, world), outstanding = [];
+  const request = value => {
+    const query = new URLSearchParams(value.query).toString();
+    const promise = world.fetch(value.path + (query ? '?' + query : ''),
+      { method: value.method, ...(Object.hasOwn(value, 'body') ? { body: JSON.stringify(value.body) } : {}) });
+    outstanding.push(promise); return promise;
+  };
+  try {
+    for (const value of configuration.steps.filter(value => value.id.startsWith('A-'))) await request(value);
+    const mutation = request(configuration.steps.find(value => value.id === 'mutation-A'));
+    adapter.watchCommit('B', rule);
+    // Negative control completes A while the DOM still identifies old A.
+    if (earlyA) { adapter.release('mutation-A', 'success'); await mutation; }
+    current = rule.project;
+    world.document.body.innerText = staleAtRequest ? rule.absent[0] : '';
+    const b = request(inventory).then(() => true, () => false);
+    const manifest = request(configuration.steps.find(value => value.id === 'B-manifest'));
+    // Reproduce actual v4: the request checkpoint runs before observer delivery.
+    // A stale request is sticky even if the later observer sees a clean DOM.
+    world.document.body.innerText = ''; observed();
+    if (!earlyA) { adapter.release('mutation-A', 'success'); await mutation; }
+    const beforeBRelease = adapter.report();
+    if (beforeBRelease.pending.includes('B-inventory')) adapter.release('B-inventory', 'success');
+    adapter.release('B-manifest', 'success'); await Promise.all([b, manifest]);
+    for (const value of configuration.steps.filter(value => value.id.startsWith('B-') && !value.hold)) await request(value);
+    let complete = false;
+    try { adapter.assertComplete(); complete = true; } catch { /* Retain explicit contract refusal. */ }
+    return { complete, beforeBRelease, forwarded: forwarded() };
+  } finally { adapter.restore(); await Promise.allSettled(outstanding); }
+}
+
+test('project case accepts committed clean B request before observer, both before A completion', async () => {
+  const proof = await projectRequestObserverSchedule();
+  assert.equal(proof.complete, true);
+  assert.deepEqual(proof.beforeBRelease.checkpoints.map(value => value.ok), [true, true]);
+  assert.deepEqual(proof.beforeBRelease.pending, ['B-inventory', 'B-manifest']);
+  const records = proof.beforeBRelease.records;
+  assert.ok(records.indexOf('request:B-inventory') < records.indexOf('commit:B'));
+  assert.ok(records.indexOf('commit:B') < records.indexOf('release:mutation-A'));
+  assert.equal(proof.forwarded, 0);
+});
+
+test('project case refuses stale A DOM at B request even when later observer is clean', async () => {
+  const proof = await projectRequestObserverSchedule({ staleAtRequest: true });
+  assert.equal(proof.complete, false);
+  assert.deepEqual(proof.beforeBRelease.checkpoints.map(value => value.ok), [false, true]);
+  assert.equal(proof.beforeBRelease.failed, true); assert.equal(proof.forwarded, 0);
+});
+
+test('project case refuses A completion before committed B even when request and observer later pass', async () => {
+  const proof = await projectRequestObserverSchedule({ earlyA: true });
+  assert.equal(proof.complete, false);
+  assert.deepEqual(proof.beforeBRelease.checkpoints.map(value => value.ok), [true, true]);
+  const records = proof.beforeBRelease.records;
+  assert.ok(records.indexOf('release:mutation-A') < records.indexOf('request:B-inventory'));
+  assert.equal(proof.forwarded, 0);
+});
