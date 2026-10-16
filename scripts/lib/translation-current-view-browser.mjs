@@ -12,8 +12,49 @@ import { runCoreScenarios, backgroundResponses } from './translation-current-vie
 const digest = data => createHash('sha256').update(data).digest('hex');
 const refuse = category => { throw Object.assign(Error(category), { category }); };
 const safeCategories = new Set(['core-interrupted', 'core-cli-refused', 'core-browser-proof-failed']);
-export const safeDiagnostic = error => ({ category: safeCategories.has(error?.category)
-  ? error.category : 'core-browser-failed' });
+const diagnosticStages = new Set(['validate', 'owner', 'auth', 'cli-nonce', 'cli-url', 'cli-media', 'scenarios']);
+const diagnosticCases = new Set([
+  ...['legacy-segment', 'resource-split', 'resource-bulk', 'legacy-document', 'whole-output', 'dispatch', 'retry']
+    .flatMap(entry => ['project', 'unmount', 'remount'].flatMap(kind => ['success', 'error'].map(mode => `${entry}:${kind}-${mode}`))),
+  'first-filter-render-success', 'first-filter-render-error', 'first-selected-detail',
+  ...['project', 'locale', 'aba', 'unmount'].flatMap(boundary => ['success', 'error'].map(mode => `export-${boundary}-${mode}`)),
+  'settled-feedback-success', 'settled-feedback-error', 'inventory-omission-first-observer', 'experimental-pre-first-B',
+]);
+const diagnosticNames = new Set(['Error', 'AssertionError', 'TypeError', 'RangeError', 'SyntaxError', 'ReferenceError', 'AggregateError']);
+const diagnosticCodes = new Set(['ERR_ASSERTION', 'ENOENT', 'EACCES', 'EPERM', 'ECONNRESET', 'ECONNREFUSED', 'ETIMEDOUT']);
+const diagnosticOwnCodes = new Set([...safeCategories, 'core-cli-unavailable', 'core-cli-failed']);
+function diagnosticValue(value, key) {
+  try {
+    if (value === null || !['object', 'function'].includes(typeof value)) return undefined;
+    const own = Object.getOwnPropertyDescriptor(value, key);
+    if (own) return Object.hasOwn(own, 'value') ? own.value : undefined;
+    const parent = Object.getPrototypeOf(value);
+    const inherited = parent && Object.getOwnPropertyDescriptor(parent, key);
+    return inherited && Object.hasOwn(inherited, 'value') ? inherited.value : undefined;
+  } catch { return undefined; }
+}
+function safeProgress(value) {
+  const result = {}, stage = diagnosticValue(value, 'stage'), number = diagnosticValue(value, 'caseNumber');
+  const name = diagnosticValue(value, 'caseName'), completed = diagnosticValue(value, 'completedCases');
+  if (diagnosticStages.has(stage)) result.stage = stage;
+  if (Number.isInteger(number) && number >= 1 && number <= 57 && diagnosticCases.has(name)) {
+    result.caseNumber = number; result.caseName = name;
+  }
+  if (Number.isInteger(completed) && completed >= 0 && completed <= 57) result.completedCases = completed;
+  return result;
+}
+/** Closed diagnostic vocabulary only; never inspect messages, stacks, values or accessors. */
+export function safeDiagnostic(error, progress) {
+  const category = diagnosticValue(error, 'category');
+  const result = { category: safeCategories.has(category) ? category : 'core-browser-failed' };
+  if (progress === undefined) return result;
+  Object.assign(result, safeProgress(progress));
+  const name = diagnosticValue(error, 'name'), code = diagnosticValue(error, 'code');
+  if (diagnosticNames.has(name)) result.errorName = name;
+  if (diagnosticCodes.has(code)) result.errorCode = code;
+  if (diagnosticOwnCodes.has(category)) result.ownErrorCode = category;
+  return result;
+}
 
 function exactOrigin(value) {
   const url = new URL(value);
@@ -87,9 +128,9 @@ export async function runOwnedChild(argv, { cwd, timeout = 30000, env = {} } = {
     const timer = setTimeout(terminate, timeout);
     child.stdout.on('data', b => { bytes += b.length; if (bytes > 65536) terminate(); else stdout += b; });
     child.stderr.on('data', b => { bytes += b.length; if (bytes > 65536) terminate(); });
-    child.once('error', () => { clearTimeout(timer); clearTimeout(killTimer); reject(Error('core-cli-unavailable')); });
+    child.once('error', () => { clearTimeout(timer); clearTimeout(killTimer); reject(Object.assign(Error('core-cli-unavailable'), { category: 'core-cli-unavailable' })); });
     child.once('close', code => { clearTimeout(timer); clearTimeout(killTimer);
-      if (expired || code !== 0) reject(Error('core-cli-failed')); else resolve(stdout); });
+      if (expired || code !== 0) reject(Object.assign(Error('core-cli-failed'), { category: 'core-cli-failed' })); else resolve(stdout); });
   });
 }
 
@@ -245,32 +286,39 @@ function cliFor(config, stopped = () => false) {
 
 export async function runBrowserProof(config) {
   let owner, cli, primary = null, interrupted = false;
-  const resources = []; let results, signalReject;
+  const resources = [], scenarioCleanupErrors = []; let results, signalReject, failureProgress;
+  const progress = { stage: 'validate', completedCases: 0 };
   const signal = new Promise((_, reject) => { signalReject = reject; });
   signal.catch(() => {});
   const interrupt = () => { interrupted = true; signalReject(Object.assign(Error('core-interrupted'), { category: 'core-interrupted' })); };
   process.once('SIGINT', interrupt); process.once('SIGTERM', interrupt);
   try {
-    await validateRuntimeConfig(config); owner = await startOwner(config, resources);
-    await authenticate(owner, config); cli = cliFor(config, () => interrupted);
+    await validateRuntimeConfig(config); progress.stage = 'owner'; owner = await startOwner(config, resources);
+    progress.stage = 'auth'; await authenticate(owner, config); cli = cliFor(config, () => interrupted);
     resources.unshift({ name: 'cli', close: () => cli('close') });
-    assert.equal(await cli('eval', 'window.__coreOwner'), owner.nonce);
-    assertOwnedCLIURL(await cli('get', 'url'), config.origin + '/cms');
-    await cli('set', 'media', 'dark');
+    progress.stage = 'cli-nonce'; assert.equal(await cli('eval', 'window.__coreOwner'), owner.nonce);
+    progress.stage = 'cli-url'; assertOwnedCLIURL(await cli('get', 'url'), config.origin + '/cms');
+    progress.stage = 'cli-media'; await cli('set', 'media', 'dark');
     const downloads = downloadRecorder(owner.page, config.evidenceDir);
     resources.unshift({ name: 'downloads', close: downloads.close });
     // This public context-owned cleanup remains available when interrupt stops CLI work.
     resources.unshift({ name: 'adapter', close: () => owner.page.evaluate(restoreOwnedAdapter, { runId: config.runId }) });
+    progress.stage = 'scenarios';
     results = await Promise.race([runCoreScenarios({ cli, config, installSource: installDeferred.toString(),
+      onCase: value => Object.assign(progress, safeProgress(value)),
+      onCleanupError: name => scenarioCleanupErrors.push(name),
       guardReport: () => owner.guard.report(), ...downloads }), signal]);
+    progress.completedCases = results.length;
     assert.equal(owner.guard.report().blocked, 0, 'Controlled traffic escaped the window adapter');
     assert.equal(owner.guard.report().unknownWebsockets, 0);
-  } catch (error) { primary = safeDiagnostic(error); }
+  } catch (error) { failureProgress = safeProgress(progress); primary = safeDiagnostic(error, failureProgress); }
   interrupted = true;
   const cleanup = await closeOwned(resources, primary);
+  cleanup.cleanupErrors.unshift(...scenarioCleanupErrors);
+  cleanup.cleanupComplete = cleanup.cleanupErrors.length === 0;
   process.removeListener('SIGINT', interrupt); process.removeListener('SIGTERM', interrupt);
   const proof = { sourceCommit: config.sourceCommit, runId: config.runId, synthetic: true,
-    results, guard: owner?.guard.report(), ...cleanup };
+    results, progress: failureProgress ?? safeProgress(progress), guard: owner?.guard.report(), ...cleanup };
   if (owner) await writeFile(path.join(config.evidenceDir, 'core-browser-proof.json'), JSON.stringify(proof, null, 2), { mode: 0o600, flag: 'wx' });
   if (primary || !cleanup.cleanupComplete) refuse('core-browser-proof-failed'); return proof;
 }

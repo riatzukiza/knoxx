@@ -368,38 +368,55 @@ async function omissionCase(io, number) {
 
 /** Execute actual normal UI controls. Any absent checkpoint/ordering fails this proof. */
 export async function runCoreScenarios(io) {
-  const results = []; let number = 0;
+  const results = []; let number = 0, primaryThrown = false, primaryError;
   try {
     for (const entry of entrySpecifications) {
       for (const mode of ['success', 'error']) {
+        io.onCase?.({ stage: 'scenarios', caseNumber: number + 1, caseName: `${entry.id}:project-${mode}`, completedCases: results.length });
         await evaluate(io, domAction('route', '/cms'));
         results.push({ entry: entry.id, case: 'project-' + mode, proof: await projectCase(io, entry, mode, ++number) });
+        io.onCase?.({ stage: 'scenarios', caseNumber: number + 1, caseName: `${entry.id}:unmount-${mode}`, completedCases: results.length });
         await evaluate(io, domAction('route', '/cms'));
         results.push({ entry: entry.id, case: 'unmount-' + mode, proof: await unmountCase(io, entry, mode, ++number) });
+        io.onCase?.({ stage: 'scenarios', caseNumber: number + 1, caseName: `${entry.id}:remount-${mode}`, completedCases: results.length });
         await evaluate(io, domAction('route', '/cms'));
         results.push({ entry: entry.id, case: 'remount-' + mode, proof: await remountOwnerCase(io, entry, mode, ++number) });
       }
     }
     for (const mode of ['success', 'error']) {
+      io.onCase?.({ stage: 'scenarios', caseNumber: number + 1, caseName: 'first-filter-render-' + mode, completedCases: results.length });
       await evaluate(io, domAction('route', '/cms'));
       results.push({ case: 'first-filter-render-' + mode, proof: await filterCase(io, mode, ++number) });
     }
+    io.onCase?.({ stage: 'scenarios', caseNumber: number + 1, caseName: 'first-selected-detail', completedCases: results.length });
     await evaluate(io, domAction('route', '/cms'));
     results.push({ case: 'first-selected-detail', proof: await selectedWorkCase(io, ++number) });
     for (const mode of ['success', 'error']) for (const boundary of ['project', 'locale', 'aba', 'unmount']) {
+      io.onCase?.({ stage: 'scenarios', caseNumber: number + 1, caseName: `export-${boundary}-${mode}`, completedCases: results.length });
       await evaluate(io, domAction('route', '/cms'));
       results.push({ case: `export-${boundary}-${mode}`, proof: await exportCase(io, mode, boundary, ++number) });
     }
     for (const mode of ['success', 'error']) {
+      io.onCase?.({ stage: 'scenarios', caseNumber: number + 1, caseName: 'settled-feedback-' + mode, completedCases: results.length });
       await evaluate(io, domAction('route', '/cms'));
       results.push({ case: 'settled-feedback-' + mode, proof: await settledFeedbackCase(io, mode, ++number) });
     }
+    io.onCase?.({ stage: 'scenarios', caseNumber: number + 1, caseName: 'inventory-omission-first-observer', completedCases: results.length });
     await evaluate(io, domAction('route', '/cms'));
     results.push({ case: 'inventory-omission-first-observer', proof: await omissionCase(io, ++number) });
+    io.onCase?.({ stage: 'scenarios', caseNumber: number + 1, caseName: 'experimental-pre-first-B', completedCases: results.length });
     await evaluate(io, domAction('route', '/cms'));
     results.push({ case: 'experimental-pre-first-B', proof: await preFirstBCase(io, ++number) });
     return results;
+  } catch (error) {
+    primaryThrown = true; primaryError = error; throw error;
   } finally {
-    await evaluate(io, `(() => { const a=window.__knoxxControlledCore;if(a)a.restore();return true; })()`);
+    try {
+      await evaluate(io, `(() => { const a=window.__knoxxControlledCore;if(a)a.restore();return true; })()`);
+    } catch (cleanupError) {
+      // A diagnostic observer cannot replace the original thrown value either.
+      try { io.onCleanupError?.('scenario-adapter-restore'); }
+      finally { throw primaryThrown ? primaryError : cleanupError; }
+    }
   }
 }
