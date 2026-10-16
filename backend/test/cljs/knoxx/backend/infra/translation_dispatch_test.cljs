@@ -1,5 +1,6 @@
 (ns knoxx.backend.infra.translation-dispatch-test
   (:require [cljs.test :refer [deftest is testing]]
+            [knoxx.backend.extern.promise :as promise]
             [knoxx.backend.extern.translation-dispatch-fixture :as fixture]
             [knoxx.backend.infra.translation-dispatch :as dispatch]
             [knoxx.backend.infra.translation-evidence-store :as store]
@@ -264,3 +265,26 @@
 
     (testing "the worker was asked exactly once across both passes"
       (is (= 1 (count @batches))))))
+
+(deftest ^:async dispatch-intents-keeps-worker-requests-sequential
+  (let [pause (fixture/paused-batch-responder)
+        answer (fn [request n]
+                 (if (= 1 n) ((:respond! pause) request n) {:batch_id (str "batch-" n)}))
+        {:keys [batches deps]} (fixture/fixture :answer answer)
+        second-intent (assoc fixture/intent :publication/id :knoxx.docs/second-es
+                             :publication/document :knoxx.docs/second-document)
+        task (dispatch/dispatch-intents! deps [fixture/intent second-intent]
+                                         fixture/facts fixture/scope)]
+    (try
+      (await (promise/race [(:entered pause) task]))
+      (is (= 1 (count @batches)) "second worker request waits for the first response")
+      ((:release! pause) {:batch_id "batch-1"})
+      (let [results (await task)]
+        (is (= [:knoxx.docs/probe-es :knoxx.docs/second-es]
+               (mapv :publication/id results)))
+        (is (= ["batch-1" "batch-2"] (mapv #(get-in % [:dispatch/record :dispatch/batch-id]) results)))
+        (is (= [:dispatch/accepted :dispatch/accepted] (mapv :dispatch/outcome results)))
+        (is (= 2 (count @batches))))
+      (finally
+        ((:release! pause) {:batch_id "batch-1"})
+        (await task)))))

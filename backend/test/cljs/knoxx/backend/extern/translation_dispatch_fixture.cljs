@@ -3,7 +3,8 @@
 
    The fixture delegates to the existing translation store and client protocols;
    it owns no dispatch policy, alternative persistence, or production runtime."
-  (:require [knoxx.backend.infra.clients.openplanner :as openplanner-client]
+  (:require [knoxx.backend.domain.error-observatory :as observatory]
+            [knoxx.backend.infra.clients.openplanner :as openplanner-client]
             [knoxx.backend.infra.translation-dispatch :as dispatch]
             [knoxx.backend.infra.translation-evidence-store :as store]))
 
@@ -57,14 +58,15 @@
 (defn- unexpected! [method]
   (throw (ex-info (str "unexpected call to " method) {})))
 
-(defrecord TranslationClient [batches respond list-batches batch-status batch-view]
+(defrecord TranslationClient [batches respond list-batches batch-status batch-view batch-read]
   openplanner-client/IOpenPlannerClient
   (enabled? [_] true)
   (create-translation-batch! [_ payload]
     (swap! batches conj payload)
     (js/Promise.resolve (respond payload (count @batches))))
   (translation-batches! [_ opts] (js/Promise.resolve (list-batches opts)))
-  (translation-batch! [_ _ _] (batch-response batch-view batch-status))
+  (translation-batch! [_ batch-id opts]
+    (if batch-read (batch-read batch-id opts) (batch-response batch-view batch-status)))
   (health! [_] (unexpected! "health!"))
   (events! [_ _] (unexpected! "events!"))
   (session! [_ _ _] (unexpected! "session!"))
@@ -97,15 +99,15 @@
 
 (defn fake-client
   "Fresh complete protocol client; unrelated operations fail explicitly."
-  [{:keys [batches answer observed batch-status batch-view]}]
+  [{:keys [batches answer observed batch-status batch-view batch-read]}]
   (->TranslationClient batches
                        (or answer (fn [_request n] {:batch_id (str "batch-" n)}))
                        (or observed (fn [_opts] {:batches []}))
-                       batch-status batch-view))
+                       batch-status batch-view batch-read))
 
 (defn fixture
   "Fresh store, client and recorded batch list for one test."
-  [& {:keys [answer observed source-revision batch-status batch-view]}]
+  [& {:keys [answer observed source-revision batch-status batch-view batch-read]}]
   (let [batches (atom [])]
     {:batches batches
      :deps {:evidence-store (store/memory-store)
@@ -113,7 +115,8 @@
                                   :answer answer
                                   :observed observed
                                   :batch-status batch-status
-                                  :batch-view batch-view})
+                                  :batch-view batch-view
+                                  :batch-read batch-read})
             :clock clock
             ;; Defaults to agreeing with the dispatched revision, so completion
             ;; is not refused for source drift. The drift path overrides it.
@@ -186,3 +189,70 @@
   ;; because the fixture's revision IS a content digest; a pinned opaque revision
   ;; would differ, which is why the two are recorded separately.
   (dispatch/dispatch-context intent scope dispatched-revision))
+
+(defn paused-batch-responder
+  "Expose the actual first worker request and its owned response release."
+  []
+  (let [entered-resolve (atom nil)
+        entered (js/Promise. (fn [resolve _reject] (reset! entered-resolve resolve)))
+        response-release (atom nil)
+        response (js/Promise. (fn [resolve _reject] (reset! response-release resolve)))]
+    {:entered entered
+     :release! (fn [value] (@response-release value))
+     :respond! (fn [_request _n] (@entered-resolve true) response)}))
+
+(defn error
+  "Create an opaque caught value whose private text must never reach warnings."
+  []
+  (ex-info "private-primary-message" {:private-content "private-primary-data"}))
+
+(defrecord BindingFaultStore [inner attempts failure]
+  store/ITranslationEvidenceStore
+  (reserve-dispatch! [_ record] (store/reserve-dispatch! inner record))
+  (resolve-dispatch! [_ record outcome detail]
+    (store/resolve-dispatch! inner record outcome detail))
+  (bind-dispatch-batch! [_ _record _batch-id] (swap! attempts inc) (throw failure))
+  (claim-dispatch-completion! [_ record] (store/claim-dispatch-completion! inner record))
+  (finish-dispatch-completion! [_ record detail]
+    (store/finish-dispatch-completion! inner record detail))
+  (dispatch-for-key! [_ key] (store/dispatch-for-key! inner key))
+  (dispatch-for-batch-document! [_ batch-id document-id]
+    (store/dispatch-for-batch-document! inner batch-id document-id))
+  (dispatch-for-batch! [_ batch-id] (store/dispatch-for-batch! inner batch-id))
+  (record-translation! [_ receipt] (store/record-translation! inner receipt))
+  (completed-translations! [_ scope] (store/completed-translations! inner scope))
+  (record-approval! [_ approval] (store/record-approval! inner approval))
+  (approvals! [_ scope] (store/approvals! inner scope)))
+
+(defn binding-fault-store
+  "Fail only real batch-binding calls, retaining the actual delegate elsewhere."
+  [inner attempts failure]
+  (->BindingFaultStore inner attempts failure))
+
+(defn warning-recorder
+  "Record only the observer's actual two-argument boundary/context call."
+  [seen]
+  (fn [boundary context]
+    (swap! seen conj [boundary context])
+    {:ok false :failed false :boundary boundary :context context}))
+
+(defn warning-failure
+  "Record one attempted observation, then throw the supplied opaque value."
+  [seen failure]
+  (fn [boundary context]
+    (swap! seen conj [boundary context])
+    (throw failure)))
+
+(defn ^:async with-warning-observer!
+  "Keep one test's warning replacement installed through its owned public task."
+  [observer work]
+  (let [original observatory/log-warning!]
+    (set! observatory/log-warning! observer)
+    (try
+      (await (work))
+      (finally (set! observatory/log-warning! original)))))
+
+(defn throw-value!
+  "Throw the caller's opaque value, including nil, without any normalization."
+  [value]
+  (throw value))
