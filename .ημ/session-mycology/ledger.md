@@ -924,3 +924,12 @@
   spore: none
   receipt-refs: .ημ/receipts.edn#96f67cc7-1ef5-4b82-a8d6-46626269794d
   note: Second CDP attachment can reset default-context download routing while the original owner Artifact still uses its own path. Bind explicit launch downloadsPath and reclaim that exact path after attachment, before downloads; register detach before send. Exercise public owner with inert context and finite CLI plus real copyFile for genuine RED. Preserve original thrown identity by source rethrow and record only closed stage/name/code/cause data; do not overclaim identity test coverage or captured historical ENOENT. Synthetic GREEN is not real57/browser/release proof. Portable candidate0/no spore.
+- ts: 2026-10-16T20:58:26.659459722Z
+  session: codex:cms16-settled-feedback-request-observer
+  task: Check settled-feedback clean B state at request and strict first observer before held response release
+  p-efficiency: 0.93
+  p-friction: 0.18
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#4e75abc3-cbf9-4cea-a815-a0c923bac789
+  note: MutationObserver delivery is not the DOM commit instant. Use an actual committed-B request checkpoint and keep strict firstobserver before releasing held B responses. Capture actual emitted runner configuration and watch arguments through one explicit existing-function export seam; baseline export before tests prevents missing-export fixture errors being called RED. Preserve clean-request-before-observer positive and sticky stale request, missing/stale observer, early response release negatives. Historical marker order stays UNKNOWN when assertComplete throws before report. Synthetic GREEN is not real57 or release proof. Portable candidate0/no spore.
