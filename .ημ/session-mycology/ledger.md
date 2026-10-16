@@ -933,3 +933,12 @@
   spore: none
   receipt-refs: .ημ/receipts.edn#4e75abc3-cbf9-4cea-a815-a0c923bac789
   note: MutationObserver delivery is not the DOM commit instant. Use an actual committed-B request checkpoint and keep strict firstobserver before releasing held B responses. Capture actual emitted runner configuration and watch arguments through one explicit existing-function export seam; baseline export before tests prevents missing-export fixture errors being called RED. Preserve clean-request-before-observer positive and sticky stale request, missing/stale observer, early response release negatives. Historical marker order stays UNKNOWN when assertComplete throws before report. Synthetic GREEN is not real57 or release proof. Portable candidate0/no spore.
+- ts: 2026-10-16T22:46:44.535442588Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-app-route-facade-over17381-PREP-v1
+  task: CMS57 preserve safe completion cause without changing assertion or success schedule
+  p-efficiency: 0.72
+  p-friction: 0.70
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: sha256:06af50ba2a7c778bbcba98ed8b9d0d38b6b635d57dfdd666c6b2327bd25fa2ca,3c2d923441db8389279cd467ce3c64b044be8bb8,098c9409c55cfbba9e3740c46a4b65e67a4ce7dd
+  note: Actual full browser stopped at56of57 with original core-incomplete but no saved scheduler completion report, leaving failed/pending/unconsumed UNKNOWN. Snapshot four scalars atomically at the existing check; read them only after rejection and retain identical original Error/null even if diagnostics fail. Two causal assertions RED then focused2/registered173 GREEN; registered first invocation omitted mandatory held clj-kondo env and is retained separately169PASS4FAIL, corrected exact prior invocation171PASS2causalFAIL. Reuse canonical prior argv before sanitizing away required tool selection. Original all57 schedules/predicates/success awaits and application source unchanged. Portable reflection only, candidate0/no spore/no promotion; no runtime/browser/model/production credit.
