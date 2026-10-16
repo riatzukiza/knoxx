@@ -1061,3 +1061,12 @@
   spore: none
   receipt-refs: sha256:531c03c38d8554fee55ebf007cc6efab156deaf745487ccf78c771aa924b4b9f,4984c771a6c1165a43b797d6af5e5ae5b8963077,2758e25b1baa61375f2523b41721164f8e81802e,1524edabad9d4908a5468e9115e100202cc6109c
   note: Keep source-bound verifier configuration and equivalent metadata explicit when composing application and controller lineages. Fixture inputs for newly required helper paths must be independent of the selector under test; otherwise a baseline KeyError hides missing boundary enforcement. Actual selected2tests expose four assertions, then GREEN2; checkout4 and syntax/actionlint pass. Two private evidence/application-reader escaping mistakes are retained separately, corrected without source semantics changes or QA credit. Use literal byte separators and standard git apply in a private six-file copy rather than nested escaped custom diff parsing. Full canonical verifier/JVM and SDK transports remain HELD for browserv9 owned closure, so this is a partial checkpoint with no whole-candidate or production completion. Portable reflection only; candidate0/no spore/no promotion.
+- ts: 2026-10-16T23:36:37.925685290Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-CMS-controller-integration-over8cd5-v1
+  task: Private composition completed full verifier and bounded SDK transports serially
+  p-efficiency: 0.80
+  p-friction: 0.30
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: sha256:f11bf5c68db1647e88974e417c47a81e73375ffe581a72fb2b2ddce1855f59f6,4984c771a6c1165a43b797d6af5e5ae5b8963077,fe8ac0db06243970189c986ca9093d978b33796d
+  note: After root-confirmed browser9 terminal/owned closure, run one existing full verifier then one selected SDK helper transport, serially. Actual54Python controls PASS with canonical1004-source identities but zero real campaign credit; actualshared-helper1PASS includes existing sibling symlink preservation and bounded process teardown. Reuse exact qualified SDK environment and source with fresh own fixture parent; exclude cold semantic build/install. Both normal native0/0/cleanuptrue/untruncated and clean source/index/empty fixture parent. Preserve earlier partial checkpoint and tooling failures rather than rewriting them. These checks qualify this scoped controller/input composition only; owning review, whole application QA, real mutation campaign and production deployment remain outstanding. Candidate0/no spore/no promotion.
