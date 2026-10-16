@@ -1052,3 +1052,12 @@
   spore: none
   receipt-refs: 7472788750ba529aeb896782e80953bdffc07e4576d49dede32ec4bcb7091186
   note: Bind required Clojure/JDK tools before verifier fixtures; retain setup failures and separate supervisor19 from verifier50. Apply only exact privately qualified source bytes, with no synthetic campaign credit.
+- ts: 2026-10-16T23:33:42.034044942Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-CMS-controller-integration-over8cd5-v1
+  task: Private application/controller composition with causal helper inventory controls
+  p-efficiency: 0.70
+  p-friction: 0.50
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: sha256:531c03c38d8554fee55ebf007cc6efab156deaf745487ccf78c771aa924b4b9f,4984c771a6c1165a43b797d6af5e5ae5b8963077,2758e25b1baa61375f2523b41721164f8e81802e,1524edabad9d4908a5468e9115e100202cc6109c
+  note: Keep source-bound verifier configuration and equivalent metadata explicit when composing application and controller lineages. Fixture inputs for newly required helper paths must be independent of the selector under test; otherwise a baseline KeyError hides missing boundary enforcement. Actual selected2tests expose four assertions, then GREEN2; checkout4 and syntax/actionlint pass. Two private evidence/application-reader escaping mistakes are retained separately, corrected without source semantics changes or QA credit. Use literal byte separators and standard git apply in a private six-file copy rather than nested escaped custom diff parsing. Full canonical verifier/JVM and SDK transports remain HELD for browserv9 owned closure, so this is a partial checkpoint with no whole-candidate or production completion. Portable reflection only; candidate0/no spore/no promotion.
