@@ -897,3 +897,12 @@
   spore: none
   receipt-refs: .ημ/receipts.edn#2487cb26-77f5-48af-9d35-18a432a53e7e
   note: Trace actual mounted callers before adding exact synthetic background fixtures; pathname aggregates do not prove query values. Initialize only a fresh owned public chat identity before navigation rather than accepting arbitrary runtime IDs or overriding randomness. Native status GET can recover workers, so never forward it in a closed proof. Assert actual native and window no-forward behavior, adverse method/body/fragment/query/identity refusal and preservation of later app-updated public snapshots. Keep historical runtime evidence separate from new source and retain full quality failures. No spore.
+- ts: 2026-10-16T19:17:57.049341204Z
+  session: codex:cms16-stage-case-diagnostics
+  task: Retain closed CMS stage/case diagnostics and preserve primary on restore failure
+  p-efficiency: 0.93
+  p-friction: 0.16
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#e20b374c-3e8d-4f8a-8aac-8c9851e4eefa
+  note: Capture a bounded stage/current-case/partial-completed snapshot before sanitizing browser failures, while keeping raw messages/stacks/assertion/auth values private. A finally restore failure must preserve original Error/null identity and separately retain one fixed cleanup name; diagnostic observer failure cannot replace primary either. Use explicit verified auxiliary evaluator from first smoke. Original generic browser cause remains UNKNOWN until a separately admitted fresh run; preserve prior failures, inherited global gates and exact app/dist/shared closures. Portable candidate0, no spore.
