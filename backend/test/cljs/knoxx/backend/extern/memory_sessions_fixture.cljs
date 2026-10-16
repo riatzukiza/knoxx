@@ -9,7 +9,7 @@
 (defn resolved [value] (js/Promise.resolve value))
 (defn rejected [] (js/Promise.reject (js/Error. "Owned memory fixture failure")))
 (defn throw! [] (throw (js/Error. "Owned synchronous memory fixture failure")))
-(defn throw-nil! [] (throw nil))
+(defn throw-nil! [] (js* "(function () { throw null; })()"))
 (defn extra [data] (.stringify js/JSON (clj->js data)))
 (defn tick! [] (js/Promise. (fn [resolve _reject] (js/setTimeout resolve 0))))
 (defn ^:async all! [promises]
