@@ -834,3 +834,12 @@
   spore: none
   receipt-refs: .ημ/receipts.edn#22d4052e-c9ae-4646-b8a9-3a7da8dae49b
   note: Run the actual new-source boundary inventory after extraction: path-bound baseline catches may become new failures. Preserve explicitfalse and foreign primarythrow identity when observing degraded reads; an observerError ornull must not replace fallback. Reuse the existing named compilednull fixture, retain genuine3assertionRED and all withdrawn static judgments. Owning checks pass; backend237warnings,36silentcatchsites and root58errors56warnings remain release blockers. Coverage runPASS measures78.64percent overall lines/statements with no configuredpercentageproof. One private latestfailure diagnostic is bounded/process-local and maystale. No spore.
+- ts: 2026-10-16T13:37:29.072113Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-app-route-facade-over17381-PREP-v1
+  task: Reuse the existing five-line test-import repair in the current CMS candidate
+  p-efficiency: 0.80
+  p-friction: 0.20
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn@2026-10-16T13:37:28.892943371Z
+  note: Inspect existing qualified source before writing another fix. Five complete current preimages matched the earlier source, so ordinary composition plus fresh owning, typecheck, normal and full-lint checks removed exactly five warnings. Treat reporter-format assertions separately from actual test failures; qualify the same complete capture and do not repeat a passing suite. The remaining 232 warnings and other release failures stay visible. No skill spore or production claim.
