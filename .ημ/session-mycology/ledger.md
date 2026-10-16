@@ -634,3 +634,12 @@
   spore: none
   receipt-refs: .ημ/receipts.edn#6b4466cc-e247-43a5-b9c1-11183d3c6576
   note: Source7adf11002889e11abb036627063b870dba73a6dd; nativeCodex5540235261/root4288525597. Exact fixture-entry strict assertion with each forbidden-category actual-checker controls, missing/unreadable refusal, unchanged legacy allowlist. Samefixture5/18points/history; oneBODY/nativeevent,2647otherinputs preserved. NativeSMefefc438-582a-4058-9553-7bda02916712. Canonical parser/custody only; tests/implementation/public/runtime remain unexecuted. Candidate0/no spore.
+- ts: 2026-10-16T03:05:31.450810414Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-native-resource-locale-filter-plan-19f-v1
+  task: Persist independently qualified CMS16 four native readiness transitions
+  p-efficiency: 0.88
+  p-friction: 0.18
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#94772b87-7175-4342-a289-24af0ac49d89
+  note: Source e7d9336d072277e74370b5b4006538d3582124db records only four completed official Rheos breakdown-to-ready transitions. Independent native read-task sections and metadata custody, all2649physical/Git/modes,2644unownedinputs, exact154651B nativeledgerprefix,12normal phases48files and full diff hygiene passed. Planning03fc review remains dated and does not prove implementation or deployment. Known nativeSM null-cwd unsupported route not retried; this is the portable fallback, candidate0/noSpore. One readonly sections-list inspection AttributeError recovered without replaying any effect.
