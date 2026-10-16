@@ -861,3 +861,12 @@
   spore: none
   receipt-refs: .ημ/receipts.edn#46f0fc7f-90c9-4287-8ff2-fd3f21d403c0
   note: Inspect the pinned promise implementation before assuming Promise.all semantics. Eager task start, ordered consumption and immediate native rejection observation are distinct obligations. A terminal-aware fixture must also avoid holding an earlier branch while awaiting a later ordered failure. Keep two-error identity controls and first-cause evidence; observe native tasks through the existing public constructor outside async helpers. Two cancellations provide no final test PASS; actual introduced unhandled-rejection failure stays retained. Final owning gates pass, while backend222warnings35ignoredcatches and root57errors56warnings remain release blockers. No spore.
+- ts: 2026-10-16T16:06:57.028476384Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-app-route-facade-over17381-PREP-v1
+  task: Remove six unused registry-test callback names with unchanged behavior
+  p-efficiency: 0.92
+  p-friction: 0.15
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#fe38150f-fa31-4085-8198-bcd1641c0dce
+  note: Small argument-name hygiene can remove real policy warnings without changing arity, callback order, positive parameter reads or assertions. Use the actual native test EOF and exit, not an arbitrary FATAL substring ban: unchanged negative-path logging can contain that word. Preserve inherited diagnostics and recover read-only rather than replaying a passing suite. Existing namespace registration loads require a separate source audit before removing apparently unused imports. No spore.
