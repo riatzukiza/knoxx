@@ -915,3 +915,12 @@
   spore: none
   receipt-refs: .ημ/receipts.edn#18b50cc1-8b38-48c7-b34b-dac976f52312
   note: A browser callback marker is evidence of observer delivery, not the instant of DOM commit. Actual request-time B checkpoint and later observer both passed while the extra callback-before-fetch order failed. Preserve real B-at-request and stale-A-after-B safety; test clean request-before-observer, stale request despite later clean observer, and A completion before committed B through the actual emitted project configuration. Keep genuine first-observer/pre-first-B checks unchanged. Capture original native bytes privately before error normalization; no inferred full57 or release success. Portable candidate0/no spore.
+- ts: 2026-10-16T20:20:05.906271496Z
+  session: codex:cms16-owned-CDP-download-repair
+  task: Keep one owned download path across original Playwright owner and second CDP client
+  p-efficiency: 0.94
+  p-friction: 0.15
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#96f67cc7-1ef5-4b82-a8d6-46626269794d
+  note: Second CDP attachment can reset default-context download routing while the original owner Artifact still uses its own path. Bind explicit launch downloadsPath and reclaim that exact path after attachment, before downloads; register detach before send. Exercise public owner with inert context and finite CLI plus real copyFile for genuine RED. Preserve original thrown identity by source rethrow and record only closed stage/name/code/cause data; do not overclaim identity test coverage or captured historical ENOENT. Synthetic GREEN is not real57/browser/release proof. Portable candidate0/no spore.
