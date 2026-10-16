@@ -879,3 +879,12 @@
   spore: none
   receipt-refs: .ημ/receipts.edn#657832f5-5a36-4b79-9663-7c9855cf89d0
   note: Keep the public fallback and observation-failure contract separate: a warning sink must never replace a deliberately preserved nil fallback. Trigger actual original catch sites through public APIs and assert bounded worker calls plus exact safe context. Preserve original ordered async and identity laws; source-only extraction review is followed by real causal RED and full source-bound GREEN. Retain all inherited release failures. Read Rheos actual same-section append representation; restore only known owned physical modes after live gates close. No spore.
+- ts: 2026-10-16T18:20:24.456972151Z
+  session: codex:cms16-native-url-dto-local-repair
+  task: Preserve native CLI DTO shape at the exact owned-page URL guard
+  p-efficiency: 0.88
+  p-friction: 0.22
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#705fce80-a5d8-4b4d-bbee-50f8cc24db57
+  note: Generic native CLI data unwrapping may correctly return an object: use the exact installed wire contract and preserve its object/type/own-field invariants before comparing the owned URL. Start with behavior-identical extraction and genuine positive/adverse causal tests. A missing required test evaluator selector is a harness prerequisite failure, preserve it and restore only the proven original setting; do not reinterpret it as product RED. Retain global failures and dated runtime limits; no browser replay or spore.
