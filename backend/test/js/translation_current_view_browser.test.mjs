@@ -376,3 +376,32 @@ test('background fixtures refuse every non-GET, body, fragment and unowned query
     assert.equal(guard.decide({ method: 'HEAD', url: origin + '/assets/actual.js' }), 'continue');
   } finally { adapter.restore(); }
 });
+
+
+function publicChatWorld(values = {}) {
+  const data = new Map(Object.entries(values)); let writes = 0;
+  return { data, writes: () => writes, location: { origin }, localStorage: {
+    getItem: key => data.get(key) ?? null, setItem: (key, value) => { writes += 1; data.set(key, value); } } };
+}
+test('owned public chat initialization preserves later app snapshot bytes and refuses foreign origin access', async () => {
+  const { installOwnedChatStorage } = await browser(); const world = publicChatWorld();
+  assert.equal(installOwnedChatStorage(config, world), true); assert.equal(world.writes(), 2);
+  const sessionId = runId + '-cms-session', conversationId = runId + '-cms-conversation';
+  const key = 'knoxx_cms_chat_session_state:' + sessionId;
+  assert.deepEqual(JSON.parse(world.data.get(key)), { sessionId, conversationId, activeActorId: 'cms_chat',
+    messages: [], latestRun: null, runtimeEvents: [], isSending: false });
+  const updated = JSON.stringify({ sessionId, conversationId, messages: [{ content: 'owned synthetic text' }], selectedModel: 'synthetic' });
+  world.data.set(key, updated); assert.equal(installOwnedChatStorage(config, world), true);
+  assert.equal(world.data.get(key), updated); assert.equal(world.writes(), 2);
+  assert.equal(installOwnedChatStorage(config, { location: { origin: 'https://foreign.invalid' },
+    get localStorage() { throw Error('foreign storage must never be inspected'); } }), false);
+});
+test('foreign public chat identities or malformed snapshots refuse before any write', async () => {
+  const { installOwnedChatStorage } = await browser(); const key = 'knoxx_cms_chat_session_state:' + runId + '-cms-session';
+  for (const values of [{ knoxx_cms_chat_session_id: 'foreign' }, { [key]: '{malformed' }, { [key]: '[]' },
+    { [key]: JSON.stringify({ sessionId: 'foreign', conversationId: runId + '-cms-conversation' }) },
+    { [key]: JSON.stringify({ sessionId: runId + '-cms-session', conversationId: 'foreign' }) }]) {
+    const world = publicChatWorld(values); assert.throws(() => installOwnedChatStorage(config, world), /core-chat-/);
+    assert.equal(world.writes(), 0); assert.deepEqual(Object.fromEntries(world.data), values);
+  }
+});

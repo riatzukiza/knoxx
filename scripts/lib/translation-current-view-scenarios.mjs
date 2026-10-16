@@ -77,14 +77,21 @@ function bootSteps(wire, prefix = 'A') {
 }
 
 /** Only fixed read-only background responses, with exact source-observed queries. */
-export function backgroundResponses() {
+export function backgroundResponses(runId) {
+  assert.match(runId, /^[a-zA-Z0-9_-]{8,80}$/);
+  const sessionId = runId + '-cms-session', conversationId = runId + '-cms-conversation';
+  const statusPath = '/api/knoxx/session/status?' + new URLSearchParams({ session_id: sessionId, conversation_id: conversationId });
   const entries = [
     ['/api/config', { default_role: 'executive', default_actor_id: 'cms_chat' }],
     ['/api/proxx/health', { reachable: false, configured: false }], ['/api/proxx/models', { models: [] }],
-    ['/api/ingestion/browse?path=.', { entries: [], path: '.' }], ['/api/ingestion/sources', []],
+    ['/api/ingestion/browse?path=.', { workspace_root: '/synthetic-core', current_path: '.', entries: [] }],
+    ['/api/ingestion/browse?path=docs', { workspace_root: '/synthetic-core', current_path: 'docs', entries: [] }], ['/api/ingestion/sources', []],
     ['/api/ingestion/file?path=contracts/cms-templates.edn', { content: '' }],
     ['/api/memory/sessions?limit=10', { rows: [], total: 0, has_more: false }],
     ['/api/memory/sessions?limit=12', { rows: [], total: 0, has_more: false }],
+    ['/api/memory/sessions?limit=20&excludeActorIds=eta-mu', { rows: [], total: 0, has_more: false }],
+    [statusPath, { session_id: sessionId, conversation_id: conversationId, status: 'not_found',
+      has_active_stream: false, can_send: true, reason: 'No session state found. Ready for new turn.' }],
     ['/api/cms/publications/documents', { documents: [], gardens: [] }],
   ];
   for (const actor of ['cms_chat', 'chat_primary']) {
@@ -119,7 +126,7 @@ async function openWork(io, wire) {
   await evaluate(io, `(() => { const n=[...document.querySelectorAll('button')].find(x=>x.textContent.includes(${js(wire.detail.segments[0].translated_text)})); if(!n)throw Error('core-segment-control-missing');n.click();return true; })()`);
 }
 async function install(io, config) {
-  await evaluate(io, `(${io.installSource})(${js({ ...config, background: backgroundResponses() })}); true`);
+  await evaluate(io, `(${io.installSource})(${js({ ...config, background: backgroundResponses(io.config.runId) })}); true`);
   const report = await adapter(io, 'report'); assert.equal(report.runId, config.runId);
   assert.equal(report.active, true); assert.equal(io.guardReport().phase, 'controlled');
 }

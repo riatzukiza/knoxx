@@ -33,13 +33,14 @@ export function createNetworkGuard(config) {
   function decide(request) {
     let url; try { url = new URL(request.url); } catch { return 'abort'; }
     if (!['GET', 'HEAD'].includes(request.method) || url.origin !== origin) return 'abort';
-    if (Object.hasOwn(config.background ?? {}, url.pathname + url.search)) return 'fixture';
+    if (Object.hasOwn(config.background ?? {}, url.pathname + url.search))
+      return request.method === 'GET' && !url.hash && request.body == null ? 'fixture' : 'abort';
     if (phase === 'authentication' && url.pathname === '/api/auth/context' && !url.search) return 'continue';
     return !url.search && !url.hash && allowed.has(url.pathname) ? 'continue' : 'abort';
   }
   async function route(route) {
     const request = route.request();
-    const decision = decide({ method: request.method(), url: request.url() });
+    const decision = decide({ method: request.method(), url: request.url(), body: request.postData?.() });
     if (decision === 'fixture') {
       counts.mockedBackground += 1; const url = new URL(request.url());
       await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(config.background[url.pathname + url.search]) });
@@ -169,6 +170,27 @@ async function configAt(file) {
   return config;
 }
 
+/** Seed only the owned profile's public empty-chat identity before app navigation. */
+export function installOwnedChatStorage({ origin, runId }, world = globalThis) {
+  if (world.location.origin !== origin) return false;
+  if (!/^[a-zA-Z0-9_-]{8,80}$/.test(runId)) throw Error('core-chat-run-invalid');
+  const sessionId = runId + '-cms-session', conversationId = runId + '-cms-conversation';
+  const key = 'knoxx_cms_chat_session_id', snapshotKey = 'knoxx_cms_chat_session_state:' + sessionId;
+  const storage = world.localStorage, selected = storage.getItem(key), raw = storage.getItem(snapshotKey);
+  if (selected !== null && selected !== sessionId) throw Error('core-chat-owner-mismatch');
+  if (raw !== null) {
+    let snapshot;
+    try { snapshot = JSON.parse(raw); } catch { throw Error('core-chat-snapshot-invalid'); }
+    if (!snapshot || Array.isArray(snapshot) || snapshot.sessionId !== sessionId || snapshot.conversationId !== conversationId)
+      throw Error('core-chat-snapshot-owner-mismatch');
+  }
+  // Validate both identities before either write. Retain later app-updated fields.
+  if (raw === null) storage.setItem(snapshotKey, JSON.stringify({ sessionId, conversationId,
+    activeActorId: 'cms_chat', messages: [], latestRun: null, runtimeEvents: [], isSending: false }));
+  if (selected === null) storage.setItem(key, sessionId);
+  return true;
+}
+
 async function startOwner(config, resources) {
   const module = await import(pathToFileURL(config.playwrightEntry).href);
   await mkdir(config.evidenceDir, { mode: 0o700 }); await mkdir(config.profileDir, { mode: 0o700 });
@@ -182,13 +204,14 @@ async function startOwner(config, resources) {
     args: [`--remote-debugging-address=127.0.0.1`, `--remote-debugging-port=${config.cdpPort}`],
   });
   resources.push({ name: 'context', close: () => context.close() });
-  const guard = createNetworkGuard({ ...config, background: backgroundResponses() });
+  const guard = createNetworkGuard({ ...config, background: backgroundResponses(config.runId) });
   await context.route('**/*', guard.route);
   await context.routeWebSocket('**/*', guard.websocket);
   const pages = context.pages(); assert.equal(pages.length, 1);
   const page = pages[0]; assert.equal(page.url(), 'about:blank');
   const nonce = randomUUID(); await page.evaluate(value => { window.__coreOwner = value; }, nonce);
   await context.addInitScript(value => { window.__coreOwner = value; }, nonce);
+  await context.addInitScript(installOwnedChatStorage, { origin: config.origin, runId: config.runId });
   return { context, page, guard, nonce };
 }
 
