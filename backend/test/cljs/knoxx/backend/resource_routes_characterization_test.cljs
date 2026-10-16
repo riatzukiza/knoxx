@@ -353,3 +353,25 @@
                  (is (= 200 (:status response)))
                  (is (= [] (get-in response [:body :resources])))
                  (is (= [[:load]] (fixture/calls w)))))))))
+
+(deftest ^:async moved-watcher-close-failure-has-one-safe-observation
+  (let [w (fixture/world {:close-errors {"/one" (ex-info "private synthetic close payload" {})}})]
+    (await (fixture/with-world! w
+             (^:async fn []
+               (routes/start-resource-watcher! config)
+               (is (nil? (routes/stop-resource-watcher!)))
+               (is (= ["/one" "/two"] @(:close-attempts w)))
+               (is (= 1 (count @(:observations w))))
+               (is (= ["resource-watcher.close" {:operation :close :fallback :continue-cleanup :error-present? true}]
+                      (first @(:observations w)))))))))
+
+(deftest ^:async moved-watcher-close-nil-and-observer-nil-retain-cleanup-fallback
+  (let [w (fixture/world {:close-errors {"/one" nil} :observer-error nil})]
+    (await (fixture/with-world! w
+             (^:async fn []
+               (routes/start-resource-watcher! config)
+               (is (nil? (routes/stop-resource-watcher!)))
+               (is (= ["/one" "/two"] @(:close-attempts w)))
+               (is (= 1 (count @(:observations w))))
+               (is (= ["resource-watcher.close" {:operation :close :fallback :continue-cleanup :error-present? false}]
+                      (first @(:observations w)))))))))
