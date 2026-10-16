@@ -770,3 +770,13 @@
   spore: none
   receipt-refs: .ημ/receipts.edn#85ba29e6-007f-46ce-b53a-b55b36ca4f0f
   note: Characterize real public APIs on original source before moving effects; keep expectedPASS separate from genuine missing-observationRED. Preserve29APIarities/receivers/callbacks/Promiseorder,15safeobservations and true Error/nil fallback semantics. Nativeaudio fixture must distinguish primary error from terminal child close and await bounded owned streams/pipeline/child cleanup. Actualbaseline2058/11603/0/0 then observationRED2060/11708/30/0 and extracted explicit/normal/coverage2060/11708/0/0/0warnings; owninglint/server/JSboundary pass. Preserve first zero-test guard and lint1/2 failures. Full lint3/254 and fresh38boundaries (2inherited626f) remain blockers; no fullGREEN/readiness/ownercompletion/public/model/DB/deploy. Candidate0/noSpore; nativeSM not retried.
+
+## 2026-10-16T05:44:39.235976+00:00 — CMS16 current-view local product repair
+
+- Context: source 2bd3ebdd0d56ef2d362c231cf7c4596818036045; base e5d69882038d59e8d54b94581997aee41a5e55a5; Receipt River .ημ/receipts.edn#0e8fcc87-b5a2-406f-b6e2-d51020048697.
+- Scores: efficiency 0.57; friction 0.72; skill-candidate 0; spore none.
+- Observed: synchronously change view generations before React effects, keep state updaters pure, and bind saving/finally to a unique operation. Preserve already-authorized payloads and approval followups while fencing stale UI completions.
+- Verification: 474 frontend tests/2240 assertions/zero failures/errors/compiler warnings; eight owning source paths lint0/0; real registered frontend build passed. Original protected interaction file stays byte-e5; moved causal tests on original production still fail six assertions.
+- Limits: whole frontend lint remains failed7errors/790warnings (original-tracked7/835), same seven untouched error locations. No browser/human race tour, hosted review, story completion or deployment. Tests/build preceded only two blank EOF-line removals, explicitly byte-bound.
+- Better path: freeze causal UI schedules before extraction, distinguish component prop-map syntax from children, and run full staged hygiene before commit. Preserve all failed captures and recover known successful effects without replay.
+- Evidence: /home/err/.local/share/openhax-codex/20261010/review-state/CMS16-current-view-RED-and-frontend-prerequisite-independent-review-v1/e5d-isolated-install-and-baseline-v1/current-view-RED-GREEN-implementation-v1/ACTUAL-current-view-qualified-local-source-commit.json; ACTUAL-source-built-frontend-dist-artifact-manifest.json. Native Session Mycology known null-cwd route not retried; portable candidate0 only, no spore creation/promotion.

@@ -4,11 +4,11 @@ labels: "tasks, 5sp, has-parent, regression, translations, frontend, cms"
 dependency: ["knoxx-translation-review-legacy-fixture-auth-preflight"]
 parent: "knoxx-translation-review-chat-panel"
 type: "task"
-write-id: "1792119291417-0.eksfxpjp6y62ejinw1s"
+write-id: "1792127573795-0.03ed9mgc1ukkvs5axkh9"
 points: "5"
 title: "Keep translation review mutations bound to the current view"
 priority: "P0"
-status: "ready"
+status: "in_progress"
 uuid: "knoxx-translation-review-current-view-mutation-lifecycle"
 created_at: "2026-10-15T11:12:28.655Z"
 ---
@@ -484,5 +484,7 @@ Root-reviewed local planning correction for native Codex5539062909/current0429, 
 Root-reviewed local planning correction for Codex5539622567/currente9 root4288059104: independently require ONE real credential-free POST /api/publications/translations/dispatch using the frontend publication-only selector from authenticated run-owned resource inventory, source/route/auth/store readiness, no cookies/auth/API/identity headers or redirects,401/no_session and unchanged hidden owned writer state before interception/resource cleanup. Registered route/harness controls separately prove zero queue/agent/event-turn writer calls; live snapshots do not imply call-level proof. Add dispatch200/malformed/unavailable/missing-code and changed-state/writer adverse controls. Keep dispatch count separate from legacy2POST+detailGET/SFT/resource-review probes and preserve zero-forwarded synthetic Dispatch/Retry counts, original failure/checked cleanup. Do not run the standalone script real dispatch/provider steps. Samecore5/deps/status/history/18total; no application/test/auth/model/runtime/public effects.
 
 Root-reviewed local planning correction for Codex5539948033/current1c6282bd roots4288291874 and4288291902: explicitly cover inventory omission of current work with synchronous first-render exclusion of vanished detail/segment/form/feedback/actions before passive cleanup and zero stale submit; preserve refreshed list/current context without ambient fallback. Version effective filter transitions (including es->fr->es) so an earlier export cannot regain shared feedback authority by value equality; retain one original captured download/no reissue and add causal callback/browser schedules. Same existing core5 and dependency chain18total; preserve metadata/history and qualified earlier dispositions. Exact three-BODY patch11222B SHA41aec60aa05bcf77506315baa6bfb262cf5ff2811be06f73efc730089b289980. No application/test/auth/browser/model/runtime/readiness/release or public effect.
+
+Bounded current-view5 implementation admission on isolated e5d69882038d59e8d54b94581997aee41a5e55a5. Genuine registered frontend baseline:464 tests/2114 assertions,0 failures/errors/warnings; fresh frontend-own frozen-lock dependencies, no copied build. Root separately qualified real fixture/auth attempt3 at e5d:60PASS,1 explicit direct-seed/no-model boundary; no native prerequisite completion inferred. First two causal regressions cover installed-A first-B-frame exclusion and old-A completion conservation of B original load. Preserve all six original mutation payload/follow-up sequences, unique current-operation saving, mounted/project/filter/work fences, read-only export policy, and unchanged same-project2inventory/1a-esdispatch B-selection control. Remaining accepted causal cases and real full frontend test/lint/build are required before qualification; no browser/provider/publication/deployment or broader-parent completion claimed.
 
 ---
