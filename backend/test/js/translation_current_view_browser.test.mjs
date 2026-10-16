@@ -688,3 +688,106 @@ test('public inert owner distinguishes saved-copy verification absence from save
     primary: { category: 'core-browser-failed', errorName: 'Error', errorCode: 'ENOENT' } }]);
   assert.deepEqual(result.proof.cleanupErrors, ['downloads']); assert.equal(result.copied, undefined);
 });
+
+
+// Capture the existing settled runner's actual emitted data, stopping at its
+// observer registration. No copied checkpoint/order or preceding53 schedules.
+async function settledFeedbackConfiguration() {
+  const { runInNewContext } = await import('node:vm');
+  const { settledFeedbackCase } = await scenarios();
+  const stopped = Error('owned-settled-configuration-captured'); let configuration, watch, download;
+  const world = { __capture(value) {
+    configuration = JSON.parse(JSON.stringify(value));
+    world.__knoxxControlledCore = {
+      report: () => ({ runId: configuration.runId, active: true }),
+      release: () => {},
+      watchCommit(id, rule, actions) { watch = { id, rule, actions }; throw stopped; },
+    };
+  } };
+  world.window = world;
+  await assert.rejects(settledFeedbackCase({ config: { ...config, evidenceDir: '/inert-no-write' },
+    installSource: 'value => globalThis.__capture(value)', guardReport: () => ({ phase: 'controlled' }),
+    downloadCount: () => 0, checkDownload: async (...args) => { download = args; },
+    cli: async (command, source) => {
+      assert.equal(command, 'eval');
+      if (source.includes('globalThis.__capture') || source.startsWith('window.__knoxxControlledCore.'))
+        return runInNewContext(source, world);
+      return true; // DOM/steady-state calls are inert; this fixture captures configuration only.
+    },
+  }, 'success', 54), error => error === stopped);
+  assert.ok(configuration && watch && download);
+  return { configuration, watch: JSON.parse(JSON.stringify(watch)) };
+}
+
+async function settledRequestObserverSchedule({ staleAtRequest, observer = 'clean', earlyRelease = false } = {}) {
+  const { configuration, watch } = await settledFeedbackConfiguration();
+  const { installDeferred } = await deferred(); const { world, forwarded } = inertWorld();
+  const inventory = configuration.steps.find(value => value.id === 'settled-B-inventory');
+  let current = configuration.steps.find(value => value.id === 'A-inventory').response.json.project;
+  let formCount = 1, observed;
+  world.document.querySelector = () => ({ value: current, defaultValue: current, getAttribute: () => current });
+  world.document.querySelectorAll = () => Array.from({ length: formCount }, () => ({}));
+  world.MutationObserver = class { constructor(fn) { observed = fn; } observe() {} disconnect() {} };
+  const adapter = installDeferred(configuration, world), outstanding = [];
+  const request = value => {
+    const query = new URLSearchParams(value.query).toString();
+    const promise = world.fetch(value.path + (query ? '?' + query : ''), { method: value.method });
+    outstanding.push(promise); return promise;
+  };
+  try {
+    for (const value of configuration.steps.filter(value => value.id.startsWith('A-'))) await request(value);
+    const exported = request(configuration.steps.find(value => value.id === 'settled-export'));
+    adapter.release('settled-export', 'success'); await exported;
+    adapter.watchCommit(watch.id, watch.rule, watch.actions);
+    current = watch.rule.project; formCount = staleAtRequest === 'form' ? 1 : 0;
+    const staleIndex = { title: 0, feedback: 1, translation: 2 }[staleAtRequest];
+    world.document.body.innerText = staleIndex === undefined ? '' : watch.rule.absent[staleIndex];
+    const b = request(inventory).then(() => true, () => false);
+    const manifest = request(configuration.steps.find(value => value.id === 'settled-B-manifest'));
+    if (earlyRelease) {
+      if (adapter.report().pending.includes('settled-B-inventory')) adapter.release('settled-B-inventory', 'success');
+      adapter.release('settled-B-manifest', 'success');
+    }
+    // A request-time refusal is sticky even when the later observer is clean.
+    world.document.body.innerText = observer === 'stale' ? watch.rule.absent[1] : ''; formCount = 0;
+    if (observer !== 'missing') observed();
+    const beforeBRelease = adapter.report();
+    if (!earlyRelease) {
+      if (adapter.report().pending.includes('settled-B-inventory')) adapter.release('settled-B-inventory', 'success');
+      adapter.release('settled-B-manifest', 'success');
+    }
+    await Promise.all([b, manifest]);
+    for (const value of configuration.steps.filter(value => value.id.startsWith('settled-B-') && !value.hold)) await request(value);
+    let complete = false;
+    try { adapter.assertComplete(); complete = true; } catch { /* Retain explicit contract refusal. */ }
+    return { complete, beforeBRelease, final: adapter.report(), forwarded: forwarded() };
+  } finally { adapter.restore(); await Promise.allSettled(outstanding); }
+}
+
+test('settled feedback accepts clean committed B request before observer while B responses stay held', async () => {
+  const proof = await settledRequestObserverSchedule();
+  assert.equal(proof.complete, true);
+  assert.deepEqual(proof.beforeBRelease.checkpoints.map(value => value.ok), [true, true]);
+  assert.deepEqual(proof.beforeBRelease.pending, ['settled-B-inventory', 'settled-B-manifest']);
+  const records = proof.final.records;
+  assert.ok(records.indexOf('request:settled-B-inventory') < records.indexOf('commit:settled-B'));
+  assert.ok(records.indexOf('commit:settled-B') < records.indexOf('release:settled-B-inventory'));
+  assert.equal(proof.forwarded, 0);
+});
+
+test('settled feedback refuses stale A title feedback translation or form at B request despite later clean observer', async () => {
+  for (const staleAtRequest of ['title', 'feedback', 'translation', 'form']) {
+    const proof = await settledRequestObserverSchedule({ staleAtRequest });
+    assert.equal(proof.complete, false);
+    assert.deepEqual(proof.beforeBRelease.checkpoints.map(value => value.ok), [false, true]);
+    assert.equal(proof.beforeBRelease.failed, true); assert.equal(proof.forwarded, 0);
+  }
+});
+
+test('settled feedback retains missing stale observer and early held-response release refusals', async () => {
+  for (const options of [{ observer: 'missing' }, { observer: 'stale' }, { earlyRelease: true }]) {
+    const proof = await settledRequestObserverSchedule(options);
+    assert.equal(proof.complete, false); assert.equal(proof.forwarded, 0);
+    if (options.observer === 'stale') assert.equal(proof.beforeBRelease.failed, true);
+  }
+});
