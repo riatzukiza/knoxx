@@ -843,3 +843,12 @@
   spore: none
   receipt-refs: .ημ/receipts.edn@2026-10-16T13:37:28.892943371Z
   note: Inspect existing qualified source before writing another fix. Five complete current preimages matched the earlier source, so ordinary composition plus fresh owning, typecheck, normal and full-lint checks removed exactly five warnings. Treat reporter-format assertions separately from actual test failures; qualify the same complete capture and do not repeat a passing suite. The remaining 232 warnings and other release failures stay visible. No skill spore or production claim.
+- ts: 2026-10-16T14:05:51.376748279Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-app-route-facade-over17381-PREP-v1
+  task: Observe malformed receipt-bound content without replacing absence
+  p-efficiency: 0.88
+  p-friction: 0.24
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#7b9e0a16-b635-40a0-a4e1-6595b6283d53
+  note: Keep decode fallback and non-ENOENT read-error identity distinct. Exercise actual malformed EDN plus primary/observer Error/native-null through existing named ports before product; exact missing-observation RED must preserve all admission controls. Log only fixed sanitized context; observer failure cannot replace nil. One private latest diagnostic is bounded and may stale. Owning gates pass; global231warnings35ignoredcatches/root58errors56warnings remain blockers. Coverage measurements are not percentage-threshold proof. Retain private descriptor mistakes without replaying successful QA. No spore.
