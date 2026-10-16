@@ -586,5 +586,72 @@ class LegacyActualAdapterInterruptionTest(unittest.TestCase):
             print("Synthetic actual-adapter TERM/reentry evidence: "+str(directory/"proof.json"))
 
 
+
+class CoreReviewPreflightProcessTest(unittest.TestCase):
+    """Existing shell helper with only inert transport/snapshot boundaries."""
+
+    def core_phase(self, mode="closed"):
+        with tempfile.TemporaryDirectory(prefix="knoxx-core-preflight-") as raw:
+            root = Path(raw)
+            (root / "contracts").mkdir()
+            events = root / "events.jsonl"
+            events.touch()
+            boundary = root / "boundary.py"
+            boundary.write_text("""import json,os,sys
+from pathlib import Path
+p=Path(os.environ['EVENTS']); mode=os.environ['MODE']; args=sys.argv[1:]
+with p.open('a') as f:f.write(json.dumps(args)+'\\n')
+if args[0]=='snapshot':
+ count=sum(json.loads(x)[0]=='snapshot' for x in p.read_text().splitlines())
+ print(json.dumps(dict(action='dispatch-read',run_id='owned',org_id='org',project='owned-project',document_id='knoxx.verifysplit.rowned/doc01',source_revision='source-revision',dispatch_count=0,claim_count=0,batch_count=0,receipt_count=0,dispatch_statuses=[],batch_statuses=[],dispatch_ids=[],batch_ids=[],receipt_ids=[],state_sha256=('b' if mode=='changed-state' and count>1 else 'a')*64)));sys.exit(0)
+method,path,authorization=args[:3]
+status=200 if authorization=='auth' else 401
+body={}
+if authorization=='auth' and 'reviews' in path:body=dict(project='owned-project',reviews=[dict(publication='knoxx.verifysplit.rowned/doc01-es')])
+if authorization=='auth' and path=='/api/auth/context':body=dict(org={'id':'org'},user={'email':'owned@example.invalid'})
+if authorization=='auth' and mode=='unready':status=503
+if authorization=='anonymous':
+ if 'dispatch' in path and mode.startswith('dispatch-'):status=int(mode.split('-')[1])
+ if 'sft' in path and mode=='sft-open':status=200
+ body=dict(error_code='missing' if mode=='missing-code' else 'no_session',secret='DO_NOT_PRINT_CORE_SECRET')
+print(status);print(json.dumps(body))
+""")
+            shell = root / "phase.sh"
+            shell.write_text("""set -uo pipefail
+. "$SOURCE_HELPER"
+pass() { printf 'PASS %s\\n' "$1"; }
+fail() { printf 'FAIL %s\\n' "$1"; }
+translation_fixture_helper() { python3 "$BOUNDARY" snapshot; }
+translation_fixture_legacy_http() { python3 "$BOUNDARY" "$@"; }
+translation_fixture_legacy_auth_http() { translation_fixture_legacy_http "$1" "$2" auth; }
+inventory='{"project":"owned-project","reviews":[{"publication":"knoxx.verifysplit.rowned/doc01-es"}]}'
+translation_fixture_core_preflight "$inventory"
+""")
+            environment = dict(PATH=os.environ['PATH'], SOURCE_HELPER=str(ROOT/'scripts/lib/translation-split-review-fixture.sh'),
+                BOUNDARY=str(boundary),EVENTS=str(events),MODE=mode,CONTRACTS_DIR=str(root/'contracts'),
+                FIXTURE_DIR=str(root/'contracts/_verify_translation_split_review_core'),RUN_ID='owned',
+                VERIFY_ORG_ID='org',VERIFY_PROJECT='owned-project',VERIFY_SOURCE_COMMIT='a'*40,
+                BASE_URL='http://127.0.0.1:42591',LOOPBACK_HTTP='1',VERIFY_TMP_DIR=str(root))
+            result=subprocess.run(['bash',str(shell)],env=environment,capture_output=True,text=True,timeout=10)
+            return result,[json.loads(x) for x in events.read_text().splitlines()]
+
+    def test_exact_core_sft_dispatch_probes_use_owned_publication_and_unchanged_snapshot(self):
+        result,events=self.core_phase()
+        self.assertEqual(0,result.returncode,result.stdout+result.stderr)
+        anonymous=[x for x in events if len(x)>2 and x[2]=='anonymous']
+        self.assertEqual(['GET','POST'],[x[0] for x in anonymous])
+        self.assertIn('include_corrected=true',anonymous[0][1])
+        self.assertEqual({'publication':'knoxx.verifysplit.rowned/doc01-es'},json.loads(anonymous[1][3]))
+        self.assertEqual(2,sum(x[0]=='snapshot' for x in events))
+        self.assertNotIn('DO_NOT_PRINT_CORE_SECRET',result.stdout+result.stderr)
+
+    def test_wrong_core_auth_status_code_readiness_and_state_fail_closed(self):
+        for mode in ['sft-open','dispatch-200','dispatch-400','dispatch-404','dispatch-503','missing-code','changed-state','unready']:
+            with self.subTest(mode=mode):
+                result,events=self.core_phase(mode)
+                self.assertNotEqual(0,result.returncode,result.stdout+result.stderr)
+                self.assertNotIn('DO_NOT_PRINT_CORE_SECRET',result.stdout+result.stderr)
+                self.assertTrue(events,'control did not reach a real source helper boundary')
+
 if __name__ == "__main__":
     unittest.main()

@@ -807,3 +807,12 @@
   spore: none
   receipt-refs: .ημ/receipts.edn#c340d28c-0b1a-4f52-a6a8-fd7ee49ad401
   note: Four existing test wrappers omitted flags already used by the app. Correct fixture configuration without suppression or assertion changes; the complete registered TypeScript suite now passes267tests/44files with41existingtodo and zero warnings. Preserve actual baseline and source/closure/lease custody. Native board ownership gap remains visible; no false lifecycle or full release claim. Source local only; no model/browser/deployment effect. Portable candidate0/no spore.
+- ts: 2026-10-16T09:02:15.258620590Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-cms16-core-browser-instrumentation-over-64c-v1
+  task: Qualify core browser instrumentation and real-route unauthorized writer refusal controls
+  p-efficiency: 0.6
+  p-friction: 0.5
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#2f6d8930-9c72-47d8-ab6c-a5b4cb30ac9c
+  note: Source2315d697 has final Node24, registered backend2064/11795, Python15 and explicit inherited lint/timing limits. Distinguish controlled-prop observer evidence from React scheduler proof; no CMS browser/readiness/deployment credit.

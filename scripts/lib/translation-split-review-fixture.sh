@@ -417,3 +417,74 @@ translation_fixture_legacy_preflight() {
   done
   translation_fixture_legacy_cleanup
 }
+
+# Core5-specific real probes. Resource fixture and fixture5 cleanup remain owned
+# by the existing tour; no authenticated dispatch/provider call is made here.
+translation_fixture_core_auth_http() {
+  translation_fixture_legacy_auth_http "$1" "$2"
+}
+
+translation_fixture_core_snapshot() {
+  local value
+  value="$(translation_fixture_helper dispatch-read)" || return 1
+  printf '%s' "$value" | jq -ce --arg run "$RUN_ID" --arg org "$VERIFY_ORG_ID" \
+    --arg project "$VERIFY_PROJECT" --arg doc "$TRANSLATION_FIXTURE_DOC_ID" '
+    select(.action == "dispatch-read" and .run_id == $run and .org_id == $org
+      and .project == $project and .document_id == $doc
+      and (.source_revision | type == "string" and length > 0)
+      and (.state_sha256 | type == "string" and test("^[0-9a-f]{64}$")))
+    | select([.dispatch_count,.claim_count,.batch_count,.receipt_count]
+      | all(type == "number" and . >= 0 and floor == .))
+    | {source_revision,state_sha256,dispatch_count,claim_count,batch_count,receipt_count}' 2>/dev/null
+}
+
+translation_fixture_core_preflight() {
+  local inventory="$1" before after context ready sft_path response status proof payload
+  [[ "${VERIFY_SOURCE_COMMIT:-}" =~ ^[0-9a-f]{40}$ ]] && [ -n "${VERIFY_PROJECT:-}" ] \
+    || { fail 'core source/project precondition unavailable'; return 1; }
+  printf '%s' "$inventory" | jq -e --arg p "$VERIFY_PROJECT" --arg id "$TRANSLATION_FIXTURE_PUBLICATION_ID" \
+    '.project == $p and any(.reviews[]; .publication == $id)' >/dev/null 2>&1 \
+    || { fail 'core exact owned publication inventory unavailable'; return 1; }
+  context="$(translation_fixture_core_auth_http GET /api/auth/context)" \
+    || { fail 'core authenticated policy readiness unavailable'; return 1; }
+  [ "${context%%$'\n'*}" = 200 ] \
+    && printf '%s' "${context#*$'\n'}" | jq -e --arg org "$VERIFY_ORG_ID" '.org.id == $org' >/dev/null 2>&1 \
+    || { fail 'core authenticated policy readiness refused'; return 1; }
+  ready="$(translation_fixture_core_auth_http GET /api/publications/translations/reviews)" \
+    || { fail 'core dispatch route/store inventory unavailable'; return 1; }
+  [ "${ready%%$'\n'*}" = 200 ] \
+    && printf '%s' "${ready#*$'\n'}" | jq -e --arg p "$VERIFY_PROJECT" --arg id "$TRANSLATION_FIXTURE_PUBLICATION_ID" \
+      '.project == $p and any(.reviews[]; .publication == $id)' >/dev/null 2>&1 \
+    || { fail 'core dispatch owned readiness refused'; return 1; }
+  before="$(translation_fixture_core_snapshot)" || { fail 'core scoped hidden snapshot unavailable'; return 1; }
+  sft_path="/api/translations/export/sft?project=$(jq -rn --arg p "$VERIFY_PROJECT" '$p|@uri')&include_corrected=true"
+  ready="$(translation_fixture_core_auth_http GET "$sft_path")" \
+    || { fail 'core authenticated SFT readiness unavailable'; return 1; }
+  [ "${ready%%$'\n'*}" = 200 ] || { fail 'core authenticated SFT readiness refused'; return 1; }
+  payload="$(jq -cn --arg id "$TRANSLATION_FIXTURE_PUBLICATION_ID" '{publication:$id}')"
+  local method endpoint body label
+  for label in sft dispatch; do
+    method=GET; endpoint="$sft_path"; body=''
+    if [ "$label" = dispatch ]; then method=POST; endpoint=/api/publications/translations/dispatch; body="$payload"; fi
+    response="$(translation_fixture_legacy_http "$method" "$endpoint" anonymous "$body")" \
+      || { fail "core anonymous $label transport unavailable"; return 1; }
+    status="${response%%$'\n'*}"
+    [ "$status" = 401 ] \
+      && printf '%s' "${response#*$'\n'}" | jq -e '.error_code == "no_session"' >/dev/null 2>&1 \
+      || { fail "core anonymous $label requires401/no_session (status ${status:-unknown})"; return 1; }
+  done
+  after="$(translation_fixture_core_snapshot)" || { fail 'core post-probe hidden snapshot unavailable'; return 1; }
+  [ "$(printf '%s' "$before" | jq -Sc .)" = "$(printf '%s' "$after" | jq -Sc .)" ] \
+    || { fail 'core auth probe changed owned hidden dispatch state'; return 1; }
+  proof="${VERIFY_CORE_PREFLIGHT_FILE:-${VERIFY_TMP_DIR}/core-auth-preflight.json}"
+  [[ "$proof" = /* ]] && [ -d "$(dirname "$proof")" ] && [ ! -e "$proof" ] && [ ! -L "$proof" ] \
+    || { fail 'core private preflight output is not fresh'; return 1; }
+  (set -o noclobber; umask 077
+   jq -cn --arg source "$VERIFY_SOURCE_COMMIT" --arg run "$RUN_ID" --arg org "$VERIFY_ORG_ID" \
+     --arg project "$VERIFY_PROJECT" --argjson snapshot "$before" '
+     {source_commit:$source,run_id:$run,org_id:$org,project:$project,
+      sft_anonymous_status:401,dispatch_anonymous_status:401,state_unchanged:true,
+      state_sha256:$snapshot.state_sha256,writer_call_level_proof:false}' > "$proof") \
+    || { fail 'core private preflight retention failed'; return 1; }
+  pass 'core real SFT GET and publication-only dispatch POST401/no_session; scoped hidden state unchanged'
+}

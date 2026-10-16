@@ -7,6 +7,13 @@
   route can do."
   (:require [cljs.test :refer [deftest is testing]]
             [knoxx.backend.extern.fastify.translation-dispatch :as adapter]
+            [knoxx.backend.domain.event.dispatch :as event-dispatch]
+            [knoxx.backend.infra.agent.runner :as agent-runner]
+            [knoxx.backend.infra.auth.authz :as authz]
+            [knoxx.backend.infra.clients.openplanner :as openplanner]
+            [knoxx.backend.infra.http :as http]
+            [knoxx.backend.infra.routes.translation :as translation-routes]
+            [knoxx.backend.infra.translation-event-writer :as event-writer]
             [knoxx.backend.infra.translation-evidence-store :as evidence-store]
             [knoxx.backend.law.openplanner-translation :as openplanner-law]
             [knoxx.backend.law.translation-dispatch :as law]
@@ -458,3 +465,80 @@
     (testing "the request is still what the worker accepts"
       (is (m/validate openplanner-law/CreateTranslationBatchRequest
                       (law/worker-request work (context "knoxx-session")))))))
+
+(defn- no-session-request [method url body]
+  (js-obj "method" method "url" url "headers" (js-obj) "cookies" (js-obj)
+          "query" (clj->js {:project "controlled-core" :include_corrected "true"})
+          "body" (clj->js body)))
+
+(defn- spy-entry! [calls kind]
+  (swap! calls update kind inc)
+  (js/Promise.resolve nil))
+
+(deftest ^:async credential-free-export-and-dispatch-stop-before-real-writer-entries
+  ;; Actual source route registration, with-request-context!, resolve-auth-context
+  ;; and cookie guard run here. Only the configured policy handle is inert; no
+  ;; database is needed for the real absent-cookie refusal. Exact-arity public
+  ;; writer doubles remain installed until both handlers have settled.
+  (let [routes (atom [])
+        app (js-obj "route" #(swap! routes conj %))
+        calls (atom {:queue 0 :agent 0 :event-turn 0 :event 0 :export 0})
+        contexts (atom 0)
+        originals [authz/policy-db openplanner/create-translation-batch!
+                   agent-runner/enqueue-event-turn! agent-runner/register-event-turn-settler!
+                   event-dispatch/dispatch! event-writer/emit-candidate-events!
+                   openplanner/translation-export-sft!]
+        handlers {:with-request-context! (fn [runtime req reply operation]
+                                           (swap! contexts inc)
+                                           (authz/with-request-context! runtime req reply operation))
+                  :ensure-permission! authz/ensure-permission!
+                  :ctx-org-id authz/ctx-org-id
+                  :json-response! http/json-response!
+                  :error-response! http/error-response!}
+        config {:session-project-name "controlled-core"
+                :openplanner-client-mode "rest"
+                :openplanner-base-url "http://127.0.0.1:9"
+                :openplanner-api-key "inert-route-readiness"}]
+    (set! authz/policy-db (fn [_runtime] ::inert-policy))
+    (set! openplanner/create-translation-batch! (fn [_client _body] (spy-entry! calls :queue)))
+    (set! agent-runner/enqueue-event-turn! (fn [_config _body _start] (spy-entry! calls :agent)))
+    (set! agent-runner/register-event-turn-settler! (fn [_id _settle] (spy-entry! calls :event-turn)))
+    (set! event-dispatch/dispatch! (fn ([_event] (spy-entry! calls :event))
+                                      ([_config _event] (spy-entry! calls :event))))
+    (set! event-writer/emit-candidate-events! (fn [_client _completion] (spy-entry! calls :event-turn)))
+    (set! openplanner/translation-export-sft! (fn [_client _options] (spy-entry! calls :export)))
+    (try
+      ;; Positive controls prove the compiled dispatch properties actually reach
+      ;; all seven installed doubles; a TypeError must not masquerade as refusal.
+      (await (openplanner/create-translation-batch! nil {}))
+      (await (agent-runner/enqueue-event-turn! {} {} identity))
+      (await (agent-runner/register-event-turn-settler! "owned" identity))
+      (await (event-dispatch/dispatch! {}))
+      (await (event-dispatch/dispatch! {} {}))
+      (await (event-writer/emit-candidate-events! nil {}))
+      (await (openplanner/translation-export-sft! nil {}))
+      (is (= {:queue 1 :agent 1 :event-turn 2 :event 2 :export 1} @calls))
+      (reset! calls {:queue 0 :agent 0 :event-turn 0 :event 0 :export 0})
+      (translation-routes/register-translation-routes! app {} config handlers)
+      (adapter/register-translation-dispatch-routes! app {} config handlers)
+      (doseq [[method url body]
+              [["GET" "/api/translations/export/sft" nil]
+               ["POST" "/api/publications/translations/dispatch"
+                {:publication "knoxx.publications/controlled-core"}]]]
+        (let [response (atom {})
+              route (route-by-url @routes url)]
+          (is (= method (aget route "method")))
+          (await ((aget route "handler") (no-session-request method url body)
+                  (recording-reply response)))
+          (is (= 401 (:status @response)))
+          (is (= "no_session" (get-in @response [:body :error_code])))
+          (is (= {:queue 0 :agent 0 :event-turn 0 :event 0 :export 0} @calls))))
+      (is (= 2 @contexts) "Both configured routes reached the actual session guard")
+      (finally
+        (set! authz/policy-db (nth originals 0))
+        (set! openplanner/create-translation-batch! (nth originals 1))
+        (set! agent-runner/enqueue-event-turn! (nth originals 2))
+        (set! agent-runner/register-event-turn-settler! (nth originals 3))
+        (set! event-dispatch/dispatch! (nth originals 4))
+        (set! event-writer/emit-candidate-events! (nth originals 5))
+        (set! openplanner/translation-export-sft! (nth originals 6))))))
