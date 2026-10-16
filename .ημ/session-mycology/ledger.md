@@ -906,3 +906,12 @@
   spore: none
   receipt-refs: .ημ/receipts.edn#e20b374c-3e8d-4f8a-8aac-8c9851e4eefa
   note: Capture a bounded stage/current-case/partial-completed snapshot before sanitizing browser failures, while keeping raw messages/stacks/assertion/auth values private. A finally restore failure must preserve original Error/null identity and separately retain one fixed cleanup name; diagnostic observer failure cannot replace primary either. Use explicit verified auxiliary evaluator from first smoke. Original generic browser cause remains UNKNOWN until a separately admitted fresh run; preserve prior failures, inherited global gates and exact app/dist/shared closures. Portable candidate0, no spore.
+- ts: 2026-10-16T19:44:44.731133650Z
+  session: codex:cms16-project-case-order-contract
+  task: Distinguish committed DOM from MutationObserver delivery in a controlled CMS project race
+  p-efficiency: 0.93
+  p-friction: 0.16
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#18b50cc1-8b38-48c7-b34b-dac976f52312
+  note: A browser callback marker is evidence of observer delivery, not the instant of DOM commit. Actual request-time B checkpoint and later observer both passed while the extra callback-before-fetch order failed. Preserve real B-at-request and stale-A-after-B safety; test clean request-before-observer, stale request despite later clean observer, and A completion before committed B through the actual emitted project configuration. Keep genuine first-observer/pre-first-B checks unchanged. Capture original native bytes privately before error normalization; no inferred full57 or release success. Portable candidate0/no spore.
