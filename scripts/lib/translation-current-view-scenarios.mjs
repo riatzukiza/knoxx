@@ -153,7 +153,7 @@ async function projectCase(io, entry, mode, number) {
     ...initialSteps(b, 'B', { hold: true, checkpoint: { project: b.project, committedProject: b.project, absent: [a.title, a.detail.segments[0].translated_text], formAbsent: true } })];
   // The held inventory is essential; the unrelated project manifest is released independently.
   await install(io, { runId, origin: io.config.origin, steps, requiredCheckpoints: ['B-inventory'],
-    requiredOrder: ['commit:B', 'request:B-inventory'] });
+    requiredOrder: ['commit:B', 'release:mutation-A'] });
   await evaluate(io, domAction('route', '/translations')); await openWork(io, a);
   await evaluate(io, domAction('button', entry.label));
   await waitDom(io, `window.__knoxxControlledCore.report().pending.includes('mutation-A')`, 'mutation-A');
