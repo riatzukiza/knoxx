@@ -752,3 +752,12 @@
 - Limits: last measured full backend lint(v6)4errors/255warnings remains failed and36 error-boundary sites remain release blockers; no genuine auth/database/browser/provider/publication/deployment proof. Prior green runs do not qualify changed source. Source and provenance remain separate commits.
 - Better path: freeze the20paths once, verify each owned boundary in its supported runtime, keep primary/cleanup evidence independently durable, then qualify genuine run-owned auth and exact cleanup before story completion.
 - Evidence: /home/err/.local/share/openhax-codex/20261010/review-state/CMS16-fixture-auth-implementation-over-qualified26e4-v1/ACTUAL-v8-final-local-gates-and-retained-release-blockers.json; ACTUAL-v8b-all20-source-whitespace-clean-custody.json. Native Session Mycology unsupported path not retried; portable candidate0 only; no skill/spore creation or promotion.
+- ts: 2026-10-16T05:09:43.236830913Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-cms16-fixture-auth-implementation-over-26e4-v1
+  task: CMS16 e5 canonical auth-wire repair and root-qualified real local HTTP-Mongo attempt3 PASS
+  p-efficiency: 0.86
+  p-friction: 0.24
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: receipts.edn#a988d9a4-e746-45b8-884f-c940817b732b
+  note: Bind verifier expectations to actual canonical error_code:no_session wire, retain causal RED30797 and GREENe5d69882038d59e8d54b94581997aee41a5e55a5, and keep genuine HTTP-Mongo behavior distinct from synthetic process controls. Root attempt3 completed60PASS/1knownboundary with exact fixture teardown, reaped groups and absent42580 port; no database dropped. Direct-seeded candidate supplies no model/worker-dispatch/browser/production proof. Retain attempts1/2 and tool/descriptor failures, full lint4errors255warnings/36boundarysites and remaining product/release/trusted-adoption/staging obligations. This append reuses evidence, not runtime effects. Candidate0/no spore; portable file reflection only, no native SM retry.
