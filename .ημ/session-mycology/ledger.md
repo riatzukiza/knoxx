@@ -553,3 +553,12 @@
   spore: none
   receipt-refs: .ημ/receipts.edn#53856d37-93ec-4db0-80c7-fba47a1c232b
   note: Mint TTL fixtures per test invocation through the existing named clock boundary. Preserve original30tests102assertions; deterministicRED5new failures then explicit/normal/coverage1945/10749/0/0, Node84/84 and boundary pass. Full lint remains7errors258warnings; no fullGREEN, owner completion or deployment. Original failure clocks unobserved; no model/nativeSM retry, no spore.
+- ts: 2026-10-16T00:02:44.125742438Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-memory-route-finite-extraction-over-5fa-v1
+  task: Memory-session pending ownership repair and boundary-preserving extraction
+  p-efficiency: 0.6
+  p-friction: 0.8
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#8948502f-e271-4ebf-9b68-41f780e37f21
+  note: Install a pending slot before its publisher owns cleanup; remove only the identical promise, preserving replacement generations. Match compiled multi-arity CLJS doubles and assert real invocation before trusting error fallback tests. Preserve exact key bytes, paging/authorization and safe warning fields; validate on actual current source. Local owning/behavior gates pass; unrelated full lint6errors257warnings and36 unchanged error-boundary sites remain. Initial failures/history retained; no owner completion, public/runtime effect, nativeSM retry or spore.
