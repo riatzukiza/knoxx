@@ -405,3 +405,53 @@ test('foreign public chat identities or malformed snapshots refuse before any wr
     assert.equal(world.writes(), 0); assert.deepEqual(Object.fromEntries(world.data), values);
   }
 });
+
+
+test('failure diagnostics retain finite stage and current case while every original value stays private', async () => {
+  const { safeDiagnostic } = await browser(); const secret = 'NEVER-RETAIN-DIAGNOSTIC-SECRET';
+  const failure = Object.assign(Error(secret), { code: 'ERR_ASSERTION', actual: secret, expected: secret, stack: secret });
+  const progress = { stage: 'scenarios', caseNumber: 1, caseName: 'legacy-segment:project-success', completedCases: 0 };
+  assert.deepEqual(safeDiagnostic(failure, progress), { category: 'core-browser-failed', ...progress,
+    errorName: 'Error', errorCode: 'ERR_ASSERTION' });
+  const unknown = { category: secret, name: secret, code: secret, message: secret, stack: secret, actual: secret, expected: secret };
+  assert.deepEqual(safeDiagnostic(unknown, { stage: secret, caseNumber: 58, caseName: secret, completedCases: 58 }),
+    { category: 'core-browser-failed' });
+  const accessor = Object.fromEntries(['category', 'name', 'code', 'message', 'stack'].map(key => [key, undefined]));
+  for (const key of Object.keys(accessor)) Object.defineProperty(accessor, key, { get() { throw Error(secret); } });
+  assert.deepEqual(safeDiagnostic(accessor, progress), { category: 'core-browser-failed', ...progress });
+  assert.ok(!JSON.stringify(safeDiagnostic(failure, progress)).includes(secret));
+});
+
+test('scenario failure reports its first exact case before navigation and still restores without replacing primary', async () => {
+  const { runCoreScenarios } = await scenarios(); const { safeDiagnostic, closeOwned } = await browser();
+  const primary = Error('PRIVATE-PRIMARY'), observed = [], calls = []; let first = true;
+  await assert.rejects(runCoreScenarios({ onCase: value => observed.push(value), cli: async (...args) => {
+    calls.push(args[0]); if (first) { first = false; throw primary; } return true;
+  } }), error => error === primary);
+  assert.deepEqual(observed, [{ stage: 'scenarios', caseNumber: 1, caseName: 'legacy-segment:project-success', completedCases: 0 }]);
+  assert.deepEqual(calls, ['eval', 'eval']);
+  const diagnostic = safeDiagnostic(primary, observed[0]), closed = [];
+  const result = await closeOwned([{ name: 'first', close: async () => { closed.push('first'); throw Error('PRIVATE-CLEANUP'); } },
+    { name: 'second', close: async () => { closed.push('second'); } }], diagnostic);
+  assert.strictEqual(result.primary, diagnostic); assert.deepEqual(closed, ['first', 'second']);
+  assert.deepEqual(result.cleanupErrors, ['first']); assert.equal(result.primary.caseNumber, 1);
+  assert.ok(!JSON.stringify(result).includes('PRIVATE'));
+});
+
+
+for (const value of ['Error', 'null']) test(`scenario restore double failure retains original ${value} identity and fixed cleanup name`, async () => {
+  const { runCoreScenarios } = await scenarios(); const { safeDiagnostic, closeOwned } = await browser();
+  const primary = value === 'null' ? null : Error('PRIVATE-PRIMARY');
+  const secondary = Error('PRIVATE-RESTORE'), cleanupNames = []; let calls = 0, thrown = false, actual;
+  try {
+    await runCoreScenarios({ onCleanupError: name => { cleanupNames.push(name); throw Error('PRIVATE-OBSERVER'); },
+      cli: async () => { calls += 1; throw calls === 1 ? primary : secondary; } });
+  } catch (error) { thrown = true; actual = error; }
+  assert.equal(thrown, true); assert.strictEqual(actual, primary); assert.equal(calls, 2);
+  assert.deepEqual(cleanupNames, ['scenario-adapter-restore']);
+  const diagnostic = safeDiagnostic(actual, { stage: 'scenarios', caseNumber: 1,
+    caseName: 'legacy-segment:project-success', completedCases: 0 });
+  const cleanup = await closeOwned([{ name: 'remaining-browser', close: async () => {} }], diagnostic);
+  assert.strictEqual(cleanup.primary, diagnostic); assert.equal(cleanup.cleanupComplete, true);
+  assert.ok(!JSON.stringify({ diagnostic, cleanupNames, cleanup }).includes('PRIVATE'));
+});
