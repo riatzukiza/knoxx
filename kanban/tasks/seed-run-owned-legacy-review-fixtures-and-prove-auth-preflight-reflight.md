@@ -4,11 +4,11 @@ labels: "tasks, 5sp, has-parent, verification, translations, cms"
 dependency: []
 parent: "knoxx-translation-review-chat-panel"
 type: "task"
-write-id: "1792119191759-0.5tgf7a0n6ao8e866oz5"
+write-id: "1792120266199-0.xrupddoq1nkilooxprs"
 points: "5"
 title: "Seed run-owned legacy review fixtures and prove auth preflight"
 priority: "P0"
-status: "ready"
+status: "in_progress"
 uuid: "knoxx-translation-review-legacy-fixture-auth-preflight"
 created_at: "2026-10-15T18:40:12.445Z"
 ---
