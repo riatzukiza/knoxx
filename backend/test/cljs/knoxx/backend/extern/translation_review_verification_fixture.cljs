@@ -1,8 +1,11 @@
 (ns knoxx.backend.extern.translation-review-verification-fixture
   "Inert native driver and CLI boundaries for owned verification regressions."
-  (:require [knoxx.backend.extern.node-cli :as cli]
+  (:require [cljs.reader :as reader]
+            [knoxx.backend.extern.node-cli :as cli]
             [knoxx.backend.extern.openplanner-translation-mongo.verification-fixture :as native]
             [knoxx.backend.extern.translation-review-verification-client :as driver]
+            [knoxx.backend.infra.stores.mongo-translation-evidence :as evidence-mongo]
+            [knoxx.backend.infra.translation-agent-content :as content]
             [openplanner.translations.core :as translation]
             ["mongodb" :refer [ObjectId]]
             ["node:fs" :as fs]
@@ -76,3 +79,47 @@
          (finally (set! (.-log js/console) original-out)
                   (set! (.-error js/console) original-err)
                   (set! (.-exitCode js/process) previous-exit)))))
+
+(defn code-getter-failure
+  "A native failure whose code accessor itself throws, including genuine null."
+  [null?]
+  (js/Object.defineProperty
+   (js/Error. "do-not-print-primary-code-getter-message") "code"
+   #js {:get (fn [] (if null? (throw-nil!)
+                       (throw (js/Error. "do-not-print-code-getter-message"))))}))
+
+(defn resource-cleanup-world!
+  "Prepare only run-owned inert receipts and a real owned content file."
+  [world encoded]
+  (let [root (:root world) content-root (.join path root "content")
+        source-file (.join path root "source.md")
+        artifact (content/entry-path content-root "owned-output")
+        request {:action "cleanup"
+                 :settings {:mongo-uri uri :mongo-db "owned-db" :source-commit source-commit
+                            :source-file source-file :content-root content-root}
+                 :scope {:run-id "owned-run" :org-id "owned-org" :project "owned-project"
+                         :document :owned/doc :garden :owned/garden :publication :owned/doc-es
+                         :publication-path "/owned/doc-es" :document-title "Owned fixture"
+                         :target-locale :es}}]
+    (.mkdirSync fs (.dirname path artifact) #js {:recursive true})
+    (.writeFileSync fs artifact "Owned content must survive refused cleanup.")
+    (.writeFileSync fs source-file source-text)
+    (add-row! world evidence-mongo/RECEIPTS_COLLECTION
+              {:document (pr-str :owned/doc) :receipt_edn encoded})
+    {:request request :artifact artifact}))
+
+(defn owned-content
+  "Read one explicitly owned fixture artifact for preservation assertions."
+  [artifact]
+  (when (.existsSync fs artifact) (.readFileSync fs artifact "utf8")))
+
+(defn ^:async with-receipt-reader!
+  "Hold one inert parser fault through await and restore its actual Var finally."
+  [read! operation]
+  (let [original reader/read-string
+        replacement (fn
+                      ([encoded] (read! encoded))
+                      ([_options encoded] (read! encoded)))]
+    (set! reader/read-string replacement)
+    (try (await (operation))
+         (finally (set! reader/read-string original)))))

@@ -1,6 +1,7 @@
 (ns knoxx.backend.extern.openplanner-translation-mongo.verification-fixture-test
   "Actual adapter operations with inert driver effects and real owned records."
-  (:require [cljs.test :refer [deftest is testing]]
+  (:require [clojure.string :as str]
+            [cljs.test :refer [deftest is testing]]
             [knoxx.backend.extern.openplanner-translation-mongo.verification-fixture :as native]
             [knoxx.backend.extern.translation-review-verification-fixture :as fixture]
             [knoxx.backend.law.translation-review-verification-fixture :as law]))
@@ -230,3 +231,59 @@
                    (:garden_id (first (get @(:rows* world) "translation_segments")))))
             (is (= ["translation_labels"] (mapv second deletes)))
             (is (fixture/ownership-exists? world)))))))))
+
+(deftest ^:async malformed-resource-receipts-refuse-before-any-destructive-cleanup
+  (doseq [encoded ["{:translation/revision \"do-not-print-receipt-bytes\""
+                   nil "{:translation/revision \"owned-output\"}"]]
+    (await
+     (fixture/with-world!
+      (^:async fn [world]
+        (let [{:keys [request artifact]} (fixture/resource-cleanup-world! world encoded)
+              before @(:rows* world)
+              result (await (outcome #(native/execute! request)))]
+          (is (:failed? result))
+          (is (= :verification-resource-receipt-invalid (:code (:data result))))
+          (is (nil? (:value result)))
+          (is (= before @(:rows* world)))
+          (is (empty? (operations world :delete)))
+          (is (= "Owned content must survive refused cleanup." (fixture/owned-content artifact)))
+          (is (= 1 (count (operations world :close))))))))))
+
+(deftest ^:async receipt-primary-and-close-secondary-stay-distinct-and-secret-free
+  (doseq [null? [false true]]
+    (await
+     (fixture/with-world!
+      {:close #(throw (ex-info "do-not-print-secondary-close" {}))}
+      (^:async fn [world]
+        (let [{:keys [request artifact]} (fixture/resource-cleanup-world! world "inert encoded receipt")
+              primary (ex-info "do-not-print-parser-primary" {})
+              calls* (atom 0)
+              parse! (fn [_]
+                       (swap! calls* inc)
+                       (if null? (fixture/throw-nil!) (throw primary)))
+              ;; The one reader fault is the inert malformed-receipt boundary.
+              result (await (fixture/with-receipt-reader!
+                             parse!
+                             #(outcome (fn [] (native/execute! request)))))
+              failure (:error result)
+              receipt-failure (ex-cause failure)]
+          (is (= 1 @calls*))
+          (is (:failed? result))
+          (is (= :verification-primary-and-cleanup-failed (:code (:data result))))
+          (is (true? (:cleanup-failed? (:data result))))
+          (is (= :verification-resource-receipt-invalid (:code (ex-data receipt-failure))))
+          (is (if null? (nil? (ex-cause receipt-failure))
+                  (identical? primary (ex-cause receipt-failure))))
+          (is (empty? (operations world :delete)))
+          (is (= "Owned content must survive refused cleanup." (fixture/owned-content artifact)))
+          (is (= 1 (count (operations world :close)))))
+        (let [{:keys [request]} (fixture/resource-cleanup-world! world
+                                      "{:translation/revision \"do-not-print-receipt-bytes\"")
+              capture (await (fixture/capture-cli! #(native/execute! request)))
+              text (first (:stderr capture))]
+          (is (= 1 (:exit-code capture)))
+          (is (empty? (:stdout capture)))
+          (is (= 1 (count (:stderr capture))))
+          (is (str/includes? text "verification-resource-receipt-invalid"))
+          (is (str/includes? text "\"cleanup_failed\":true"))
+          (is (not (str/includes? text "do-not-print")))))))))

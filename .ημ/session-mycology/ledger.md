@@ -780,3 +780,12 @@
 - Limits: whole frontend lint remains failed7errors/790warnings (original-tracked7/835), same seven untouched error locations. No browser/human race tour, hosted review, story completion or deployment. Tests/build preceded only two blank EOF-line removals, explicitly byte-bound.
 - Better path: freeze causal UI schedules before extraction, distinguish component prop-map syntax from children, and run full staged hygiene before commit. Preserve all failed captures and recover known successful effects without replay.
 - Evidence: /home/err/.local/share/openhax-codex/20261010/review-state/CMS16-current-view-RED-and-frontend-prerequisite-independent-review-v1/e5d-isolated-install-and-baseline-v1/current-view-RED-GREEN-implementation-v1/ACTUAL-current-view-qualified-local-source-commit.json; ACTUAL-source-built-frontend-dist-artifact-manifest.json. Native Session Mycology known null-cwd route not retried; portable candidate0 only, no spore creation/promotion.
+- ts: 2026-10-16T06:06:10.913533007Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-cms16-fixture-auth-implementation-over-26e4-v1
+  task: Repair two inherited CMS fixture error boundaries with actual causal controls
+  p-efficiency: 0.63
+  p-friction: 0.62
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#0f4c5167-fe25-44b4-85f4-b9ed0dea9263
+  note: Preserve compiled reader arities and awaited fault lifetime; assert actual invocation and Error/null primary identity with secondary close; refuse malformed receipts before destructive cleanup. Owning gates pass; inherited lint and 36 boundary sites plus combined-source and real runtime qualification remain. No spore.

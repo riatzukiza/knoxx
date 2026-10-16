@@ -23,16 +23,24 @@
     :verification-legacy-collision :verification-legacy-insert-uncertain
     :verification-owned-delete-uncertain :verification-dispatch-binding-mismatch
     :verification-legacy-segment-invalid :verification-legacy-normalized-scope-mismatch
-    :verification-primary-and-cleanup-failed :verification-cleanup-failed})
+    :verification-primary-and-cleanup-failed :verification-cleanup-failed
+    :verification-resource-receipt-invalid})
 
 (def ^:private native-codes
   {"EEXIST" "native-file-exists" "ENOENT" "native-path-missing"
    "EACCES" "native-access-refused" "EPERM" "native-operation-refused" "EIO" "native-io-failed"})
 
+(defn- native-code-outcome [error]
+  (try {:code (when (some? error) (aget error "code"))}
+       (catch :default probe-error
+         {:failure {:error-present? (some? probe-error)}})))
+
 (defn- safe-code [error]
   (let [code (:code (ex-data error))
-        native-code (try (when (some? error) (aget error "code")) (catch :default _ nil))]
-    (or (when (contains? safe-codes code) (name code)) (get native-codes native-code))))
+        native (native-code-outcome error)]
+    {:code (or (when (contains? safe-codes code) (name code))
+               (get native-codes (:code native)))
+     :native-code-unavailable? (contains? native :failure)}))
 
 (defn- safe-failure
   "Select only known contract coordinates and safe flags from an opaque error."
@@ -40,11 +48,14 @@
   (let [data (ex-data error)
         contract (:contract data)
         fields (:fields data)
-        primary-code (when (:primary-thrown? data) (safe-code (ex-cause error)))]
+        primary-code (when (:primary-thrown? data) (safe-code (ex-cause error)))
+        code (safe-code error)]
     (cond-> {:error "translation_verification_failed"
-             :code (or primary-code (safe-code error) "unclassified")
+             :code (or (:code primary-code) (:code code) "unclassified")
              :primary_thrown true
              :primary_error_present (some? error)}
+      (or (:native-code-unavailable? primary-code) (:native-code-unavailable? code))
+      (assoc :native_code_unavailable true)
       (contains? law/registry contract) (assoc :contract (str contract))
       (and (vector? fields)
            (every? #(and (vector? %) (every? (fn [field] (or (keyword? field) (integer? field))) %)) fields))

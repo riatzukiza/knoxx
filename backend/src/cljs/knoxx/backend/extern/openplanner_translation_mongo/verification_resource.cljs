@@ -14,6 +14,7 @@
             [knoxx.backend.infra.translation-content-integrity :as integrity]
             [knoxx.backend.infra.translation-evidence-store :as evidence-store]
             [knoxx.backend.infra.translation-split-store :as split-store]
+            [knoxx.backend.law.translation-evidence :as evidence-law]
             [knoxx.backend.law.translation-review-verification-fixture :as law]
             [knoxx.backend.law.translation-review-verification-resource :as resource]))
 
@@ -91,16 +92,18 @@
                                       (clj->js query))))]
     (js->clj native :keywordize-keys true)))
 
+(defn- receipt-revision
+  [row]
+  (try
+    (:translation/revision
+     (evidence-law/assert-receipt! (reader/read-string (:receipt_edn row))))
+    (catch :default error
+      (throw (ex-info "Owned resource receipt is invalid; cleanup refused"
+                      {:code :verification-resource-receipt-invalid} error)))))
+
 (defn- receipt-revisions
   [rows]
-  (->> rows
-       (keep :receipt_edn)
-       (keep (fn [encoded]
-               (try
-                 (:translation/revision (reader/read-string encoded))
-                 (catch :default _ nil))))
-       distinct
-       vec))
+  (->> rows (map receipt-revision) distinct vec))
 
 (defn- ^:async remove-content!
   [content-root revisions]
