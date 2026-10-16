@@ -321,7 +321,7 @@ async function exportCase(io, mode, boundary, number) {
   assert.equal(await evaluate(io, `document.body.innerText.includes('SFT export downloaded.')||document.body.innerText.includes('Controlled original operation rejection')`), false);
   return await finish(io, `${io.config.evidenceDir}/${number}-export-${boundary}-${mode}.png`);
 }
-async function settledFeedbackCase(io, mode, number) {
+export async function settledFeedbackCase(io, mode, number) {
   const runId = `${io.config.runId}-${number}`, a = makeWireFixture(runId, 'A', 'resource-split');
   const b = makeWireFixture(runId, 'B', 'resource-split'), message = mode === 'success'
     ? 'SFT export downloaded.' : 'Controlled original operation rejection';
