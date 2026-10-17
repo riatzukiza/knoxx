@@ -19,9 +19,9 @@ assert TEMP.stat().st_uid == os.geteuid() != 0
 RUN_ID = os.environ['GITHUB_RUN_ID']
 ATTEMPT = os.environ['GITHUB_RUN_ATTEMPT']
 assert re.fullmatch(r'[0-9]+', RUN_ID) and re.fullmatch(r'[0-9]+', ATTEMPT)
-RUN = TEMP / ('openhax-sdk-compile-' + RUN_ID + '-' + ATTEMPT)
-RUN.mkdir(mode=0o700)
-EVIDENCE = RUN / 'evidence'
+RUN = TEMP / ('openhax-model-compat-' + RUN_ID + '-' + ATTEMPT)
+assert RUN.resolve(strict=True) == RUN and RUN.is_dir() and RUN.stat().st_uid == os.geteuid()
+EVIDENCE = RUN / 'build-evidence'
 EVIDENCE.mkdir(mode=0o700)
 STATE = {'schema': 'openhax-real-sdk-checked-entry-compile/v1',
          'startedAtUTC': datetime.datetime.now(datetime.timezone.utc).isoformat(),
@@ -148,10 +148,17 @@ try:
     for row in INPUTS['bundleFiles']:
         data = (BUNDLE / row['path']).read_bytes()
         assert len(data) == row['bytes'] and digest(data) == row['sha256'], row['path']
-    source = acquire_source('source', INPUTS['sourceRevision'],
-                            'https://github.com/riatzukiza/knoxx.git', INPUTS['productRows'])
-    sdk_source = acquire_source('sdk-source', INPUTS['sdkRevision'],
-                                'https://github.com/open-hax/openplanner.git', INPUTS['sdkRows'])
+    source = RUN / 'source'
+    sdk_source = RUN / 'sdk-source'
+    for label, target, revision, tree, rows in [
+            ('source', source, INPUTS['sourceRevision'], INPUTS['sourceTree'], INPUTS['productRows']),
+            ('sdk-source', sdk_source, INPUTS['sdkRevision'], INPUTS['sdkTree'], INPUTS['sdkRows'])]:
+        assert native(label + '-existing-head', git(target, ['rev-parse', 'HEAD']), RUN, 30000).strip() == revision
+        assert native(label + '-existing-tree', git(target, ['rev-parse', 'HEAD^{tree}']), RUN, 30000).strip() == tree
+        assert native(label + '-existing-clean', git(target, ['status', '--porcelain=v1', '-z']), RUN, 30000) == ''
+        for row in rows:
+            path = target / row['path']
+            assert path.stat().st_size == row['bytes'] and file_digest(path) == row['sha256']
     helper = source / 'scripts/build-sandbox-openplanner-sdk.sh'
     assert digest(helper.read_bytes()) == INPUTS['sdkHelperSha256']
     native('SDK-prepare', ['bash', str(helper), 'prepare',
@@ -206,7 +213,7 @@ try:
                 assert target.stat().st_size == row['bytes'] and file_digest(target) == row['sha256']
 
     verify_build_inputs()
-    home = RUN / 'qa-home'
+    home = RUN / 'qa-compile-home'
     home.mkdir(mode=0o700)
     compile_env = {**CLEAN, 'CLJ_CONFIG': str(RUN / 'qa-clojure-config'),
                    'XDG_CACHE_HOME': str(RUN / 'qa-clojure-cache'),

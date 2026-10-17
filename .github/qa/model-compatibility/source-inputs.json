@@ -10,8 +10,8 @@
   "bundleFiles": [
     {
       "path": "build-only.py",
-      "bytes": 12782,
-      "sha256": "79e4aeb6eefff7aba87f3857af3e69bb44f678cf93d62a53203b4f7433fe8fe3"
+      "bytes": 13372,
+      "sha256": "b43da1b83bfaaf333cccd7fda57ee0941234b26537e3f812a46f49ce2e8b676e"
     },
     {
       "path": "qa-native-driver.mjs",

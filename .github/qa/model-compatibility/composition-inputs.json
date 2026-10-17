@@ -1,0 +1,113 @@
+{
+  "schema": "whole-profile-source-composition-inputs/v1",
+  "state": "PREP ONLY. All source is frozen; job tuples/native/tool/resource/build observations are NOT canned. No runtime admission exists.",
+  "bundleFiles": [
+    {
+      "relative": "controller.py",
+      "bytes": 33016,
+      "sha256": "7ebd236cff208f8c8f870f56d38711b4300fd1fade020477c3df5b8e425d4cce"
+    },
+    {
+      "relative": "acquire-assets.py",
+      "bytes": 17434,
+      "sha256": "9da8d6bd872de6b5a7c211c3227be2ab525f0e849767aff0c33934e08177c0d3"
+    },
+    {
+      "relative": "portable-assets.json",
+      "bytes": 27561,
+      "sha256": "61a9464469334068b78be9af0e89184354df85f3ce8f942f8ff10fbf7a3936e0"
+    },
+    {
+      "relative": "observe-original-probe.cjs",
+      "bytes": 3772,
+      "sha256": "fd747903d151b91e35e4cf7d2e14813cdc417bc2f33df212a2acb3741c830f05"
+    },
+    {
+      "relative": "probe-ollama.js",
+      "bytes": 32534,
+      "sha256": "93e3ca2950bb4af4b3b79bdb9eaf2db3b2e8dedb25f170d41af531604cb9e752"
+    },
+    {
+      "relative": "owned-process-supervisor.py",
+      "bytes": 15934,
+      "sha256": "348bd2f8451e0c7d232407cd0dcdd328698e896b80838e68e8681a3b7892941b"
+    },
+    {
+      "relative": "metadata.py",
+      "bytes": 10153,
+      "sha256": "b5860f799bd1e37fd61a8ae19038f1821de5172c9e7637085df5ea0a4fe912e4"
+    },
+    {
+      "relative": "build-only.py",
+      "bytes": 13372,
+      "sha256": "b43da1b83bfaaf333cccd7fda57ee0941234b26537e3f812a46f49ce2e8b676e"
+    },
+    {
+      "relative": "source-inputs.json",
+      "bytes": 15364,
+      "sha256": "402a949546e2e920d83366c58604da8ea08f31fdd238ead28f4f76289467c435"
+    },
+    {
+      "relative": "qa-deps.edn",
+      "bytes": 238,
+      "sha256": "357ad5a17b78e8f4c78b13ce1dfccdfb8793805ab4b06453879157275a4e818c"
+    },
+    {
+      "relative": "qa-shadow-cljs.edn",
+      "bytes": 502,
+      "sha256": "6044021d722ce6b9c7271fc6311a6b550aedd9df3413826508e4dd4ffb616c18"
+    },
+    {
+      "relative": "qa-native-driver.mjs",
+      "bytes": 6490,
+      "sha256": "f1eaadcca19097783ba3ce7b4f18711858c546670da54479d239ce00b64a17bd"
+    },
+    {
+      "relative": "qa-src/knoxx/backend/extern/live_checked_embedding_qa.cljs",
+      "bytes": 1989,
+      "sha256": "a0cac9dd1298c93ddcf21d1bd1fdd3efa924e432289d027bd3ffad9c0a521bbe"
+    }
+  ],
+  "metadataEnvironmentNames": [
+    "PILOT_REPOSITORY",
+    "PILOT_REPOSITORY_ID",
+    "PILOT_REPOSITORY_PRIVATE",
+    "PILOT_EVENT",
+    "PILOT_RUN_ID",
+    "PILOT_RUN_ATTEMPT",
+    "PILOT_JOB",
+    "PILOT_SOURCE_SHA",
+    "PILOT_WORKFLOW_SHA",
+    "PILOT_WORKFLOW_REF",
+    "PILOT_RUNNER_ENVIRONMENT",
+    "PILOT_RUNNER_OS",
+    "PILOT_RUNNER_ARCH",
+    "PILOT_ADAPTER_SHA256",
+    "PILOT_COMPARISON_BASE_SHA",
+    "PILOT_MIGRATION_INFRASTRUCTURE"
+  ],
+  "sourceRoles": {
+    "Knoxx": "612488d4b01ba877d48beb66ac7b02ad448faa43",
+    "SDK": "07085d6557b75834ce6f50e6c54b8ca47e1c7c08"
+  },
+  "currentBuildSource": {
+    "path": "/home/err/.local/share/openhax-codex/20261010/review-state/ROOT-PREPONLY-hosted-real-SDK-compile-over612-v1/build-only.py",
+    "bytes": 12782,
+    "sha256": "79e4aeb6eefff7aba87f3857af3e69bb44f678cf93d62a53203b4f7433fe8fe3"
+  },
+  "rootBuildRetarget": {
+    "path": "/home/err/.local/share/openhax-codex/20261010/review-state/PREPONLY-genuine-SDK-resolution-and-checked-embedding-entry-over612488-v1/PRIVATE-full-composition-v1/FOCUSED-current-build-only-to-existing-composition-roots-and-compile-home.patch",
+    "bytes": 2683,
+    "sha256": "c0ddf1c6156c5b59bb1406b15f90cc2e449b70c21011b00a1edc0c7cef5caffb"
+  },
+  "retainedActualFirstFailure": {
+    "path": "/home/err/.local/share/openhax-codex/20261010/review-state/ROOT-PREPONLY-hosted-real-SDK-compile-over612-v1/QUALIFIED-ACTUAL-first-build-only-native-SDK-and-QAcompile-PASS-whole-inventory-FAIL-v1.json",
+    "bytes": 2237,
+    "sha256": "e35b48c0408fe0ffafedbbbb97159e1bcd60e3a71500471647190b290149df24"
+  },
+  "observedSuccessorBuild": {
+    "path": "/home/err/.local/share/openhax-codex/20261010/review-state/ROOT-PREPONLY-hosted-real-SDK-compile-over612-v1/QUALIFIED-ACTUAL-successor331-genuine-SDK-and-checked-entry-build-only-native-PASS-v1.json",
+    "bytes": 3205,
+    "sha256": "784b1c961f5277d5672f2dcefa447435f9b8c393828a1038dbd18128200b2949"
+  }
+}

@@ -1,0 +1,730 @@
+{
+  "schema": "portable-exact0332-source-assets/v1",
+  "state": "PREP ONLY; immutable content roles, no hosted physical identity or execution admission",
+  "carrier": {
+    "portableImmutableReference": "ollama/ollama@sha256:98c19ced6600f2924e80b92d701cd867d8f7ef0c4dde516c619484e31e47f103",
+    "platform": "linux/amd64",
+    "exactLocalConfigIDMatched": "sha256:dacbdaa86a43fb9ed58174a53d15627780829ba4c34badb15263d4104c0a37ec",
+    "manifestChain": [
+      {
+        "url": "https://registry-1.docker.io/v2/ollama/ollama/manifests/sha256:98c19ced6600f2924e80b92d701cd867d8f7ef0c4dde516c619484e31e47f103",
+        "digest": "sha256:98c19ced6600f2924e80b92d701cd867d8f7ef0c4dde516c619484e31e47f103",
+        "bytes": 1065,
+        "sha256": "98c19ced6600f2924e80b92d701cd867d8f7ef0c4dde516c619484e31e47f103",
+        "selectedHeaders": {
+          "Content-Type": "application/vnd.oci.image.manifest.v1+json",
+          "Docker-Content-Digest": "sha256:98c19ced6600f2924e80b92d701cd867d8f7ef0c4dde516c619484e31e47f103",
+          "Content-Length": "1065",
+          "Date": "Sat, 17 Oct 2026 11:49:07 GMT"
+        },
+        "rawPath": "/home/err/.local/share/openhax-codex/20261010/review-state/PREPONLY-hosted-standard-runner-pinned-model-compatibility-alternative-v1/READONLY-exact-carrier-repository.manifest.raw.json"
+      }
+    ],
+    "configDescriptor": {
+      "mediaType": "application/vnd.oci.image.config.v1+json",
+      "digest": "sha256:dacbdaa86a43fb9ed58174a53d15627780829ba4c34badb15263d4104c0a37ec",
+      "size": 17771
+    },
+    "layerDescriptors": [
+      {
+        "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
+        "digest": "sha256:ca2678b20700c15185707964d9211b1a6406196114bf675f568b6025d37b3888",
+        "size": 29735601
+      },
+      {
+        "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
+        "digest": "sha256:97cee65e251245c278d9051641eeab84449eacf2546097bc765a316500305d15",
+        "size": 102356018
+      },
+      {
+        "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
+        "digest": "sha256:c4e83b4570c1cda276af1fa191233be049cf123a67fdce02a368e00d24876660",
+        "size": 13966463
+      },
+      {
+        "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
+        "digest": "sha256:6786024d0f66cd266f71cc3e1bef8ef67ff029420ab6c773364aaa976118edc3",
+        "size": 3114491240
+      }
+    ]
+  },
+  "disk": {
+    "models": 11839212319,
+    "runtimeExpanded": 2248016608,
+    "runtimeArchive": 1422262024,
+    "carrierCompressed": 3260549322,
+    "carrierLogicalExpanded": 4764135161,
+    "SDKAllowance": 4294967296,
+    "logsAllowance": 83886080,
+    "headroomPerFilesystem": 2147483648
+  },
+  "runtimeArchive": {
+    "bytes": 1422262024,
+    "sha256": "9785247dea264d9072f09f6c9c0eb4b8e666892826a3d8388eba3e8fb9ed1db9",
+    "url": "https://github.com/ollama/ollama/releases/download/v0.33.2/ollama-linux-amd64.tar.zst"
+  },
+  "runtimeFiles": [
+    {
+      "relative": "bin/ollama",
+      "bytes": 39348080,
+      "mode": 493,
+      "sha256": "20cca6e293efd5bbed05b26abba891df7dec75ac3edc640caa5f60eed95c6292"
+    },
+    {
+      "relative": "lib/ollama/cuda_v12/libcublas.so.12.8.5.5",
+      "bytes": 116388640,
+      "mode": 493,
+      "sha256": "18a5df540d156e9aff0363776fefab7884b614f122847b51c3eb1da772048e5c"
+    },
+    {
+      "relative": "lib/ollama/cuda_v12/libggml-cuda.so",
+      "bytes": 411116008,
+      "mode": 493,
+      "sha256": "6603c518add1346d40dbecdbb93e944891385d385cf2ba268867b19dc727a136"
+    },
+    {
+      "relative": "lib/ollama/cuda_v12/libcudart.so.12.8.90",
+      "bytes": 728800,
+      "mode": 493,
+      "sha256": "c3a75b33af334a3486d197dbd1584a2985183ba4688d237a2be5f2f679329920"
+    },
+    {
+      "relative": "lib/ollama/cuda_v12/libcublasLt.so.12.8.5.5",
+      "bytes": 751775824,
+      "mode": 493,
+      "sha256": "974927b9af78cadc0412ea3ab296da791af02c2dd0de5a35b5f0fbb8dc5d0a4d"
+    },
+    {
+      "relative": "lib/ollama/cuda_v13/libggml-cuda.so",
+      "bytes": 249340296,
+      "mode": 493,
+      "sha256": "44f157397a5106752aec6fc26ef19dc9d5e9f5ca592877bf21758bda55f79ef9"
+    },
+    {
+      "relative": "lib/ollama/cuda_v13/libcudart.so.13.0.96",
+      "bytes": 704288,
+      "mode": 493,
+      "sha256": "96c42e418cec19054186b9429c321603cc190bf26a18104e19408117a2a817b0"
+    },
+    {
+      "relative": "lib/ollama/cuda_v13/libcublasLt.so.13.1.1.3",
+      "bytes": 541607888,
+      "mode": 493,
+      "sha256": "1489aeb75d55ee55782798343ac66f57771d561cc1fe1e0491568deefa0e6515"
+    },
+    {
+      "relative": "lib/ollama/cuda_v13/libcublas.so.13.1.1.3",
+      "bytes": 54177976,
+      "mode": 493,
+      "sha256": "25cde432108543626df85d887c730bf2cab96803ca16f9654e4abc8d2b45833e"
+    },
+    {
+      "relative": "lib/ollama/libggml-base.so.0.22.0",
+      "bytes": 821856,
+      "mode": 493,
+      "sha256": "a75ddf249fc215d86306a401c7a6ccd2e7242b5a572426c3e7c949586c42eaee"
+    },
+    {
+      "relative": "lib/ollama/libggml-cpu-alderlake.so",
+      "bytes": 1054760,
+      "mode": 420,
+      "sha256": "9d6d7e6c5239c275dc8d1b14b6fc09fa36816fe41c2ff06310a9abfc10499d4d"
+    },
+    {
+      "relative": "lib/ollama/libggml-cpu-cannonlake.so",
+      "bytes": 1284136,
+      "mode": 420,
+      "sha256": "a0580e42b3787d07158071561ce9b551085a3eaafd2f7d9a2f46bdf1b06f79df"
+    },
+    {
+      "relative": "lib/ollama/libggml-cpu-cascadelake.so",
+      "bytes": 1280040,
+      "mode": 420,
+      "sha256": "60f103f9af3f88b6692a99cb4aea0646b9757a29afeb5f51299e0df00284cf45"
+    },
+    {
+      "relative": "lib/ollama/libggml-cpu-cooperlake.so",
+      "bytes": 1280040,
+      "mode": 420,
+      "sha256": "1be1f01c38c345c4fdb450951b941af99e8f72a344ac3bbec61e6e52437d71e3"
+    },
+    {
+      "relative": "lib/ollama/libggml-cpu-haswell.so",
+      "bytes": 1054760,
+      "mode": 420,
+      "sha256": "5492c7b0b841416bb849db337f022b5118ea4c66e0a71160096fafda07290741"
+    },
+    {
+      "relative": "lib/ollama/libggml-cpu-icelake.so",
+      "bytes": 1280040,
+      "mode": 420,
+      "sha256": "26f044763bfa41e16c461293441856a7faf5c0834938ea3cf047acf2f0c923b9"
+    },
+    {
+      "relative": "lib/ollama/libggml-cpu-ivybridge.so",
+      "bytes": 989320,
+      "mode": 420,
+      "sha256": "a2932f30885ab030af4094ceb55c0bf6c8d342d11ee41bf3783fa44f33341e93"
+    },
+    {
+      "relative": "lib/ollama/libggml-cpu-piledriver.so",
+      "bytes": 985224,
+      "mode": 420,
+      "sha256": "e12412234cfe2b848bf5e2a0f5af9ab7f0f5cce09a0247282faad53c6d125fca"
+    },
+    {
+      "relative": "lib/ollama/libggml-cpu-sandybridge.so",
+      "bytes": 981128,
+      "mode": 420,
+      "sha256": "134b33d54d3eb3d62a838768e098ee47094b372a881d7271c3c69a1685fa4dc1"
+    },
+    {
+      "relative": "lib/ollama/libggml-cpu-sapphirerapids.so",
+      "bytes": 1530192,
+      "mode": 420,
+      "sha256": "4cdff1e4bd35f40010f13a0a0ccd577257456241fc2f2c5183d5670cc5a25243"
+    },
+    {
+      "relative": "lib/ollama/libggml-cpu-skylakex.so",
+      "bytes": 1284136,
+      "mode": 420,
+      "sha256": "96ccb3db8d8b9fbd5f125d8898b41dc5a2bf868b107c0c3b983506c54f9b3c90"
+    },
+    {
+      "relative": "lib/ollama/libggml-cpu-sse42.so",
+      "bytes": 817416,
+      "mode": 420,
+      "sha256": "331dd921c1d85238c7bb475bcf5f1581b468a91dace34d1feb77ffa89c1e14a2"
+    },
+    {
+      "relative": "lib/ollama/libggml-cpu-x64.so",
+      "bytes": 813352,
+      "mode": 420,
+      "sha256": "9431ab002e331c371bc439c787a72573fb8d969eed4451d214d8fd11f9a26f9b"
+    },
+    {
+      "relative": "lib/ollama/libggml-cpu-zen4.so",
+      "bytes": 1280040,
+      "mode": 420,
+      "sha256": "137278133f6ef6767a894433c1d2028c2a4ef32aebc8c9ed1c593702cf9bc6ad"
+    },
+    {
+      "relative": "lib/ollama/libggml.so.0.22.0",
+      "bytes": 220832,
+      "mode": 493,
+      "sha256": "959e2fe38c212fec3596c56947ce2ab09c9ed8ed14e9fa667f25b5a409b86804"
+    },
+    {
+      "relative": "lib/ollama/libgomp.so.1.0.0",
+      "bytes": 235072,
+      "mode": 493,
+      "sha256": "e985bcbb6b444c2c472de70c331ab101e6de860affa3a20d1d1aecd06d9242e8"
+    },
+    {
+      "relative": "lib/ollama/libllama-common.so.0.3.0",
+      "bytes": 4187024,
+      "mode": 493,
+      "sha256": "bfca1591e19207918e9f92dbcd2c3ed14a25e872aff274b87bac9259b050f984"
+    },
+    {
+      "relative": "lib/ollama/libllama-quantize-impl.so",
+      "bytes": 72560,
+      "mode": 493,
+      "sha256": "a4d0efb151ad11bf35745deaf18c4d598c233051271384001b144b560f8cb544"
+    },
+    {
+      "relative": "lib/ollama/libllama-server-impl.so",
+      "bytes": 2745616,
+      "mode": 493,
+      "sha256": "b8275be3b108c2704bdf96672f49a9fe7ca00338becaf2d6bc80bc2979357d78"
+    },
+    {
+      "relative": "lib/ollama/libllama.so.0.3.0",
+      "bytes": 3901784,
+      "mode": 493,
+      "sha256": "d3f3c9a44f49faff58269cc52496e70685a8115cf7a95e85c78ce4ce399c50ab"
+    },
+    {
+      "relative": "lib/ollama/libmtmd.so.0.3.0",
+      "bytes": 1847920,
+      "mode": 493,
+      "sha256": "db2352d8c5a47a83806bb329d842353d314c163dfea46c64c94e539ed21cceea"
+    },
+    {
+      "relative": "lib/ollama/llama-quantize",
+      "bytes": 15096,
+      "mode": 493,
+      "sha256": "208fcacd9b4264cacdc9783efc5b3361ac775372469edc12b48747e6b9c4dbff"
+    },
+    {
+      "relative": "lib/ollama/llama-server",
+      "bytes": 15096,
+      "mode": 493,
+      "sha256": "234b05b2138264f8fb263c3205e85f4c290e8afe5067e280a4f6f90cdac5696b"
+    },
+    {
+      "relative": "lib/ollama/vulkan/libggml-vulkan.so",
+      "bytes": 52851368,
+      "mode": 493,
+      "sha256": "074d104af55cb81636f731abff379021d3d259bcc8e6e593722bfe8e618b34ef"
+    }
+  ],
+  "runtimeLinks": [
+    {
+      "relative": "lib/ollama/cuda_v12/libcublas.so.12",
+      "link": "libcublas.so.12.8.5.5"
+    },
+    {
+      "relative": "lib/ollama/cuda_v12/libcudart.so.12",
+      "link": "libcudart.so.12.8.90"
+    },
+    {
+      "relative": "lib/ollama/cuda_v12/libcublasLt.so.12",
+      "link": "libcublasLt.so.12.8.5.5"
+    },
+    {
+      "relative": "lib/ollama/cuda_v13/libcublasLt.so.13",
+      "link": "libcublasLt.so.13.1.1.3"
+    },
+    {
+      "relative": "lib/ollama/cuda_v13/libcublas.so.13",
+      "link": "libcublas.so.13.1.1.3"
+    },
+    {
+      "relative": "lib/ollama/cuda_v13/libcudart.so.13",
+      "link": "libcudart.so.13.0.96"
+    },
+    {
+      "relative": "lib/ollama/libggml-base.so",
+      "link": "libggml-base.so.0"
+    },
+    {
+      "relative": "lib/ollama/libggml-base.so.0",
+      "link": "libggml-base.so.0.22.0"
+    },
+    {
+      "relative": "lib/ollama/libggml.so",
+      "link": "libggml.so.0"
+    },
+    {
+      "relative": "lib/ollama/libggml.so.0",
+      "link": "libggml.so.0.22.0"
+    },
+    {
+      "relative": "lib/ollama/libgomp.so.1",
+      "link": "libgomp.so.1.0.0"
+    },
+    {
+      "relative": "lib/ollama/libllama-common.so",
+      "link": "libllama-common.so.0"
+    },
+    {
+      "relative": "lib/ollama/libllama-common.so.0",
+      "link": "libllama-common.so.0.3.0"
+    },
+    {
+      "relative": "lib/ollama/libllama.so",
+      "link": "libllama.so.0"
+    },
+    {
+      "relative": "lib/ollama/libllama.so.0",
+      "link": "libllama.so.0.3.0"
+    },
+    {
+      "relative": "lib/ollama/libmtmd.so",
+      "link": "libmtmd.so.0"
+    },
+    {
+      "relative": "lib/ollama/libmtmd.so.0",
+      "link": "libmtmd.so.0.3.0"
+    }
+  ],
+  "modelFiles": [
+    {
+      "relative": "manifests/registry.ollama.ai/library/gemma4/e2b",
+      "bytes": 709,
+      "sha256": "7fbdbf8f5e45a75bb122155ed546e765b4d9c53a1285f62fd9f506baa1c5a47e",
+      "url": "https://registry.ollama.ai/v2/library/gemma4/blobs/sha256:7fbdbf8f5e45a75bb122155ed546e765b4d9c53a1285f62fd9f506baa1c5a47e"
+    },
+    {
+      "relative": "blobs/sha256-c6bc3775a3fa9935ce4a3ccd7abc59e936c3de9308d2cc090516012f43ed9c07",
+      "bytes": 473,
+      "sha256": "c6bc3775a3fa9935ce4a3ccd7abc59e936c3de9308d2cc090516012f43ed9c07",
+      "url": "https://registry.ollama.ai/v2/library/gemma4/blobs/sha256:c6bc3775a3fa9935ce4a3ccd7abc59e936c3de9308d2cc090516012f43ed9c07"
+    },
+    {
+      "relative": "blobs/sha256-4e30e2665218745ef463f722c0bf86be0cab6ee676320f1cfadf91e989107448",
+      "bytes": 7162394016,
+      "sha256": "4e30e2665218745ef463f722c0bf86be0cab6ee676320f1cfadf91e989107448",
+      "url": "https://registry.ollama.ai/v2/library/gemma4/blobs/sha256:4e30e2665218745ef463f722c0bf86be0cab6ee676320f1cfadf91e989107448"
+    },
+    {
+      "relative": "blobs/sha256-7339fa418c9ad3e8e12e74ad0fd26a9cc4be8703f9c110728a992b193be85cb2",
+      "bytes": 11355,
+      "sha256": "7339fa418c9ad3e8e12e74ad0fd26a9cc4be8703f9c110728a992b193be85cb2",
+      "url": "https://registry.ollama.ai/v2/library/gemma4/blobs/sha256:7339fa418c9ad3e8e12e74ad0fd26a9cc4be8703f9c110728a992b193be85cb2"
+    },
+    {
+      "relative": "blobs/sha256-56380ca2ab89f1f68c283f4d50863c0bcab52ae3f1b9a88e4ab5617b176f71a3",
+      "bytes": 42,
+      "sha256": "56380ca2ab89f1f68c283f4d50863c0bcab52ae3f1b9a88e4ab5617b176f71a3",
+      "url": "https://registry.ollama.ai/v2/library/gemma4/blobs/sha256:56380ca2ab89f1f68c283f4d50863c0bcab52ae3f1b9a88e4ab5617b176f71a3"
+    },
+    {
+      "relative": "manifests/registry.ollama.ai/library/qwen3-embedding/8b",
+      "bytes": 531,
+      "sha256": "64b933495768fbd3b87c20583d379728a07471e0c66733a9df87cd1901b3c44b",
+      "url": "https://registry.ollama.ai/v2/library/qwen3-embedding/blobs/sha256:64b933495768fbd3b87c20583d379728a07471e0c66733a9df87cd1901b3c44b"
+    },
+    {
+      "relative": "blobs/sha256-0a3d61b01340ca9dceb4a661e21b3dfe1418ed5206d91291ab933a3762f8bb89",
+      "bytes": 265,
+      "sha256": "0a3d61b01340ca9dceb4a661e21b3dfe1418ed5206d91291ab933a3762f8bb89",
+      "url": "https://registry.ollama.ai/v2/library/qwen3-embedding/blobs/sha256:0a3d61b01340ca9dceb4a661e21b3dfe1418ed5206d91291ab933a3762f8bb89"
+    },
+    {
+      "relative": "blobs/sha256-3fcd3febec8b3fd64435204db75bf0dd73b91e8d0661e0331acfe7e7c3120b85",
+      "bytes": 4676804928,
+      "sha256": "3fcd3febec8b3fd64435204db75bf0dd73b91e8d0661e0331acfe7e7c3120b85",
+      "url": "https://registry.ollama.ai/v2/library/qwen3-embedding/blobs/sha256:3fcd3febec8b3fd64435204db75bf0dd73b91e8d0661e0331acfe7e7c3120b85"
+    }
+  ],
+  "bundleFiles": [
+    {
+      "relative": "qa-src/knoxx/backend/extern/live_checked_embedding_qa.cljs",
+      "bytes": 1989,
+      "sha256": "a0cac9dd1298c93ddcf21d1bd1fdd3efa924e432289d027bd3ffad9c0a521bbe"
+    },
+    {
+      "relative": "qa-native-driver.mjs",
+      "bytes": 6490,
+      "sha256": "f1eaadcca19097783ba3ce7b4f18711858c546670da54479d239ce00b64a17bd"
+    },
+    {
+      "relative": "qa-shadow-cljs.edn",
+      "bytes": 502,
+      "sha256": "6044021d722ce6b9c7271fc6311a6b550aedd9df3413826508e4dd4ffb616c18"
+    },
+    {
+      "relative": "qa-deps.edn",
+      "bytes": 238,
+      "sha256": "357ad5a17b78e8f4c78b13ce1dfccdfb8793805ab4b06453879157275a4e818c"
+    },
+    {
+      "relative": "probe-ollama.js",
+      "bytes": 32534,
+      "sha256": "93e3ca2950bb4af4b3b79bdb9eaf2db3b2e8dedb25f170d41af531604cb9e752"
+    },
+    {
+      "relative": "observe-original-probe.cjs",
+      "bytes": 3772,
+      "sha256": "fd747903d151b91e35e4cf7d2e14813cdc417bc2f33df212a2acb3741c830f05"
+    },
+    {
+      "relative": "owned-process-supervisor.py",
+      "bytes": 15934,
+      "sha256": "348bd2f8451e0c7d232407cd0dcdd328698e896b80838e68e8681a3b7892941b"
+    }
+  ],
+  "qaEntrySHA256": "a0cac9dd1298c93ddcf21d1bd1fdd3efa924e432289d027bd3ffad9c0a521bbe",
+  "sdkSelectedInventorySHA256": "3f67946839edd484db2973dd19b2eb822e41e10ada9ac878bb2d24468839aece",
+  "sourceRoles": {
+    "Knoxx": {
+      "commit": "612488d4b01ba877d48beb66ac7b02ad448faa43",
+      "files": [
+        {
+          "path": "backend/src/cljs/knoxx/backend/extern/embedding.cljs",
+          "bytes": 5667,
+          "sha256": "01b8f27cbec57f153561fc944e1577b77448f33d4afc15079547dfbdb951a950"
+        },
+        {
+          "path": "backend/src/cljs/knoxx/backend/shape/embedding.cljc",
+          "bytes": 502,
+          "sha256": "6a4295b1cebc593415f9fbb31112d664aca2f2dc41377d9cec8956162eb3d4ac"
+        },
+        {
+          "path": "backend/src/cljs/knoxx/backend/law/embedding.cljc",
+          "bytes": 5230,
+          "sha256": "9429a5a62a3e95a2f625c6c00b804bba6e4d60ac4bd7bfeef4762974205f9fff"
+        },
+        {
+          "path": "backend/src/cljs/knoxx/backend/extern/fetch.cljs",
+          "bytes": 5074,
+          "sha256": "44ba6536ac6902dfd4049a4f4d73793b7b626155f0696f4b573f4b1e67db7756"
+        },
+        {
+          "path": "backend/src/cljs/knoxx/backend/extern/json.cljs",
+          "bytes": 1037,
+          "sha256": "0c5b5da5b3e390d506d29263a930e04e8edd118110762da391bb6f0e2dd26bde"
+        },
+        {
+          "path": "backend/src/cljs/knoxx/backend/extern/openplanner_sdk.cljs",
+          "bytes": 13225,
+          "sha256": "3b0c36387dc617ec823b34863c820180afd8f2a5889da088dd11b6bf5a74f7f3"
+        },
+        {
+          "path": "backend/src/cljs/knoxx/backend/extern/openplanner_sdk_vectors.cljs",
+          "bytes": 9922,
+          "sha256": "e2279e6b2845a032d059f5b59f0de62e88ffc9ce2fbb76e8ef57fc33f472beac"
+        },
+        {
+          "path": "scripts/build-sandbox-openplanner-sdk.sh",
+          "bytes": 15756,
+          "sha256": "aeb9f62c3254c7568a927efd2885ed759337d67233b0aedc13d9086d81c86ec5"
+        }
+      ]
+    },
+    "SDK": {
+      "commit": "07085d6557b75834ce6f50e6c54b8ca47e1c7c08",
+      "files": [
+        {
+          "path": "package.json",
+          "bytes": 3388,
+          "sha256": "cc60d469a7b48d9cfb9f4f8c9d9032af5991a597b5cc24e09f2fb204cc3737f0"
+        },
+        {
+          "path": "packages/openplanner-sdk/package.json",
+          "bytes": 1008,
+          "sha256": "942f686c7b1e1e841040d9d1c35e32146aaf01bc469a1044ff73f62f3e6e26e6"
+        },
+        {
+          "path": "packages/openplanner-sdk/src/config.ts",
+          "bytes": 5361,
+          "sha256": "eef6ca6b31d97b8e459baa5a333b2487e65c29a2d97c207d1644bcb06682bf31"
+        },
+        {
+          "path": "packages/openplanner-sdk/src/embedding-cache.ts",
+          "bytes": 1650,
+          "sha256": "2ecbaf59330f0655b32a3fa8e99658d553050e134eead099d5f12df3c610b921"
+        },
+        {
+          "path": "packages/openplanner-sdk/src/embedding-models.ts",
+          "bytes": 2317,
+          "sha256": "8a6ea95336c0089de0fc773b5436359f00c721c6bd8165c63704ea5f9a718377"
+        },
+        {
+          "path": "packages/openplanner-sdk/src/embedding-runtime.ts",
+          "bytes": 4494,
+          "sha256": "bd8e83a52c3cc72c4cc3ae66dd8793db692a456842a41db8669d0f6e08992ab2"
+        },
+        {
+          "path": "packages/openplanner-sdk/src/embedding-text.ts",
+          "bytes": 1036,
+          "sha256": "de4753c62b57ceab0b212414d5c71f27d5033d7ab67fc5eca01fd39fa67ad3dd"
+        },
+        {
+          "path": "packages/openplanner-sdk/src/embeddings.ts",
+          "bytes": 11632,
+          "sha256": "67b1bf33bed2948cbd656310390890a6d65422796c7abeddbc4e2456bbe2e625"
+        },
+        {
+          "path": "packages/openplanner-sdk/src/index.ts",
+          "bytes": 1747,
+          "sha256": "355511c667248b65ae72d8d81e06ab3a571948dabc2b3a270890e4196a1bf147"
+        },
+        {
+          "path": "packages/openplanner-sdk/src/indexing.ts",
+          "bytes": 9656,
+          "sha256": "3662b6478948087a905cb1aabff3b177ade7497dc9ddb0ce1236ca728e345fd1"
+        },
+        {
+          "path": "packages/openplanner-sdk/src/ingest.ts",
+          "bytes": 21979,
+          "sha256": "6a6a6e96068cb5ab19877453120de307fdc7f406bbade0bd9af939881ff53639"
+        },
+        {
+          "path": "packages/openplanner-sdk/src/mongo-browse.ts",
+          "bytes": 3498,
+          "sha256": "14a8366449483665e0c8687754d0ae3b096427cf5c85b1d73ec70d62a17ee46d"
+        },
+        {
+          "path": "packages/openplanner-sdk/src/mongo-vectors.ts",
+          "bytes": 47450,
+          "sha256": "74b76b3d68a9c6c788701fd09a6e33164c5d38eceef72529ce4ea6111ecd9637"
+        },
+        {
+          "path": "packages/openplanner-sdk/src/mongodb.ts",
+          "bytes": 43904,
+          "sha256": "728f1721a052d0ad83e2430760e5a3d49702ecc34a5b6443ed3c1f2fd36c935b"
+        },
+        {
+          "path": "packages/openplanner-sdk/src/protocol-adapters.ts",
+          "bytes": 7607,
+          "sha256": "cdb100e142a1847238fbf7ce9c625338583fd9b0efa04f6d08e94395b9b8177c"
+        },
+        {
+          "path": "packages/openplanner-sdk/src/schema-versions.ts",
+          "bytes": 1050,
+          "sha256": "48f04d75b9f7614bcabca3eaa2499ef0162fbd70dd29c06a90316f271c3b85f5"
+        },
+        {
+          "path": "packages/openplanner-sdk/src/sdk.ts",
+          "bytes": 3470,
+          "sha256": "6b72b6959c8d500c60c2cd464b1bbe4599605e4bf8da1fa930e2e19e6523d6c7"
+        },
+        {
+          "path": "packages/openplanner-sdk/src/search-core.ts",
+          "bytes": 7354,
+          "sha256": "d398e1f983ad858cfdf879eb723e0d26ed1bd112b6da4510941279b2b62127be"
+        },
+        {
+          "path": "packages/openplanner-sdk/src/sentence-split.ts",
+          "bytes": 1659,
+          "sha256": "f4f41887b2a36447d75628685b4d0f2266ab84209482ea1fcaa60a5cd8500570"
+        },
+        {
+          "path": "packages/openplanner-sdk/src/sessions-core.ts",
+          "bytes": 3584,
+          "sha256": "b667e31c1ee0d41d812174a630f0dd547dc8818506f472b186d8863f978c45da"
+        },
+        {
+          "path": "packages/openplanner-sdk/src/source-hydration.ts",
+          "bytes": 3661,
+          "sha256": "9107631402efbf50d30f0261d5b39f0820d99268468c908f62d956ed1ac3b123"
+        },
+        {
+          "path": "packages/openplanner-sdk/src/turndown.d.ts",
+          "bytes": 306,
+          "sha256": "13339b3bd56b56faa57d96d11f9c5487fce053ace345c9b820aad738ae4b3b50"
+        },
+        {
+          "path": "packages/openplanner-sdk/src/types.ts",
+          "bytes": 5493,
+          "sha256": "393f96ce39ef1afa35c5b2e4aedfdf39b8f02f88e09ad89a2ab6e1dca00d4790"
+        },
+        {
+          "path": "packages/openplanner-sdk/src/vector-search.ts",
+          "bytes": 3620,
+          "sha256": "af743cadc1b9fdbc1fbe8ea30e6419e9d5dacbbd2c64275cfd93f49d7c0e8198"
+        },
+        {
+          "path": "packages/openplanner-sdk/tsconfig.json",
+          "bytes": 438,
+          "sha256": "0dcfba93caef4d76dacbe1a7736dbe97123bdad8ccb40da8a734a67fb26860b3"
+        },
+        {
+          "path": "packages/stores/cache/LICENSE",
+          "bytes": 7651,
+          "sha256": "ee907919ec88c9c017b1f8b608db20960b6598aefcc4fe58820bde955d65ed3c"
+        },
+        {
+          "path": "packages/stores/cache/README.md",
+          "bytes": 2492,
+          "sha256": "063fa93a4015124d27c3e2f09baecc3e8f357fb851c964eecf589c9248bd20e7"
+        },
+        {
+          "path": "packages/stores/cache/index.d.ts",
+          "bytes": 2468,
+          "sha256": "0ac5810adac2ecb8fbc3fe62c78e13e328e597e8ba4944402f0350cf092c9151"
+        },
+        {
+          "path": "packages/stores/cache/package.json",
+          "bytes": 556,
+          "sha256": "becb551baeb524f01c62e2ab1c8a4450adf1372c1f4d5b5b9cc19141774c90f8"
+        },
+        {
+          "path": "packages/stores/cache/shadow-cljs.edn",
+          "bytes": 1684,
+          "sha256": "61adb6eb699e0f98dbeab3efd6e6aa0edec21ddf09c1e60a05471a7d637d86a9"
+        },
+        {
+          "path": "packages/stores/cache/src/openplanner/stores/cache/adapters/lmdb.cljs",
+          "bytes": 1995,
+          "sha256": "02128b54e0c00731fe9764f01ef96d4a4034b1884cf8cb81c000f0ee7304e6ba"
+        },
+        {
+          "path": "packages/stores/cache/src/openplanner/stores/cache/adapters/memory.cljs",
+          "bytes": 2400,
+          "sha256": "868abe3597f873b2ebf90fae790455ae59d4b4fe7dc3c7c4b9f70fb1e0e92ddc"
+        },
+        {
+          "path": "packages/stores/cache/src/openplanner/stores/cache/boundary.cljs",
+          "bytes": 4510,
+          "sha256": "e3563da03094a1a0949c9238c51e6466dd0cfee9be1bfba68b64c3bac2a552ae"
+        },
+        {
+          "path": "packages/stores/cache/src/openplanner/stores/cache/core.cljs",
+          "bytes": 692,
+          "sha256": "73095dd51a450c29a30174d3ec0ec2f638d57997f25b6318812161fbac210c70"
+        },
+        {
+          "path": "packages/stores/cache/src/openplanner/stores/cache/layered.cljs",
+          "bytes": 1824,
+          "sha256": "3ce8871bf1e30e571e572ec69204182c6324f6df03e687343150711e84d6bf00"
+        },
+        {
+          "path": "packages/stores/cache/src/openplanner/stores/cache/protocol.cljs",
+          "bytes": 497,
+          "sha256": "c2f9f0c544736fb33f4f099ecbc9075c0f3a5d05d8b9a79946e94f7b5aee4741"
+        },
+        {
+          "path": "packages/stores/cache/src/openplanner/stores/cache/schema.cljs",
+          "bytes": 5209,
+          "sha256": "3454bb174ead2b84bc038319d40c09b11b3f22db3ff012d0006d539d0cd94f23"
+        },
+        {
+          "path": "packages/stores/cache/test/openplanner/stores/cache_test.cljs",
+          "bytes": 4428,
+          "sha256": "a5d515b922e5cedfba3968b056268171469be46427af170524e8b23b6309480a"
+        },
+        {
+          "path": "packages/stores/document-hydration/LICENSE",
+          "bytes": 7651,
+          "sha256": "ee907919ec88c9c017b1f8b608db20960b6598aefcc4fe58820bde955d65ed3c"
+        },
+        {
+          "path": "packages/stores/document-hydration/README.md",
+          "bytes": 1206,
+          "sha256": "a1a28c99074d0941285eac71bcf6c80fdce41e6e57469a42c2a62b5ca2a20eeb"
+        },
+        {
+          "path": "packages/stores/document-hydration/index.d.ts",
+          "bytes": 1729,
+          "sha256": "6da57001e7c3958c03b2c6d507d38fc32c4745ae04235163f61926f8a7d89f2f"
+        },
+        {
+          "path": "packages/stores/document-hydration/package.json",
+          "bytes": 643,
+          "sha256": "d71e08f273f4c64d6cd112f998157b27164931410c8938ea91bf35428da9b6d6"
+        },
+        {
+          "path": "packages/stores/document-hydration/shadow-cljs.edn",
+          "bytes": 1864,
+          "sha256": "0b9d50c453e045e358a9059c40857829f14345be6e93691184a246bead4c586d"
+        },
+        {
+          "path": "packages/stores/document-hydration/src/openplanner/stores/document_hydration.cljs",
+          "bytes": 5586,
+          "sha256": "31ba334dc0793b2c28faad7617f8d99c33fc835595f6c056d4ddcd0300e6be7e"
+        },
+        {
+          "path": "packages/stores/document-hydration/test/openplanner/stores/document_hydration_test.cljs",
+          "bytes": 3402,
+          "sha256": "9b7899ad2184f34bb7e0bd970dc093f680e11ba91c67561f5dae6fc7719bb429"
+        },
+        {
+          "path": "pnpm-lock.yaml",
+          "bytes": 356839,
+          "sha256": "7d77811aedc17cb44ee3217c7bd8b585bd32c935aca03c48c6d58f8ab2abbbe9"
+        },
+        {
+          "path": "pnpm-workspace.yaml",
+          "bytes": 418,
+          "sha256": "92018b06aeef18a0a2ecc6be2f07004a13c104895006fe9da068501c69e406cc"
+        }
+      ]
+    }
+  },
+  "sourceEvidence": [
+    {
+      "path": "/home/err/.local/share/openhax-codex/20261010/review-state/PREPONLY-hosted-standard-runner-pinned-model-compatibility-alternative-v1/READONLY-FULL-source-model-asset-arithmetic-and-fresh-hosted-worker-boundary-PREP-v1.json",
+      "bytes": 30888,
+      "sha256": "31fb69fca64111516df150b1eb9f2bdb96abe8fff7974402f7bfba576b8bc622"
+    },
+    {
+      "path": "/home/err/.local/share/openhax-codex/20261010/review-state/Services5-target-Ollama0332-existing-v6-and-checked-component-qualification-PREPONLY-v1/FUTURE-owned-0332-probe-v1/QUALIFIED-full-original-runtime-extracted-files-links-and-static-ELF-custody-v2.json",
+      "bytes": 88437,
+      "sha256": "116a1980b783c99cfaae64aeb90e3c39f7eea2c01aad7b81462c8f739f20e5cf"
+    }
+  ]
+}

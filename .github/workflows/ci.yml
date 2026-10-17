@@ -1,65 +1,32 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
-# Isolated QA branch variant of registered ci.yml; no application CI credit.
-name: Genuine SDK and checked entry compile (QA only)
-
+# Isolated QA branch; this workflow grants no application or release qualification.
+name: Pinned model and genuine checked SDK compatibility (QA only)
 on:
   workflow_dispatch:
     inputs:
       comparison_base_sha:
-        description: Recorded product source SHA; this job compiles the pinned SDK entry only
+        description: Exact pinned application source for this isolated model compatibility job
         required: true
         type: string
       migration_infrastructure:
-        description: Keep false; no product validation, model inference or migration runs
+        description: Keep false; no database or production action is performed
         required: false
         default: false
         type: boolean
-
 permissions:
   contents: read
-
 jobs:
-  real-sdk-compile-only:
-    name: Genuine SDK and checked embedding compilation only
+  pinned-model-compatibility:
+    name: Exact Ollama Gemma Qwen and genuine checked SDK profile
     if: ${{ github.repository_id == '1401249297' && github.event.repository.private == false }}
     runs-on: ubuntu-24.04
-    timeout-minutes: 55
+    timeout-minutes: 150
     steps:
       - name: Check out only this isolated QA source
         uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # official v5
         with:
           persist-credentials: false
           fetch-depth: 1
-
-      - name: Require fresh selected worker metadata before tool installation
-        env:
-          PILOT_REPOSITORY: ${{ github.repository }}
-          PILOT_REPOSITORY_ID: ${{ github.repository_id }}
-          PILOT_REPOSITORY_PRIVATE: ${{ github.event.repository.private }}
-          PILOT_EVENT: ${{ github.event_name }}
-          PILOT_RUN_ID: ${{ github.run_id }}
-          PILOT_RUN_ATTEMPT: ${{ github.run_attempt }}
-          PILOT_JOB: ${{ github.job }}
-          PILOT_SOURCE_SHA: ${{ github.sha }}
-          PILOT_WORKFLOW_SHA: ${{ github.workflow_sha }}
-          PILOT_WORKFLOW_REF: ${{ github.workflow_ref }}
-          PILOT_RUNNER_ENVIRONMENT: ${{ runner.environment }}
-          PILOT_RUNNER_OS: ${{ runner.os }}
-          PILOT_RUNNER_ARCH: ${{ runner.arch }}
-          PILOT_ADAPTER_SHA256: b5860f799bd1e37fd61a8ae19038f1821de5172c9e7637085df5ea0a4fe912e4
-          PILOT_COMPARISON_BASE_SHA: ${{ inputs.comparison_base_sha }}
-          PILOT_MIGRATION_INFRASTRUCTURE: ${{ inputs.migration_infrastructure }}
-        shell: bash
-        run: |
-          python3 - <<'PY'
-          import hashlib, os, pathlib, runpy
-          path = pathlib.Path('.github/qa/model-compatibility/metadata.py')
-          assert hashlib.sha256(path.read_bytes()).hexdigest() == os.environ['PILOT_ADAPTER_SHA256']
-          value = runpy.run_path(str(path))
-          assert value['result']['classification'] == 'METADATA_THRESHOLDS_MET'
-          assert os.environ['PILOT_COMPARISON_BASE_SHA'] == '612488d4b01ba877d48beb66ac7b02ad448faa43'
-          PY
-
       - name: Set up Java 21
         uses: actions/setup-java@cf277c60eb25467037889841efdb72551f06f6c3 # official v4
         with:
@@ -83,49 +50,215 @@ jobs:
           cli: '1.12.5.1654'
           clj-kondo: '2025.07.28'
 
-      - name: Build genuine pinned SDK and compile isolated checked-provider entry
+      - name: Run one exact model profile under an owned process supervisor
+        env:
+          PILOT_REPOSITORY: ${{ github.repository }}
+          PILOT_REPOSITORY_ID: ${{ github.repository_id }}
+          PILOT_REPOSITORY_PRIVATE: ${{ github.event.repository.private }}
+          PILOT_EVENT: ${{ github.event_name }}
+          PILOT_RUN_ID: ${{ github.run_id }}
+          PILOT_RUN_ATTEMPT: ${{ github.run_attempt }}
+          PILOT_JOB: ${{ github.job }}
+          PILOT_SOURCE_SHA: ${{ github.sha }}
+          PILOT_WORKFLOW_SHA: ${{ github.workflow_sha }}
+          PILOT_WORKFLOW_REF: ${{ github.workflow_ref }}
+          PILOT_RUNNER_ENVIRONMENT: ${{ runner.environment }}
+          PILOT_RUNNER_OS: ${{ runner.os }}
+          PILOT_RUNNER_ARCH: ${{ runner.arch }}
+          PILOT_ADAPTER_SHA256: b5860f799bd1e37fd61a8ae19038f1821de5172c9e7637085df5ea0a4fe912e4
+          PILOT_COMPARISON_BASE_SHA: ${{ inputs.comparison_base_sha }}
+          PILOT_MIGRATION_INFRASTRUCTURE: ${{ inputs.migration_infrastructure }}
         shell: bash
         run: |
           set -euo pipefail
           set -C
           umask 077
+          python3 - <<'GATE'
+          import hashlib, json, os, pathlib, subprocess, time
+          bundle = pathlib.Path('.github/qa/model-compatibility').resolve(strict=True)
+          manifest = bundle / 'composition-inputs.json'
+          program = bundle / 'full-job.py'
+          assert hashlib.sha256(manifest.read_bytes()).hexdigest() == 'b2a3e62ce05283dc79eb0d952b54c23c749b166859873553370cd367401d255e'
+          assert hashlib.sha256(program.read_bytes()).hexdigest() == '58151d939cceb97d49d729900b6fcf1388bc2cb4935795413f10141aa8572d12'
+          assert hashlib.sha256((bundle / 'owned-process-supervisor.py').read_bytes()).hexdigest() == '348bd2f8451e0c7d232407cd0dcdd328698e896b80838e68e8681a3b7892941b'
+          inputs = json.loads(manifest.read_bytes())
+          metadata = {key: os.environ[key] for key in inputs['metadataEnvironmentNames']}
+          assert metadata['PILOT_COMPARISON_BASE_SHA'] == '612488d4b01ba877d48beb66ac7b02ad448faa43'
+          assert metadata['PILOT_MIGRATION_INFRASTRUCTURE'] == 'false'
+          assert metadata['PILOT_SOURCE_SHA'] == metadata['PILOT_WORKFLOW_SHA'] == os.environ['GITHUB_SHA']
+          assert metadata['PILOT_WORKFLOW_REF'] == 'riatzukiza/knoxx/.github/workflows/ci.yml@refs/heads/qa/hosted-worker-metadata-20261017'
+          checkout = pathlib.Path(os.environ['GITHUB_WORKSPACE'])
+          assert checkout.is_absolute() and checkout.resolve(strict=True) == checkout
+          observations = []
+          def git_read(args):
+              result = subprocess.run(['/usr/bin/git', '-c', 'core.fsmonitor=false', '-C', str(checkout), *args], capture_output=True, timeout=30)
+              observations.append({'args': args, 'exit': result.returncode, 'stdoutBytes': len(result.stdout),
+                                   'stdoutSHA256': hashlib.sha256(result.stdout).hexdigest(), 'stderrBytes': len(result.stderr)})
+              assert result.returncode == 0 and not result.stderr and len(result.stdout) <= 262144
+              return result.stdout
+          assert git_read(['rev-parse', '--show-toplevel']).decode().strip() == str(checkout)
+          head = git_read(['rev-parse', 'HEAD']).decode().strip()
+          tree = git_read(['rev-parse', 'HEAD^{tree}']).decode().strip()
+          status = git_read(['status', '--porcelain=v1', '-z', '--untracked-files=all'])
+          assert not status and head == os.environ['GITHUB_SHA'] == os.environ['GITHUB_WORKFLOW_SHA']
+          assert bundle == checkout / '.github/qa/model-compatibility'
+          workflow_relative = '.github/workflows/ci.yml'
+          workflow = checkout / workflow_relative
+          blob_oid = git_read(['rev-parse', 'HEAD:' + workflow_relative]).decode().strip()
+          blob_bytes = git_read(['show', 'HEAD:' + workflow_relative])
+          assert blob_bytes == workflow.read_bytes()
+          qa_checkout = {'path': str(checkout), 'head': head, 'tree': tree,
+                         'statusSHA256': hashlib.sha256(status).hexdigest(),
+                         'workflow': {'relative': workflow_relative, 'bytes': len(blob_bytes),
+                                      'sha256': hashlib.sha256(blob_bytes).hexdigest(), 'gitBlobOid': blob_oid},
+                         'bundleRelative': '.github/qa/model-compatibility',
+                         'workflowRef': os.environ['GITHUB_WORKFLOW_REF'], 'workflowSHA': os.environ['GITHUB_WORKFLOW_SHA']}
+          assert qa_checkout['workflowRef'] == metadata['PILOT_WORKFLOW_REF']
+          gate = {'admitted': True,
+                  'scope': 'ONE hosted exact0332 full-runtime7fb64b cold-services-and-two-real-checked-SDK profile',
+                  'roles': ['metadata', 'source-only-clones', 'pre-acquisition', 'exact-public-acquisition',
+                            'pre-sdk', 'normal-sdk-and-QA-compile', 'owning-static-closure', 'measure'],
+                  'programSHA256': hashlib.sha256(program.read_bytes()).hexdigest(),
+                  'manifestSHA256': hashlib.sha256(manifest.read_bytes()).hexdigest(),
+                  'job': {key: os.environ[key] for key in ['GITHUB_RUN_ID', 'GITHUB_RUN_ATTEMPT', 'GITHUB_JOB', 'GITHUB_SHA']},
+                  'expectedMetadataContext': metadata, 'qaCheckout': qa_checkout,
+                  'actualCheckoutNativeObservations': observations, 'admittedAtUnix': time.time()}
+          path = pathlib.Path(os.environ['RUNNER_TEMP']) / ('model-root-admission-' + os.environ['GITHUB_RUN_ID'] + '-' + os.environ['GITHUB_RUN_ATTEMPT'] + '.json')
+          with path.open('x') as stream: json.dump(gate, stream, indent=2); stream.write('\n')
+          GATE
           python3 .github/qa/model-compatibility/owned-process-supervisor.py \
-            --timeout-ms 2700000 --max-output-bytes 65536 --cleanup-ms 10000 \
-            -- python3 .github/qa/model-compatibility/build-only.py \
-            > "$RUNNER_TEMP/sdk-build-owner-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT.json" \
-            2> "$RUNNER_TEMP/sdk-build-owner-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT.stderr"
-          python3 - <<'PY'
+            --timeout-ms 7200000 --max-output-bytes 8388608 --cleanup-ms 180000 \
+            -- python3 .github/qa/model-compatibility/full-job.py \
+            --root-admission "$RUNNER_TEMP/model-root-admission-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT.json" \
+            > "$RUNNER_TEMP/full-model-owner-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT.json" \
+            2> "$RUNNER_TEMP/full-model-owner-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT.stderr"
+          python3 - <<'RESULT'
           import json, os, pathlib
           temp = pathlib.Path(os.environ['RUNNER_TEMP'])
           stem = os.environ['GITHUB_RUN_ID'] + '-' + os.environ['GITHUB_RUN_ATTEMPT']
-          receipt = temp / ('sdk-build-owner-' + stem + '.json')
-          stderr = temp / ('sdk-build-owner-' + stem + '.stderr')
+          receipt = temp / ('full-model-owner-' + stem + '.json')
+          stderr = temp / ('full-model-owner-' + stem + '.stderr')
           value = json.loads(receipt.read_bytes())
           assert not stderr.read_bytes()
           assert value['exit-code'] == 0 and value['termination'] == 'exited'
           assert value['cleanup-complete?'] and not value['capture-truncated?']
-          run = temp / ('openhax-sdk-compile-' + stem)
-          roots = [run / 'evidence', run / 'sdk/evidence']
-          size = sum(p.stat().st_size for root in roots for p in root.rglob('*') if p.is_file())
+          run = temp / ('openhax-model-compat-' + stem)
+          roots = ['metadata', 'bindings', 'acquisition-evidence', 'build-evidence', 'sdk/evidence',
+                   'controller-pre-acquisition', 'controller-pre-sdk', 'controller-measure',
+                   'original-wire', 'sdk-hot-wire', 'sdk-compact-wire']
+          size = sum(path.stat().st_size for root in roots for path in (run / root).rglob('*') if path.is_file())
           size += receipt.stat().st_size + stderr.stat().st_size
+          size += (temp / ('model-root-admission-' + stem + '.json')).stat().st_size
           size += (temp / ('hosted-worker-metadata-' + stem) / 'measurement.json').stat().st_size
           assert size <= 80 * 1024**2
+          final = json.loads((run / 'metadata/composition/FINAL-composition-outcome.json').read_bytes())
+          assert final['outcome'] == 'PASS-one-exact-profile-all-native-phases-and-owned-stop'
+          assert final['finalSourceAndToolGuard'] == 'PASS' and not final['observedOwnChildrenAtEnd']
           print(value['output'])
-          PY
-
-      - name: Preserve finite SDK and entry build evidence
+          RESULT
+      - name: Bound proof artifacts even when the model job failed
+        id: evidence-size
         if: always()
+        shell: bash
+        run: |
+          python3 - <<'SIZE'
+          import hashlib, json, os, pathlib, stat, sys, time
+          temp = pathlib.Path(os.environ['RUNNER_TEMP'])
+          stem = os.environ['GITHUB_RUN_ID'] + '-' + os.environ['GITHUB_RUN_ATTEMPT']
+          run = temp / ('openhax-model-compat-' + stem)
+          roots = ['metadata', 'bindings', 'acquisition-evidence', 'build-evidence', 'sdk/evidence',
+                   'controller-pre-acquisition', 'controller-pre-sdk', 'controller-measure',
+                   'original-wire', 'sdk-hot-wire', 'sdk-compact-wire']
+          outside = [temp / ('model-root-admission-' + stem + '.json'),
+                     temp / ('full-model-owner-' + stem + '.json'),
+                     temp / ('full-model-owner-' + stem + '.stderr'),
+                     temp / ('hosted-worker-metadata-' + stem) / 'measurement.json']
+          total = 0
+          count = 0
+          deadline = time.monotonic() + 60
+          diagnostic = {'schema': 'finite-proof-artifact-size/v1', 'fullArtifactAdmissible': False,
+                        'scope': 'Proof only; no payload, dependency tree or production evidence.',
+                        'originalNative': {}, 'originalPrimary': None}
+          def add(path):
+              global total, count
+              value = path.lstat()
+              assert not stat.S_ISLNK(value.st_mode), 'Unexpected proof symlink'
+              assert time.monotonic() <= deadline and count <= 100000, 'Finite proof scan bound exceeded'
+              if stat.S_ISREG(value.st_mode):
+                  count += 1
+                  total += value.st_size
+          try:
+              for name in roots:
+                  root = run / name
+                  if root.exists() or root.is_symlink():
+                      add(root)
+                      for path in root.rglob('*'): add(path)
+              for path in outside:
+                  if path.exists() or path.is_symlink(): add(path)
+              # Reserve at most64KiB for this size receipt in the upload itself.
+              diagnostic['fullArtifactAdmissible'] = total + 65536 <= 80 * 1024**2
+              assert diagnostic['fullArtifactAdmissible'], 'Proof exceeds80MiB with finite receipt reserve'
+          except BaseException as error:
+              diagnostic['fullArtifactAdmissible'] = False
+              diagnostic['artifactFailure'] = {'type': type(error).__name__, 'message': str(error)[:1000]}
+          diagnostic.update({'rawProofBytes': total, 'regularFilesObserved': count})
+          owner = outside[1]
+          if owner.is_file() and not owner.is_symlink() and owner.stat().st_size <= 16 * 1024**2:
+              raw = owner.read_bytes()
+              diagnostic['ownerCaptureSHA256'] = hashlib.sha256(raw).hexdigest()
+              try:
+                  value = json.loads(raw)
+                  diagnostic['originalNative'] = {key: value.get(key) for key in
+                      ['exit-code', 'termination', 'cleanup-complete?', 'capture-truncated?', 'output-sha256']}
+                  summary = json.loads(value.get('output', ''))
+                  diagnostic['originalPrimary'] = summary.get('primary')
+              except (ValueError, TypeError):
+                  diagnostic['originalSummary'] = 'Unavailable; full capture hash retained above.'
+          if not diagnostic['fullArtifactAdmissible']:
+              diagnostic['limit'] = 'Full capture omitted from artifact; finite diagnostic only. No complete-evidence or PASS credit.'
+          data = (json.dumps(diagnostic, indent=2) + '\n').encode()
+          assert len(data) <= 65536
+          path = temp / ('model-artifact-size-' + stem + '.json')
+          with path.open('xb') as stream: stream.write(data)
+          with pathlib.Path(os.environ['GITHUB_OUTPUT']).open('a') as stream:
+              stream.write('admissible=' + str(diagnostic['fullArtifactAdmissible']).lower() + '\n')
+          print(data.decode())
+          sys.exit(0 if diagnostic['fullArtifactAdmissible'] else 1)
+          SIZE
+      - name: Preserve finite model and genuine SDK evidence
+        if: ${{ always() && steps.evidence-size.outputs.admissible == 'true' }}
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # official v4
         with:
-          name: genuine-sdk-entry-build-${{ github.run_id }}-${{ github.run_attempt }}
+          name: exact-model-checked-sdk-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
-            ${{ runner.temp }}/openhax-sdk-compile-${{ github.run_id }}-${{ github.run_attempt }}/evidence
-            ${{ runner.temp }}/openhax-sdk-compile-${{ github.run_id }}-${{ github.run_attempt }}/sdk/evidence
+            ${{ runner.temp }}/openhax-model-compat-${{ github.run_id }}-${{ github.run_attempt }}/metadata
+            ${{ runner.temp }}/openhax-model-compat-${{ github.run_id }}-${{ github.run_attempt }}/bindings
+            ${{ runner.temp }}/openhax-model-compat-${{ github.run_id }}-${{ github.run_attempt }}/acquisition-evidence
+            ${{ runner.temp }}/openhax-model-compat-${{ github.run_id }}-${{ github.run_attempt }}/build-evidence
+            ${{ runner.temp }}/openhax-model-compat-${{ github.run_id }}-${{ github.run_attempt }}/sdk/evidence
+            ${{ runner.temp }}/openhax-model-compat-${{ github.run_id }}-${{ github.run_attempt }}/controller-pre-acquisition
+            ${{ runner.temp }}/openhax-model-compat-${{ github.run_id }}-${{ github.run_attempt }}/controller-pre-sdk
+            ${{ runner.temp }}/openhax-model-compat-${{ github.run_id }}-${{ github.run_attempt }}/controller-measure
+            ${{ runner.temp }}/openhax-model-compat-${{ github.run_id }}-${{ github.run_attempt }}/original-wire
+            ${{ runner.temp }}/openhax-model-compat-${{ github.run_id }}-${{ github.run_attempt }}/sdk-hot-wire
+            ${{ runner.temp }}/openhax-model-compat-${{ github.run_id }}-${{ github.run_attempt }}/sdk-compact-wire
+            ${{ runner.temp }}/model-root-admission-${{ github.run_id }}-${{ github.run_attempt }}.json
+            ${{ runner.temp }}/full-model-owner-${{ github.run_id }}-${{ github.run_attempt }}.json
+            ${{ runner.temp }}/full-model-owner-${{ github.run_id }}-${{ github.run_attempt }}.stderr
             ${{ runner.temp }}/hosted-worker-metadata-${{ github.run_id }}-${{ github.run_attempt }}/measurement.json
-            ${{ runner.temp }}/sdk-build-owner-${{ github.run_id }}-${{ github.run_attempt }}.json
-            ${{ runner.temp }}/sdk-build-owner-${{ github.run_id }}-${{ github.run_attempt }}.stderr
+            ${{ runner.temp }}/model-artifact-size-${{ github.run_id }}-${{ github.run_attempt }}.json
           if-no-files-found: error
           retention-days: 1
           compression-level: 6
           overwrite: false
           include-hidden-files: false
+      - name: Preserve only the finite artifact-bound failure diagnostic
+        if: ${{ always() && steps.evidence-size.outputs.admissible == 'false' }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # official v4
+        with:
+          name: exact-model-artifact-bound-failure-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/model-artifact-size-${{ github.run_id }}-${{ github.run_attempt }}.json
+          if-no-files-found: error
+          retention-days: 1
+          compression-level: 6
+          overwrite: false
