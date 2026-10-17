@@ -1322,3 +1322,12 @@
   spore: none
   receipt-refs: 2b80180b-23ac-4e5c-aa4c-e1379e2ef87b
   note: Actual three-source pure responsibility split removes three selected function warnings; full165to162W/0E/native2FAIL remains, dispatch filelength425 retained. Exact original forms, order, public tests and all outside-target diagnostic rows/locations held. Official native owner scope precedes effect, in_progress/P1/5 held. Coherent successor runtime pending; isolated templateT/full6e48CI source-specific. No new behavior, mirror tests, suppression/config/interop expansion, spore/promotion or rollout.
+- ts: 2026-10-17T18:36:49.235412864Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-template-public-controls-QA-over6e48-v1
+  task: Preserve public template lookup and trusted auth behavior before pure extraction
+  p-efficiency: 0.82
+  p-friction: 0.28
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: sha256:584797e76928f83c03384b5547d42914c2b7d4e138020dcdf864c9535ad17aff,d5a46839d3255bbfdefc3011d6c912434a5d6cf0
+  note: Independent source peer caught a caller Reduced default being consumed by reduce before application. Keep the caller default outside the reduction protocol; public missing-default, later-alias, false-key and found-Reduced controls document existing behavior. Actual static test0E0W and all166global warning rows unchanged/native2FAIL; genuine hosted runtime preservation still PENDING. Native board readback representation corrected without replay; no spore, model, service or production effect.
