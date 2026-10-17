@@ -1349,3 +1349,12 @@
   spore: none
   receipt-refs: b880fe64-f0f4-438e-a078-980dab0135cb
   note: Small pure same-namespace extraction keeps original ready/not-ready data, eager order and unchanged public tests. Native owner scope before source; owning0E0W and global160to159/native2FAIL are exact static evidence, not runtime verification. Preserve the env-isolation commit failure and correct actual native ABI rather than replaying effects. Hosted backend compilation/tests/server remain pending. No spore or promotion.
+- ts: 2026-10-17T20:51:27.902642896Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-full-CI-workflow-repair-over933-v1
+  task: Separate four pure SVG and decoded request-field responsibilities; preserve owning and global FAIL
+  p-efficiency: 0.9
+  p-friction: 0.15
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: b863c05e-b5f1-4914-8f1c-6e7343be8e8b
+  note: Keep raw adapters and long security rationale untouched when a pure finite extraction cannot clear their warning honestly. Exact inverse and public-boundary tests preserve order, errors, aliases and nil/false/zero. Native complete-file owning1 and global159to155/native2FAIL are actual static evidence; selected4to0 is not a full-file PASS. Current24e hosted runtime and QAref remain isolated; new-source runtime pending. No spore.
