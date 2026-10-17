@@ -1214,3 +1214,12 @@
   spore: none
   receipt-refs: b84abadd-d548-4e02-9cc9-aaaa01514469
   note: Distinguish executable forms from doc metadata before refactoring for length. Four concise accurate API docstrings plus a verbatim dated rationale note clear five actual size warnings while preserving all bodies, arities, validation and assertions. Actual owning0/0 and global175/native2FAIL are distinct. No behavioral RED or runtime PASS transfer; no spore.
+- ts: 2026-10-17T16:30:00.448064591Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-full-CI-workflow-repair-over933-v1
+  task: Keep translation dispatch API docs concise and preserve complete boundary rationale
+  p-efficiency: 0.92
+  p-friction: 0.12
+  p-skill-candidate: 0.08
+  spore: none
+  receipt-refs: df1154cf-d647-4038-ab51-278f458efcaf
+  note: Separate doc metadata from executable forms. Three precise API docstrings plus verbatim dated rationale remove three measured span warnings while preserving all bodies/arities/validation/assertions. Owning6→3 and global175→172 both retain native2FAIL. Body-driven remaining warnings require real later refactoring. No behavioral/runtime PASS transfer; no spore.
