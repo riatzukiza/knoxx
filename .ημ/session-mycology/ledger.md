@@ -1394,3 +1394,12 @@
   spore: none
   receipt-refs: baba53ac-43ef-46b9-8de8-153e4257252e
   note: Exact expression tokens and complete source inverses preserve three input/output data assembly responsibilities. Existing run-steps tests cover the missing-action path; direct actor-target and validation-tool coverage was not recovered. Coherent normal runtime remains pending. All original tests/config/checker policy held; no spore.
+- ts: 2026-10-17T23:33:45.051375692Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-full-CI-workflow-repair-over933-v1
+  task: Record exact legacy cleanup failure diagnostic after hosted causal RED; GREEN pending
+  p-efficiency: 0.9
+  p-friction: 0.1
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: 60cfd6d4-3a38-4b9b-867c-e447b2eb28bc
+  note: Full19 causalRED isolates six missing-diagnostic assertions to3new controls with original16PASS. Exact helper implementation and shell syntax are source evidence; unchanged normal hosted fullGREEN and original cleanup cause diagnosis remain pending. No spore.
