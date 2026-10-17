@@ -45,11 +45,13 @@ jobs:
     needs: production-evidence
     name: Evidence-first review (eta-mu)
     # Consume the reviewed full-input/native-publication integration.
-    uses: open-hax/eta-mu/.github/workflows/opencode-code-review.yml@4eaa34d18b5e07d9f26f0ebe4d20cf7e65ef9a41
+    uses: open-hax/eta-mu/.github/workflows/opencode-code-review.yml@7112c36440d180ca183d6a3f89661cee161fdae5
     with:
       pr_head_sha: ${{ github.event.pull_request.head.sha }}
       review_timeout_minutes: 120
       opencode_version: '1.18.31'
+      muse_revision: 9d3ae4957d99880ffbfad640d283e4c4692d99fa
+      agents_revision: 580a361ee0110319cc4f3320d9982961073b66a2
       setup_eta_mu_toolchain: false
       evidence_gates_script: |
         run_gate qualifier_python_env python3 -m venv "$RUNNER_TEMP/knoxx-qualification-python"
