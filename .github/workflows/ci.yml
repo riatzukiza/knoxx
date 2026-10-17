@@ -1,12 +1,12 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
-name: Genuine three source mutations on pinned CMS (QA only)
+name: One full baseline stdout timing on pinned CMS (QA only)
 on:
   workflow_dispatch:
 permissions:
   contents: read
 jobs:
-  genuine-three-mutations:
-    name: One real baseline and three canonical source mutations
+  full-baseline-timing:
+    name: One complete registered baseline with byte-preserving stdout timing
     if: ${{ github.repository_id == '1401249297' && github.event.repository.private == false }}
     runs-on: ubuntu-24.04
     timeout-minutes: 90
@@ -23,7 +23,7 @@ jobs:
           python3 - <<'PRE'
           import hashlib, json, os, pathlib, subprocess
           root = pathlib.Path(os.environ['GITHUB_WORKSPACE']).resolve(strict=True)
-          proof = pathlib.Path(os.environ['RUNNER_TEMP']) / ('mutation-pilot-' + os.environ['GITHUB_RUN_ID'] + '-' + os.environ['GITHUB_RUN_ATTEMPT'])
+          proof = pathlib.Path(os.environ['RUNNER_TEMP']) / ('baseline-timing-' + os.environ['GITHUB_RUN_ID'] + '-' + os.environ['GITHUB_RUN_ATTEMPT'])
           proof.mkdir(mode=0o700)
           def read(args):
               r = subprocess.run(['git', '-C', str(root), *args], capture_output=True, timeout=30)
@@ -57,7 +57,7 @@ jobs:
           root = pathlib.Path(os.environ['GITHUB_WORKSPACE']).resolve(strict=True)
           temp = pathlib.Path(os.environ['RUNNER_TEMP']).resolve(strict=True)
           stem = os.environ['GITHUB_RUN_ID'] + '-' + os.environ['GITHUB_RUN_ATTEMPT']
-          proof = temp / ('mutation-pilot-' + stem)
+          proof = temp / ('baseline-timing-' + stem)
           old = root / '_deps'
           new = temp / ('mutation-setup-source-' + stem)
           assert old.resolve(strict=True) == old and old.is_dir() and [p.name for p in old.iterdir()] == ['openplanner']
@@ -88,14 +88,14 @@ jobs:
         run: |
           set -euo pipefail
           set -C
-          proof="$RUNNER_TEMP/mutation-pilot-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          proof="$RUNNER_TEMP/baseline-timing-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
           python3 backend/scripts/run-mutation-process.py \
             --timeout-ms 600000 --max-output-bytes 8388608 --cleanup-ms 30000 \
             -- python3 backend/test/python/test_mutation_process.py \
             > "$proof/registered-python-native.json" 2> "$proof/registered-python-adapter.stderr"
           python3 - <<'PYTHON_GATE'
           import hashlib, json, os, pathlib
-          proof = pathlib.Path(os.environ['RUNNER_TEMP']) / ('mutation-pilot-' + os.environ['GITHUB_RUN_ID'] + '-' + os.environ['GITHUB_RUN_ATTEMPT'])
+          proof = pathlib.Path(os.environ['RUNNER_TEMP']) / ('baseline-timing-' + os.environ['GITHUB_RUN_ID'] + '-' + os.environ['GITHUB_RUN_ATTEMPT'])
           native = json.loads((proof / 'registered-python-native.json').read_bytes())
           assert not (proof / 'registered-python-adapter.stderr').read_bytes()
           assert native['exit-code'] == 0 and native['termination'] == 'exited'
@@ -111,14 +111,14 @@ jobs:
         run: |
           set -euo pipefail
           set -C
-          proof="$RUNNER_TEMP/mutation-pilot-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          proof="$RUNNER_TEMP/baseline-timing-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
           python3 scripts/run-mutation-process.py \
             --timeout-ms 600000 --max-output-bytes 8388608 --cleanup-ms 30000 \
             -- clojure -M:mutation-test \
             > "$proof/registered-unit-native.json" 2> "$proof/registered-unit-adapter.stderr"
           python3 - <<'UNIT_GATE'
           import hashlib, json, os, pathlib
-          proof = pathlib.Path(os.environ['RUNNER_TEMP']) / ('mutation-pilot-' + os.environ['GITHUB_RUN_ID'] + '-' + os.environ['GITHUB_RUN_ATTEMPT'])
+          proof = pathlib.Path(os.environ['RUNNER_TEMP']) / ('baseline-timing-' + os.environ['GITHUB_RUN_ID'] + '-' + os.environ['GITHUB_RUN_ATTEMPT'])
           native = json.loads((proof / 'registered-unit-native.json').read_bytes())
           assert not (proof / 'registered-unit-adapter.stderr').read_bytes()
           assert native['exit-code'] == 0 and native['termination'] == 'exited'
@@ -128,27 +128,68 @@ jobs:
           assert len(output) == native['captured-output-bytes']
           print(native['output'])
           UNIT_GATE
-      - name: Run the canonical baseline and three actual source mutations
+      - name: Materialize only the frozen QA helpers outside the application tree
+        shell: bash
+        run: |
+          python3 - <<'HELPERS'
+          import base64, hashlib, json, os, pathlib
+          proof = pathlib.Path(os.environ['RUNNER_TEMP']) / ('baseline-timing-' + os.environ['GITHUB_RUN_ID'] + '-' + os.environ['GITHUB_RUN_ATTEMPT'])
+          assert proof.resolve(strict=True) == proof and proof.stat().st_uid == os.getuid() and os.getuid() != 0
+          helpers = {'qa-stdout-timing-observer.mjs': ('aW1wb3J0IHsgc3Bhd24gfSBmcm9tICdub2RlOmNoaWxkX3Byb2Nlc3MnOwppbXBvcnQgeyBjb25zdGFudHMgYXMgb3NDb25zdGFudHMgfSBmcm9tICdub2RlOm9zJzsKaW1wb3J0IHsgVHJhbnNmb3JtIH0gZnJvbSAnbm9kZTpzdHJlYW0nOwppbXBvcnQgeyBmaW5pc2hlZCB9IGZyb20gJ25vZGU6c3RyZWFtL3Byb21pc2VzJzsKaW1wb3J0IGZzIGZyb20gJ25vZGU6ZnMnOwppbXBvcnQgcGF0aCBmcm9tICdub2RlOnBhdGgnOwppbXBvcnQgeyBmaWxlVVJMVG9QYXRoIH0gZnJvbSAnbm9kZTp1cmwnOwppbXBvcnQgeyBjcmVhdGVIYXNoIH0gZnJvbSAnbm9kZTpjcnlwdG8nOwoKY29uc3QgUkFXX0xJTUlUID0gOCAqIDEwMjQgKiAxMDI0Owpjb25zdCBUSU1JTkdfTElNSVQgPSAyICogMTAyNCAqIDEwMjQ7CmNvbnN0IFJPV19MSU1JVCA9IDIwMDAwOwpjb25zdCBSVU5ORVJfU0hBMjU2ID0gJzRhNDIwZDQ3Y2ExNzc3NDJmZmJmYmIxY2RlZGMxZjY1NDUwYjRiOWRjYzIyNzhkNDdiNzlkYmZjNGQ0MjVlMGQnOwoKLy8gVGhpcyB0YXAgbmV2ZXIgcmVwbGFjZXMgYSBjaGlsZCBXcml0YWJsZS53cml0ZSBtZXRob2Qgb3IgYSBjYWxsYmFjay4KLy8gTmF0aXZlIHBpcGUoKSByZXRhaW5zIGl0cyB3cml0ZSBvdmVybG9hZHMsIGNhbGxiYWNrL2Vycm9yIGhhbmRsaW5nIGFuZAovLyBiYWNrcHJlc3N1cmUuIFRoZSBleGFjdCBpbnB1dCBCdWZmZXIgaXMgcGFzc2VkIHRvIHRoZSBkb3duc3RyZWFtIHdyaXRlci4KZXhwb3J0IGNsYXNzIEJ5dGVUaW1pbmdUYXAgZXh0ZW5kcyBUcmFuc2Zvcm0gewogIGNvbnN0cnVjdG9yKHsgY2xvY2ssIHdyaXRlUmF3LCByZWNvcmQgfSkgewogICAgc3VwZXIoKTsKICAgIHRoaXMuY2xvY2sgPSBjbG9jazsKICAgIHRoaXMud3JpdGVSYXcgPSB3cml0ZVJhdzsKICAgIHRoaXMucmVjb3JkID0gcmVjb3JkOwogICAgdGhpcy5ieXRlcyA9IDA7CiAgICB0aGlzLmNodW5rcyA9IDA7CiAgICB0aGlzLm9ic2VydmF0aW9uRXJyb3JzID0gW107CiAgfQoKICBfdHJhbnNmb3JtKGNodW5rLCBfZW5jb2RpbmcsIGNhbGxiYWNrKSB7CiAgICBjb25zdCBvZmZzZXQgPSB0aGlzLmJ5dGVzOwogICAgdGhpcy5ieXRlcyArPSBjaHVuay5sZW5ndGg7CiAgICB0aGlzLmNodW5rcyArPSAxOwogICAgdHJ5IHsKICAgICAgY29uc3QgYXQgPSB0aGlzLmNsb2NrKCk7CiAgICAgIHRoaXMud3JpdGVSYXcoY2h1bmspOwogICAgICB0aGlzLnJlY29yZCh7IGtpbmQ6ICdzdGRvdXQtY2h1bmstYXJyaXZhbCcsIGluZGV4OiB0aGlzLmNodW5rcywKICAgICAgICBhdE5TOiBhdC50b1N0cmluZygpLCBvZmZzZXQsIGJ5dGVzOiBjaHVuay5sZW5ndGggfSk7CiAgICB9IGNhdGNoIChlcnJvcikgewogICAgICBpZiAodGhpcy5vYnNlcnZhdGlvbkVycm9ycy5sZW5ndGggPCA4KSB7CiAgICAgICAgdGhpcy5vYnNlcnZhdGlvbkVycm9ycy5wdXNoKFN0cmluZyhlcnJvcj8ubWVzc2FnZSA/PyBlcnJvcikuc2xpY2UoMCwgNTAwKSk7CiAgICAgIH0KICAgIH0KICAgIC8vIE9ic2VydmVyIGZhaWx1cmUgaW52YWxpZGF0ZXMgdGhlIGRpYWdub3N0aWMgaW5kZXBlbmRlbnRseS4gSXQgZG9lcyBub3QKICAgIC8vIHRydW5jYXRlLCByZXBsYWNlIG9yIHN5bnRoZXNpemUgY2hpbGQgYnl0ZXMsIG5vciBzdG9wIHRoZSBmdWxsIHN1aXRlLgogICAgY2FsbGJhY2sobnVsbCwgY2h1bmspOwogIH0KfQoKZnVuY3Rpb24gcmVxdWlyZUNvbmRpdGlvbihjb25kaXRpb24sIG1lc3NhZ2UpIHsKICBpZiAoIWNvbmRpdGlvbikgdGhyb3cgbmV3IEVycm9yKG1lc3NhZ2UpOwp9CgpmdW5jdGlvbiB3cml0ZUFsbChmZCwgYnVmZmVyKSB7CiAgbGV0IG9mZnNldCA9IDA7CiAgd2hpbGUgKG9mZnNldCA8IGJ1ZmZlci5sZW5ndGgpIHsKICAgIGNvbnN0IHdyaXR0ZW4gPSBmcy53cml0ZVN5bmMoZmQsIGJ1ZmZlciwgb2Zmc2V0LCBidWZmZXIubGVuZ3RoIC0gb2Zmc2V0KTsKICAgIHJlcXVpcmVDb25kaXRpb24od3JpdHRlbiA+IDAsICdFdmlkZW5jZSB3cml0ZSBtYWRlIG5vIHByb2dyZXNzJyk7CiAgICBvZmZzZXQgKz0gd3JpdHRlbjsKICB9Cn0KCmFzeW5jIGZ1bmN0aW9uIG9ic2VydmUoZXZpZGVuY2VEaXJlY3RvcnkpIHsKICByZXF1aXJlQ29uZGl0aW9uKHByb2Nlc3MuZ2V0dWlkKCkgIT09IDAsICdOb25yb290IHdvcmtlciByZXF1aXJlZCcpOwogIHJlcXVpcmVDb25kaXRpb24ocGF0aC5pc0Fic29sdXRlKGV2aWRlbmNlRGlyZWN0b3J5KSwgJ0Fic29sdXRlIGV2aWRlbmNlIGRpcmVjdG9yeSByZXF1aXJlZCcpOwogIGNvbnN0IHBhcmVudCA9IHBhdGguZGlybmFtZShldmlkZW5jZURpcmVjdG9yeSk7CiAgcmVxdWlyZUNvbmRpdGlvbihmcy5yZWFscGF0aFN5bmMocGFyZW50KSA9PT0gcGF0aC5yZXNvbHZlKHBhcmVudCksICdQaHlzaWNhbCBldmlkZW5jZSBwYXJlbnQgcmVxdWlyZWQnKTsKICByZXF1aXJlQ29uZGl0aW9uKGZzLnN0YXRTeW5jKHBhcmVudCkudWlkID09PSBwcm9jZXNzLmdldHVpZCgpLCAnRXZpZGVuY2UgcGFyZW50IG93bmVyIGNoYW5nZWQnKTsKICBmcy5ta2RpclN5bmMoZXZpZGVuY2VEaXJlY3RvcnksIHsgbW9kZTogMG83MDAgfSk7CiAgcmVxdWlyZUNvbmRpdGlvbihmcy5yZWFscGF0aFN5bmMoZXZpZGVuY2VEaXJlY3RvcnkpID09PSBldmlkZW5jZURpcmVjdG9yeSwgJ0V2aWRlbmNlIGRpcmVjdG9yeSBjaGFuZ2VkJyk7CiAgY29uc3QgcnVubmVyID0gcGF0aC5yZXNvbHZlKCdzY3JpcHRzL3J1bi1tdXRhdGlvbi10ZXN0cy5tanMnKTsKICByZXF1aXJlQ29uZGl0aW9uKGZzLmxzdGF0U3luYyhydW5uZXIpLmlzRmlsZSgpICYmICFmcy5sc3RhdFN5bmMocnVubmVyKS5pc1N5bWJvbGljTGluaygpLCAnUnVubmVyIGlzIG5vdCByZWd1bGFyJyk7CiAgcmVxdWlyZUNvbmRpdGlvbihjcmVhdGVIYXNoKCdzaGEyNTYnKS51cGRhdGUoZnMucmVhZEZpbGVTeW5jKHJ1bm5lcikpLmRpZ2VzdCgnaGV4JykgPT09IFJVTk5FUl9TSEEyNTYsCiAgICAnUmVnaXN0ZXJlZCBydW5uZXIgYnl0ZXMgY2hhbmdlZCcpOwogIGNvbnN0IGZsYWdzID0gZnMuY29uc3RhbnRzLk9fQ1JFQVQgfCBmcy5jb25zdGFudHMuT19FWENMIHwgZnMuY29uc3RhbnRzLk9fV1JPTkxZIHwgZnMuY29uc3RhbnRzLk9fTk9GT0xMT1c7CiAgY29uc3QgcmF3ID0gZnMub3BlblN5bmMocGF0aC5qb2luKGV2aWRlbmNlRGlyZWN0b3J5LCAnc3Rkb3V0LnJhdycpLCBmbGFncywgMG82MDApOwogIGNvbnN0IHRpbWluZyA9IGZzLm9wZW5TeW5jKHBhdGguam9pbihldmlkZW5jZURpcmVjdG9yeSwgJ3N0ZG91dC1jaHVuay1hcnJpdmFscy5qc29ubCcpLCBmbGFncywgMG82MDApOwogIGNvbnN0IG5vdyA9IHByb2Nlc3MuaHJ0aW1lLmJpZ2ludC5iaW5kKHByb2Nlc3MuaHJ0aW1lKTsKICBjb25zdCBoYXNoID0gY3JlYXRlSGFzaCgnc2hhMjU2Jyk7CiAgbGV0IHJhd0J5dGVzID0gMCwgdGltaW5nQnl0ZXMgPSAwLCByb3dzID0gMDsKICBjb25zdCBkaWFnbm9zdGljRXJyb3JzID0gW107CiAgY29uc3QgcmVjb3JkID0gKHZhbHVlKSA9PiB7CiAgICBjb25zdCBieXRlcyA9IEJ1ZmZlci5mcm9tKGAke0pTT04uc3RyaW5naWZ5KHZhbHVlKX1cbmApOwogICAgcmVxdWlyZUNvbmRpdGlvbihyb3dzICsgMSA8PSBST1dfTElNSVQgJiYgdGltaW5nQnl0ZXMgKyBieXRlcy5sZW5ndGggPD0gVElNSU5HX0xJTUlULAogICAgICAnVGltaW5nIGV2aWRlbmNlIGJvdW5kIHJlYWNoZWQnKTsKICAgIHdyaXRlQWxsKHRpbWluZywgYnl0ZXMpOwogICAgdGltaW5nQnl0ZXMgKz0gYnl0ZXMubGVuZ3RoOwogICAgcm93cyArPSAxOwogIH07CiAgY29uc3Qgc2FmZVJlY29yZCA9ICh2YWx1ZSkgPT4gewogICAgdHJ5IHsgcmVjb3JkKHZhbHVlKTsgfQogICAgY2F0Y2ggKGVycm9yKSB7IGlmIChkaWFnbm9zdGljRXJyb3JzLmxlbmd0aCA8IDgpIGRpYWdub3N0aWNFcnJvcnMucHVzaChTdHJpbmcoZXJyb3IubWVzc2FnZSkuc2xpY2UoMCwgNTAwKSk7IH0KICB9OwogIGNvbnN0IHRhcCA9IG5ldyBCeXRlVGltaW5nVGFwKHsgY2xvY2s6IG5vdywgcmVjb3JkLAogICAgd3JpdGVSYXc6IChjaHVuaykgPT4gewogICAgICByZXF1aXJlQ29uZGl0aW9uKHJhd0J5dGVzICsgY2h1bmsubGVuZ3RoIDw9IFJBV19MSU1JVCwgJ1JhdyBzdGRvdXQgZXZpZGVuY2UgYm91bmQgcmVhY2hlZCcpOwogICAgICB3cml0ZUFsbChyYXcsIGNodW5rKTsKICAgICAgaGFzaC51cGRhdGUoY2h1bmspOwogICAgICByYXdCeXRlcyArPSBjaHVuay5sZW5ndGg7CiAgICB9IH0pOwogIGNvbnN0IHN0YXJ0ZWQgPSBub3coKTsKICByZWNvcmQoeyBraW5kOiAnb2JzZXJ2ZXItc3RhcnQnLCBhdE5TOiBzdGFydGVkLnRvU3RyaW5nKCksIHBpZDogcHJvY2Vzcy5waWQsCiAgICBydW5uZXIsIHJ1bm5lclNIQTI1NjogUlVOTkVSX1NIQTI1NiwKICAgIHNlbWFudGljczogJ1RpbWVzdGFtcHMgYXJlIHBhcmVudCBzdGRvdXQgY2h1bmsgYXJyaXZhbHMsIG5vdCBleGFjdCBjaGlsZCB3cml0ZXMgb3IgcGVyLXRlc3QgZHVyYXRpb25zLicgfSk7CiAgLy8gU2FtZSByZWFsIHJlZ2lzdGVyZWQgcnVubmVyLCBhcmd1bWVudHMsIGN3ZCBhbmQgZW52aXJvbm1lbnQuIFN0ZGVyciByZXRhaW5zCiAgLy8gdGhlIGV4aXN0aW5nIGluaGVyaXRlZCByb3V0ZSB0byB0aGUgb3JpZ2luYWwgb3V0ZXIgbmF0aXZlIGNhcHR1cmUuCiAgY29uc3QgY2hpbGQgPSBzcGF3bihwcm9jZXNzLmV4ZWNQYXRoLCBbJ3NjcmlwdHMvcnVuLW11dGF0aW9uLXRlc3RzLm1qcyddLCB7CiAgICBzdGRpbzogWydpbmhlcml0JywgJ3BpcGUnLCAnaW5oZXJpdCddLCBlbnY6IHByb2Nlc3MuZW52LAogIH0pOwogIGxldCBleGl0RXZlbnQgPSBudWxsLCBzcGF3bkVycm9yID0gbnVsbDsKICBjb25zdCBjbG9zZWQgPSBuZXcgUHJvbWlzZSgocmVzb2x2ZSkgPT4gewogICAgY2hpbGQub25jZSgnZXJyb3InLCAoZXJyb3IpID0+IHsKICAgICAgc3Bhd25FcnJvciA9IFN0cmluZyhlcnJvci5tZXNzYWdlKS5zbGljZSgwLCA1MDApOwogICAgICBzYWZlUmVjb3JkKHsga2luZDogJ3NwYXduLWVycm9yJywgYXROUzogbm93KCkudG9TdHJpbmcoKSB9KTsKICAgIH0pOwogICAgY2hpbGQub25jZSgnZXhpdCcsIChjb2RlLCBzaWduYWwpID0+IHsKICAgICAgZXhpdEV2ZW50ID0geyBjb2RlLCBzaWduYWwsIGF0TlM6IG5vdygpLnRvU3RyaW5nKCkgfTsKICAgICAgc2FmZVJlY29yZCh7IGtpbmQ6ICdjaGlsZC1leGl0JywgLi4uZXhpdEV2ZW50IH0pOwogICAgfSk7CiAgICBjaGlsZC5vbmNlKCdjbG9zZScsIChjb2RlLCBzaWduYWwpID0+IHJlc29sdmUoeyBjb2RlLCBzaWduYWwsIGF0TlM6IG5vdygpLnRvU3RyaW5nKCkgfSkpOwogIH0pOwogIGNoaWxkLnN0ZG91dC5vbignZXJyb3InLCAoZXJyb3IpID0+IGRpYWdub3N0aWNFcnJvcnMucHVzaChgc3Rkb3V0OiAke1N0cmluZyhlcnJvci5tZXNzYWdlKS5zbGljZSgwLCA1MDApfWApKTsKICB0YXAub24oJ2Vycm9yJywgKGVycm9yKSA9PiBkaWFnbm9zdGljRXJyb3JzLnB1c2goYHRhcDogJHtTdHJpbmcoZXJyb3IubWVzc2FnZSkuc2xpY2UoMCwgNTAwKX1gKSk7CiAgY2hpbGQuc3Rkb3V0LnBpcGUodGFwKS5waXBlKHByb2Nlc3Muc3Rkb3V0LCB7IGVuZDogZmFsc2UgfSk7CiAgY29uc3QgZHJhaW5lZCA9IGZpbmlzaGVkKHRhcCkudGhlbigoKSA9PiB0cnVlLCAoZXJyb3IpID0+IHsKICAgIGRpYWdub3N0aWNFcnJvcnMucHVzaChgdGFwLWZpbmlzaGVkOiAke1N0cmluZyhlcnJvci5tZXNzYWdlKS5zbGljZSgwLCA1MDApfWApOwogICAgcmV0dXJuIGZhbHNlOwogIH0pOwogIGNvbnN0IGNsb3NlRXZlbnQgPSBhd2FpdCBjbG9zZWQ7CiAgY29uc3Qgc3Rkb3V0RHJhaW5lZCA9IGF3YWl0IGRyYWluZWQ7CiAgc2FmZVJlY29yZCh7IGtpbmQ6ICdjaGlsZC1jbG9zZS1hbmQtc3Rkb3V0LWRyYWluZWQnLCAuLi5jbG9zZUV2ZW50LCBzdGRvdXREcmFpbmVkLAogICAgb2JzZXJ2ZWRBdE5TOiBub3coKS50b1N0cmluZygpLCBjaHVua3M6IHRhcC5jaHVua3MsIGJ5dGVzOiB0YXAuYnl0ZXMgfSk7CiAgZGlhZ25vc3RpY0Vycm9ycy5wdXNoKC4uLnRhcC5vYnNlcnZhdGlvbkVycm9ycyk7CiAgZm9yIChjb25zdCBbbGFiZWwsIGZkXSBvZiBbWydyYXcnLCByYXddLCBbJ3RpbWluZycsIHRpbWluZ11dKSB7CiAgICB0cnkgeyBmcy5jbG9zZVN5bmMoZmQpOyB9CiAgICBjYXRjaCAoZXJyb3IpIHsgZGlhZ25vc3RpY0Vycm9ycy5wdXNoKGAke2xhYmVsfS1jbG9zZTogJHtTdHJpbmcoZXJyb3IubWVzc2FnZSkuc2xpY2UoMCwgNTAwKX1gKTsgfQogIH0KICBjb25zdCByZXN1bHQgPSB7IHNjaGVtYTogJ3FhLnN0ZG91dC1jaHVuay10aW1pbmcvdjEnLCBzdGFydGVkQXROUzogc3RhcnRlZC50b1N0cmluZygpLAogICAgY2hpbGRQSUQ6IGNoaWxkLnBpZCA/PyBudWxsLCBleGl0RXZlbnQsIGNsb3NlRXZlbnQsIHN0ZG91dERyYWluZWQsIHNwYXduRXJyb3IsCiAgICByYXdTdGRvdXRCeXRlczogcmF3Qnl0ZXMsIG9ic2VydmVkU3Rkb3V0Qnl0ZXM6IHRhcC5ieXRlcywgcmF3U3Rkb3V0U0hBMjU2OiBoYXNoLmRpZ2VzdCgnaGV4JyksCiAgICBjaHVua3M6IHRhcC5jaHVua3MsIHRpbWluZ1Jvd3M6IHJvd3MsIHRpbWluZ0J5dGVzLCBkaWFnbm9zdGljRXJyb3JzOiBkaWFnbm9zdGljRXJyb3JzLnNsaWNlKDAsIDI0KSwKICAgIG9ic2VydmF0aW9uQ29tcGxldGU6ICFzcGF3bkVycm9yICYmIHN0ZG91dERyYWluZWQgJiYgcmF3Qnl0ZXMgPT09IHRhcC5ieXRlcyAmJiBkaWFnbm9zdGljRXJyb3JzLmxlbmd0aCA9PT0gMCwKICAgIG91dHB1dFNlbWFudGljczogJ3N0ZG91dCBieXRlcyBmb3J3YXJkZWQgdW5jaGFuZ2VkOyBzdGRlcnIgaW5oZXJpdGVkOyBvcmlnaW5hbCBjaGlsZCB3cml0ZSBBUEkgdW50b3VjaGVkJywKICAgIGxpbWl0czogJ0NodW5rIGFycml2YWwgY2xvY2tzIGluY2x1ZGUgb2JzZXJ2ZXIgc2NoZWR1bGluZy9waXBlIGJ1ZmZlcmluZyBhbmQgc21hbGwgc3luY2hyb25vdXMgZXZpZGVuY2Ugb3ZlcmhlYWQuJyB9OwogIGZzLndyaXRlRmlsZVN5bmMocGF0aC5qb2luKGV2aWRlbmNlRGlyZWN0b3J5LCAnb3V0Y29tZS5qc29uJyksIGAke0pTT04uc3RyaW5naWZ5KHJlc3VsdCwgbnVsbCwgMil9XG5gLAogICAgeyBmbGFnOiAnd3gnLCBtb2RlOiAwbzYwMCB9KTsKICBwcm9jZXNzLmV4aXRDb2RlID0gY2xvc2VFdmVudC5zaWduYWwKICAgID8gMTI4ICsgKG9zQ29uc3RhbnRzLnNpZ25hbHNbY2xvc2VFdmVudC5zaWduYWxdID8/IDEpIDogKGNsb3NlRXZlbnQuY29kZSA/PyAyKTsKICAvLyBObyBwcm9jZXNzLmV4aXQsIHNpZ25hbCwgdGltZXIsIGNhbmNlbGxhdGlvbiBvciBjaGlsZCB0ZXJtaW5hdGlvbi4gVGhlCiAgLy8gb3JpZ2luYWwgb3V0ZXIgcHJvY2VzcyBzdXBlcnZpc29yIG93bnMgZGVhZGxpbmVzIGFuZCBkZXNjZW5kYW50IGNsZWFudXAuCn0KCmlmIChwcm9jZXNzLmFyZ3ZbMV0gJiYgcGF0aC5yZXNvbHZlKHByb2Nlc3MuYXJndlsxXSkgPT09IGZpbGVVUkxUb1BhdGgoaW1wb3J0Lm1ldGEudXJsKSkgewogIGlmIChwcm9jZXNzLmFyZ3YubGVuZ3RoICE9PSAzKSB0aHJvdyBuZXcgRXJyb3IoJ0V4YWN0bHkgb25lIGZyZXNoIGFic29sdXRlIGV2aWRlbmNlIGRpcmVjdG9yeSByZXF1aXJlZCcpOwogIGF3YWl0IG9ic2VydmUocHJvY2Vzcy5hcmd2WzJdKTsKfQo=', 'b3e0f807ece3d149517104cc102286e61f40f12db693aedd1434c0a4c45bf34b'),
+                     'qa-one-full-baseline-timing-v2-terminal-cleanup.clj': ('KHJlcXVpcmUgJ1tjbG9qdXJlLmRhdGEuanNvbiA6YXMganNvbl0KICAgICAgICAgJ1tjbG9qdXJlLmphdmEuaW8gOmFzIGlvXQogICAgICAgICAnW2Nsb2p1cmUuc3RyaW5nIDphcyBzdHJdCiAgICAgICAgICdba25veHgubXV0YXRpb24tdGVzdCA6YXMgbXV0YXRpb25dKQoKOzsgUUEgY29tcG9zaXRpb24gb25seS4gQWxsIGNvbXBpbGUsIHBheWxvYWQvc291cmNlIGNoZWNrcywgdGVzdCBjb3VudGVycyBhbmQKOzsgc3VjY2VzcyBwcmVkaWNhdGVzIGJlbG93IGFyZSB0aGUgdW5jaGFuZ2VkIGNhbm9uaWNhbCBwdWJsaWMgZnVuY3Rpb25zLgo7OyBUaGVyZSBpcyBubyBtdXRhdGlvbiwgbmV3IGNsYXNzaWZpZXIsIGV4aXQgc2hvcnRjdXQgb3IgcHJvZHVjdCByZWRlZmluaXRpb24uCih0cnkKKGxldCBbW29ic2VydmVyIHByb2ZpbGUtZGlyIHJlcG9ydC1maWxlXSAqY29tbWFuZC1saW5lLWFyZ3MqCiAgICAgIHNvdXJjZSAiMTNjODFhMTNlMWQ0ZmM3NzcyNjI5ZWEyNTdiYmUxZDQxZDhlYzA1YyIKICAgICAgdHJlZSAiZDg4MDk0NTNlM2ZkZDJiNTE5MDBlMjRiOTkxYTRhM2M1OTZmYjJkZSIKICAgICAgb3B0cyAoYXNzb2MgKG11dGF0aW9uL3BhcnNlLWFyZ3MgWyItLXJ1biIgIi0tdGltZW91dC1tcyIgIjI0MDAwMCJdKQogICAgICAgICAgICAgICAgICA6c291cmNlLXNoYSBzb3VyY2UgOnNvdXJjZS1iaW5kaW5nIHs6a2luZCAiYmFzZWxpbmUifQogICAgICAgICAgICAgICAgICA6b3V0cHV0LWRpciAidGFyZ2V0L211dGF0aW9uLXRpbWluZyIpXQogICh3aGVuLW5vdCAoYW5kICg9IDMgKGNvdW50ICpjb21tYW5kLWxpbmUtYXJncyopKQogICAgICAgICAgICAgICAgIChldmVyeT8gIyguaXNBYnNvbHV0ZSAoaW8vZmlsZSAlKSkgW29ic2VydmVyIHByb2ZpbGUtZGlyIHJlcG9ydC1maWxlXSkKICAgICAgICAgICAgICAgICAoPSBzb3VyY2UgKHN0ci90cmltIChtdXRhdGlvbi9naXQtcmVzdWx0ISBvcHRzICJyZXYtcGFyc2UiICJIRUFEIikpKQogICAgICAgICAgICAgICAgICg9IHRyZWUgKHN0ci90cmltIChtdXRhdGlvbi9naXQtcmVzdWx0ISBvcHRzICJyZXYtcGFyc2UiICJIRUFEXnt0cmVlfSIpKSkKICAgICAgICAgICAgICAgICAobm90ICguZXhpc3RzIChpby9maWxlICJ0YXJnZXQvbXV0YXRpb24tdGltaW5nL3BheWxvYWQtc3RvcmUiKSkpCiAgICAgICAgICAgICAgICAgKG5vdCAoLmV4aXN0cyAoaW8vZmlsZSBwcm9maWxlLWRpcikpKQogICAgICAgICAgICAgICAgIChub3QgKC5leGlzdHMgKGlvL2ZpbGUgcmVwb3J0LWZpbGUpKSkpCiAgICAodGhyb3cgKGV4LWluZm8gIkZyZXNoIGV4YWN0LXNvdXJjZSB0aW1pbmcgZGlhZ25vc3RpYyBpbnB1dHMgcmVxdWlyZWQiIHt9KSkpCiAgKG11dGF0aW9uL2Fzc2VydC1jbGVhbi10cmVlISBvcHRzKQogIChsZXQgW2NvbXBpbGUtcmVzdWx0IChtdXRhdGlvbi9leGVjdXRpb24tZXZpZGVuY2UgKG11dGF0aW9uL2NvbXBpbGUtbXV0YW50ISBvcHRzKSkKICAgICAgICBjb21waWxlLW9rPyAobXV0YXRpb24vY29tcGlsZWQ/IGNvbXBpbGUtcmVzdWx0KQogICAgICAgIHRlc3Qtb3B0cyAoYXNzb2Mgb3B0cyA6cGF5bG9hZCAoOnBheWxvYWQgY29tcGlsZS1yZXN1bHQpKQogICAgICAgIHNvdXJjZS1iZWZvcmUgKHdoZW4gY29tcGlsZS1vaz8gKG11dGF0aW9uL2Fzc2VydC1zb3VyY2UtY3VzdG9keSEgdGVzdC1vcHRzKSkKICAgICAgICBwYXlsb2FkLWJlZm9yZSAod2hlbiBjb21waWxlLW9rPyAobXV0YXRpb24vYXNzZXJ0LXBheWxvYWQtY3VzdG9keSEgdGVzdC1vcHRzKSkKICAgICAgICByZXN1bHQgKHdoZW4gY29tcGlsZS1vaz8KICAgICAgICAgICAgICAgICAobXV0YXRpb24vZXhlY3V0aW9uLWV2aWRlbmNlCiAgICAgICAgICAgICAgICAgIChtdXRhdGlvbi9ydW4tcHJvY2VzcyEKICAgICAgICAgICAgICAgICAgIHs6Y21kIFsibm9kZSIgb2JzZXJ2ZXIgcHJvZmlsZS1kaXJdIDp0aW1lb3V0LW1zIDI0MDAwMH0pKSkKICAgICAgICBwYXlsb2FkLWFmdGVyICh3aGVuIGNvbXBpbGUtb2s/IChtdXRhdGlvbi9hc3NlcnQtcGF5bG9hZC1jdXN0b2R5ISB0ZXN0LW9wdHMpKQogICAgICAgIHNvdXJjZS1hZnRlciAobXV0YXRpb24vYXNzZXJ0LXNvdXJjZS1jdXN0b2R5ISBvcHRzKQogICAgICAgIG9ic2VydmF0aW9uICh3aGVuIGNvbXBpbGUtb2s/CiAgICAgICAgICAgICAgICAgICAgICAoanNvbi9yZWFkLXN0ciAoc2x1cnAgKGlvL2ZpbGUgcHJvZmlsZS1kaXIgIm91dGNvbWUuanNvbiIpKSA6a2V5LWZuIGtleXdvcmQpKQogICAgICAgIHRlc3Qtb2s/IChhbmQgcmVzdWx0IChtdXRhdGlvbi9wYXNzZWQtdGVzdHM/IHJlc3VsdCkpCiAgICAgICAgZGlhZ25vc3RpYy1vaz8gKGFuZCBjb21waWxlLW9rPyB0ZXN0LW9rPyAoOm9ic2VydmF0aW9uQ29tcGxldGUgb2JzZXJ2YXRpb24pKQogICAgICAgIGV2aWRlbmNlIHs6a2luZCAiUUEgZnVsbC1iYXNlbGluZSBzdGRvdXQgdGltaW5nIG9ubHk7IHplcm8gbXV0YXRpb24vY2FtcGFpZ24gY3JlZGl0IgogICAgICAgICAgICAgICAgICA6c291cmNlIHNvdXJjZSA6dHJlZSB0cmVlIDpjb21waWxlIGNvbXBpbGUtcmVzdWx0IDp0ZXN0IHJlc3VsdAogICAgICAgICAgICAgICAgICA6dGVzdC1jb3VudGVycyAod2hlbiByZXN1bHQgKG11dGF0aW9uL3Rlc3QtY291bnRlcnMgKDpvdXRwdXQgcmVzdWx0KSkpCiAgICAgICAgICAgICAgICAgIDphY3R1YWwtc291cmNlLWJlZm9yZSBzb3VyY2UtYmVmb3JlIDphY3R1YWwtc291cmNlLWFmdGVyIHNvdXJjZS1hZnRlcgogICAgICAgICAgICAgICAgICA6YWN0dWFsLXBheWxvYWQtYmVmb3JlIHBheWxvYWQtYmVmb3JlIDphY3R1YWwtcGF5bG9hZC1hZnRlciBwYXlsb2FkLWFmdGVyCiAgICAgICAgICAgICAgICAgIDpvYnNlcnZhdGlvbiBvYnNlcnZhdGlvbiA6ZGlhZ25vc3RpYy1jb21wbGV0ZSBkaWFnbm9zdGljLW9rP31dCiAgICAoc3BpdCByZXBvcnQtZmlsZSAoanNvbi93cml0ZS1zdHIgZXZpZGVuY2UpKQogICAgKHdoZW4tbm90IGRpYWdub3N0aWMtb2s/CiAgICAgICh0aHJvdyAoZXgtaW5mbyAiRnVsbCBiYXNlbGluZSBvciBieXRlLXRpbWluZyBvYnNlcnZhdGlvbiBkaWQgbm90IGNvbXBsZXRlIiB7fSkpKSkpCgogIChmaW5hbGx5CiAgICA7OyBNYXRjaCB0aGUgZXhpc3RpbmcgdGVybWluYWwgQ0xJIG93bmVyOyBubyBlZmZlY3Qgb24gY2hpbGQgdGVzdCBleGl0LgogICAgKHRyeQogICAgICAoZmx1c2gpCiAgICAgIChmaW5hbGx5IChzaHV0ZG93bi1hZ2VudHMpKSkpKQo=', '7ca2b5a00ae7fdcd45c88960db5d5425acb3014bcebcbf907aa3c514278f6841')}
+          rows = {}
+          for name, (encoded, expected) in helpers.items():
+              data = base64.b64decode(encoded, validate=True)
+              assert hashlib.sha256(data).hexdigest() == expected
+              path = proof / name
+              fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o600)
+              with os.fdopen(fd, 'wb') as stream: stream.write(data)
+              assert path.read_bytes() == data
+              rows[name] = {'bytes': len(data), 'sha256': expected}
+          with (proof / 'frozen-helper-custody.json').open('x') as stream: json.dump(rows, stream, indent=2)
+          HELPERS
+      - name: Run exactly one complete canonical baseline and observe stdout arrival times
         working-directory: backend
         shell: bash
         run: |
           set -euo pipefail
           set -C
-          proof="$RUNNER_TEMP/mutation-pilot-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
-          python3 scripts/run-mutation-process.py --timeout-ms 2400000 --max-output-bytes 8388608 --cleanup-ms 30000 \
-            -- clojure -M:mutation --run --batch-count 4 --batch-index 0 --limit 3 --min-evaluated 3 \
-            --timeout-ms 240000 --report target/mutation/pilot-3.edn \
-            > "$proof/canonical-pilot-native.json" 2> "$proof/canonical-pilot-adapter.stderr"
+          proof="$RUNNER_TEMP/baseline-timing-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          python3 scripts/run-mutation-process.py --timeout-ms 1200000 --max-output-bytes 8388608 --cleanup-ms 30000 \
+            -- clojure -M "$proof/qa-one-full-baseline-timing-v2-terminal-cleanup.clj" \
+            "$proof/qa-stdout-timing-observer.mjs" "$proof/node-stdout-profile" "$proof/baseline-timing.json" \
+            > "$proof/canonical-baseline-native.json" 2> "$proof/canonical-baseline-adapter.stderr"
           python3 - <<'CHECK'
-          import json, os, pathlib
-          proof = pathlib.Path(os.environ['RUNNER_TEMP']) / ('mutation-pilot-' + os.environ['GITHUB_RUN_ID'] + '-' + os.environ['GITHUB_RUN_ATTEMPT'])
-          native = json.loads((proof / 'canonical-pilot-native.json').read_bytes())
-          assert not (proof / 'canonical-pilot-adapter.stderr').read_bytes()
+          import hashlib, json, os, pathlib
+          proof = pathlib.Path(os.environ['RUNNER_TEMP']) / ('baseline-timing-' + os.environ['GITHUB_RUN_ID'] + '-' + os.environ['GITHUB_RUN_ATTEMPT'])
+          native = json.loads((proof / 'canonical-baseline-native.json').read_bytes())
+          assert not (proof / 'canonical-baseline-adapter.stderr').read_bytes()
           assert native['exit-code'] == 0 and native['termination'] == 'exited'
-          assert native['cleanup-complete?'] and not native['capture-truncated?']
-          # The canonical harness owns baseline validity, actual rewrites, kills and restores.
-          assert pathlib.Path('target/mutation/pilot-3.edn').is_file()
-          assert pathlib.Path('target/mutation/pilot-3.edn.json').is_file()
+          assert native['cleanup-complete?'] and not native['capture-truncated?'] and not native['timed-out?']
+          output = native['output'].encode()
+          assert len(output) == native['captured-output-bytes'] and hashlib.sha256(output).hexdigest() == native['output-sha256']
+          report = json.loads((proof / 'baseline-timing.json').read_bytes())
+          assert report['source'] == '13c81a13e1d4fc7772629ea257bbe1d41d8ec05c' and report['tree'] == 'd8809453e3fdd2b51900e24b991a4a3c596fb2de'
+          assert report['diagnostic-complete'] and report['test-counters'] == {'tests': 2181, 'assertions': 12661, 'failures': 0, 'errors': 0, 'summaries': 1}
+          profile = proof / 'node-stdout-profile'
+          actual = json.loads((profile / 'outcome.json').read_bytes())
+          raw = (profile / 'stdout.raw').read_bytes()
+          assert actual['observationComplete'] and actual['stdoutDrained'] and not actual['diagnosticErrors'] and actual['spawnError'] is None
+          assert actual['rawStdoutBytes'] == actual['observedStdoutBytes'] == len(raw) and hashlib.sha256(raw).hexdigest() == actual['rawStdoutSHA256']
+          for name in ['exitEvent', 'closeEvent']:
+              assert actual[name]['code'] == 0 and actual[name]['signal'] is None
+          timing = (profile / 'stdout-chunk-arrivals.jsonl').read_bytes()
+          rows = [json.loads(line) for line in timing.splitlines()]
+          assert len(rows) == actual['timingRows'] and len(timing) == actual['timingBytes']
+          chunks = [row for row in rows if row['kind'] == 'stdout-chunk-arrival']
+          offset = 0
+          for index, row in enumerate(chunks, 1):
+              assert row['index'] == index and row['offset'] == offset and row['bytes'] > 0
+              offset += row['bytes']
+          assert offset == len(raw) and len(chunks) == actual['chunks']
+          clocks = [int(row['atNS']) for row in rows]
+          assert clocks == sorted(clocks) and rows[0]['kind'] == 'observer-start' and rows[-1]['kind'] == 'child-close-and-stdout-drained'
+          # This raw file is child stdout only. Native output also includes inherited stderr; equality is not asserted between those channels.
           print(native['output'])
           CHECK
       - name: Preserve actual final source custody without resetting it
@@ -158,7 +199,7 @@ jobs:
           python3 - <<'POST'
           import hashlib, json, os, pathlib, subprocess
           root = pathlib.Path(os.environ['GITHUB_WORKSPACE']).resolve(strict=True)
-          proof = pathlib.Path(os.environ['RUNNER_TEMP']) / ('mutation-pilot-' + os.environ['GITHUB_RUN_ID'] + '-' + os.environ['GITHUB_RUN_ATTEMPT'])
+          proof = pathlib.Path(os.environ['RUNNER_TEMP']) / ('baseline-timing-' + os.environ['GITHUB_RUN_ID'] + '-' + os.environ['GITHUB_RUN_ATTEMPT'])
           proof.mkdir(mode=0o700, exist_ok=True)
           rows = {}
           for label, args in [('head', ['rev-parse', 'HEAD']), ('tree', ['rev-parse', 'HEAD^{tree}']),
@@ -186,13 +227,13 @@ jobs:
           import hashlib, json, os, pathlib, stat, sys, time
           temp = pathlib.Path(os.environ['RUNNER_TEMP'])
           stem = os.environ['GITHUB_RUN_ID'] + '-' + os.environ['GITHUB_RUN_ATTEMPT']
-          proof = temp / ('mutation-pilot-' + stem)
+          proof = temp / ('baseline-timing-' + stem)
           proof.mkdir(mode=0o700, exist_ok=True)
-          roots = [proof, pathlib.Path(os.environ['GITHUB_WORKSPACE']) / 'backend/target/mutation', temp / 'knoxx-setup-sdk/evidence']
+          roots = [proof, pathlib.Path(os.environ['GITHUB_WORKSPACE']) / 'backend/target/mutation-timing', temp / 'knoxx-setup-sdk/evidence']
           total = 0
           count = 0
           deadline = time.monotonic() + 60
-          receipt = {'admissible': False, 'scope': 'Three-mutation pilot only; no four250 or equivalent-adjudication credit.'}
+          receipt = {'admissible': False, 'scope': 'One full baseline timing diagnostic only; zero mutation, kill, campaign or release credit.'}
           def traversal_error(error): raise error
           def paths(root):
               yield root
@@ -207,12 +248,12 @@ jobs:
                           if stat.S_ISREG(value.st_mode): count += 1; total += value.st_size
                           assert time.monotonic() <= deadline and count <= 50000
               receipt['admissible'] = total + 65536 <= 256 * 1024**2
-              assert receipt['admissible'], 'Complete pilot proof exceeds256MiB including receipt reserve'
+              assert receipt['admissible'], 'Complete baseline timing proof exceeds256MiB including receipt reserve'
           except BaseException as error:
               receipt['admissible'] = False
               receipt['artifactFailure'] = {'type': type(error).__name__, 'message': str(error)[:1000]}
           receipt.update({'rawBytes': total, 'regularFiles': count})
-          native_path = proof / 'canonical-pilot-native.json'
+          native_path = proof / 'canonical-baseline-native.json'
           if native_path.is_file() and not native_path.is_symlink() and native_path.stat().st_size <= 16 * 1024**2:
               raw = native_path.read_bytes(); receipt['nativeCaptureSHA256'] = hashlib.sha256(raw).hexdigest()
               try:
@@ -226,14 +267,14 @@ jobs:
           with pathlib.Path(os.environ['GITHUB_OUTPUT']).open('a') as stream: stream.write('admissible=' + str(receipt['admissible']).lower() + '\n')
           print(data.decode()); sys.exit(0 if receipt['admissible'] else 1)
           SIZE
-      - name: Preserve complete canonical pilot evidence
+      - name: Preserve complete canonical baseline timing evidence
         if: ${{ always() && steps.evidence-size.outputs.admissible == 'true' }}
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: genuine-three-mutation-pilot-${{ github.run_id }}-${{ github.run_attempt }}
+          name: genuine-three-baseline-timing-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
-            ${{ runner.temp }}/mutation-pilot-${{ github.run_id }}-${{ github.run_attempt }}
-            ${{ github.workspace }}/backend/target/mutation
+            ${{ runner.temp }}/baseline-timing-${{ github.run_id }}-${{ github.run_attempt }}
+            ${{ github.workspace }}/backend/target/mutation-timing
             ${{ runner.temp }}/knoxx-setup-sdk/evidence
             ${{ runner.temp }}/mutation-artifact-size-${{ github.run_id }}-${{ github.run_attempt }}.json
           if-no-files-found: error
@@ -245,7 +286,7 @@ jobs:
         if: ${{ always() && steps.evidence-size.outputs.admissible == 'false' }}
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: three-mutation-evidence-bound-failure-${{ github.run_id }}-${{ github.run_attempt }}
+          name: baseline-timing-evidence-bound-failure-${{ github.run_id }}-${{ github.run_attempt }}
           path: ${{ runner.temp }}/mutation-artifact-size-${{ github.run_id }}-${{ github.run_attempt }}.json
           if-no-files-found: error
           retention-days: 1
