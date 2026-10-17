@@ -58,10 +58,14 @@
     (vector? spec)
     (let [[lib & options] spec
           target (when (symbol? lib)
-                   (if prefix (symbol (str prefix "." lib)) lib))]
-      ;; CLJS aliases a declared symbolic library to itself as well as :as.
+                   (if prefix (symbol (str prefix "." lib)) lib))
+          explicit-nil-as? (some (fn [[option alias]]
+                                   (and (= :as option) (nil? alias)))
+                                 (partition 2 options))]
+      ;; CLJS aliases a symbolic library to itself unless :as is explicitly nil.
       ;; :as-alias is reader-only and keeps only its explicit alias binding.
-      (into (if (and target (not (some #{:as-alias} options)))
+      (into (if (and target (not explicit-nil-as?)
+                     (not (some #{:as-alias} options)))
               {target target} {})
             (keep (fn [[option alias]]
                        (when (and target (#{:as :as-alias} option)
