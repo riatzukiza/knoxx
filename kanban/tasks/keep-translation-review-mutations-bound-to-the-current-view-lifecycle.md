@@ -274,11 +274,24 @@ feedback, old/new operation ownership and read-only export success/rejection.
 For export, include actual callback-spy RED for pending -> unmount -> success
 and rejection, independently of the six mutation cases; preserve the successful
 captured download while suppressing only abandoned-view notice/error callbacks.
-First-render RED must be observed before loading/detail passive effects, not
-only after held replacement responses. Add a distinct pre-passive response case:
-change A→B, hold replacement effects, then resolve pending A inventory/manifest
-before any B request starts. Neither may reinstall A; do not substitute the
-existing A-last-after-B-starts case. Filter changes invalidate only input-dependent
+Preserve the synchronous product guarantee: the actual project boundary must
+invalidate A inventory, manifest and detail before replacement effects can run.
+Establish its before-B response causality in registered native-continuation tests
+through the actual view boundary factory and original async loader functions,
+with no replacement loader or passive cleanup available to invalidate A instead.
+Cover inventory and manifest success/rejection separately; omitting each actual
+boundary wire must make unchanged assertions fail. A manual cancel! primitive
+test is insufficient. Await the real original loader continuation, not only fetch
+or JSON fulfillment. In the browser's same held-A-inventory-and-manifest schedule,
+normal Project interaction must reach a synchronous checkpoint at entry to the
+first B-inventory fetch. Require B's live project input value, committed defaultValue
+and value attribute, and absence of A rows/detail/form/controls/feedback/manifest.
+Hold B inventory and manifest responses while the original A responses settle;
+A must install or clear no current state before B's held responses are released.
+This browser schedule does not supply the separate before-B causal evidence;
+that belongs to the actual-wiring native-continuation controls above. Polling or
+a later loading render cannot replace the request-entry DOM checkpoint.
+Filter changes invalidate only input-dependent
 loads, retaining a valid same-project manifest without refetch. Add a causal
 pending-operation -> unmount -> success/error/finally matrix and an unmount ->
 remount/new-B-pending case. Spy on the actual callbacks the runners would invoke;
@@ -406,13 +419,24 @@ The adapter must:
   must survive A. Target-page reads are explicitly allowed/read-only; the
   session-wide non-read abort backstop rejects any unexpected write, including
   target-page effects, rather than forwarding it or granting a pass.
-- Add the pre-passive stale-response order to the controlled fixture: record the
-  boundary and release pending A inventory/manifest before the first replacement
-  B request. The existing effective-server-project adoption path can provide a
-  normal-UI-triggered async boundary without adding a product test endpoint.
-  Record the actual order and assert A cannot install; if the driver/runtime
-  cannot establish this window, fail/report it rather than silently using the
-  later A-last steady-state case or granting browser credit.
+- Retain the experimental first-observer A-release order and its dated native
+  failure as a scheduling observation, without reporting it as a passing browser
+  case. Pinned React may synchronously flush discrete-input passive effects
+  before MutationObserver delivery; effective-server-project adoption consumes
+  its current inventory response before the boundary and cannot retain that
+  same response as a held original A. The current experimental case57 has no
+  B-inventory fetch-entry checkpoint and does not hold B's responses. Other
+  project/settled-feedback cases cannot supply that missing same-schedule proof.
+  After independent/native acceptance of this evidence assignment, the future
+  browser-harness repair must add the synchronous B-inventory request-entry DOM
+  checkpoint above while both original A responses remain held, and hold B's
+  inventory/manifest responses while A settles. That is a required new browser
+  observation, not an existing pass. Do not add a product timer, scheduling
+  wrapper, control or endpoint solely to manufacture the old observer window.
+  Before-B cancellation evidence belongs to the actual-wiring native-continuation
+  tests above. No browser predicate or completion rule changes before that native
+  acceptance. Preserve the original failed case and all other unchanged checks;
+  neither a renamed callback nor a later A-last schedule grants new timing credit.
 - The successor extends this same fail-closed adapter with its own legacy,
   resource-split and resource-bulk draft/reload schedules and pending-snapshot
   catch-up schedule. It owns their causal unit and browser results; the base
