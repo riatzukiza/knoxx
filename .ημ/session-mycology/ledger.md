@@ -1205,3 +1205,12 @@
   spore: none
   receipt-refs: e3e7b75b-6639-4259-83be-102e64103a6c
   note: Separate immutable model/provider map normalization from contract-loader and environment effects. Preserve configured-provider evaluation before defaults, nil/false/key/header precedence and all existing public APIs/tests; actual original/postimage/full diagnostic multiplicities distinguish three removals from retained enrich/global failures. Keep candidate runtime qualification and immutable modelQA612 evidence separate. No spore.
+- ts: 2026-10-17T14:17:43.987459498Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-mutation-source-reader-over-fde4-v1
+  task: Source-declared mutation reader identity and strict admission
+  p-efficiency: 0.82
+  p-friction: 0.36
+  p-skill-candidate: 0.0
+  spore: none
+  receipt-refs: bd60c03d-f9f5-4498-b8ce-770730a72012
+  note: Qualify source reader grammar before a genuine mutation campaign. Bind declared CLJS namespace/aliases consistently across both readers, reject unresolved active qualifiers before permissive sexpr handling, preserve raw operator/source identity, and retain valid explicit nil-alias semantics. Actual owning RED/GREEN and source-bound discovery remain distinct from compiled baseline, real mutation kills, adjudication and release. No spore.
