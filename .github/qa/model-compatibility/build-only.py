@@ -126,9 +126,11 @@ def preserve_files(root, target):
             path = Path(current) / name
             relative = path.relative_to(root).as_posix()
             if path.is_symlink():
-                resolved = path.resolve(strict=True)
-                assert resolved.is_relative_to(RUN), relative
-                rows.append({'path': relative, 'symlink': os.readlink(path)})
+                resolved = path.resolve(strict=False)
+                assert resolved.is_relative_to(root), relative
+                rows.append({'path': relative, 'symlink': os.readlink(path),
+                             'resolvedRelativePath': resolved.relative_to(root).as_posix(),
+                             'targetExists': resolved.exists()})
             elif path.is_file():
                 size = path.stat().st_size
                 byte_count += size
