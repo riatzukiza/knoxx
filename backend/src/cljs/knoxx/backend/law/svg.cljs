@@ -119,6 +119,20 @@
 
     :else nil))
 
+(defn- advance-root
+  "Open the first root after the existing single-SVG-root checks."
+  [candidate next-index name self-closing? seen-root? root-closed?]
+  (when (or seen-root? root-closed?)
+    (reject! "SVG document contains trailing markup or another root"
+             :svg/multiple-roots candidate))
+  (when-not (= "svg" name)
+    (reject! "SVG document root must be <svg>"
+             :svg/missing-root candidate))
+  [next-index
+   (if self-closing? [] [name])
+   true
+   self-closing?])
+
 (defn- advance-tag
   [candidate index stack seen-root? root-closed?]
   (let [end (tag-end candidate index)
@@ -127,17 +141,8 @@
     (case kind
       :open
       (if (empty? stack)
-        (do
-          (when (or seen-root? root-closed?)
-            (reject! "SVG document contains trailing markup or another root"
-                     :svg/multiple-roots candidate))
-          (when-not (= "svg" name)
-            (reject! "SVG document root must be <svg>"
-                     :svg/missing-root candidate))
-          [next-index
-           (if self-closing? [] [name])
-           true
-           self-closing?])
+        (advance-root candidate next-index name self-closing?
+                      seen-root? root-closed?)
         [next-index
          (if self-closing? stack (conj stack name))
          seen-root?
@@ -182,6 +187,28 @@
                      :svg/trailing-content candidate))
           (recur end stack seen-root? root-closed?))))))
 
+(defn- reject-active-svg-markup!
+  "Reject active markup in its original order, retaining the raw preview input."
+  [candidate svg-string]
+  (when (re-find prohibited-declaration-pattern candidate)
+    (reject! "SVG declarations and entities are not allowed"
+             :svg/prohibited-declaration svg-string))
+  (when (re-find processing-instruction-pattern candidate)
+    (reject! "SVG processing instructions are not allowed"
+             :svg/processing-instruction svg-string))
+  (when (re-find prohibited-element-pattern candidate)
+    (reject! "SVG contains an active, mutating, or HTML-only element"
+             :svg/prohibited-element svg-string))
+  (when (re-find event-attribute-pattern candidate)
+    (reject! "SVG event attributes are not allowed"
+             :svg/event-attribute svg-string))
+  (when (re-find base-attribute-pattern candidate)
+    (reject! "SVG base URL attributes are not allowed"
+             :svg/base-url svg-string))
+  (when (re-find css-import-pattern candidate)
+    (reject! "SVG CSS imports are not allowed"
+             :svg/css-import svg-string)))
+
 (defn validate-svg!
   "Return one static, resource-local SVG document or throw structured ex-info.
 
@@ -194,24 +221,7 @@
   (let [candidate (str/trim svg-string)]
     (when (str/blank? candidate)
       (reject! "SVG content cannot be blank" :svg/blank-content svg-string))
-    (when (re-find prohibited-declaration-pattern candidate)
-      (reject! "SVG declarations and entities are not allowed"
-               :svg/prohibited-declaration svg-string))
-    (when (re-find processing-instruction-pattern candidate)
-      (reject! "SVG processing instructions are not allowed"
-               :svg/processing-instruction svg-string))
-    (when (re-find prohibited-element-pattern candidate)
-      (reject! "SVG contains an active, mutating, or HTML-only element"
-               :svg/prohibited-element svg-string))
-    (when (re-find event-attribute-pattern candidate)
-      (reject! "SVG event attributes are not allowed"
-               :svg/event-attribute svg-string))
-    (when (re-find base-attribute-pattern candidate)
-      (reject! "SVG base URL attributes are not allowed"
-               :svg/base-url svg-string))
-    (when (re-find css-import-pattern candidate)
-      (reject! "SVG CSS imports are not allowed"
-               :svg/css-import svg-string))
+    (reject-active-svg-markup! candidate svg-string)
     (doseq [match (re-seq resource-attribute-pattern candidate)]
       (when-not (local-fragment? (capture match))
         (reject! "SVG resource attributes must use local fragments"
