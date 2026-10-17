@@ -182,14 +182,23 @@
 
 (test/deftest ^:async old-completion-preserves-the-original-current-pending-load
   (let [held (completion)
+        fresh-held (completion)
         completed (completion)
-        {:keys [state setters]} (controller-state completed)
+        fresh-completed (completion)
+        {state :state base-setters :setters} (controller-state completed)
+        loading-completions (atom 0)
+        setters (assoc base-setters :set-loading!
+                       (fn [loading?]
+                         ((:set-loading! base-setters) loading?)
+                         (when-not loading?
+                           (when (= 2 (swap! loading-completions inc))
+                             ((:resolve! fresh-completed) true)))))
         calls (atom 0)
         load-seq #js {:current 0}
         view #js {:current (controller/initial-view "devel" "es")}
         op (controller/begin-operation! view load-seq (merge setters (observed-setters (atom []))))]
     (set! api/list-publication-reviews
-          (fn [] (swap! calls inc) (:promise held)))
+          (fn [] (if (= 1 (swap! calls inc)) (:promise held) (:promise fresh-held))))
     (set! api/list-documents
           (fn [params] (js/Promise.resolve {:documents [(assoc resource-work :locale (:target-lang params))]})))
     (controller/change-filter! view "fr")
@@ -201,4 +210,19 @@
     ((:resolve! held) {:project "devel" :reviews []})
     (await (:promise completed))
     (test/is (= 1 (count (:documents @state))))
+    (test/is (= 2 @calls) "exactly one trailing current-input read")
+    (test/is (true? (:loading @state)) "the distinct fresh response is still held")
+    ((:resolve! fresh-held) {:project "devel" :reviews []})
+    (when (= 2 @calls) (await (:promise fresh-completed)))
+    (test/is (= 1 (count (:documents @state))))
+    (test/is (= 2 @calls) "no third read after the fresh response installs")
     (test/is (false? (:loading @state)))))
+
+(test/deftest candidate-authority-change-detaches-the-old-owner-without-renaming-work
+  (let [events (atom []) row {:publication "publications/same"}
+        context #js {:current (assoc (controller/initial-view "devel" "es") :selected row)}
+        op (controller/begin-operation! context #js {:current 0} (observed-setters events))]
+    (test/is (true? (controller/change-work! context row true)))
+    ((:set-saving! op) false)
+    ((:set-notice! op) "old candidate")
+    (test/is (empty? @events))))

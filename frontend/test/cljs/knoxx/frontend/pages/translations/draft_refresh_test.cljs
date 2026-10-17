@@ -1,6 +1,8 @@
 (ns knoxx.frontend.pages.translations.draft-refresh-test
   "A conserved pre-completion snapshot installs before one necessary fresh read."
-  (:require [cljs.test :as test]
+  (:require ["@testing-library/react" :as rtl]
+            [cljs.test :as test]
+            [helix.core :as hx]
             [knoxx.frontend.pages.translations.api :as api]
             [knoxx.frontend.pages.translations.lifecycle-fixture :as fixture]
             [knoxx.frontend.pages.translations.review-controller :as controller]
@@ -126,3 +128,134 @@
           ((:resolve held) {:project "devel" :reviews []})
           ((:resolve mutation) {:dispatched []})
           (await (settle)))))))
+(test/deftest ^:async several-completions-coalesce-after-the-original-snapshot-installs
+  (let [held (fixture/deferred) calls (atom 0) installs (atom [])
+        state (atom {:selected nil}) setters (state-setters state installs)
+        load #js {:current 0} context #js {:current (controller/initial-view "devel" "es")}
+        op (controller/begin-operation! context load setters)]
+    (set! api/list-publication-reviews
+          (fn [] (if (= 1 (swap! calls inc)) (:promise held)
+                   (js/Promise.resolve {:project "devel" :reviews []}))))
+    (set! api/list-documents (fn [_] (js/Promise.resolve {:documents []})))
+    (let [original-id (controller/load-documents! "devel" "es" load setters)]
+      ((:refresh-documents! op))
+      ((:refresh-documents! op))
+      (test/is (= 1 @calls))
+      (test/is (= original-id (.-current load)))
+      ((:resolve held) {:project "devel" :reviews []})
+      (await (settle))
+      (test/is (= 2 @calls))
+      (test/is (= [[] []] @installs)))))
+
+(test/deftest ^:async a-read-started-for-completion-needs-no-third-read
+  (let [held (fixture/deferred) calls (atom 0) installs (atom [])
+        state (atom {:selected nil}) setters (state-setters state installs)
+        load #js {:current 0} context #js {:current (controller/initial-view "devel" "es")}
+        op (controller/begin-operation! context load setters)]
+    (set! api/list-publication-reviews (fn [] (swap! calls inc) (:promise held)))
+    (set! api/list-documents (fn [_] (js/Promise.resolve {:documents []})))
+    ((:refresh-documents! op))
+    ((:resolve held) {:project "devel" :reviews []})
+    (await (settle))
+    (test/is (= 1 @calls))
+    (test/is (= [[]] @installs))))
+
+(test/deftest ^:async queued-refresh-does-not-outlive-context-or-retry-read-failure
+  (doseq [boundary [:project :filter-aba :work :unmount :failure]]
+    (let [held (fixture/deferred) calls (atom 0) installs (atom []) params (atom [])
+          state (atom {:selected nil}) setters (state-setters state installs)
+          load #js {:current 0} context #js {:current (controller/initial-view "devel" "es")}
+          op (controller/begin-operation! context load setters)]
+      (set! api/list-publication-reviews
+            (fn [] (if (= 1 (swap! calls inc)) (:promise held)
+                     (if (= boundary :failure)
+                       (js/Promise.reject (js/Error. "owned refresh read failure"))
+                       (js/Promise.resolve {:project "devel" :reviews []})))))
+      (set! api/list-documents
+            (fn [p] (swap! params conj p) (js/Promise.resolve {:documents []})))
+      (controller/load-documents! "devel" "es" load setters)
+      ((:refresh-documents! op))
+      (case boundary
+        :project (do (controller/change-project! context "fresh")
+                     (controller/cancel! load (.-current load)))
+        :filter-aba (do (controller/change-filter! context "fr")
+                        (controller/change-filter! context "es")
+                        (controller/cancel! load (.-current load)))
+        :work (controller/change-work! context {:publication "publications/new"})
+        :unmount (do (controller/unmount-view! context)
+                     (controller/cancel! load (.-current load)))
+        nil)
+      ((:resolve held) {:project "devel" :reviews []})
+      (await (settle))
+      (test/is (= (if (contains? #{:work :failure} boundary) 2 1) @calls))
+      (when (= boundary :work)
+        (test/is (= [[] []] @installs) "work navigation retains current list freshness")
+        (test/is (= [{:project "devel" :target-lang "es"}
+                     {:project "devel" :target-lang "es"}] @params)))
+      (when (contains? #{:project :filter-aba :unmount} boundary)
+        (test/is (empty? @installs) "normal boundary invalidation suppresses abandoned installs"))
+      (when (= boundary :failure)
+        (test/is (= "owned refresh read failure" (:set-error! @state)))))))
+
+(test/deftest ^:async a-failed-held-read-ends-the-bounded-attempt-without-a-trailing-retry
+  (let [held (fixture/deferred) calls (atom 0) installs (atom [])
+        state (atom {:selected nil}) setters (state-setters state installs)
+        load #js {:current 0} context #js {:current (controller/initial-view "devel" "es")}
+        op (controller/begin-operation! context load setters)]
+    (set! api/list-publication-reviews (fn [] (swap! calls inc) (:promise held)))
+    (controller/load-documents! "devel" "es" load setters)
+    ((:refresh-documents! op))
+    ((:reject held) (js/Error. "owned original snapshot failure"))
+    (await (settle))
+    (test/is (= 1 @calls))
+    (test/is (= "owned original snapshot failure" (:set-error! @state)))))
+
+(defn- ^:async release-detail!
+  "Settle one actual GET before inspecting the other still-pending producer."
+  [pending detail]
+  (await (rtl/act (fn [] ((:resolve pending) detail) (js/Promise.resolve nil)))))
+
+(test/deftest ^:async document-review-keeps-S2-D2-with-either-real-detail-order
+  (doseq [order [:direct-first :inventory-first]]
+    ((:before fixture/api-fixture))
+    (let [mutation (fixture/deferred) direct (fixture/deferred) inventory (fixture/deferred)
+          gets (atom 0) done? (atom false)
+          canonical (update fixture/doc-detail :segments
+                            #(mapv (fn [segment]
+                                     (assoc segment :labels [{:id "review/new" :corrected_text "canonical"}])) %))]
+      (set! api/review-document
+            (fn ([id lang payload] (fixture/record! :review [id lang nil payload]) (:promise mutation))
+                ([id lang scope payload] (fixture/record! :review [id lang scope payload]) (:promise mutation))))
+      (set! api/list-documents
+            (fn [_] (js/Promise.resolve
+                     {:documents [(cond-> fixture/doc-summary @done? (assoc :approved 2))]})))
+      (let [next-detail! (fn []
+                           (case (swap! gets inc)
+                             1 (js/Promise.resolve fixture/doc-detail)
+                             2 (:promise direct)
+                             (:promise inventory)))]
+        (set! api/get-document
+              (fn ([_id _lang] (next-detail!))
+                  ([_id _lang _scope] (next-detail!)))))
+      (let [r (rtl/render (hx/$ view/translation-review-page))]
+        (try
+          (await (fixture/select-first-document r))
+          (.click rtl/fireEvent (.getByText r "Hola mundo"))
+          (.click rtl/fireEvent (.getByRole r "button" #js {:name "Approve All"}))
+          (.click rtl/fireEvent (.getByText r "Adiós"))
+          (.change rtl/fireEvent (.getByLabelText r "Corrected translation")
+                   #js {:target #js {:value "S2 D2"}})
+          (reset! done? true)
+          (await (rtl/act (fn [] ((:resolve mutation) {:segments_reviewed 2}) (js/Promise.resolve nil))))
+          (await (fixture/wait-until "both actual legacy detail producers" #(= 3 @gets)))
+          (await (release-detail! (if (= order :direct-first) direct inventory) canonical))
+          (test/is (= "S2 D2" (some-> (.queryByLabelText r "Corrected translation") .-value)))
+          (await (release-detail! (if (= order :direct-first) inventory direct) canonical))
+          (test/is (= "S2 D2" (some-> (.queryByLabelText r "Corrected translation") .-value)))
+          (test/is (some? (.queryByRole r "heading" #js {:name "Segment 1"})))
+          (test/is (= [["docs/doc-1" "es" {:project "devel" :garden-id "gardens/sonic"}
+                       {:overall "approve"}]] (:review @fixture/calls)))
+          (test/is (false? (some-> (.queryByRole r "button" #js {:name "Submit review"}) .-disabled)))
+          (finally ((:resolve mutation) {:segments_reviewed 2})
+                   ((:resolve direct) canonical) ((:resolve inventory) canonical)
+                   (rtl/cleanup)))))))

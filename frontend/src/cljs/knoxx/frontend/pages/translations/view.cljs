@@ -5,6 +5,7 @@
             [knoxx.frontend.pages.translations.api :as api]
             [knoxx.frontend.pages.translations.logic :as logic]
             [knoxx.frontend.pages.translations.review-controller :as controller]
+            [knoxx.frontend.pages.translations.review-draft :as draft]
             [knoxx.frontend.pages.translations.review-form-sync :as form-sync]
             [knoxx.frontend.pages.translations.review-presentation :as presentation]
             [knoxx.frontend.pages.translations.split-review :as split-review]))
@@ -19,13 +20,14 @@
   "Submit the captured legacy label; fence only its UI completion."
   [segment form overall selected project
    {:keys [set-saving! set-error! set-notice! set-detail! set-form!
-           current-view? refresh-documents!]}]
+           current-view? review-completed! refresh-documents!]}]
   (set-saving! true)
   (set-error! nil)
   (let [scope (logic/legacy-review-scope selected project)]
     (try
       (await (api/submit-label (:id segment) scope
                                (logic/prepare-label-payload form overall)))
+      (when review-completed! (review-completed!))
       (when (current-view?)
         (set-notice! (str "Segment " (:segment_index segment) ": " overall))
         (set-detail! (await (api/get-document (:document_id selected)
@@ -40,12 +42,13 @@
 (defn ^:async run-resource-split-submit!
   "Submit the captured resource split and refresh only the current view."
   [selected segment form status
-   {:keys [set-saving! set-error! set-notice! refresh-documents!]}]
+   {:keys [set-saving! set-error! set-notice! review-completed! refresh-documents!]}]
   (set-saving! true)
   (set-error! nil)
   (try
     (await (api/submit-publication-split-review
             (split-review/review-payload selected segment status form)))
+    (when review-completed! (review-completed!))
     (set-notice! (str "Split " (:segment_index segment) " " status "."))
     (refresh-documents!)
     (catch :default err
@@ -56,12 +59,13 @@
 (defn ^:async run-resource-bulk-submit!
   "Submit the captured candidate set without transferring UI ownership."
   [selected form status
-   {:keys [set-saving! set-error! set-notice! refresh-documents!]}]
+   {:keys [set-saving! set-error! set-notice! review-completed! refresh-documents!]}]
   (set-saving! true)
   (set-error! nil)
   (try
     (await (api/submit-publication-bulk-review
             (split-review/bulk-review-payload selected status form)))
+    (when review-completed! (review-completed!))
     (set-notice! (str "All splits " status "."))
     (refresh-documents!)
     (catch :default err
@@ -147,7 +151,7 @@
 
 (defn- use-review-loads!
   [{:keys [project target-lang selected selected-segment setters
-           document-load-seq manifest-load-seq detail-load-seq
+           document-load-seq manifest-load-seq detail-load-seq draft-state
            set-manifest! set-detail! set-seg-idx! set-form!]}]
   (hooks/use-effect
    [project target-lang]
@@ -168,12 +172,13 @@
        (set-detail! nil)
        (set-seg-idx! nil)
        nil)))
-  (form-sync/use-review-form-sync! selected-segment set-form!))
+  (form-sync/use-review-form-sync! selected-segment set-form! draft-state))
 
 (defn- clear-review-state!
   "Synchronously exclude installed detail, draft, feedback and pending ownership."
   [{:keys [set-detail! set-detail-loading! set-seg-idx! set-form!
-           set-notice! set-error! set-saving!]}]
+           set-notice! set-error! set-saving!] :as setters}]
+  (when-let [clear-editor! (:reset-draft! setters)] (clear-editor!))
   (set-detail! nil)
   (set-detail-loading! false)
   (set-seg-idx! nil)
@@ -193,6 +198,7 @@
   (fn [project]
     (when (controller/change-project! view project)
       (doseq [load loads] (invalidate-load! load))
+      ((:set-draft-work! setters) nil)
       (clear-review-state! setters)
       ((:set-documents! setters) [])
       ((:set-loading! setters) true)
@@ -208,6 +214,7 @@
     (when (controller/change-filter! view target-lang)
       (invalidate-load! document-load-seq)
       (invalidate-load! detail-load-seq)
+      ((:set-draft-work! setters) nil)
       (clear-review-state! setters)
       ((:set-documents! setters) [])
       ((:set-loading! setters) true)
@@ -220,7 +227,8 @@
   (fn [next-value]
     (let [current (:selected (.-current ^js view))
           selected (if (fn? next-value) (next-value current) next-value)]
-      (when (controller/change-work! view selected)
+      (when (controller/change-work! view selected
+                                     ((:set-draft-work! setters) selected))
         (invalidate-load! detail-load-seq)
         (clear-review-state! setters))
       ((:set-selected! setters) selected))))
@@ -243,13 +251,16 @@
         [detail set-detail!] (hooks/use-state nil)
         [seg-idx set-seg-idx!] (hooks/use-state nil)
         [form set-form!] (hooks/use-state logic/default-label)
-        [manifest set-manifest!] (hooks/use-state nil)]
+        [manifest set-manifest!] (hooks/use-state nil)
+        draft-state (hooks/use-ref (draft/initial-state))
+        setters {:set-project! set-project! :set-target-lang! set-target-lang!
+                 :set-documents! set-documents! :set-selected! set-selected!
+                 :set-detail! set-detail! :set-seg-idx! set-seg-idx!
+                 :set-form! set-form! :set-manifest! set-manifest!}]
     {:project project :target-lang target-lang :documents documents
      :selected selected :detail detail :seg-idx seg-idx :form form :manifest manifest
-     :setters {:set-project! set-project! :set-target-lang! set-target-lang!
-               :set-documents! set-documents! :set-selected! set-selected!
-               :set-detail! set-detail! :set-seg-idx! set-seg-idx!
-               :set-form! set-form! :set-manifest! set-manifest!}}))
+     :draft-state draft-state
+     :setters (merge setters (draft/editor-setters draft-state setters))}))
 
 (defn- use-review-feedback
   "Keep loading, feedback and configuration visibility separate from work data."
@@ -294,17 +305,18 @@
 
 (defn- mutation-callbacks
   "Capture unchanged request inputs while giving each operation its own UI fence."
-  [{:keys [project selected form detail seg-idx]} {:keys [current-view loads setters]}]
-  (let [start! #(controller/begin-operation! current-view (:document-load-seq loads) setters)
+  [{:keys [project selected form detail seg-idx draft-state]} {:keys [current-view loads setters]}]
+  (let [start! #(controller/begin-operation! current-view (:document-load-seq loads) setters draft-state)
         selected-segment (logic/find-segment detail seg-idx)]
     {:on-review #(run-document-review! selected % project (start!))
      :on-resource-review #(run-resource-bulk-submit! selected form % (start!))
      :on-publication-approval #(run-publication-approval! selected (start!))
      :on-translation-dispatch #(run-translation-dispatch! selected (start!))
      :on-segment-submit
-     #(if (:resource_split selected-segment)
-        (run-resource-split-submit! selected selected-segment form % (start!))
-        (run-segment-submit! selected-segment form % selected project (start!)))}))
+     #(when selected-segment
+        (if (:resource_split selected-segment)
+          (run-resource-split-submit! selected selected-segment form % (start!))
+          (run-segment-submit! selected-segment form % selected project (start!))))}))
 
 (defn- layout-props
   "Retain existing props and normal controls while replacing boundary callbacks."
@@ -316,7 +328,8 @@
            {:set-project (:set-project! boundaries)
             :set-target-lang (:set-target-lang! boundaries)
             :set-selected (:set-selected! boundaries)
-            :set-seg-idx (:set-seg-idx! setters) :set-form (:set-form! setters)
+            :set-seg-idx #((:select-segment! setters) detail %)
+            :set-form (:edit-form! setters)
             :selected-segment (logic/find-segment detail seg-idx)
             :toggle-config #((:set-show-config! setters) not)
             :dismiss-notice #((:set-notice! setters) nil)
@@ -324,12 +337,13 @@
             :on-export #(run-export! project target-lang
                                      (controller/export-setters current-view setters))
             :on-segment-skip (when (some? next-split-index)
-                               #((:set-seg-idx! setters) next-split-index))})))
+                               #((:select-segment! setters) detail next-split-index))})))
 
 (hx/defnc translation-review-page
   "Render the translation page with source-bound lifecycle and operation guards."
   []
-  (let [data (use-review-data)
+  (let [raw-data (use-review-data)
+        data (update raw-data :detail #(draft/current-detail (:selected raw-data) %))
         feedback (use-review-feedback)
         context (use-review-context data feedback)]
     (use-review-loads!
