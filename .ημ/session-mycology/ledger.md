@@ -1286,3 +1286,12 @@
   spore: none
   receipt-refs: 31893d94-042a-4f06-a1de-9ee3264f2af7
   note: Keep cohesive registered facade tests in their own namespace and expand opaque auto-resolved fixture keywords to the original runtime identities before moving. Preserve all16 names/52 assertions/6async/14awaits; final owning0E0W and global169→168/native2FAIL, all168 other rows exact. Retain the single EOF separator refusal and native board comment. Actual combined backend typecheck/corpus/discovery remains pending; no spore or globalPASS claim.
+- ts: 2026-10-17T17:47:45.520209680Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-full-CI-workflow-repair-over933-v1
+  task: Preserve status async evaluation while removing one redundant let
+  p-efficiency: 0.86
+  p-friction: 0.16
+  p-skill-candidate: 0.04
+  spore: none
+  receipt-refs: 2104c246-d839-4fae-be0e-6a38dd9aa136
+  note: Exact finite one-function nested-let collapse; independent source/inverse/order peer, actual owning9 to8 and registered168 to167 warnings. Native2FAIL retained; existing status length37 to36 stillwarns and other messages held. Raw stdout qualifier and writer template parse refusals preserved; canonical writer v2 restores literal HEAD, original receipt bytes exact before the sole successful append. Source-bound hosted qualification pending; no new spore or globalPASS.
