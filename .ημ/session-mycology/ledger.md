@@ -1160,3 +1160,12 @@
   spore: none
   receipt-refs: e9983e13-6045-40a1-a1ff-7f80c4ae7f58
   note: Use actual complete failed job logs before changing runner setup. Real NBB/FFmpeg fixtures require installed dependencies; provision those dependencies and preserve assertions. Keep explicit browser source guards and bind the checkout selected by each caller. Manual full-source QA needs an immutable ancestor baseline and explicit product mode, rather than last-commit or automatic infrastructure defaults. Source peer review caught evidence finalization aborting on an absent tool: retain manifest/checksums then report failure. All local checks here are narrow; genuine hosted app/model qualification and reviews remain separate. No spore or native connector retry.
+- ts: 2026-10-17T10:30:28.929806392Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-full-CI-workflow-repair-over933-v1
+  task: Five scoped backend warnings, existing native owners and retained global failure
+  p-efficiency: 0.87
+  p-friction: 0.27
+  p-skill-candidate: 0.24
+  spore: none
+  receipt-refs: e3286da1-7f8d-4b94-8d2b-28f15fe2762f
+  note: For finite lint slices, preserve full public and ordering contracts, reproduce exact owning diagnostics, then prove exact warning-removal multiplicities in full registered lint. Use existing Rheos owner comments and native ledger only. Small static GREEN is distinct from registered runtime/typecheck/coverage and global lint completion. No new mirrored test or spore.
