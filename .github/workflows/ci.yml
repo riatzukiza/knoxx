@@ -41,7 +41,7 @@ jobs:
           PILOT_RUNNER_ENVIRONMENT: ${{ runner.environment }}
           PILOT_RUNNER_OS: ${{ runner.os }}
           PILOT_RUNNER_ARCH: ${{ runner.arch }}
-          PILOT_ADAPTER_SHA256: 8acdfba65abb1c133e4e5cf746a4ab31fad9655bbf6c84291d7fb3ccce92cb44
+          PILOT_ADAPTER_SHA256: b5860f799bd1e37fd61a8ae19038f1821de5172c9e7637085df5ea0a4fe912e4
           PILOT_COMPARISON_BASE_SHA: ${{ inputs.comparison_base_sha }}
           PILOT_MIGRATION_INFRASTRUCTURE: ${{ inputs.migration_infrastructure }}
         shell: bash
@@ -184,7 +184,7 @@ jobs:
                       raise ValueError("Selected Docker metadata query failed: " + label)
                   return json.loads(stdout)
               result["dockerServer"] = docker_selected("dockerVersion", ["version", "--format",
-                  '{"version":{{json .Server.Version}},"apiVersion":{{json .Server.ApiVersion}},"os":{{json .Server.Os}},"arch":{{json .Server.Arch}}}'])
+                  '{"version":{{json .Server.Version}},"apiVersion":{{json .Server.APIVersion}},"os":{{json .Server.Os}},"arch":{{json .Server.Arch}}}'])
               info = docker_selected("dockerInfoSelected", ["info", "--format",
                   '{"dataRoot":{{json .DockerRootDir}},"cgroupVersion":{{json .CgroupVersion}},"cgroupDriver":{{json .CgroupDriver}}}'])
               result["dockerSelected"] = info
