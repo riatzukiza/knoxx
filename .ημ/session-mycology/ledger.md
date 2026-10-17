@@ -1169,3 +1169,12 @@
   spore: none
   receipt-refs: e3286da1-7f8d-4b94-8d2b-28f15fe2762f
   note: For finite lint slices, preserve full public and ordering contracts, reproduce exact owning diagnostics, then prove exact warning-removal multiplicities in full registered lint. Use existing Rheos owner comments and native ledger only. Small static GREEN is distinct from registered runtime/typecheck/coverage and global lint completion. No new mirrored test or spore.
+- ts: 2026-10-17T10:36:07.197031582Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-full-CI-workflow-repair-over933-v1
+  task: Actual causal split feedback regression and minimal editor-authority repair
+  p-efficiency: 0.87
+  p-friction: 0.31
+  p-skill-candidate: 0.28
+  spore: none
+  receipt-refs: fd090bba-422d-4ac3-ae83-12488c568001
+  note: Bind editor identity to immutable source and raw candidate identity while allowing derived review-output receipt revisions to advance. Retain exact pure negative controls and genuine browser notice failure before repair. A GitHub continue-on-error step conclusion can say success despite native test exit1; logs/outcome and final failure control truth. Keep legacy test lint outside scope by moving the equivalent new interaction into the existing modern fixture while preserving every old assertion and the same unchanged lint selection. RuntimeGREEN remains separate. No spore.
