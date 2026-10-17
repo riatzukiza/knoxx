@@ -1313,3 +1313,12 @@
   spore: none
   receipt-refs: ec6f4a98-2d97-4032-b67e-e3bb9d361f70
   note: Actual one-source public preview responsibility split removes one owning/globalspan warning; global166to165W/0E/native2FAIL retained, filelength/graph52 remain. Expanded lexical tokens/sourceoutsideform/existing public tests held. Native existing source-owner scope precedes effect and in_progress/P1/5 held. Coherent successor runtime pending; isolated templateT/current6e48CI source-specific. No new behavior, mirror tests, suppression/config/interop expansion, spore/promotion or rollout.
+- ts: 2026-10-17T19:02:20.780943518Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-full-CI-workflow-repair-over933-v1
+  task: Preserve publication, dispatch and split refusal behavior while separating pure responsibilities
+  p-efficiency: 0.89
+  p-friction: 0.12
+  p-skill-candidate: 0.0
+  spore: none
+  receipt-refs: 2b80180b-23ac-4e5c-aa4c-e1379e2ef87b
+  note: Actual three-source pure responsibility split removes three selected function warnings; full165to162W/0E/native2FAIL remains, dispatch filelength425 retained. Exact original forms, order, public tests and all outside-target diagnostic rows/locations held. Official native owner scope precedes effect, in_progress/P1/5 held. Coherent successor runtime pending; isolated templateT/full6e48CI source-specific. No new behavior, mirror tests, suppression/config/interop expansion, spore/promotion or rollout.
