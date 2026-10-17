@@ -1367,3 +1367,12 @@
   spore: none
   receipt-refs: 37a76ef5-1137-4e1a-a343-15c0cd6a6f11
   note: Named pure responsibilities preserve marker content evaluation order, evaluator short-circuit/default behavior and fulfillment missing/nil semantics. Complete source inverses and27arm coverage support conservation; actual global155to152/native2FAIL keeps all other diagnostic rows exact. A missing direct evaluator runtime test reference stays an explicit coverage limit, not repaired by unrelated tests or a private export. Coherent successor runtime pending; stop further source proposals. No spore.
+- ts: 2026-10-17T22:28:55.519491737Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-full-CI-workflow-repair-over933-v1
+  task: Separate agent context, contract identity and memory event data; retain global142FAIL
+  p-efficiency: 0.9
+  p-friction: 0.1
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: 3cd91256-9697-4628-b054-7c5459feb9d0
+  note: Exact ordered data descriptors and complete source inverses preserve ten projection responsibilities. Source/static conservation is not direct private-auth or enabled-legacy behavioral coverage; coherent normal runtime remains pending. All original tests/config/checker policy held; no spore.
