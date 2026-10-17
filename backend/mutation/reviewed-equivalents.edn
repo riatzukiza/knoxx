@@ -12,4 +12,4 @@
    :relative-path "knoxx/backend/bootstrap.cljs"
    :source-sha256 "2bc68c69515badabe91558961538c038f8f064782f7ff64a5c4c7bd41aeaffee"
    :rationale "At the reviewed basis, notify-ready! is private. Its successful branch sends the identical ready IPC message with the same process receiver and writes the same success log before this terminal boolean. Its sole production caller discards that return, logs listening and returns app. Normal startup, policy bootstrap, hot reload and declared exports do not consume the boolean; existing callback contracts allow nonboolean returns. The exact true-to-false mutation therefore leaves the supported IPC/log/startup/error/app-return behavior unchanged. This exclusion receives no evaluated or killed credit."
-   :review-reference "https://github.com/open-hax/knoxx/pull/388#issuecomment-6122117273"}]}
+   :review-reference "https://github.com/open-hax/knoxx/pull/388#issuecomment-6235479927"}]}
