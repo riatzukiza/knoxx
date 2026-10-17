@@ -1412,3 +1412,12 @@
   spore: none
   receipt-refs: 87648b51-f451-444c-bbbc-5a9e29303494
   note: Exact expression tokens and complete source inverses preserve message decoding and result-presentation responsibilities. Existing transcript/stored-message controls retained; direct selected multimodal/text-renderer coverage was not recovered. Coherent normal runtime remains pending. All original tests/config/checker policy held; no spore.
+- ts: 2026-10-17T23:45:07.933513447Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-full-CI-workflow-repair-over933-v1
+  task: Separate source line and Markdown block spans; retain actual global130 static warnings
+  p-efficiency: 0.9
+  p-friction: 0.1
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: ad47d0b2-134e-4ecf-a5c2-102566a835d3
+  note: Exact moved-source and whole-source inverses preserve line/block parsing and original public partition admission. Classification, sequence advance and selected state lookup order are retained. Existing24 public source-split tests and unchanged agent/resource consumers remain the coherent runtime gate; static checks provide no runtime/JVM portability credit. All original tests/config/checker policy held; no spore.
