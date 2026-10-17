@@ -83,7 +83,8 @@ function safeCompletionDetails(value) {
     const checkpoints = completionList(diagnosticValue(value, 'checkpoints'), 64, item => {
       const id = diagnosticValue(item, 'id'), ok = diagnosticValue(item, 'ok');
       const observation = diagnosticValue(item, 'observation');
-      if (id !== 'commit:B' || typeof ok !== 'boolean'
+      if ((id !== 'commit:B' && id !== 'B-inventory') || typeof ok !== 'boolean'
+          || (id === 'B-inventory' && observation !== undefined)
           || (observation !== undefined && observation !== 'first-mutation-observer-delivery')) return undefined;
       return { id, ok, ...(observation ? { observation } : {}) };
     });

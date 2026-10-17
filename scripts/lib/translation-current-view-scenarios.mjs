@@ -203,17 +203,45 @@ async function preFirstBCase(io, number) {
   steps.find(x => x.id === 'A-manifest').hold = true;
   // No A legacy response is consumed when its old generation is invalidated.
   const filtered = steps.filter(x => x.id !== 'A-legacy');
-  await install(io, { runId, origin: io.config.origin, steps: [...filtered, ...initialSteps(b, 'B')],
-    requiredOrder: ['commit:B', 'release:A-inventory', 'release:A-manifest', 'request:B-inventory'] });
+  const boundary = { project: b.project, committedProject: b.project,
+    absent: [a.title, a.detail.segments[0].translated_text, '0/2 approved', 'dismiss',
+      ...new Set(entrySpecifications.map(x => x.label))], formAbsent: true };
+  await install(io, { runId, origin: io.config.origin,
+    steps: [...filtered, ...initialSteps(b, 'B', { hold: true, checkpoint: boundary })],
+    requiredCheckpoints: ['B-inventory'],
+    requiredOrder: ['request:B-inventory', 'release:A-inventory', 'release:A-manifest',
+      'release:B-inventory', 'release:B-manifest'] });
   await evaluate(io, domAction('route', '/translations'));
   await waitDom(io, `['A-inventory','A-manifest'].every(x=>window.__knoxxControlledCore.report().pending.includes(x))`, 'old-A-held');
-  // The first public observer delivery must see B before A is released and
-  // before B's first request; an unattainable window fails without fallback.
-  // This records the observed order, not a generic React pre-passive guarantee.
-  await adapter(io, 'watchCommit', 'B', { project: b.project, committedProject: b.project,
-    absent: [a.title, a.detail.segments[0].translated_text], formAbsent: true },
-    { release: ['A-inventory', 'A-manifest'], beforeRequest: 'B-inventory' });
+  // The existing fetch adapter evaluates this DOM rule synchronously at the
+  // first B inventory request, before returning its held response promise.
+  // Polling below establishes owned holds only; it cannot replace that checkpoint.
+  // The historical first-MutationObserver experiment remains retained as FAIL.
   await evaluate(io, domAction('project', b.project));
+  await waitDom(io, `['B-inventory','B-manifest'].every(x=>window.__knoxxControlledCore.report().pending.includes(x))`, 'first-B-held');
+  const before = await adapter(io, 'report');
+  assert.deepEqual([...before.pending].sort(), ['A-inventory', 'A-manifest', 'B-inventory', 'B-manifest'].sort());
+  assert.deepEqual(before.checkpoints.filter(x => x.id === 'B-inventory'), [{ id: 'B-inventory', ok: true }]);
+  assert.equal(before.records.filter(x => x === 'request:B-inventory').length, 1);
+  await adapter(io, 'release', 'A-inventory', 'success');
+  await adapter(io, 'release', 'A-manifest', 'success');
+  const after = await adapter(io, 'report');
+  assert.equal(after.failed, false);
+  assert.deepEqual([...after.pending].sort(), ['B-inventory', 'B-manifest'].sort());
+  assert.equal(after.records.filter(x => x === 'request:B-inventory').length, 1);
+  assert.equal(after.records.filter(x => x === 'request:A-legacy').length, 0);
+  // This additional post-A DOM observation grants no first-fetch timing credit.
+  // Actual abandoned-loader setter exclusion is proved by the causal unit spies.
+  assert.equal(await evaluate(io, `(() => {
+    const input = document.querySelector('input[placeholder="devel"]');
+    const body = document.body.innerText;
+    return input?.value === ${js(b.project)} && input.defaultValue === ${js(b.project)}
+      && input.getAttribute('value') === ${js(b.project)}
+      && ${js(boundary.absent)}.every(x => !body.includes(x))
+      && document.querySelectorAll('textarea').length === 0;
+  })()`), true);
+  await adapter(io, 'release', 'B-inventory', 'success');
+  await adapter(io, 'release', 'B-manifest', 'success');
   await waitDom(io, `document.body.innerText.includes(${js(b.title)})`, 'ordered-B');
   return await finish(io, `${io.config.evidenceDir}/${number}-experimental-pre-first-B.png`);
 }
