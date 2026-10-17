@@ -5,7 +5,6 @@
             [knoxx.backend.infra.auth.authz :as authz]
             [knoxx.backend.infra.document-state
              :refer [database-state*
-                     js-array-seq
                      request-session-id
                      database-docs-dir
                      database-owner-key
@@ -17,7 +16,6 @@
                      effective-active-database-id
                      active-database-profile
                      normalize-relative-path
-                     sanitize-upload-name
                      create-db-id
                      list-documents!
                      active-record
@@ -39,22 +37,9 @@
   [^js node-fs path opts]
   (.rm node-fs path opts))
 
-(defn- fs-write-buffer!
-  [^js node-fs path content]
-  (.writeFile node-fs path content))
-
 (defn- fs-read-file!
   [^js node-fs path encoding]
   (.readFile node-fs path encoding))
-
-(defn- ^:async process-file-part
-  [^string docs-path part]
-  (let [safe-name (sanitize-upload-name (or (aget part "filename") "upload.bin"))
-        abs-path (.join path docs-path safe-name)
-        rel-path (normalize-relative-path (path-relative path docs-path abs-path))
-        buf (await (.arrayBuffer (js/Response. (aget part "file"))))]
-    (fs-write-buffer! fs abs-path (.from js/Buffer buf))
-    rel-path))
 
 (defroute api-documents-list! []
   "GET" "/api/documents"

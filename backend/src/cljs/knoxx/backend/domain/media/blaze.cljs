@@ -111,11 +111,6 @@
     "tts" "MiniMax-speech-2.8-hd-highspeed"
     "fast-general"))
 
-;; Blaze media generation queue — limit concurrency to 1 so each request gets
-;; Blaze's full attention and avoids Cloudflare 120s timeout under contention.
-(def ^:private blaze-queue (atom {:in-flight false :waiting []}))
-
-
 (defn- candidate-models
   [modality requested-model]
   (if-let [model (blank->nil requested-model)]

@@ -1,6 +1,5 @@
 (ns knoxx.backend.extern.multipart
-  "Multipart upload boundary helpers for Fastify parts."
-  (:require [clojure.string :as str]))
+  "Multipart upload boundary helpers for Fastify parts.")
 
 (defn ^:async parts!
   [request]
