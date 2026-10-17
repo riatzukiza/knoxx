@@ -1,240 +1,208 @@
-name: knoxx-ci
-
+# SPDX-License-Identifier: GPL-3.0-or-later
+name: Genuine three source mutations on pinned CMS (QA only)
 on:
-  pull_request:
-    # Infrastructure admission depends on the current PR body.
-    types: [opened, synchronize, reopened, edited, ready_for_review]
-    branches:
-      - main
-  push:
-    branches:
-      - main
   workflow_dispatch:
-    inputs:
-      comparison_base_sha:
-        description: Full 40-character commit SHA of the intended comparison base, a proper ancestor of this checkout
-        required: true
-        type: string
-      migration_infrastructure:
-        description: Declare migration infrastructure for this manual run; leave false for product validation
-        required: false
-        default: false
-        type: boolean
-
 permissions:
   contents: read
-
-env:
-  # ubuntu runners ship a snap-wrapper /usr/bin/chromium-browser that hangs
-  # under CI; point puppeteer-core at the real Chrome binary instead.
-  PUPPETEER_EXECUTABLE_PATH: /usr/bin/google-chrome
-
 jobs:
-  deployment-boundary:
-    name: deployment-boundary
-    runs-on: ubuntu-latest
+  genuine-three-mutations:
+    name: One real baseline and three canonical source mutations
+    if: ${{ github.repository_id == '1401249297' && github.event.repository.private == false }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
     steps:
-      - name: Checkout Knoxx
-        uses: actions/checkout@v5
+      - name: Check out the immutable application source
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
         with:
-          persist-credentials: false
-      - name: Setup Node.js
-        uses: actions/setup-node@v5
-        with:
-          node-version: 22
-      - name: Prepare checkout verifier Python
-        run: |
-          python3 -m venv "$RUNNER_TEMP/knoxx-qualification-python"
-          "$RUNNER_TEMP/knoxx-qualification-python/bin/python" -m pip install --disable-pip-version-check --no-input 'PyYAML==6.0.2'
-      - name: Reject retired deployment authority
-        run: |
-          node scripts/check-deployment-boundary.mjs --self-test
-          node scripts/check-deployment-boundary.mjs
-          "$RUNNER_TEMP/knoxx-qualification-python/bin/python" scripts/test-production-checkout.py
-          python3 backend/test/python/test_mutation_process.py
-
-  knoxx:
-    name: knoxx (backend + frontend)
-    runs-on: ubuntu-latest
-    timeout-minutes: 45
-
-    services:
-      mongodb:
-        # Policy bootstrap performs transactions and intentionally refuses a
-        # standalone mongod. Atlas Local supplies the same single-node replica
-        # topology used by `pnpm local:up`, so the browser gate exercises the
-        # production persistence contract instead of dying before HTTP bind.
-        image: mongodb/mongodb-atlas-local@sha256:5941a11ca0fa4f4ed7ffc6c476253f95449cd96797fbf66a2deade10f54e0cd5
-        ports:
-          - 27017:27017
-
-    steps:
-      - name: Checkout Knoxx
-        uses: actions/checkout@v5
-        with:
+          ref: 612488d4b01ba877d48beb66ac7b02ad448faa43
           fetch-depth: 0
           persist-credentials: false
-
-      - name: Validate the explicit manual comparison base
-        if: github.event_name == 'workflow_dispatch'
-        env:
-          COMPARISON_BASE_SHA: ${{ inputs.comparison_base_sha }}
+      - name: Bind actual source and worker before setup
+        shell: bash
+        run: |
+          python3 - <<'PRE'
+          import hashlib, json, os, pathlib, subprocess
+          root = pathlib.Path(os.environ['GITHUB_WORKSPACE']).resolve(strict=True)
+          proof = pathlib.Path(os.environ['RUNNER_TEMP']) / ('mutation-pilot-' + os.environ['GITHUB_RUN_ID'] + '-' + os.environ['GITHUB_RUN_ATTEMPT'])
+          proof.mkdir(mode=0o700)
+          def read(args):
+              r = subprocess.run(['git', '-C', str(root), *args], capture_output=True, timeout=30)
+              assert r.returncode == 0 and not r.stderr
+              return r.stdout
+          head = read(['rev-parse', 'HEAD']).decode().strip()
+          tree = read(['rev-parse', 'HEAD^{tree}']).decode().strip()
+          status = read(['status', '--porcelain=v1', '-z', '--untracked-files=all'])
+          assert head == '612488d4b01ba877d48beb66ac7b02ad448faa43'
+          assert tree == '244d1fd3e8f3afbf1d5c2ffaac72eec1685abf0f' and not status
+          rows = {'AGENTS.md': {'bytes': 13198, 'sha256': 'a9aae6e9cc829df7319b267c8b93fa188abcc52a2c7e6e87c56846173f29701e'}, '.github/actions/knoxx-setup/action.yml': {'bytes': 3782, 'sha256': 'e659dbe3309c139c0afdc4f6a0c157bc02f8f0ab82100a2318df5bccbbd68b1f'}, 'backend/deps.edn': {'bytes': 3204, 'sha256': 'f602dbfa145df71642fb45f9945984303a0acd2b74baac42b05e8a7be4bddc76'}, 'backend/package.json': {'bytes': 3570, 'sha256': 'b33b47e00c0e50db074e2e8407c83d1f2f7706ac02ea0c100b251ab574753d90'}, 'backend/mutation/README.md': {'bytes': 1848, 'sha256': 'b09fe3379ede9eefa0ac238bc112ba470f2371d0fcda60fe9e4980b029fc7c4d'}, 'backend/mutation/knoxx/mutation_test.clj': {'bytes': 45593, 'sha256': '2ee60bbc749fdd1aba6f0f7a07a8610e2a5592456cdde85f830dc77f49ba82e3'}, 'backend/mutation/reviewed-equivalents.edn': {'bytes': 1549, 'sha256': '2769a3c6c529a213e288faafc89c38321a4796dd1aad8a8a58ec597195b097df'}, 'backend/scripts/run-mutation-process.py': {'bytes': 18407, 'sha256': '899fbac9de15e8603cb21b52835fe44f068fe118e76988c67b8c1784abaf39d5'}, 'backend/scripts/run-mutation-tests.mjs': {'bytes': 773, 'sha256': '4a420d47ca177742ffbfbb1cdedc1f65450b4b9dcc2278d47b79dbfc4d425e0d'}, 'backend/scripts/shadow-test-environment.mjs': {'bytes': 781, 'sha256': '9cb72b8d1cafc7136b95e6d5241289b1ad388638fc5edb683279d1f28ef102a8'}, 'backend/shadow-cljs.edn': {'bytes': 9554, 'sha256': 'cb45b403d669710e33fabcf359af6d580548b9ebfa194a4d55e2c40a6cb08a51'}, '.github/workflows/deploy-production.yml': {'bytes': 7975, 'sha256': '8fe8a62967a1412541c7e17d8ccff997a7881a11941a290ff43ee978349e410b'}}
+          for relative, row in rows.items():
+              data = (root / relative).read_bytes()
+              assert len(data) == row['bytes'] and hashlib.sha256(data).hexdigest() == row['sha256']
+          data = {'sourceHead': head, 'sourceTree': tree, 'workflowSHA': os.environ['GITHUB_SHA'],
+                  'workflowRef': os.environ['GITHUB_WORKFLOW_REF'], 'run': os.environ['GITHUB_RUN_ID'],
+                  'attempt': os.environ['GITHUB_RUN_ATTEMPT'], 'sourceRows': rows,
+                  'worker': {'UID': os.getuid(), 'GID': os.getgid(), 'CPU': os.cpu_count(),
+                             'meminfo': pathlib.Path('/proc/meminfo').read_text(),
+                             'memoryPSI': pathlib.Path('/proc/pressure/memory').read_text()},
+                  'limits': 'Read-only source and worker facts; no production or minimum-capacity claim.'}
+          with (proof / 'pre-setup-source-and-worker.json').open('x') as stream: json.dump(data, stream, indent=2)
+          PRE
+      - name: Prepare the unchanged registered SDK and verification dependencies
+        uses: ./.github/actions/knoxx-setup
+      - name: Relocate only the closed setup source outside the clean application tree
+        shell: bash
+        run: |
+          python3 - <<'SDK_SOURCE'
+          import json, os, pathlib, subprocess
+          root = pathlib.Path(os.environ['GITHUB_WORKSPACE']).resolve(strict=True)
+          temp = pathlib.Path(os.environ['RUNNER_TEMP']).resolve(strict=True)
+          stem = os.environ['GITHUB_RUN_ID'] + '-' + os.environ['GITHUB_RUN_ATTEMPT']
+          proof = temp / ('mutation-pilot-' + stem)
+          old = root / '_deps'
+          new = temp / ('mutation-setup-source-' + stem)
+          assert old.resolve(strict=True) == old and old.is_dir() and [p.name for p in old.iterdir()] == ['openplanner']
+          assert not new.exists() and not new.is_symlink() and old.stat().st_dev == temp.stat().st_dev
+          def observe(source):
+              result = {}
+              for label, args in [('head', ['rev-parse', 'HEAD']), ('tree', ['rev-parse', 'HEAD^{tree}']),
+                                  ('status', ['status', '--porcelain=v1', '-z', '--untracked-files=all'])]:
+                  native = subprocess.run(['git', '-C', str(source), *args], capture_output=True, timeout=30)
+                  assert native.returncode == 0 and not native.stderr and len(native.stdout) <= 65536
+                  result[label] = native.stdout.decode().strip()
+              assert result == {'head': '07085d6557b75834ce6f50e6c54b8ca47e1c7c08',
+                                'tree': '1dc69c04c8e832661d8062c15ee24a853f135d35', 'status': ''}
+              value = source.stat(); result['inode'] = value.st_ino; result['device'] = value.st_dev
+              return result
+          before = observe(old / 'openplanner')
+          os.rename(old, new)
+          after = observe(new / 'openplanner')
+          assert before == after and not old.exists()
+          record = {'oldSetupParent': str(old), 'newSetupParent': str(new), 'before': before, 'after': after,
+                    'scope': 'Same-filesystem rename of this job own completed setup source only; no ignore, deletion, reset or SDK helper/source edit. The built SDK sibling link and filtered build remain at their original paths.'}
+          with (proof / 'sdk-setup-source-relocation.json').open('x') as stream: json.dump(record, stream, indent=2)
+          status = subprocess.run(['git', '-C', str(root), 'status', '--porcelain=v1', '-z', '--untracked-files=all'], capture_output=True, timeout=30)
+          assert status.returncode == 0 and not status.stderr and not status.stdout, 'Application must be clean before the canonical mutation harness.'
+          SDK_SOURCE
+      - name: Run the canonical baseline and three actual source mutations
+        working-directory: backend
+        shell: bash
         run: |
           set -euo pipefail
-          if [[ ! "$COMPARISON_BASE_SHA" =~ ^[0-9a-f]{40}$ ]]; then
-            printf 'comparison_base_sha must be a full lowercase 40-character commit SHA.\n' >&2
-            exit 1
-          fi
-          if [[ "$(git rev-parse --verify "${COMPARISON_BASE_SHA}^{commit}")" != "$COMPARISON_BASE_SHA" ]]; then
-            printf 'comparison_base_sha must name an available commit.\n' >&2
-            exit 1
-          fi
-          if [[ "$COMPARISON_BASE_SHA" == "$(git rev-parse HEAD)" ]]; then
-            printf 'comparison_base_sha must precede this checkout.\n' >&2
-            exit 1
-          fi
-          git merge-base --is-ancestor "$COMPARISON_BASE_SHA" HEAD
-
-      - name: Setup Java (required by shadow-cljs / Closure Compiler)
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          # Closure Compiler artifacts used by shadow-cljs now require Java 21
-          # (class file version 65).
-          java-version: "21"
-
-      - name: Setup Clojure CLI
-        uses: DeLaGuardo/setup-clojure@13
-        with:
-          # backend/shadow-cljs.edn runs in :deps mode, so shadow-cljs resolves
-          # its classpath (including the katamorph Git dependency) through
-          # tools.deps and needs the clojure CLI on PATH.
-          cli: '1.12.5.1654'
-          clj-kondo: "2025.07.28"
-
-      - name: Production mutation evidence verifier contracts
-        run: |
-          python3 -m venv "$RUNNER_TEMP/knoxx-production-evidence-python"
-          "$RUNNER_TEMP/knoxx-production-evidence-python/bin/python" -m pip install --disable-pip-version-check --no-input 'PyYAML==6.0.2'
-          "$RUNNER_TEMP/knoxx-production-evidence-python/bin/python" scripts/test-production-mutation-evidence.py
-
-      - name: Prepare the pinned SDK and Knoxx verification dependencies
-        uses: ./.github/actions/knoxx-setup
-
-      - name: CMS verifier preconditions with installed backend NBB
-        run: python3 scripts/test-cms-verifier-preconditions.py
-
-      - name: Shared markup lint
-        run: pnpm -C backend run lint:shared-markup
-
-      - name: Backend typecheck (shadow-cljs compile app)
-        run: pnpm -C backend run typecheck
-
-      - name: Backend production release
-        run: pnpm -C backend run build
-
-      - name: Production ESM route registration
-        run: pnpm -C backend run test:routes:release
-
-      # Verify the browser against the production backend artifact.
-      # The route proof writes to a separate verification output directory.
-      # Keeping these checks isolated from later coverage and
-      # e2e processes makes the required visual contract deterministic and
-      # lets browser regressions fail fast without weakening the job: every
-      # remaining suite below must still pass before this required check does.
-      - name: Translation review browser contract
-        env:
-          VERIFY_SOURCE_COMMIT: ${{ github.sha }}
-          MONGODB_URI: mongodb://127.0.0.1:27017/knoxx_translation_browser_ci?directConnection=true
-          MONGODB_DB: knoxx_translation_browser_ci
-          KNOXX_SHOT_DIR: ${{ runner.temp }}/knoxx-translation-browser
-          KNOXX_PUBLICATION_CONTENT_ROOT: ${{ runner.temp }}/knoxx-publication-content
-        run: ./scripts/verify-translation-browser-ci.sh
-
-      - name: Upload translation browser storyboard
+          set -C
+          proof="$RUNNER_TEMP/mutation-pilot-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          python3 scripts/run-mutation-process.py --timeout-ms 2400000 --max-output-bytes 8388608 --cleanup-ms 30000 \
+            -- clojure -M:mutation --run --batch-count 4 --batch-index 0 --limit 3 --min-evaluated 3 \
+            --timeout-ms 240000 --report target/mutation/pilot-3.edn \
+            > "$proof/canonical-pilot-native.json" 2> "$proof/canonical-pilot-adapter.stderr"
+          python3 - <<'CHECK'
+          import json, os, pathlib
+          proof = pathlib.Path(os.environ['RUNNER_TEMP']) / ('mutation-pilot-' + os.environ['GITHUB_RUN_ID'] + '-' + os.environ['GITHUB_RUN_ATTEMPT'])
+          native = json.loads((proof / 'canonical-pilot-native.json').read_bytes())
+          assert not (proof / 'canonical-pilot-adapter.stderr').read_bytes()
+          assert native['exit-code'] == 0 and native['termination'] == 'exited'
+          assert native['cleanup-complete?'] and not native['capture-truncated?']
+          # The canonical harness owns baseline validity, actual rewrites, kills and restores.
+          assert pathlib.Path('target/mutation/pilot-3.edn').is_file()
+          assert pathlib.Path('target/mutation/pilot-3.edn.json').is_file()
+          print(native['output'])
+          CHECK
+      - name: Preserve actual final source custody without resetting it
         if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: knoxx-translation-browser-storyboard
-          path: ${{ runner.temp }}/knoxx-translation-browser
-          # A browser-contract failure still creates this directory and must
-          # upload its evidence. An earlier setup failure has no browser
-          # evidence; preserve that original failure instead of adding a
-          # misleading second artifact error.
-          if-no-files-found: warn
-
-      - name: Backend tests + coverage (cljs.test via shadow-cljs + c8)
-        run: pnpm -C backend run test:coverage
-
-      # Boots a real Fastify app on an ephemeral port and drives the MCP tool
-      # surface over HTTP. Hermetic — the policy context and fetch are supplied
-      # by the harness — except the sandbox tools, which need a real docker
-      # daemon. Runners have one, so absence is a failure here rather than a
-      # silent skip: a skipped sandbox test reads exactly like a passing one.
-      - name: Backend e2e (real server, MCP tool surface)
-        env:
-          KNOXX_E2E_REQUIRE_DOCKER: "true"
-        run: pnpm -C backend run test:e2e
-
-      - name: Upload backend coverage artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: knoxx-backend-coverage
-          path: backend/coverage
-          if-no-files-found: error
-
-      - name: Backend coverage summary
-        run: node --input-type=module -e "import fs from 'node:fs'; const p='backend/coverage/coverage-summary.json'; const s=JSON.parse(fs.readFileSync(p,'utf8')).total; const f=(x)=>x?.pct??0; console.log('Backend coverage — Lines:',f(s.lines),'%','Statements:',f(s.statements),'%','Functions:',f(s.functions),'%','Branches:',f(s.branches),'%');"
-
-      - name: Frontend typecheck (tsc)
-        run: pnpm -C frontend run typecheck
-
-      - name: Frontend CLJS lint
-        env:
-          KNOXX_LINT_BASE_SHA: "${{ github.event_name == 'workflow_dispatch' && inputs.comparison_base_sha || github.event.pull_request.base.sha || github.event.before || 'HEAD^' }}"
-        run: pnpm -C frontend run lint:cljs:changed
-
-      - name: Frontend migration manifest and ratchets
-        env:
-          KNOXX_MIGRATION_BASE_SHA: "${{ github.event_name == 'workflow_dispatch' && inputs.comparison_base_sha || github.event.pull_request.base.sha || github.event.before || 'HEAD^' }}"
-          KNOXX_MANUAL_MIGRATION_INFRASTRUCTURE: ${{ inputs.migration_infrastructure }}
+        shell: bash
         run: |
-          KNOXX_MIGRATION_INFRASTRUCTURE="$(node -e '
-            const fs = require("node:fs");
-            const event = JSON.parse(fs.readFileSync(process.env.GITHUB_EVENT_PATH, "utf8"));
-            const declared = (event.pull_request?.body || "").split(/\r?\n/)
-              .some(line => line.trim() === "Migration infrastructure: yes");
-            const infrastructure = process.env.GITHUB_EVENT_NAME === "workflow_dispatch"
-              ? process.env.KNOXX_MANUAL_MIGRATION_INFRASTRUCTURE === "true"
-              : process.env.GITHUB_EVENT_NAME !== "pull_request" || declared;
-            console.log(infrastructure);
-          ')"
-          export KNOXX_MIGRATION_INFRASTRUCTURE
-          pnpm -C frontend run migration:check
-
-      - name: Upload frontend migration manifest
+          python3 - <<'POST'
+          import hashlib, json, os, pathlib, subprocess
+          root = pathlib.Path(os.environ['GITHUB_WORKSPACE']).resolve(strict=True)
+          proof = pathlib.Path(os.environ['RUNNER_TEMP']) / ('mutation-pilot-' + os.environ['GITHUB_RUN_ID'] + '-' + os.environ['GITHUB_RUN_ATTEMPT'])
+          proof.mkdir(mode=0o700, exist_ok=True)
+          rows = {}
+          for label, args in [('head', ['rev-parse', 'HEAD']), ('tree', ['rev-parse', 'HEAD^{tree}']),
+                              ('status', ['status', '--porcelain=v1', '-z', '--untracked-files=all']),
+                              ('index', ['diff', '--cached', '--raw', '-z']), ('diff', ['diff', 'HEAD', '--'])]:
+              r = subprocess.run(['git', '-C', str(root), *args], capture_output=True, timeout=30)
+              assert len(r.stdout) <= 1048576 and len(r.stderr) <= 65536
+              for suffix, data in [('stdout', r.stdout), ('stderr', r.stderr)]:
+                  with (proof / ('post-' + label + '.' + suffix)).open('xb') as stream: stream.write(data)
+              rows[label] = {'exit': r.returncode, 'stdoutBytes': len(r.stdout),
+                             'stdoutSHA256': hashlib.sha256(r.stdout).hexdigest(), 'stderrBytes': len(r.stderr)}
+          clean = (all(row['exit'] == 0 and not row['stderrBytes'] for row in rows.values())
+                   and (proof / 'post-head.stdout').read_text().strip() == '612488d4b01ba877d48beb66ac7b02ad448faa43'
+                   and (proof / 'post-tree.stdout').read_text().strip() == '244d1fd3e8f3afbf1d5c2ffaac72eec1685abf0f'
+                   and all(rows[label]['stdoutBytes'] == 0 for label in ['status', 'index', 'diff']))
+          with (proof / 'post-source-custody.json').open('x') as stream: json.dump({'actualClean': clean, 'nativeReads': rows}, stream, indent=2)
+          assert clean, 'Canonical source did not restore; no reset or synthetic cleanup is performed.'
+          POST
+      - name: Bound complete reports and payload evidence even after failure
+        id: evidence-size
         if: always()
-        uses: actions/upload-artifact@v4
+        shell: bash
+        run: |
+          python3 - <<'SIZE'
+          import hashlib, json, os, pathlib, stat, sys, time
+          temp = pathlib.Path(os.environ['RUNNER_TEMP'])
+          stem = os.environ['GITHUB_RUN_ID'] + '-' + os.environ['GITHUB_RUN_ATTEMPT']
+          proof = temp / ('mutation-pilot-' + stem)
+          proof.mkdir(mode=0o700, exist_ok=True)
+          roots = [proof, pathlib.Path(os.environ['GITHUB_WORKSPACE']) / 'backend/target/mutation', temp / 'knoxx-setup-sdk/evidence']
+          total = 0
+          count = 0
+          deadline = time.monotonic() + 60
+          receipt = {'admissible': False, 'scope': 'Three-mutation pilot only; no four250 or equivalent-adjudication credit.'}
+          def traversal_error(error): raise error
+          def paths(root):
+              yield root
+              for parent, dirs, files in os.walk(root, onerror=traversal_error, followlinks=False):
+                  for leaf in dirs + files: yield pathlib.Path(parent) / leaf
+          try:
+              for root in roots:
+                  if root.exists() or root.is_symlink():
+                      for path in paths(root):
+                          value = path.lstat()
+                          assert stat.S_ISREG(value.st_mode) or stat.S_ISDIR(value.st_mode), 'Unexpected nonregular evidence node'
+                          if stat.S_ISREG(value.st_mode): count += 1; total += value.st_size
+                          assert time.monotonic() <= deadline and count <= 50000
+              receipt['admissible'] = total + 65536 <= 256 * 1024**2
+              assert receipt['admissible'], 'Complete pilot proof exceeds256MiB including receipt reserve'
+          except BaseException as error:
+              receipt['admissible'] = False
+              receipt['artifactFailure'] = {'type': type(error).__name__, 'message': str(error)[:1000]}
+          receipt.update({'rawBytes': total, 'regularFiles': count})
+          native_path = proof / 'canonical-pilot-native.json'
+          if native_path.is_file() and not native_path.is_symlink() and native_path.stat().st_size <= 16 * 1024**2:
+              raw = native_path.read_bytes(); receipt['nativeCaptureSHA256'] = hashlib.sha256(raw).hexdigest()
+              try:
+                  native = json.loads(raw)
+                  receipt['native'] = {key: native.get(key) for key in ['exit-code', 'termination', 'cleanup-complete?', 'capture-truncated?', 'diagnostic']}
+              except ValueError: receipt['native'] = 'Unavailable; original capture hash retained.'
+          if not receipt['admissible']: receipt['limit'] = 'Complete proof omitted; finite diagnostic only, no qualification.'
+          data = (json.dumps(receipt, indent=2) + '\n').encode(); assert len(data) <= 65536
+          path = temp / ('mutation-artifact-size-' + stem + '.json')
+          with path.open('xb') as stream: stream.write(data)
+          with pathlib.Path(os.environ['GITHUB_OUTPUT']).open('a') as stream: stream.write('admissible=' + str(receipt['admissible']).lower() + '\n')
+          print(data.decode()); sys.exit(0 if receipt['admissible'] else 1)
+          SIZE
+      - name: Preserve complete canonical pilot evidence
+        if: ${{ always() && steps.evidence-size.outputs.admissible == 'true' }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: knoxx-frontend-migration-manifest
-          path: frontend/migration/manifest.ndedn
+          name: genuine-three-mutation-pilot-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/mutation-pilot-${{ github.run_id }}-${{ github.run_attempt }}
+            ${{ github.workspace }}/backend/target/mutation
+            ${{ runner.temp }}/knoxx-setup-sdk/evidence
+            ${{ runner.temp }}/mutation-artifact-size-${{ github.run_id }}-${{ github.run_attempt }}.json
           if-no-files-found: error
-
-      - name: Frontend CLJS tests
-        run: pnpm -C frontend run test:cljs
-
-      - name: Frontend production Shadow release (zero warnings)
-        run: pnpm -C frontend run build:cljs
-
-      - name: Frontend tests + coverage (vitest)
-        run: pnpm -C frontend run test:coverage
-
-      - name: Upload frontend coverage artifact
-        uses: actions/upload-artifact@v4
+          retention-days: 1
+          compression-level: 6
+          overwrite: false
+          include-hidden-files: true
+      - name: Preserve a finite evidence-bound failure diagnostic
+        if: ${{ always() && steps.evidence-size.outputs.admissible == 'false' }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: knoxx-frontend-coverage
-          path: frontend/coverage
+          name: three-mutation-evidence-bound-failure-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/mutation-artifact-size-${{ github.run_id }}-${{ github.run_attempt }}.json
           if-no-files-found: error
-
-      - name: Coverage summary
-        run: node --input-type=module -e "import fs from 'node:fs'; const p='frontend/coverage/coverage-summary.json'; const s=JSON.parse(fs.readFileSync(p,'utf8')).total; const f=(x)=>x?.pct??0; console.log('Lines:',f(s.lines),'%','Statements:',f(s.statements),'%','Functions:',f(s.functions),'%','Branches:',f(s.branches),'%');"
+          retention-days: 1
+          compression-level: 6
+          overwrite: false
