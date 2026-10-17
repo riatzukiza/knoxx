@@ -1331,3 +1331,12 @@
   spore: none
   receipt-refs: sha256:584797e76928f83c03384b5547d42914c2b7d4e138020dcdf864c9535ad17aff,d5a46839d3255bbfdefc3011d6c912434a5d6cf0
   note: Independent source peer caught a caller Reduced default being consumed by reduce before application. Keep the caller default outside the reduction protocol; public missing-default, later-alias, false-key and found-Reduced controls document existing behavior. Actual static test0E0W and all166global warning rows unchanged/native2FAIL; genuine hosted runtime preservation still PENDING. Native board readback representation corrected without replay; no spore, model, service or production effect.
+- ts: 2026-10-17T19:10:20.829385409Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-full-CI-workflow-repair-over933-v1
+  task: Qualified original public controls before pure template-context extraction; retain ordinary source and append-only native provenance
+  p-efficiency: 0.82
+  p-friction: 0.31
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: 9d2ab78e6fc4bc5b7401bcc9bbb5b5491d235614dc3a1b0d4e02087bee18df25
+  note: A caller Reduced default must stay outside alias-search reduction; source peer caught the private reducer defect before effects. Actual public old-product T tests and full source/artifact custody preceded the exact two-path V3 extraction. Preserve live Var lookup, false/nil/default identity and native effect order; partial static160 warnings stays FAIL. P hosted runtime remains pending. No spore or global/readiness/deployment promotion.
