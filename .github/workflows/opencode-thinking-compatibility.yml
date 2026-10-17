@@ -1,0 +1,170 @@
+name: Anonymous OpenCode native thinking compatibility
+on:
+  push:
+    branches: [qa/opencode-thinking-compatibility-20261017]
+permissions:
+  contents: read
+concurrency:
+  group: opencode-thinking-compatibility-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  compatibility:
+    if: github.repository == 'riatzukiza/knoxx' && github.event.repository.private == false && github.event.deleted == false
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22.23.3'
+      - name: Verify exact QA-only source and create fresh private run directory
+        shell: bash
+        run: |
+          python3 - <<'PY_SOURCE'
+          import pathlib, os, subprocess, hashlib, json, stat
+          task_source=pathlib.Path(os.environ['GITHUB_WORKSPACE']).resolve(strict=True)
+          task_base='4fa33834c9f861467eb07597f128c0ad117d856c'
+          task_rows=[{"path":".github/qa/opencode-thinking-compatibility/discovery.mjs","bytes":86229,"sha256":"7e12b32abebf27b1e87bb9767bcf217caf8ce1cc0a7a05515a67f91b9005e133"},{"path":".github/qa/opencode-thinking-compatibility/execute.mjs","bytes":10380,"sha256":"09e1aeff4be03f021ae76fa6d01afa1f0ad353061d52592d3c5de244d11bb93f"},{"path":".github/qa/opencode-thinking-compatibility/owned-process.py","bytes":18518,"sha256":"747b7dde9e480e9e5e9eee57985d66265c2cf0f2caf0341388cb10fc07303bbe"},{"path":".github/qa/opencode-thinking-compatibility/probe-case.mjs","bytes":3258,"sha256":"be652d4c217721cd96eac7b9edb08ef14494fd8ba77700dfc0014e8abe65be33"}]
+          def git(*args): return subprocess.check_output(['git','-C',str(task_source),*args])
+          assert os.environ['GITHUB_REPOSITORY']=='riatzukiza/knoxx'
+          assert os.environ['GITHUB_REF']=='refs/heads/qa/opencode-thinking-compatibility-20261017'
+          assert os.environ['GITHUB_EVENT_NAME']=='push' and os.getuid()!=0
+          event=json.loads(pathlib.Path(os.environ['GITHUB_EVENT_PATH']).read_bytes())
+          assert event['repository']['private'] is False and event['repository']['id']==1401249297
+          assert git('rev-parse','HEAD').decode().strip()==os.environ['GITHUB_SHA']
+          assert git('status','--porcelain=v1','-z','--untracked-files=all')==b''
+          subprocess.run(['git','-C',str(task_source),'merge-base','--is-ancestor',task_base,'HEAD'],check=True)
+          expected={r['path'] for r in task_rows}|{'.github/workflows/opencode-thinking-compatibility.yml'}
+          actual=set(git('diff','--name-only','-z',task_base,'HEAD').decode().rstrip('\0').split('\0'))
+          assert actual==expected, (actual,expected)
+          for row in task_rows:
+              leaf=task_source/row['path']; info=leaf.lstat()
+              assert stat.S_ISREG(info.st_mode) and leaf.resolve(strict=True)==leaf
+              assert info.st_size==row['bytes'] and hashlib.sha256(leaf.read_bytes()).hexdigest()==row['sha256']
+          temp=pathlib.Path(os.environ['RUNNER_TEMP']); assert temp.resolve(strict=True)==temp
+          task_root=temp/('openhax-opencode-thinking-'+os.environ['GITHUB_RUN_ID']+'-'+os.environ['GITHUB_RUN_ATTEMPT'])
+          task_root.mkdir(mode=0o700)
+          (task_root/'empty.npmrc').write_bytes(b'')
+          with open(os.environ['GITHUB_ENV'],'a') as out: out.write('QA_THINKING_ROOT='+str(task_root)+'\n')
+          PY_SOURCE
+      - name: Prepare only the pinned official client under owned native custody
+        shell: bash
+        run: |
+          python3 .github/qa/opencode-thinking-compatibility/owned-process.py \
+            --timeout-ms 120000 --max-output-bytes 262144 --cleanup-ms 10000 -- \
+            npm install --prefix "$QA_THINKING_ROOT/client" --cache "$QA_THINKING_ROOT/npm-cache" \
+            --userconfig "$QA_THINKING_ROOT/empty.npmrc" --registry https://registry.npmjs.org \
+            --no-audit --no-fund opencode-ai@1.18.31 > "$QA_THINKING_ROOT/installer-native.json" 2> "$QA_THINKING_ROOT/installer-outer.stderr"
+          python3 - <<'PY_INSTALL'
+          import pathlib,os,json,hashlib
+          root=pathlib.Path(os.environ['QA_THINKING_ROOT'])
+          assert (root/'installer-outer.stderr').read_bytes()==b''
+          c=json.loads((root/'installer-native.json').read_bytes())
+          assert c['exit-code']==0 and c['termination']=='exited' and c['cleanup-complete?'] is True and c['capture-truncated?'] is False and c['timed-out?'] is False
+          binary=root/'client/node_modules/opencode-ai/bin/opencode.exe'
+          assert binary.is_file() and not binary.is_symlink()
+          assert hashlib.sha256(binary.read_bytes()).hexdigest()=='f9dab32248695e9ebd56b16a1921798fd85112cf5a69c7dfd0cabc1e17be4a11'
+          PY_INSTALL
+      - name: Bind actual source and native tools before the diagnostic
+        shell: bash
+        run: |
+          python3 - <<'PY_BIND'
+          import pathlib,os,subprocess,hashlib,json,shutil,stat,sys
+          root=pathlib.Path(os.environ['QA_THINKING_ROOT']); checkout=pathlib.Path(os.environ['GITHUB_WORKSPACE']).resolve(strict=True)
+          def git(*args): return subprocess.check_output(['git','-C',str(checkout),*args]).decode().strip()
+          assert git('rev-parse','HEAD')==os.environ['GITHUB_SHA'] and git('status','--porcelain=v1','-z','--untracked-files=all')==''
+          expected=[{"path":".github/qa/opencode-thinking-compatibility/discovery.mjs","bytes":86229,"sha256":"7e12b32abebf27b1e87bb9767bcf217caf8ce1cc0a7a05515a67f91b9005e133"},{"path":".github/qa/opencode-thinking-compatibility/execute.mjs","bytes":10380,"sha256":"09e1aeff4be03f021ae76fa6d01afa1f0ad353061d52592d3c5de244d11bb93f"},{"path":".github/qa/opencode-thinking-compatibility/owned-process.py","bytes":18518,"sha256":"747b7dde9e480e9e5e9eee57985d66265c2cf0f2caf0341388cb10fc07303bbe"},{"path":".github/qa/opencode-thinking-compatibility/probe-case.mjs","bytes":3258,"sha256":"be652d4c217721cd96eac7b9edb08ef14494fd8ba77700dfc0014e8abe65be33"}]
+          rows=[]
+          for row in expected:
+              p=checkout/row['path']; s=p.lstat()
+              assert stat.S_ISREG(s.st_mode) and p.resolve(strict=True)==p and s.st_size==row['bytes']
+              assert hashlib.sha256(p.read_bytes()).hexdigest()==row['sha256']
+              rows.append(dict(path=str(p),sha256=row['sha256']))
+          tools={name:str(pathlib.Path(shutil.which(name)).resolve(strict=True)) for name in ['python3','node','git','npm']}
+          for p in tools.values(): rows.append(dict(path=p,sha256=hashlib.sha256(pathlib.Path(p).read_bytes()).hexdigest()))
+          binary=str(root/'client/node_modules/opencode-ai/bin/opencode.exe')
+          rows.append(dict(path=binary,sha256=hashlib.sha256(pathlib.Path(binary).read_bytes()).hexdigest()))
+          assert rows[-1]['sha256']=='f9dab32248695e9ebd56b16a1921798fd85112cf5a69c7dfd0cabc1e17be4a11'
+          gate=dict(schema='root-reviewed-native-thinking-probe/v1',repository=os.environ['GITHUB_REPOSITORY'],ref=os.environ['GITHUB_REF'],event=os.environ['GITHUB_EVENT_NAME'],
+                    qaHead=git('rev-parse','HEAD'),qaTree=git('rev-parse','HEAD^{tree}'),runRoot=str(root),checkout=str(checkout),bundle=str(checkout/'.github/qa/opencode-thinking-compatibility'),
+                    sourceRows=rows,binary=binary,python=tools['python3'],git=tools['git'],node=tools['node'],
+                    pathEnvironment=str(pathlib.Path(tools['node']).parent)+':/usr/bin:/bin')
+          with open(root/'admission.json','x') as out: json.dump(gate,out,indent=2)
+          os.chmod(root/'admission.json',0o600)
+          PY_BIND
+      - name: Run the exact two-case native diagnostic once
+        shell: bash
+        run: |
+          task_node="$(command -v node)"
+          task_python="$(command -v python3)"
+          env -i PATH="$(dirname "$task_node"):/usr/bin:/bin" LANG=C.UTF-8 LC_ALL=C.UTF-8 TZ=UTC TMPDIR="$QA_THINKING_ROOT/tmp" \
+            "$task_python" .github/qa/opencode-thinking-compatibility/owned-process.py \
+            --timeout-ms 360000 --max-output-bytes 4194304 --cleanup-ms 30000 -- \
+            "$task_node" .github/qa/opencode-thinking-compatibility/execute.mjs "$QA_THINKING_ROOT" "$QA_THINKING_ROOT/admission.json" \
+            > "$QA_THINKING_ROOT/outer-native.json" 2> "$QA_THINKING_ROOT/outer.stderr"
+          python3 - <<'PY_RESULT'
+          import pathlib,os,json
+          root=pathlib.Path(os.environ['QA_THINKING_ROOT'])
+          assert (root/'outer.stderr').read_bytes()==b''
+          c=json.loads((root/'outer-native.json').read_bytes())
+          assert c['exit-code']==0 and c['termination']=='exited' and c['cleanup-complete?'] is True and c['capture-truncated?'] is False and c['timed-out?'] is False
+          result=json.loads((root/'evidence/result.json').read_bytes())
+          assert result['status']=='native-compatibility-and-usage-contrast-observed' and result['primary'] is None and result['secondary']==[]
+          PY_RESULT
+      - name: Bound existing proof files for full or diagnostic-only upload
+        id: proof
+        if: always()
+        shell: bash
+        run: |
+          python3 - <<'PY_PROOF'
+          import pathlib,os,stat,json,time
+          root=pathlib.Path(os.environ['RUNNER_TEMP'])/('openhax-opencode-thinking-'+os.environ['GITHUB_RUN_ID']+'-'+os.environ['GITHUB_RUN_ATTEMPT'])
+          root.mkdir(mode=0o700,exist_ok=True)
+          total=0;count=0;start=time.monotonic();failure=None
+          try:
+              roots=[root/'evidence',root/'installer-native.json',root/'installer-outer.stderr',root/'admission.json',root/'outer-native.json',root/'outer.stderr']
+              def take(p):
+                  global total,count
+                  count+=1; assert count<=4096 and time.monotonic()-start<=10
+                  s=p.lstat();assert stat.S_ISREG(s.st_mode) or stat.S_ISDIR(s.st_mode)
+                  if stat.S_ISREG(s.st_mode): total+=s.st_size;assert total<=64*1024*1024-16384
+              for p in roots:
+                  try:p.lstat()
+                  except FileNotFoundError:continue
+                  take(p)
+                  if p.is_dir():
+                      for parent,dirs,files in os.walk(p,followlinks=False,onerror=lambda e: (_ for _ in ()).throw(e)):
+                          for name in dirs+files:take(pathlib.Path(parent)/name)
+          except Exception as e:failure=dict(type=type(e).__name__,message=str(e)[:2048])
+          report=dict(fullCaptureAdmissible=failure is None,bytesObserved=total,entriesObserved=count,failure=failure,
+                      noRuntimePASSCredit=True,omittedFullCapture=failure is not None)
+          (root/'proof-diagnostic.json').write_text(json.dumps(report,indent=2)+'\n')
+          assert (root/'proof-diagnostic.json').stat().st_size<=16384
+          with open(os.environ['GITHUB_OUTPUT'],'a') as out:out.write('full='+str(failure is None).lower()+'\n')
+          if failure:raise SystemExit(1)
+          PY_PROOF
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always() && steps.proof.outputs.full == 'true'
+        with:
+          name: native-thinking-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/openhax-opencode-thinking-${{ github.run_id }}-${{ github.run_attempt }}/evidence
+            ${{ runner.temp }}/openhax-opencode-thinking-${{ github.run_id }}-${{ github.run_attempt }}/installer-native.json
+            ${{ runner.temp }}/openhax-opencode-thinking-${{ github.run_id }}-${{ github.run_attempt }}/installer-outer.stderr
+            ${{ runner.temp }}/openhax-opencode-thinking-${{ github.run_id }}-${{ github.run_attempt }}/admission.json
+            ${{ runner.temp }}/openhax-opencode-thinking-${{ github.run_id }}-${{ github.run_attempt }}/outer-native.json
+            ${{ runner.temp }}/openhax-opencode-thinking-${{ github.run_id }}-${{ github.run_attempt }}/outer.stderr
+            ${{ runner.temp }}/openhax-opencode-thinking-${{ github.run_id }}-${{ github.run_attempt }}/proof-diagnostic.json
+          if-no-files-found: error
+          retention-days: 1
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always() && steps.proof.outputs.full != 'true'
+        with:
+          name: native-thinking-diagnostic-only-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/openhax-opencode-thinking-${{ github.run_id }}-${{ github.run_attempt }}/proof-diagnostic.json
+          if-no-files-found: error
+          retention-days: 1
