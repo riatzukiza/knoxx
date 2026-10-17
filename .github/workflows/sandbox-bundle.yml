@@ -205,6 +205,15 @@ jobs:
           set -o pipefail
           pnpm -C frontend run typecheck 2>&1 | tee "$OUT/logs/frontend-typecheck.log"
 
+      - name: Run registered frontend ClojureScript tests
+        id: frontend_cljs_tests
+        if: always() && steps.install_frontend.outcome == 'success'
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -o pipefail
+          pnpm -C frontend run test:cljs 2>&1 | tee "$OUT/logs/frontend-cljs-tests.log"
+
       - name: Run frontend tests and coverage
         id: frontend_tests
         if: always()
@@ -335,6 +344,7 @@ jobs:
           BACKEND_TESTS_OUTCOME: ${{ steps.backend_tests.outcome }}
           FRONTEND_TYPECHECK_OUTCOME: ${{ steps.frontend_typecheck.outcome }}
           FRONTEND_TESTS_OUTCOME: ${{ steps.frontend_tests.outcome }}
+          FRONTEND_CLJS_TESTS_OUTCOME: ${{ steps.frontend_cljs_tests.outcome }}
           INGESTION_PREPARE_OUTCOME: ${{ steps.ingestion_prepare.outcome }}
           INGESTION_TESTS_OUTCOME: ${{ steps.ingestion_tests.outcome }}
           RUNTIME_OUTCOME: ${{ steps.collect_runtime.outcome }}
@@ -383,6 +393,7 @@ jobs:
             --arg backend_tests "$BACKEND_TESTS_OUTCOME" \
             --arg frontend_typecheck "$FRONTEND_TYPECHECK_OUTCOME" \
             --arg frontend_tests "$FRONTEND_TESTS_OUTCOME" \
+            --arg frontend_cljs_tests "$FRONTEND_CLJS_TESTS_OUTCOME" \
             --arg ingestion_prepare "$INGESTION_PREPARE_OUTCOME" \
             --arg ingestion_tests "$INGESTION_TESTS_OUTCOME" \
             --arg runtime "$RUNTIME_OUTCOME" \
@@ -411,6 +422,7 @@ jobs:
                 backend_tests: $backend_tests,
                 frontend_typecheck: $frontend_typecheck,
                 frontend_tests: $frontend_tests,
+                frontend_cljs_tests: $frontend_cljs_tests,
                 ingestion_prepare: $ingestion_prepare,
                 ingestion_tests: $ingestion_tests,
                 runtime_collection: $runtime,
@@ -435,6 +447,7 @@ jobs:
                 "pnpm -C backend run typecheck",
                 "pnpm -C backend run test:coverage",
                 "pnpm -C frontend run typecheck",
+                "pnpm -C frontend run test:cljs",
                 "pnpm -C frontend run test:coverage",
                 "cd ingestion && clojure -M:test"
               ],
@@ -506,6 +519,7 @@ jobs:
            steps.backend_tests.outcome == 'failure' ||
            steps.frontend_typecheck.outcome == 'failure' ||
            steps.frontend_tests.outcome == 'failure' ||
+           steps.frontend_cljs_tests.outcome != 'success' ||
            steps.ingestion_prepare.outcome == 'failure' ||
            steps.ingestion_tests.outcome == 'failure' ||
            steps.collect_runtime.outcome == 'failure' ||

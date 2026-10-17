@@ -101,3 +101,51 @@
       (test/is (true? (:dirty? (.-current state))))
       (draft/reviewed! state (draft/capture state))
       (test/is (false? (:dirty? (.-current state)))))))
+
+
+(def ^:private split-authority-row
+  {:publication "publications/doc-1-es" :project "devel" :target_lang "es"
+   :revision "source-1" :translation_revision "translation-review-state-before"
+   :contract_candidate true :hydration_state "displayable"
+   :split_review {:candidate_set_id "candidate-set/1" :manifest_id "manifest/1"
+                  :splits [{:split_id "split/0" :split_index 0
+                            :source_text "Hello" :candidate_text "Hola"
+                            :review_status "in-review"}]}})
+
+(test/deftest same-split-reviewed-output-revision-keeps-current-editor-authority
+  (let [state #js {:current (draft/initial-state)}]
+    (draft/select-work! state split-authority-row)
+    (draft/edit! state {:corrected_text "D2"})
+    (let [submitted (draft/capture state)
+          reviewed (assoc split-authority-row
+                          :translation_revision "translation-effective-revision-after")]
+      (test/is (not (draft/select-work! state reviewed)))
+      (test/is (= submitted (draft/capture state)))
+      (test/is (true? (:dirty? (.-current state)))))))
+
+(test/deftest actual-candidate-source-and-nonsplit-revision-changes-reset-editor-authority
+  (doseq [[before after]
+          [[split-authority-row (assoc split-authority-row :revision "source-2")]
+           [split-authority-row (assoc-in split-authority-row [:split_review :candidate_set_id] "candidate-set/2")]
+           [split-authority-row (assoc-in split-authority-row [:split_review :manifest_id] "manifest/2")]
+           [split-authority-row (assoc split-authority-row :publication "publications/other")]
+           [split-authority-row (assoc split-authority-row :project "other")]
+           [split-authority-row (assoc split-authority-row :target_lang "fr")]
+           [split-authority-row (assoc split-authority-row :hydration_state "content_missing")]
+           [(dissoc split-authority-row :split_review)
+            (assoc (dissoc split-authority-row :split_review) :translation_revision "legacy-replacement")]
+           [(-> split-authority-row
+                (dissoc :split_review :contract_candidate :hydration_state)
+                (assoc :legacy_candidate true))
+            (-> split-authority-row
+                (dissoc :split_review :contract_candidate :hydration_state)
+                (assoc :legacy_candidate true :translation_revision "legacy-replacement"))]
+           [(assoc-in split-authority-row [:split_review :splits] [])
+            (-> split-authority-row
+                (assoc-in [:split_review :splits] [])
+                (assoc :translation_revision "unadmitted-replacement"))]]]
+    (let [state #js {:current (draft/initial-state)}]
+      (draft/select-work! state before)
+      (draft/edit! state {:corrected_text "D2"})
+      (test/is (true? (draft/select-work! state after)))
+      (test/is (false? (:dirty? (.-current state)))))))
