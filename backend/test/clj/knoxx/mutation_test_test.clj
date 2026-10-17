@@ -975,3 +975,33 @@
       (is (= (:first-read result) (:second-read result)))
       (is (= (str prefix expected "\n") (:rewritten result)))
       (is (= (:first-binding result) (:second-binding result))))))
+
+(deftest explicit-nil-as-keeps-ordinary-source-readable-and-rewritable
+  (let [source (str "(ns mutation.nil-as-fixture (:require [unloaded.nil-lib :as nil]))\n"
+                    "(def value true)\n")
+        before (find-ns 'unloaded.nil-lib)
+        forms (try (mutation/read-top-level-sexprs source)
+                   (catch Exception error error))
+        candidates (try (mutation/assign-mutant-ids
+                         (mutation/mutants-in-source "nil-as.cljs" source))
+                        (catch Exception error error))
+        mutant (when (vector? candidates) (first candidates))
+        rewritten (try (mutation/apply-mutant-to-source source mutant)
+                       (catch Exception error error))]
+    (is (vector? forms) (str forms))
+    (is (= '(:require [unloaded.nil-lib :as nil])
+           (when (vector? forms) (last (first forms)))))
+    (is (vector? candidates) (str candidates))
+    (is (= 1 (count (when (vector? candidates) candidates))))
+    (is (= (str "(ns mutation.nil-as-fixture (:require [unloaded.nil-lib :as nil]))\n"
+                "(def value false)\n") rewritten))
+    (is (= before (find-ns 'unloaded.nil-lib)))))
+
+(deftest explicit-nil-as-does-not-install-a-full-namespace-reader-alias
+  (doseq [body ["::clojure.string/configuration" "#::clojure.string{:flag true}"]]
+    (let [source (str "(ns mutation.nil-as-refusal (:require [clojure.string :as nil]))\n"
+                      "(def value " body ")\n")]
+      (is (thrown-with-msg? clojure.lang.ExceptionInfo #"Unknown source namespace alias"
+                           (mutation/read-top-level-sexprs source)))
+      (is (thrown-with-msg? clojure.lang.ExceptionInfo #"Unknown source namespace alias"
+                           (mutation/mutants-in-source "nil-as-refusal.cljs" source))))))
