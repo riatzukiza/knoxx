@@ -7,12 +7,14 @@
   "Bind displayed detail to work, locale and the server-admitted candidate."
   [row]
   (when row
-    [(logic/work-row-id row) (:project row)
-     (or (:target_lang row) (:locale row))
-     (select-keys row [:revision :translation_revision :legacy_candidate
-                       :contract_candidate :hydration_state])
-     (some-> (split-review/review row)
-             (select-keys [:candidate_set_id :manifest_id]))]))
+    (let [review (split-review/review row)]
+      [(logic/work-row-id row) (:project row)
+       (or (:target_lang row) (:locale row))
+       ;; Reviewed output revisions change with receipts of the same raw split set.
+       (cond-> (select-keys row [:revision :translation_revision :legacy_candidate
+                               :contract_candidate :hydration_state])
+         review (dissoc :translation_revision))
+       (some-> review (select-keys [:candidate_set_id :manifest_id]))])))
 
 (defn initial-state
   "Start without a selected authority, segment or user draft."
