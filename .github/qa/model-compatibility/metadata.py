@@ -1,0 +1,160 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+import datetime, json, math, os, pathlib, platform, re, subprocess, sys
+
+os.umask(0o077)
+context_names = {
+    "repository": "PILOT_REPOSITORY", "repositoryId": "PILOT_REPOSITORY_ID",
+    "repositoryPrivate": "PILOT_REPOSITORY_PRIVATE", "event": "PILOT_EVENT",
+    "runId": "PILOT_RUN_ID", "runAttempt": "PILOT_RUN_ATTEMPT", "job": "PILOT_JOB",
+    "runSourceSha": "PILOT_SOURCE_SHA", "workflowSha": "PILOT_WORKFLOW_SHA",
+    "workflowRef": "PILOT_WORKFLOW_REF", "runnerEnvironment": "PILOT_RUNNER_ENVIRONMENT",
+    "runnerOs": "PILOT_RUNNER_OS", "runnerArch": "PILOT_RUNNER_ARCH",
+    "adapterSha256": "PILOT_ADAPTER_SHA256",
+    "declaredComparisonBaseSha": "PILOT_COMPARISON_BASE_SHA",
+    "declaredMigrationInfrastructure": "PILOT_MIGRATION_INFRASTRUCTURE",
+}
+context = {key: os.environ.get(name, "") for key, name in context_names.items()}
+assert all(len(value) <= 512 and "\x00" not in value for value in context.values())
+assert re.fullmatch(r"[0-9]+", context["runId"]) and re.fullmatch(r"[0-9]+", context["runAttempt"])
+temporary = pathlib.Path(os.environ["RUNNER_TEMP"])
+workspace = pathlib.Path(os.environ["GITHUB_WORKSPACE"])
+assert temporary.is_absolute() and temporary.is_dir() and workspace.is_absolute() and workspace.is_dir()
+output = temporary / ("hosted-worker-metadata-" + context["runId"] + "-" + context["runAttempt"])
+output.mkdir(mode=0o700)
+result = {
+    "schema": "openhax-hosted-worker-selected-metadata/v1",
+    "observedAtUTC": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+    "source": context, "uid": os.geteuid(), "gid": os.getegid(),
+    "hostname": platform.node(), "kernel": platform.release(), "machine": platform.machine(),
+    "python": {"version": platform.python_version(), "executable": sys.executable},
+    "runnerImage": {key: os.environ.get(key, "") for key in ("ImageOS", "ImageVersion")},
+    "raw": {}, "errors": [], "filesystems": [],
+    "limits": "Metadata-only single sample. No model/SDK/production compatibility or runtime admission credit.",
+}
+reasons = []
+
+def read_small(path):
+    with pathlib.Path(path).open("rb") as stream:
+        value = stream.read(4097)
+    if len(value) > 4096:
+        raise ValueError("Selected kernel metadata exceeds 4096 bytes")
+    return value.decode("utf-8", errors="strict")
+
+def filesystem(role, path):
+    path = pathlib.Path(path)
+    if not path.is_absolute():
+        raise ValueError("Selected filesystem path must be absolute")
+    resolved = path.resolve(strict=True)
+    values, identity = os.statvfs(resolved), resolved.stat()
+    row = {"role": role, "requestedPath": str(path), "resolvedPath": str(resolved),
+           "device": identity.st_dev, "fragmentBytes": values.f_frsize,
+           "blocks": values.f_blocks, "freeBlocks": values.f_bfree,
+           "availableBlocks": values.f_bavail,
+           "availableBytes": values.f_bavail * values.f_frsize}
+    result["filesystems"].append(row)
+    if row["availableBytes"] < 24 * 1024**3:
+        reasons.append(role + ": actual available bytes below 24GiB")
+
+try:
+    expected = {"repository": "riatzukiza/knoxx", "repositoryId": "1401249297",
+                "repositoryPrivate": "false", "event": "workflow_dispatch",
+                "runnerEnvironment": "github-hosted", "runnerOs": "Linux", "runnerArch": "X64"}
+    reasons.extend("context mismatch: " + key for key, value in expected.items() if context[key] != value)
+    result["dispatchInputs"] = {"comparisonBaseSha": context["declaredComparisonBaseSha"],
+                                "migrationInfrastructure": {"true": True, "false": False}.get(context["declaredMigrationInfrastructure"]),
+                                "limit": "Recorded dispatch inputs only; no checkout or comparison/ancestor validation is performed by this metadata job."}
+    if not re.fullmatch(r"[0-9a-f]{40}", context["declaredComparisonBaseSha"]):
+        reasons.append("missing full declared comparison-base SHA")
+    if context["declaredMigrationInfrastructure"] != "false":
+        reasons.append("metadata pilot expects explicit migration_infrastructure=false")
+    if not all(re.fullmatch(r"[0-9a-f]{40}", context[key]) for key in ("runSourceSha", "workflowSha")):
+        reasons.append("missing exact run/workflow source SHA")
+    if not context["workflowRef"].startswith("riatzukiza/knoxx/.github/workflows/ci.yml@"):
+        reasons.append("unexpected workflow source path")
+    if not re.fullmatch(r"[0-9a-f]{64}", context["adapterSha256"]):
+        reasons.append("missing frozen adapter hash")
+    if os.geteuid() == 0:
+        reasons.append("metadata worker actor is root")
+    release = dict(line.split("=", 1) for line in read_small("/etc/os-release").splitlines() if "=" in line)
+    result["osRelease"] = {key: release.get(key, "").strip('"') for key in ("ID", "VERSION_ID")}
+    if result["osRelease"] != {"ID": "ubuntu", "VERSION_ID": "24.04"} or platform.machine() != "x86_64":
+        reasons.append("worker OS/architecture differs from selected ubuntu-24.04 x64")
+    result["cpu"] = {"logicalCount": os.cpu_count(), "affinityCount": len(os.sched_getaffinity(0))}
+    if result["cpu"]["affinityCount"] < 4:
+        reasons.append("fewer than four available CPU affinity slots")
+    memory = {}
+    for line in read_small("/proc/meminfo").splitlines():
+        key = line.split(":", 1)[0]
+        if key in ("MemTotal", "MemAvailable", "SwapTotal", "SwapFree"):
+            result["raw"].setdefault("selectedMeminfoLines", []).append(line)
+            match = re.fullmatch(r"[A-Za-z]+:\s+([0-9]+) kB", line)
+            if not match:
+                raise ValueError("Unexpected selected memory field")
+            memory[key] = int(match.group(1))
+    if set(memory) != {"MemTotal", "MemAvailable", "SwapTotal", "SwapFree"}:
+        raise ValueError("Incomplete selected memory fields")
+    result["memoryKiB"] = memory
+    if memory["MemAvailable"] < 10228932:
+        reasons.append("MemAvailable below unchanged 10228932KiB startup threshold")
+    pressure = read_small("/proc/pressure/memory")
+    result["raw"]["memoryPressure"] = pressure
+    psi = {line.split()[0]: dict(part.split("=", 1) for part in line.split()[1:]) for line in pressure.splitlines()}
+    values = {kind: float(psi[kind]["avg10"]) for kind in ("some", "full")}
+    result["memoryPsiAvg10"] = values
+    if not all(math.isfinite(value) for value in values.values()) or values["some"] > 10 or values["full"] > 5:
+        reasons.append("memory pressure exceeds unchanged some10/full5 thresholds")
+    membership = read_small("/proc/self/cgroup")
+    own = next(line[3:] for line in membership.splitlines() if line.startswith("0::"))
+    root = pathlib.Path("/sys/fs/cgroup").resolve(strict=True)
+    selected = (root / own.lstrip("/")).resolve(strict=True)
+    if not selected.is_relative_to(root):
+        raise ValueError("Own cgroup escapes cgroup root")
+    fields = {name: read_small(selected / name) for name in
+              ("cpu.max", "memory.current", "memory.max", "memory.swap.current", "memory.swap.max", "memory.pressure")}
+    result["ownCgroupV2"] = {"membership": own, "selectedFieldsRaw": fields,
+                            "limit": "Own cgroup only; no effective ancestor-limit or future container claim."}
+    quota, period = fields["cpu.max"].split()
+    if quota != "max" and int(quota) / int(period) < 4:
+        reasons.append("own cgroup CPU quota below four CPUs")
+    if fields["memory.max"].strip() != "max" and int(fields["memory.max"]) < 10228932 * 1024:
+        reasons.append("own cgroup memory ceiling below selected startup headroom")
+    filesystem("runner-temp", temporary)
+    filesystem("workspace", workspace)
+    client = output / "empty-docker-client"
+    client.mkdir(mode=0o700)
+    (client / "config.json").write_text("{}\n")
+    clean = {"PATH": "/usr/bin:/bin", "LANG": "C.UTF-8"}
+    docker = ["/usr/bin/docker", "--host", "unix:///var/run/docker.sock", "--config", str(client)]
+    def docker_selected(label, arguments):
+        process = subprocess.run(docker + arguments, env=clean, capture_output=True, timeout=10, check=False)
+        if len(process.stdout) > 8192 or len(process.stderr) > 8192:
+            raise ValueError("Selected Docker metadata exceeds 8192 bytes")
+        stdout, stderr = process.stdout.decode("utf-8"), process.stderr.decode("utf-8")
+        result["raw"][label] = {"exitCode": process.returncode, "stdout": stdout, "stderr": stderr}
+        if process.returncode:
+            raise ValueError("Selected Docker metadata query failed: " + label)
+        return json.loads(stdout)
+    result["dockerServer"] = docker_selected("dockerVersion", ["version", "--format",
+        '{"version":{{json .Server.Version}},"apiVersion":{{json .Server.APIVersion}},"os":{{json .Server.Os}},"arch":{{json .Server.Arch}}}'])
+    info = docker_selected("dockerInfoSelected", ["info", "--format",
+        '{"dataRoot":{{json .DockerRootDir}},"cgroupVersion":{{json .CgroupVersion}},"cgroupDriver":{{json .CgroupDriver}}}'])
+    result["dockerSelected"] = info
+    if info["cgroupVersion"] != "2":
+        reasons.append("Docker does not report cgroup2")
+    filesystem("docker-data-root", info["dataRoot"])
+except Exception as error:
+    result["errors"].append({"type": type(error).__name__, "message": str(error)[:512]})
+    reasons.append("selected metadata observation incomplete")
+finally:
+    result["thresholds"] = {"eachFilesystemAvailableBytes": 24 * 1024**3,
+                            "MemAvailableKiB": 10228932, "memoryPsiSomeAvg10Max": 10,
+                            "memoryPsiFullAvg10Max": 5, "minimumCpuAffinity": 4}
+    result["classification"] = "HOLD" if reasons else "METADATA_THRESHOLDS_MET"
+    result["reasons"] = reasons
+    result["completedAtUTC"] = datetime.datetime.now(datetime.timezone.utc).isoformat()
+    encoded = (json.dumps(result, indent=2, sort_keys=True) + "\n").encode()
+    if len(encoded) > 65536:
+        raise ValueError("Finite metadata artifact exceeds 64KiB")
+    with (output / "measurement.json").open("xb") as stream:
+        stream.write(encoded)
+    print(encoded.decode(), end="")

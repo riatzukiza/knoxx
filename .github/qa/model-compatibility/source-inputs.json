@@ -1,0 +1,399 @@
+{
+  "schema": "openhax-real-sdk-build-only-inputs/v1",
+  "sourceRevision": "612488d4b01ba877d48beb66ac7b02ad448faa43",
+  "sourceTree": "244d1fd3e8f3afbf1d5c2ffaac72eec1685abf0f",
+  "sdkRevision": "07085d6557b75834ce6f50e6c54b8ca47e1c7c08",
+  "sdkTree": "1dc69c04c8e832661d8062c15ee24a853f135d35",
+  "selectedSdkInventorySha256": "3f67946839edd484db2973dd19b2eb822e41e10ada9ac878bb2d24468839aece",
+  "sdkHelperSha256": "aeb9f62c3254c7568a927efd2885ed759337d67233b0aedc13d9086d81c86ec5",
+  "supervisorSha256": "348bd2f8451e0c7d232407cd0dcdd328698e896b80838e68e8681a3b7892941b",
+  "bundleFiles": [
+    {
+      "path": "build-only.py",
+      "bytes": 12624,
+      "sha256": "fcd6d71c8f4a4533f748933d497572391a13981cc924e425605f35dbf4a99283"
+    },
+    {
+      "path": "qa-native-driver.mjs",
+      "bytes": 6490,
+      "sha256": "f1eaadcca19097783ba3ce7b4f18711858c546670da54479d239ce00b64a17bd"
+    },
+    {
+      "path": "qa-shadow-cljs.edn",
+      "bytes": 502,
+      "sha256": "6044021d722ce6b9c7271fc6311a6b550aedd9df3413826508e4dd4ffb616c18"
+    },
+    {
+      "path": "qa-deps.edn",
+      "bytes": 238,
+      "sha256": "357ad5a17b78e8f4c78b13ce1dfccdfb8793805ab4b06453879157275a4e818c"
+    },
+    {
+      "path": "qa-src/knoxx/backend/extern/live_checked_embedding_qa.cljs",
+      "bytes": 1989,
+      "sha256": "a0cac9dd1298c93ddcf21d1bd1fdd3efa924e432289d027bd3ffad9c0a521bbe"
+    },
+    {
+      "path": "owned-process-supervisor.py",
+      "bytes": 15934,
+      "sha256": "348bd2f8451e0c7d232407cd0dcdd328698e896b80838e68e8681a3b7892941b"
+    },
+    {
+      "path": "metadata.py",
+      "bytes": 10153,
+      "sha256": "b5860f799bd1e37fd61a8ae19038f1821de5172c9e7637085df5ea0a4fe912e4"
+    }
+  ],
+  "productRows": [
+    {
+      "path": "backend/src/cljs/knoxx/backend/extern/embedding.cljs",
+      "bytes": 5667,
+      "sha256": "01b8f27cbec57f153561fc944e1577b77448f33d4afc15079547dfbdb951a950"
+    },
+    {
+      "path": "backend/src/cljs/knoxx/backend/shape/embedding.cljc",
+      "bytes": 502,
+      "sha256": "6a4295b1cebc593415f9fbb31112d664aca2f2dc41377d9cec8956162eb3d4ac"
+    },
+    {
+      "path": "backend/src/cljs/knoxx/backend/law/embedding.cljc",
+      "bytes": 5230,
+      "sha256": "9429a5a62a3e95a2f625c6c00b804bba6e4d60ac4bd7bfeef4762974205f9fff"
+    },
+    {
+      "path": "backend/src/cljs/knoxx/backend/extern/fetch.cljs",
+      "bytes": 5074,
+      "sha256": "44ba6536ac6902dfd4049a4f4d73793b7b626155f0696f4b573f4b1e67db7756"
+    },
+    {
+      "path": "backend/src/cljs/knoxx/backend/extern/json.cljs",
+      "bytes": 1037,
+      "sha256": "0c5b5da5b3e390d506d29263a930e04e8edd118110762da391bb6f0e2dd26bde"
+    },
+    {
+      "path": "backend/src/cljs/knoxx/backend/extern/openplanner_sdk.cljs",
+      "bytes": 13225,
+      "sha256": "3b0c36387dc617ec823b34863c820180afd8f2a5889da088dd11b6bf5a74f7f3"
+    },
+    {
+      "path": "backend/src/cljs/knoxx/backend/extern/openplanner_sdk_vectors.cljs",
+      "bytes": 9922,
+      "sha256": "e2279e6b2845a032d059f5b59f0de62e88ffc9ce2fbb76e8ef57fc33f472beac"
+    },
+    {
+      "path": "scripts/build-sandbox-openplanner-sdk.sh",
+      "bytes": 15756,
+      "sha256": "aeb9f62c3254c7568a927efd2885ed759337d67233b0aedc13d9086d81c86ec5"
+    }
+  ],
+  "sdkRows": [
+    {
+      "path": "package.json",
+      "blob": "0a412e9737b7e32c41a78aa331aae07040c5ba19",
+      "bytes": 3388,
+      "sha256": "cc60d469a7b48d9cfb9f4f8c9d9032af5991a597b5cc24e09f2fb204cc3737f0"
+    },
+    {
+      "path": "packages/openplanner-sdk/package.json",
+      "blob": "2f220212888da16d6e51918050ff1065d6594197",
+      "bytes": 1008,
+      "sha256": "942f686c7b1e1e841040d9d1c35e32146aaf01bc469a1044ff73f62f3e6e26e6"
+    },
+    {
+      "path": "packages/openplanner-sdk/src/config.ts",
+      "blob": "1a2b32be359fc0d477253bbd69e1647868fea752",
+      "bytes": 5361,
+      "sha256": "eef6ca6b31d97b8e459baa5a333b2487e65c29a2d97c207d1644bcb06682bf31"
+    },
+    {
+      "path": "packages/openplanner-sdk/src/embedding-cache.ts",
+      "blob": "4a91949e54f4b379a5bce7ff5bd2c7bc6cfd1af6",
+      "bytes": 1650,
+      "sha256": "2ecbaf59330f0655b32a3fa8e99658d553050e134eead099d5f12df3c610b921"
+    },
+    {
+      "path": "packages/openplanner-sdk/src/embedding-models.ts",
+      "blob": "ef1b448fe6d0a88f81ae8abda7845c6f0a1fc4c1",
+      "bytes": 2317,
+      "sha256": "8a6ea95336c0089de0fc773b5436359f00c721c6bd8165c63704ea5f9a718377"
+    },
+    {
+      "path": "packages/openplanner-sdk/src/embedding-runtime.ts",
+      "blob": "6e1ebcac1f14e70fb17e614aad178276df7489cb",
+      "bytes": 4494,
+      "sha256": "bd8e83a52c3cc72c4cc3ae66dd8793db692a456842a41db8669d0f6e08992ab2"
+    },
+    {
+      "path": "packages/openplanner-sdk/src/embedding-text.ts",
+      "blob": "b97318ecf6667ee682bb8ccfbbe26093faaeea14",
+      "bytes": 1036,
+      "sha256": "de4753c62b57ceab0b212414d5c71f27d5033d7ab67fc5eca01fd39fa67ad3dd"
+    },
+    {
+      "path": "packages/openplanner-sdk/src/embeddings.ts",
+      "blob": "32ed8f95e0521e9f8b35e25a7ef8cd6b52414c7e",
+      "bytes": 11632,
+      "sha256": "67b1bf33bed2948cbd656310390890a6d65422796c7abeddbc4e2456bbe2e625"
+    },
+    {
+      "path": "packages/openplanner-sdk/src/index.ts",
+      "blob": "19b9027cb3e5eb2ec1795f8c31cc3ccafa7bd2f8",
+      "bytes": 1747,
+      "sha256": "355511c667248b65ae72d8d81e06ab3a571948dabc2b3a270890e4196a1bf147"
+    },
+    {
+      "path": "packages/openplanner-sdk/src/indexing.ts",
+      "blob": "1369c4048a705b038b77f821d61e9be08ea43349",
+      "bytes": 9656,
+      "sha256": "3662b6478948087a905cb1aabff3b177ade7497dc9ddb0ce1236ca728e345fd1"
+    },
+    {
+      "path": "packages/openplanner-sdk/src/ingest.ts",
+      "blob": "40e5778648e8e88fd86c2fb202445489ee4fcc14",
+      "bytes": 21979,
+      "sha256": "6a6a6e96068cb5ab19877453120de307fdc7f406bbade0bd9af939881ff53639"
+    },
+    {
+      "path": "packages/openplanner-sdk/src/mongo-browse.ts",
+      "blob": "f431c52246279b50c38c4b9ec9ac9bc406cbe6a1",
+      "bytes": 3498,
+      "sha256": "14a8366449483665e0c8687754d0ae3b096427cf5c85b1d73ec70d62a17ee46d"
+    },
+    {
+      "path": "packages/openplanner-sdk/src/mongo-vectors.ts",
+      "blob": "cf7a00ca2b18c97f5d5113eaf8ccf584d0c77309",
+      "bytes": 47450,
+      "sha256": "74b76b3d68a9c6c788701fd09a6e33164c5d38eceef72529ce4ea6111ecd9637"
+    },
+    {
+      "path": "packages/openplanner-sdk/src/mongodb.ts",
+      "blob": "72a951af1894be90e4033fcdb725eaec2dc8834b",
+      "bytes": 43904,
+      "sha256": "728f1721a052d0ad83e2430760e5a3d49702ecc34a5b6443ed3c1f2fd36c935b"
+    },
+    {
+      "path": "packages/openplanner-sdk/src/protocol-adapters.ts",
+      "blob": "1192673e77f8438bde757a2486a08b71a3f2f0ec",
+      "bytes": 7607,
+      "sha256": "cdb100e142a1847238fbf7ce9c625338583fd9b0efa04f6d08e94395b9b8177c"
+    },
+    {
+      "path": "packages/openplanner-sdk/src/schema-versions.ts",
+      "blob": "40e823bc59ed956544e11364316d8ebb42249e18",
+      "bytes": 1050,
+      "sha256": "48f04d75b9f7614bcabca3eaa2499ef0162fbd70dd29c06a90316f271c3b85f5"
+    },
+    {
+      "path": "packages/openplanner-sdk/src/sdk.ts",
+      "blob": "01123de9a15d0f8b3d9d6abf69f982b0a30d6eb5",
+      "bytes": 3470,
+      "sha256": "6b72b6959c8d500c60c2cd464b1bbe4599605e4bf8da1fa930e2e19e6523d6c7"
+    },
+    {
+      "path": "packages/openplanner-sdk/src/search-core.ts",
+      "blob": "d32dd1a77a1e79d36d56184702609e14849e2311",
+      "bytes": 7354,
+      "sha256": "d398e1f983ad858cfdf879eb723e0d26ed1bd112b6da4510941279b2b62127be"
+    },
+    {
+      "path": "packages/openplanner-sdk/src/sentence-split.ts",
+      "blob": "837f4b52075fcc32797dd907cf785a97833912e4",
+      "bytes": 1659,
+      "sha256": "f4f41887b2a36447d75628685b4d0f2266ab84209482ea1fcaa60a5cd8500570"
+    },
+    {
+      "path": "packages/openplanner-sdk/src/sessions-core.ts",
+      "blob": "faadb626998e7133dfcbadcf94bd943b4e51480c",
+      "bytes": 3584,
+      "sha256": "b667e31c1ee0d41d812174a630f0dd547dc8818506f472b186d8863f978c45da"
+    },
+    {
+      "path": "packages/openplanner-sdk/src/source-hydration.ts",
+      "blob": "e933e4a8d8a9f83895aac1c13c1552585cd812c9",
+      "bytes": 3661,
+      "sha256": "9107631402efbf50d30f0261d5b39f0820d99268468c908f62d956ed1ac3b123"
+    },
+    {
+      "path": "packages/openplanner-sdk/src/turndown.d.ts",
+      "blob": "134930d4b8ff26e439cdcdcfd75612b9eb2324d9",
+      "bytes": 306,
+      "sha256": "13339b3bd56b56faa57d96d11f9c5487fce053ace345c9b820aad738ae4b3b50"
+    },
+    {
+      "path": "packages/openplanner-sdk/src/types.ts",
+      "blob": "8a12677f8c796af25149e798dc3b079f7ae6dceb",
+      "bytes": 5493,
+      "sha256": "393f96ce39ef1afa35c5b2e4aedfdf39b8f02f88e09ad89a2ab6e1dca00d4790"
+    },
+    {
+      "path": "packages/openplanner-sdk/src/vector-search.ts",
+      "blob": "06cc95f8402188e1fe1f56d5d84343a6ccfcdd18",
+      "bytes": 3620,
+      "sha256": "af743cadc1b9fdbc1fbe8ea30e6419e9d5dacbbd2c64275cfd93f49d7c0e8198"
+    },
+    {
+      "path": "packages/openplanner-sdk/tsconfig.json",
+      "blob": "16a3d56e707c1acc798012242f55d073149f469b",
+      "bytes": 438,
+      "sha256": "0dcfba93caef4d76dacbe1a7736dbe97123bdad8ccb40da8a734a67fb26860b3"
+    },
+    {
+      "path": "packages/stores/cache/LICENSE",
+      "blob": "5550e2db15f239ea8d3cf54bfa3b035eab8d3174",
+      "bytes": 7651,
+      "sha256": "ee907919ec88c9c017b1f8b608db20960b6598aefcc4fe58820bde955d65ed3c"
+    },
+    {
+      "path": "packages/stores/cache/README.md",
+      "blob": "0b81e54d6875602322c57c69b2e4e4280e97417d",
+      "bytes": 2492,
+      "sha256": "063fa93a4015124d27c3e2f09baecc3e8f357fb851c964eecf589c9248bd20e7"
+    },
+    {
+      "path": "packages/stores/cache/index.d.ts",
+      "blob": "92a27404d8b59593e374e1162780a2060042a243",
+      "bytes": 2468,
+      "sha256": "0ac5810adac2ecb8fbc3fe62c78e13e328e597e8ba4944402f0350cf092c9151"
+    },
+    {
+      "path": "packages/stores/cache/package.json",
+      "blob": "a5a9b43f2c9a2be66a5852d28d0d98c3a0f3648b",
+      "bytes": 556,
+      "sha256": "becb551baeb524f01c62e2ab1c8a4450adf1372c1f4d5b5b9cc19141774c90f8"
+    },
+    {
+      "path": "packages/stores/cache/shadow-cljs.edn",
+      "blob": "bc3344c4363398bcab6382aa0ce90b24c035c060",
+      "bytes": 1684,
+      "sha256": "61adb6eb699e0f98dbeab3efd6e6aa0edec21ddf09c1e60a05471a7d637d86a9"
+    },
+    {
+      "path": "packages/stores/cache/src/openplanner/stores/cache/adapters/lmdb.cljs",
+      "blob": "39194f8144a24c88412de8f9eb962407f6228d85",
+      "bytes": 1995,
+      "sha256": "02128b54e0c00731fe9764f01ef96d4a4034b1884cf8cb81c000f0ee7304e6ba"
+    },
+    {
+      "path": "packages/stores/cache/src/openplanner/stores/cache/adapters/memory.cljs",
+      "blob": "2b08883c2bc3cff22c0df82fa93cbf09bc0cf336",
+      "bytes": 2400,
+      "sha256": "868abe3597f873b2ebf90fae790455ae59d4b4fe7dc3c7c4b9f70fb1e0e92ddc"
+    },
+    {
+      "path": "packages/stores/cache/src/openplanner/stores/cache/boundary.cljs",
+      "blob": "b3c2b62d2c38431c83bbd716e74a484dd8bb3ce8",
+      "bytes": 4510,
+      "sha256": "e3563da03094a1a0949c9238c51e6466dd0cfee9be1bfba68b64c3bac2a552ae"
+    },
+    {
+      "path": "packages/stores/cache/src/openplanner/stores/cache/core.cljs",
+      "blob": "0c306a61c0821338e42d4beea1d17b95a606b084",
+      "bytes": 692,
+      "sha256": "73095dd51a450c29a30174d3ec0ec2f638d57997f25b6318812161fbac210c70"
+    },
+    {
+      "path": "packages/stores/cache/src/openplanner/stores/cache/layered.cljs",
+      "blob": "125fbe0dcce32586daa3a1d9d3952e29c10c466e",
+      "bytes": 1824,
+      "sha256": "3ce8871bf1e30e571e572ec69204182c6324f6df03e687343150711e84d6bf00"
+    },
+    {
+      "path": "packages/stores/cache/src/openplanner/stores/cache/protocol.cljs",
+      "blob": "f7f3a8309fbfdebb5f18294b147ef59514851310",
+      "bytes": 497,
+      "sha256": "c2f9f0c544736fb33f4f099ecbc9075c0f3a5d05d8b9a79946e94f7b5aee4741"
+    },
+    {
+      "path": "packages/stores/cache/src/openplanner/stores/cache/schema.cljs",
+      "blob": "4cf051b5134c3c7d7d48ee45f1d0c7f353e3c7c0",
+      "bytes": 5209,
+      "sha256": "3454bb174ead2b84bc038319d40c09b11b3f22db3ff012d0006d539d0cd94f23"
+    },
+    {
+      "path": "packages/stores/cache/test/openplanner/stores/cache_test.cljs",
+      "blob": "11a42b0c467bf0abf4e7c6747ad018febefe2d89",
+      "bytes": 4428,
+      "sha256": "a5d515b922e5cedfba3968b056268171469be46427af170524e8b23b6309480a"
+    },
+    {
+      "path": "packages/stores/document-hydration/LICENSE",
+      "blob": "5550e2db15f239ea8d3cf54bfa3b035eab8d3174",
+      "bytes": 7651,
+      "sha256": "ee907919ec88c9c017b1f8b608db20960b6598aefcc4fe58820bde955d65ed3c"
+    },
+    {
+      "path": "packages/stores/document-hydration/README.md",
+      "blob": "af09febcff113027e3f624cd36d339ab52cf93d7",
+      "bytes": 1206,
+      "sha256": "a1a28c99074d0941285eac71bcf6c80fdce41e6e57469a42c2a62b5ca2a20eeb"
+    },
+    {
+      "path": "packages/stores/document-hydration/index.d.ts",
+      "blob": "57803fc30e99538c45b730fcaf9e57a36a280236",
+      "bytes": 1729,
+      "sha256": "6da57001e7c3958c03b2c6d507d38fc32c4745ae04235163f61926f8a7d89f2f"
+    },
+    {
+      "path": "packages/stores/document-hydration/package.json",
+      "blob": "3f491d98ced2eb33af9b3bd2d55154e0eeee8ad4",
+      "bytes": 643,
+      "sha256": "d71e08f273f4c64d6cd112f998157b27164931410c8938ea91bf35428da9b6d6"
+    },
+    {
+      "path": "packages/stores/document-hydration/shadow-cljs.edn",
+      "blob": "2c30329b3a9c7b7783f2a4ff960c0efb327edf30",
+      "bytes": 1864,
+      "sha256": "0b9d50c453e045e358a9059c40857829f14345be6e93691184a246bead4c586d"
+    },
+    {
+      "path": "packages/stores/document-hydration/src/openplanner/stores/document_hydration.cljs",
+      "blob": "aafd09a411e408bddef6b553b8fad2ed0d4a4f26",
+      "bytes": 5586,
+      "sha256": "31ba334dc0793b2c28faad7617f8d99c33fc835595f6c056d4ddcd0300e6be7e"
+    },
+    {
+      "path": "packages/stores/document-hydration/test/openplanner/stores/document_hydration_test.cljs",
+      "blob": "91b47ab71e80cb7e2274e9a1c77da41bea3f6635",
+      "bytes": 3402,
+      "sha256": "9b7899ad2184f34bb7e0bd970dc093f680e11ba91c67561f5dae6fc7719bb429"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "blob": "324e955d9292855aa165b46b65f48d2aab12490f",
+      "bytes": 356839,
+      "sha256": "7d77811aedc17cb44ee3217c7bd8b585bd32c935aca03c48c6d58f8ab2abbbe9"
+    },
+    {
+      "path": "pnpm-workspace.yaml",
+      "blob": "479c43a5056bcc0aaea03554fe10e5a5ea21dd21",
+      "bytes": 418,
+      "sha256": "92018b06aeef18a0a2ecc6be2f07004a13c104895006fe9da068501c69e406cc"
+    }
+  ],
+  "runtimeProductPaths": [
+    "backend/src/cljs/knoxx/backend/extern/embedding.cljs",
+    "backend/src/cljs/knoxx/backend/extern/fetch.cljs",
+    "backend/src/cljs/knoxx/backend/extern/json.cljs",
+    "backend/src/cljs/knoxx/backend/law/embedding.cljc",
+    "backend/src/cljs/knoxx/backend/shape/embedding.cljc"
+  ],
+  "qaFiles": [
+    {
+      "path": "qa-native-driver.mjs",
+      "target": "qa-native-driver.mjs"
+    },
+    {
+      "path": "qa-shadow-cljs.edn",
+      "target": "shadow-cljs.edn"
+    },
+    {
+      "path": "qa-deps.edn",
+      "target": "deps.edn"
+    },
+    {
+      "path": "qa-src/knoxx/backend/extern/live_checked_embedding_qa.cljs",
+      "target": "src/knoxx/backend/extern/live_checked_embedding_qa.cljs"
+    }
+  ],
+  "limits": "Build-only. No provider/image/model/container/DB/staging/production effects. These inputs are QA source roles, not protected adoption or runtime admission."
+}
