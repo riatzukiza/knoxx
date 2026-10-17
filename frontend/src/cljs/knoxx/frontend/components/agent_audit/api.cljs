@@ -15,13 +15,17 @@
   [limit]
   (:runs (await (api/request (str "/api/admin/agents/active?limit=" limit)))))
 
-(defn list-operator-active-agents
+(defn ^:async list-operator-active-agents
   "Admin view of active runs, falling back to the caller-scoped list."
   []
-  (-> (list-admin-active-agents active-run-limit)
-      (.catch (fn [_] (list-active-agents active-run-limit)))))
+  (try
+    (await (list-admin-active-agents active-run-limit))
+    (catch :default _
+      (await (list-active-agents active-run-limit)))))
 
-(defn list-memory-sessions [{:keys [limit offset contract-id]}]
+(defn list-memory-sessions
+  "Request a session page with an optional positive offset and contract filter."
+  [{:keys [limit offset contract-id]}]
   (let [q (js/URLSearchParams.)]
     (.set q "limit" (str (or limit 12)))
     (when (and (number? offset) (pos? offset))
