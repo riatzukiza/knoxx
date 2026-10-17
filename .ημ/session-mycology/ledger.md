@@ -1205,3 +1205,12 @@
   spore: none
   receipt-refs: e3e7b75b-6639-4259-83be-102e64103a6c
   note: Separate immutable model/provider map normalization from contract-loader and environment effects. Preserve configured-provider evaluation before defaults, nil/false/key/header precedence and all existing public APIs/tests; actual original/postimage/full diagnostic multiplicities distinguish three removals from retained enrich/global failures. Keep candidate runtime qualification and immutable modelQA612 evidence separate. No spore.
+- ts: 2026-10-17T16:11:57.117806234Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-full-CI-workflow-repair-over933-v1
+  task: Keep translation agent API docs accurate while preserving complete design rationale
+  p-efficiency: 0.92
+  p-friction: 0.12
+  p-skill-candidate: 0.08
+  spore: none
+  receipt-refs: b84abadd-d548-4e02-9cc9-aaaa01514469
+  note: Distinguish executable forms from doc metadata before refactoring for length. Four concise accurate API docstrings plus a verbatim dated rationale note clear five actual size warnings while preserving all bodies, arities, validation and assertions. Actual owning0/0 and global175/native2FAIL are distinct. No behavioral RED or runtime PASS transfer; no spore.
