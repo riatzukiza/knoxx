@@ -1079,3 +1079,12 @@
   spore: none
   receipt-refs: sha256:bc01d84421e9dbc036bfe3b24b6ce0f44a05b30ef065cb0f50e2e880b27994e9,19b0a2345d2fc30c7d3405c6b77b5c766b6e49be,a0a130b3818071048a2ee7c7c5db1db5611e3d72,sha256:f4f1be45ac8e2ba66bded0647153be7135ab5ea1f3106801ca472ff4cbfd6a17
   note: Fresh frontend-own install and unchanged474 baseline preceded test-only477 RED with15 assertion failures across three controls. Preserve draft revision/segment/authority separately from operation saving, and scope queued list freshness to project/filter/mounted-lifetime inputs so an omitted old selected row cannot erase the necessary read. Retain initial shadowed-key lint warning and FIRST487 GREEN1failure1error. Actual compiled reader isolated Invalid token ::authority without running tests; explicit namespace keywords preserve identity. Existing controller test must observe distinct second held read and real completion rather than first completion before a queued read settles; no sleeps or weakened freshness. Reviewed narrow corrections then distinct owning lint0 and registered487tests2674assert0fail0error0compilerwarnings. All native consumers closed and own leases released. Private WIP source only; original57 browser remains failed, no readiness/protectedadoption/deployment or public action. Portable reflection candidate0/no spore/no promotion.
+- ts: 2026-10-17T00:24:22.940437090Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-CMS-controller-integration-over8cd5-v1
+  task: CMS core5 actual view manifest invalidation with real wiring omission RED and restored GREEN
+  p-efficiency: 0.88
+  p-friction: 0.30
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: sha256:921a51ad4a87a956716b9ee543c6d84f85415cdd78b5a51a5310b70d15a1274a,f02c99f59e3e067d6547f2c4ec36c0065a692218
+  note: An invalidation primitive test cannot prove its actual page caller invokes it. Exercise the actual private boundary factory via supported Var access, keep B loaders/passive cleanup absent, and await the exact native promise already awaited by the real loader. Actual manifest-wire omission produced4 assertion failures across success/error; exact reverse restoration gave488tests2688assert0fail0error0compilerwarnings. Preserve source and324production artifacts; original browser case57 remains failed, with no scheduler/product/public changes or acceptance substitution. Portable candidate0, no spore or promotion.
