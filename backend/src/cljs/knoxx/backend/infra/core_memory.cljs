@@ -214,7 +214,7 @@
   [rows]
   (session-extra-value-from-rows rows [:schedule_id :schedule-id :scheduleId]))
 
-(defn session-summary-scope-from-rows
+(defn- session-agent-scope-from-rows
   [rows]
   (let [contract-id (session-contract-id-from-rows rows)
         actor-id (session-actor-id-from-rows rows)
@@ -224,13 +224,7 @@
         sub-agent-id (session-sub-agent-id-from-rows rows)
         parent-agent-id (session-parent-agent-id-from-rows rows)
         parent-run-id (session-parent-run-id-from-rows rows)
-        spawn-kind (session-spawn-kind-from-rows rows)
-        trigger-id (session-trigger-id-from-rows rows)
-        event-type (session-event-type-from-rows rows)
-        event-types (session-event-types-from-rows rows)
-        event-id (session-event-id-from-rows rows)
-        event-scope-id (session-event-scope-id-from-rows rows)
-        schedule-id (session-schedule-id-from-rows rows)]
+        spawn-kind (session-spawn-kind-from-rows rows)]
     (cond-> {}
       contract-id (assoc :contract_id contract-id)
       actor-id (assoc :actor_id actor-id)
@@ -238,13 +232,28 @@
       sub-agent-id (assoc :sub_agent_id sub-agent-id)
       parent-agent-id (assoc :parent_agent_id parent-agent-id)
       parent-run-id (assoc :parent_run_id parent-run-id)
-      spawn-kind (assoc :spawn_kind spawn-kind)
+      spawn-kind (assoc :spawn_kind spawn-kind))))
+
+(defn- session-trigger-scope-from-rows
+  [base rows]
+  (let [trigger-id (session-trigger-id-from-rows rows)
+        event-type (session-event-type-from-rows rows)
+        event-types (session-event-types-from-rows rows)
+        event-id (session-event-id-from-rows rows)
+        event-scope-id (session-event-scope-id-from-rows rows)
+        schedule-id (session-schedule-id-from-rows rows)]
+    (cond-> base
       trigger-id (assoc :trigger_id trigger-id)
       event-type (assoc :event_type event-type)
       (seq event-types) (assoc :event_types event-types)
       event-id (assoc :event_id event-id)
       event-scope-id (assoc :event_scope_id event-scope-id)
       schedule-id (assoc :schedule_id schedule-id))))
+
+(defn session-summary-scope-from-rows
+  [rows]
+  (let [agent-scope (session-agent-scope-from-rows rows)]
+    (session-trigger-scope-from-rows agent-scope rows)))
 
 (defn session-actor-claims-from-rows
   [config rows]

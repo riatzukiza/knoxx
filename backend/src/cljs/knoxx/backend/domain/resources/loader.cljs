@@ -49,38 +49,101 @@
           str/trim
           str/lower-case))
 
+(def ^:private resource-kind-aliases
+  {nil :agent
+   "" :agent
+   "action" :action
+   "actions" :action
+   "actor" :actor
+   "actors" :actor
+   "agent" :agent
+   "agents" :agent
+   "agent-spec" :agent
+   "agent-specs" :agent
+   "contract" :agent
+   "contracts" :agent
+   "authentication" :authentication
+   "auth" :authentication
+   "auth-method" :authentication
+   "auth-methods" :authentication
+   "auth_method" :authentication
+   "auth_methods" :authentication
+   "cap" :capability
+   "caps" :capability
+   "capability" :capability
+   "capabilities" :capability
+   "cms" :cms
+   "cms-config" :cms
+   "cms-configs" :cms
+   "cms-block-registry" :cms
+   "cms-template-registry" :cms
+   "cms-templates" :cms
+   "document" :document
+   "documents" :document
+   "garden" :garden
+   "gardens" :garden
+   "generator" :generator
+   "generators" :generator
+   "ingest-source" :ingest-source
+   "ingest-sources" :ingest-source
+   "ingest_source" :ingest-source
+   "ingest_sources" :ingest-source
+   "model" :model
+   "models" :model
+   "model-family" :model-family
+   "model-families" :model-family
+   "model_family" :model-family
+   "model_families" :model-family
+   "mcp-server" :mcp-server
+   "mcp-servers" :mcp-server
+   "mcp_server" :mcp-server
+   "mcp_servers" :mcp-server
+   "pipeline" :pipeline
+   "pipelines" :pipeline
+   "policy" :policy
+   "policies" :policy
+   "publication" :publication
+   "publications" :publication
+   "role" :role
+   "roles" :role
+   "rule" :rule
+   "rules" :rule
+   "runtime-feature" :runtime-feature
+   "runtime-features" :runtime-feature
+   "runtime_feature" :runtime-feature
+   "runtime_features" :runtime-feature
+   "runtime" :runtime-feature
+   "schedule" :schedule
+   "schedules" :schedule
+   "source" :source
+   "sources" :source
+   "runtime-source" :source
+   "runtime-sources" :source
+   "runtime_source" :source
+   "runtime_sources" :source
+   "source-mode" :source-mode
+   "source-modes" :source-mode
+   "source_mode" :source-mode
+   "source_modes" :source-mode
+   "store" :store
+   "stores" :store
+   "sub-agent" :sub-agent
+   "sub-agents" :sub-agent
+   "sub_agent" :sub-agent
+   "sub_agents" :sub-agent
+   "trigger" :trigger
+   "triggers" :trigger
+   "user" :user
+   "users" :user
+   "human" :user
+   "humans" :user
+   "workflow" :workflow
+   "workflows" :workflow})
+
 (defn normalize-resource-kind
   [value]
-  (case (token value)
-    (nil "") :agent
-    ("action" "actions") :action
-    ("actor" "actors") :actor
-    ("agent" "agents" "agent-spec" "agent-specs" "contract" "contracts") :agent
-    ("authentication" "auth" "auth-method" "auth-methods" "auth_method" "auth_methods") :authentication
-    ("cap" "caps" "capability" "capabilities") :capability
-    ("cms" "cms-config" "cms-configs" "cms-block-registry" "cms-template-registry" "cms-templates") :cms
-    ("document" "documents") :document
-    ("garden" "gardens") :garden
-    ("generator" "generators") :generator
-    ("ingest-source" "ingest-sources" "ingest_source" "ingest_sources") :ingest-source
-    ("model" "models") :model
-    ("model-family" "model-families" "model_family" "model_families") :model-family
-    ("mcp-server" "mcp-servers" "mcp_server" "mcp_servers") :mcp-server
-    ("pipeline" "pipelines") :pipeline
-    ("policy" "policies") :policy
-    ("publication" "publications") :publication
-    ("role" "roles") :role
-    ("rule" "rules") :rule
-    ("runtime-feature" "runtime-features" "runtime_feature" "runtime_features" "runtime") :runtime-feature
-    ("schedule" "schedules") :schedule
-    ("source" "sources" "runtime-source" "runtime-sources" "runtime_source" "runtime_sources") :source
-    ("source-mode" "source-modes" "source_mode" "source_modes") :source-mode
-    ("store" "stores") :store
-    ("sub-agent" "sub-agents" "sub_agent" "sub_agents") :sub-agent
-    ("trigger" "triggers") :trigger
-    ("user" "users" "human" "humans") :user
-    ("workflow" "workflows") :workflow
-    (throw (js/Error. (str "Unknown resource kind: " value)))))
+  (or (get resource-kind-aliases (token value))
+      (throw (js/Error. (str "Unknown resource kind: " value)))))
 
 (defn resource-class
   [resource-kind]

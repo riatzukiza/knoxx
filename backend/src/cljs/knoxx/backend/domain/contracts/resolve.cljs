@@ -496,6 +496,31 @@
         effective)
       authored-thinking)))
 
+(defn- resolved-agent-identity-fields
+  [agent-id enabled? contract contract-actors actor-spec role-ctx capability-ctx]
+  {:id agent-id
+   :enabled enabled?
+   :contract contract
+   :contract-actors contract-actors
+   :contract-actor-ids (actor-scope/actor-claims->wire contract-actors)
+   :actor-id (:id actor-spec)
+   :actor-kind (:kind actor-spec)
+   :actor-role-slugs (:actor-role-slugs role-ctx)
+   :role-slugs (:role-slugs role-ctx)
+   :capability-ids (:capability-ids capability-ctx)
+   :role (:primary-role role-ctx)})
+
+(defn- resolved-agent-prompt-fields
+  [prompt-ctx actor-spec]
+  {:role-system-prompt (:role-system-prompt prompt-ctx)
+   :role-task-prompt (:role-task-prompt prompt-ctx)
+   :actor-system-prompt (:system-prompt actor-spec)
+   :actor-task-prompt (:task-prompt actor-spec)
+   :agent-system-prompt (:agent-system-prompt prompt-ctx)
+   :agent-task-prompt (:agent-task-prompt prompt-ctx)
+   :system-prompt (:system-prompt prompt-ctx)
+   :task-prompt (:task-prompt prompt-ctx)})
+
 (defn- resolved-agent-map
   [config record contract contract-actors actor-spec role-ctx capability-ctx tool-ctx prompt-ctx runtime-sources all-extras enabled?]
   (let [agent-id (:id record)
@@ -504,34 +529,17 @@
         authored-thinking (some-> (get-in contract [:agent :thinking]) keywordish->role-slug)
         thinking-level (deployment-thinking-level config agent-id model authored-thinking)
         tools-choice (resolve-tools-choice contract (:tool-ids tool-ctx))]
-    (cond-> {:id agent-id
-             :enabled enabled?
-             :contract contract
-             :contract-actors contract-actors
-             :contract-actor-ids (actor-scope/actor-claims->wire contract-actors)
-             :actor-id (:id actor-spec)
-             :actor-kind (:kind actor-spec)
-             :actor-role-slugs (:actor-role-slugs role-ctx)
-             :role-slugs (:role-slugs role-ctx)
-             :capability-ids (:capability-ids capability-ctx)
-             :role (:primary-role role-ctx)
-             :model model
-             :thinking-level thinking-level
-             :role-system-prompt (:role-system-prompt prompt-ctx)
-             :role-task-prompt (:role-task-prompt prompt-ctx)
-             :actor-system-prompt (:system-prompt actor-spec)
-             :actor-task-prompt (:task-prompt actor-spec)
-             :agent-system-prompt (:agent-system-prompt prompt-ctx)
-             :agent-task-prompt (:agent-task-prompt prompt-ctx)
-             :system-prompt (:system-prompt prompt-ctx)
-             :task-prompt (:task-prompt prompt-ctx)
-             :trigger-kind (some-> (:trigger-kind contract) keywordish->role-slug)
-             :memory-hydration (memory-hydration-from-contract contract)
-             :context-policy (context-policy-from-contract contract)
-             :sources runtime-sources
-             :tool-ids (:tool-ids tool-ctx)
-             :tool-policies (:tool-policies tool-ctx)
-             :extras all-extras}
+    (cond-> (merge (resolved-agent-identity-fields agent-id enabled? contract contract-actors
+                                                   actor-spec role-ctx capability-ctx)
+                    {:model model :thinking-level thinking-level}
+                    (resolved-agent-prompt-fields prompt-ctx actor-spec)
+                    {:trigger-kind (some-> (:trigger-kind contract) keywordish->role-slug)
+                     :memory-hydration (memory-hydration-from-contract contract)
+                     :context-policy (context-policy-from-contract contract)
+                     :sources runtime-sources
+                     :tool-ids (:tool-ids tool-ctx)
+                     :tool-policies (:tool-policies tool-ctx)
+                     :extras all-extras})
       tools-choice (assoc :tools-choice tools-choice))))
 
 (defn resolve-agent-contract

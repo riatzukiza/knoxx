@@ -53,6 +53,24 @@
   [ctx conversation-id]
   (authz/remember-conversation-access! conversation-access* ctx conversation-id))
 
+(defn- agent-turn-auth-context
+  [auth-context agent-spec]
+  (let [agent-actor-id (some-> (:actor-id agent-spec) str str/trim not-empty)
+        needs-context? (or auth-context
+                           agent-actor-id
+                           (seq (:tool-policies agent-spec))
+                           (seq (:resource-policies agent-spec))
+                           (:role agent-spec))]
+    (when needs-context?
+      (cond-> (or auth-context {})
+        agent-actor-id (assoc :actorId agent-actor-id)
+        (and (nil? auth-context) (seq (:tool-policies agent-spec)))
+        (assoc :toolPolicies (vec (:tool-policies agent-spec)))
+        (and (nil? auth-context) (seq (:resource-policies agent-spec)))
+        (assoc :resourcePolicies (:resource-policies agent-spec))
+        (and (nil? auth-context) (:role agent-spec))
+        (assoc :roleSlugs [(:role agent-spec)])))))
+
 (defn- auth-context-for-agent-turn
   "The auth context a turn's tools see, synthesized from the agent spec when the
    turn did not arrive on a request.
@@ -72,21 +90,7 @@
    them; this adds a path for triggered sessions rather than changing one that
    works."
   [auth-context agent-spec]
-  (let [agent-actor-id (some-> (:actor-id agent-spec) str str/trim not-empty)
-        needs-context? (or auth-context
-                           agent-actor-id
-                           (seq (:tool-policies agent-spec))
-                           (seq (:resource-policies agent-spec))
-                           (:role agent-spec))]
-    (when needs-context?
-      (cond-> (or auth-context {})
-        agent-actor-id (assoc :actorId agent-actor-id)
-        (and (nil? auth-context) (seq (:tool-policies agent-spec)))
-        (assoc :toolPolicies (vec (:tool-policies agent-spec)))
-        (and (nil? auth-context) (seq (:resource-policies agent-spec)))
-        (assoc :resourcePolicies (:resource-policies agent-spec))
-        (and (nil? auth-context) (:role agent-spec))
-        (assoc :roleSlugs [(:role agent-spec)])))))
+  (agent-turn-auth-context auth-context agent-spec))
 
 (defn ensure-session-id
   [session-id]
@@ -94,6 +98,28 @@
       (xturn-node/random-uuid!)))
 
 
+
+(defn- run-event-memory-params
+  [config event]
+  {:id        (str (:run_id event) ":"
+                   (:type event) ":"
+                   (:at event))
+   :ts        (:at event)
+   :kind      (str "knoxx." (:type event))
+   ;; Session-scoped diagnostics must carry the session project:
+   ;; without it they default to the workspace project and the
+   ;; /v1/sessions list (filtered by session project) cannot see
+   ;; in-flight threads until their first run completes.
+   :project   (:session-project-name config)
+   :session   (:conversation_id event)
+   :message   (:run_id event)
+   :role      "system"
+   :text      (str (:type event)
+                   (when (:tool_name event)
+                     (str ": " (:tool_name event)))
+                   (when (:preview event)
+                     (str "\n" (:preview event))))
+   :extra     event})
 
 (defn- install-openplanner-event-sink!
   [config]
@@ -106,25 +132,7 @@
                      client
                      [(openplanner-memory/openplanner-event
                        config
-                       {:id        (str (:run_id event) ":"
-                                        (:type event) ":"
-                                        (:at event))
-                        :ts        (:at event)
-                        :kind      (str "knoxx." (:type event))
-                        ;; Session-scoped diagnostics must carry the session project:
-                        ;; without it they default to the workspace project and the
-                        ;; /v1/sessions list (filtered by session project) cannot see
-                        ;; in-flight threads until their first run completes.
-                        :project   (:session-project-name config)
-                        :session   (:conversation_id event)
-                        :message   (:run_id event)
-                        :role      "system"
-                        :text      (str (:type event)
-                                        (when (:tool_name event)
-                                          (str ": " (:tool_name event)))
-                                        (when (:preview event)
-                                          (str "\n" (:preview event))))
-                        :extra     event})]))
+                       (run-event-memory-params config event))]))
              (catch :default _ nil)))))))
 
 (defn- extract-turn-answer-and-reasoning

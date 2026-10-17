@@ -1,6 +1,7 @@
 (ns knoxx.backend.infra.openplanner.memory
   (:require [clojure.string :as str]
             [knoxx.backend.infra.run-events :as run-events]
+            [knoxx.backend.shape.session-graph-params :as session-graph-params]
             [knoxx.backend.infra.clients.openplanner :as openplanner-client]
             [knoxx.backend.extern.fastify :as fastify]
             [knoxx.backend.extern.promise :as promise]
@@ -398,12 +399,9 @@
           str/trim
           not-empty))
 
-(defn run-scope-extra
-  [run]
-  (let [base (select-keys run [:org_id :org_slug :user_id :user_email :membership_id])
-        agent-spec (or (get-in run [:settings :agentSpec])
-                       (:agent_spec run))
-        contract-id (spec-value agent-spec :contractId :contract-id)
+(defn- run-agent-scope-extra
+  [base agent-spec]
+  (let [contract-id (spec-value agent-spec :contractId :contract-id)
         actor-id (spec-value agent-spec :actorId :actor-id)
         contract-actors (actor-scope/actor-claims->wire
                          (or (:contractActors agent-spec)
@@ -411,14 +409,7 @@
         sub-agent-id (spec-value agent-spec :subAgentId :sub-agent-id)
         parent-agent-id (spec-value agent-spec :parentAgentId :parent-agent-id)
         parent-run-id (spec-value agent-spec :parentRunId :parent-run-id)
-        spawn-kind (spec-value agent-spec :spawnKind :spawn-kind)
-        trigger-id (spec-value agent-spec :triggerId :trigger-id)
-        event-type (spec-value agent-spec :eventType :event-type)
-        event-types (->> (or (:eventTypes agent-spec) (:event-types agent-spec) [])
-                         (map str) (remove str/blank?) distinct vec)
-        event-id (spec-value agent-spec :eventId :event-id)
-        event-scope-id (spec-value agent-spec :eventScopeId :event-scope-id)
-        schedule-id (spec-value agent-spec :scheduleId :schedule-id)]
+        spawn-kind (spec-value agent-spec :spawnKind :spawn-kind)]
     (cond-> base
       contract-id (assoc :contract_id contract-id)
       actor-id (assoc :actor_id actor-id)
@@ -426,13 +417,32 @@
       sub-agent-id (assoc :sub_agent_id sub-agent-id)
       parent-agent-id (assoc :parent_agent_id parent-agent-id)
       parent-run-id (assoc :parent_run_id parent-run-id)
-      spawn-kind (assoc :spawn_kind spawn-kind)
+      spawn-kind (assoc :spawn_kind spawn-kind))))
+
+(defn- run-trigger-scope-extra
+  [base agent-spec]
+  (let [trigger-id (spec-value agent-spec :triggerId :trigger-id)
+        event-type (spec-value agent-spec :eventType :event-type)
+        event-types (->> (or (:eventTypes agent-spec) (:event-types agent-spec) [])
+                         (map str) (remove str/blank?) distinct vec)
+        event-id (spec-value agent-spec :eventId :event-id)
+        event-scope-id (spec-value agent-spec :eventScopeId :event-scope-id)
+        schedule-id (spec-value agent-spec :scheduleId :schedule-id)]
+    (cond-> base
       trigger-id (assoc :trigger_id trigger-id)
       event-type (assoc :event_type event-type)
       (seq event-types) (assoc :event_types event-types)
       event-id (assoc :event_id event-id)
       event-scope-id (assoc :event_scope_id event-scope-id)
       schedule-id (assoc :schedule_id schedule-id))))
+
+(defn run-scope-extra
+  [run]
+  (let [base (select-keys run [:org_id :org_slug :user_id :user_email :membership_id])
+        agent-spec (or (get-in run [:settings :agentSpec])
+                       (:agent_spec run))
+        agent-scope (run-agent-scope-extra base agent-spec)]
+    (run-trigger-scope-extra agent-scope agent-spec)))
 
 (defn session-node-kind
   [node-type]
@@ -480,55 +490,68 @@
                                             :target_lake target-lake}
                                            extra)}))
 
+(defn- session-text-node-params
+  [safe-text {:keys [run-id conversation-id session-id node-id node-type label model scope-extra ts]}]
+  {:event-id (str node-id ":node")
+   :node-id node-id
+   :ts ts
+   :session conversation-id
+   :message node-id
+   :node-type node-type
+   :text safe-text
+   :label label
+   :model model
+   :extra (merge {:run_id run-id
+                  :conversation_id conversation-id
+                  :session_id session-id}
+                 scope-extra
+                 (output-quality-extra safe-text))})
+
+(defn- workspace-mention-edge-params
+  [config workspace-project {:keys [run-id conversation-id session-id ts node-id scope-extra]}
+   {:keys [path target_node_id target_kind]}]
+  {:event-id (str node-id ":mentions_workspace:" target_node_id)
+   :ts ts
+   :session conversation-id
+   :message node-id
+   :edge-type "mentions_workspace_path"
+   :source-node-id node-id
+   :target-node-id target_node_id
+   :source-lake (:session-project-name config)
+   :target-lake workspace-project
+   :extra (merge {:run_id run-id
+                  :conversation_id conversation-id
+                  :session_id session-id
+                  :path path
+                  :target_kind target_kind}
+                 scope-extra)})
+
+(defn- web-mention-edge-params
+  [config {:keys [run-id conversation-id session-id ts node-id scope-extra]} url]
+  {:event-id (str node-id ":mentions_web:" url)
+   :ts ts
+   :session conversation-id
+   :message node-id
+   :edge-type "mentions_web_url"
+   :source-node-id node-id
+   :target-node-id (str "web:url:" url)
+   :source-lake (:session-project-name config)
+   :target-lake "web"
+   :extra (merge {:run_id run-id
+                  :conversation_id conversation-id
+                  :session_id session-id
+                  :url url}
+                 scope-extra)})
+
 (defn session-text-graph-events
-  [config extract-mentioned-devel-paths extract-mentioned-urls {:keys [run-id conversation-id session-id ts node-id node-type text label model scope-extra]}]
+  [config extract-mentioned-devel-paths extract-mentioned-urls {:keys [text] :as scope}]
   (let [safe-text (or text "")
         workspace-project (or (:project-name config) "workspace")
-        node-event (session-graph-node-event config {:event-id (str node-id ":node")
-                                                     :node-id node-id
-                                                     :ts ts
-                                                     :session conversation-id
-                                                     :message node-id
-                                                     :node-type node-type
-                                                     :text safe-text
-                                                     :label label
-                                                     :model model
-                                                     :extra (merge {:run_id run-id
-                                                                    :conversation_id conversation-id
-                                                                    :session_id session-id}
-                                                                   scope-extra
-                                                                   (output-quality-extra safe-text))})
-        workspace-edges (for [{:keys [path target_node_id target_kind]} (extract-mentioned-devel-paths safe-text)]
-                          (session-graph-edge-event config {:event-id (str node-id ":mentions_workspace:" target_node_id)
-                                                            :ts ts
-                                                            :session conversation-id
-                                                            :message node-id
-                                                            :edge-type "mentions_workspace_path"
-                                                            :source-node-id node-id
-                                                            :target-node-id target_node_id
-                                                            :source-lake (:session-project-name config)
-                                                            :target-lake workspace-project
-                                                            :extra (merge {:run_id run-id
-                                                                           :conversation_id conversation-id
-                                                                           :session_id session-id
-                                                                           :path path
-                                                                           :target_kind target_kind}
-                                                                          scope-extra)}))
+        node-event (session-graph-node-event config (session-text-node-params safe-text scope))
+        workspace-edges (for [path-info (extract-mentioned-devel-paths safe-text)]
+                          (session-graph-edge-event config (workspace-mention-edge-params config workspace-project scope path-info)))
         web-edges (for [url (extract-mentioned-urls safe-text)]
-                    (session-graph-edge-event config {:event-id (str node-id ":mentions_web:" url)
-                                                      :ts ts
-                                                      :session conversation-id
-                                                      :message node-id
-                                                      :edge-type "mentions_web_url"
-                                                      :source-node-id node-id
-                                                      :target-node-id (str "web:url:" url)
-                                                      :source-lake (:session-project-name config)
-                                                      :target-lake "web"
-                                                      :extra (merge {:run_id run-id
-                                                                     :conversation_id conversation-id
-                                                                     :session_id session-id
-                                                                     :url url}
-                                                                    scope-extra)}))]
+                    (session-graph-edge-event config (web-mention-edge-params config scope url)))]
     (into [node-event] (concat workspace-edges web-edges))))
 
 (defn- ^:async fail-open-indexing!
@@ -589,59 +612,75 @@
                   :truncated true}
                  (select-keys p [:type :url :mimeType :filename :text]))))))
 
+(defn- legacy-user-event-params
+  [run {:keys [run-id conversation-id session-project request-text common-extra]}]
+  {:id (str run-id ":user")
+   :ts (:created_at run)
+   :kind "knoxx.message"
+   :project session-project
+   :session conversation-id
+   :message (str run-id ":user")
+   :role "user"
+   :model (:model run)
+   :text request-text
+   :extra (merge common-extra {:content_parts (sanitized-request-content-parts run)})})
+
+(defn- legacy-summary-event-params
+  [run {:keys [run-id conversation-id session-project common-extra]} summary-text]
+  {:id (str run-id ":summary")
+   :ts (:updated_at run)
+   :kind "knoxx.run"
+   :project session-project
+   :session conversation-id
+   :message (str run-id ":summary")
+   :role "system"
+   :model (:model run)
+   :text summary-text
+   :extra (merge common-extra
+                 {:status (:status run)
+                  :ttft_ms (:ttft_ms run)
+                  :total_time_ms (:total_time_ms run)}
+                 (output-quality-extra summary-text))})
+
+(defn- legacy-assistant-event-params
+  [run {:keys [run-id conversation-id session-project answer trace-blocks common-extra]}]
+  {:id (str run-id ":assistant")
+   :ts (:updated_at run)
+   :kind "knoxx.message"
+   :project session-project
+   :session conversation-id
+   :message (str run-id ":assistant")
+   :role "assistant"
+   :model (:model run)
+   :text answer
+   :extra (merge common-extra
+                 {:status (:status run)
+                  :trace_blocks trace-blocks}
+                 (output-quality-extra answer))})
+
+(defn- legacy-reasoning-event-params
+  [run {:keys [run-id conversation-id session-project reasoning-text common-extra]}]
+  {:id (str run-id ":reasoning")
+   :ts (:updated_at run)
+   :kind "knoxx.reasoning"
+   :project session-project
+   :session conversation-id
+   :message (str run-id ":reasoning")
+   :role "system"
+   :model (:model run)
+   :text reasoning-text
+   :extra (merge common-extra {:status (:status run)})})
+
 (defn- legacy-base-events
   [config run ctx]
-  (let [{:keys [run-id conversation-id session-project request-text answer reasoning-text trace-blocks common-extra]} ctx
+  (let [{:keys [answer reasoning-text]} ctx
         summary-text (run-summary-text run)]
-    (cond-> [(openplanner-event config {:id (str run-id ":user")
-                                        :ts (:created_at run)
-                                        :kind "knoxx.message"
-                                        :project session-project
-                                        :session conversation-id
-                                        :message (str run-id ":user")
-                                        :role "user"
-                                        :model (:model run)
-                                        :text request-text
-                                        :extra (merge common-extra {:content_parts (sanitized-request-content-parts run)})})
-             (openplanner-event config {:id (str run-id ":summary")
-                                        :ts (:updated_at run)
-                                        :kind "knoxx.run"
-                                        :project session-project
-                                        :session conversation-id
-                                        :message (str run-id ":summary")
-                                        :role "system"
-                                        :model (:model run)
-                                        :text summary-text
-                                        :extra (merge common-extra
-                                                      {:status (:status run)
-                                                       :ttft_ms (:ttft_ms run)
-                                                       :total_time_ms (:total_time_ms run)}
-                                                      (output-quality-extra summary-text))})]
+    (cond-> [(openplanner-event config (legacy-user-event-params run ctx))
+             (openplanner-event config (legacy-summary-event-params run ctx summary-text))]
       (not (str/blank? (or answer "")))
-      (conj (openplanner-event config {:id (str run-id ":assistant")
-                                       :ts (:updated_at run)
-                                       :kind "knoxx.message"
-                                       :project session-project
-                                       :session conversation-id
-                                       :message (str run-id ":assistant")
-                                       :role "assistant"
-                                       :model (:model run)
-                                       :text answer
-                                       :extra (merge common-extra
-                                                     {:status (:status run)
-                                                      :trace_blocks trace-blocks}
-                                                     (output-quality-extra answer))}))
+      (conj (openplanner-event config (legacy-assistant-event-params run ctx)))
       (not (str/blank? reasoning-text))
-      (conj (openplanner-event config {:id (str run-id ":reasoning")
-                                       :ts (:updated_at run)
-                                       :kind "knoxx.reasoning"
-                                       :project session-project
-                                       :session conversation-id
-                                       :message (str run-id ":reasoning")
-                                       :role "system"
-                                       :model (:model run)
-                                       :text reasoning-text
-                                       :extra (merge common-extra {:status (:status run)})})))))
+      (conj (openplanner-event config (legacy-reasoning-event-params run ctx))))))
 
 (defn- tool-graph-events
   [config extract-mentioned-devel-paths extract-mentioned-urls ctx receipt tool-id tool-ts call-text result-text]
@@ -694,43 +733,16 @@
 
 (defn- legacy-message-graph-events
   [config run extract-mentioned-devel-paths extract-mentioned-urls ctx]
-  (let [{:keys [run-id conversation-id session-id session-project request-text answer reasoning-text scope-extra]} ctx]
+  (let [{:keys [answer reasoning-text]} ctx]
     (concat
      (session-text-graph-events config extract-mentioned-devel-paths extract-mentioned-urls
-                                {:run-id run-id
-                                 :conversation-id conversation-id
-                                 :session-id session-id
-                                 :ts (:created_at run)
-                                 :node-id (str session-project ":run:" run-id ":user")
-                                 :node-type "user_message"
-                                 :text request-text
-                                 :label "User message"
-                                 :model (:model run)
-                                 :scope-extra scope-extra})
+                                (session-graph-params/legacy-user-graph-params run ctx))
      (when-not (str/blank? (or answer ""))
        (session-text-graph-events config extract-mentioned-devel-paths extract-mentioned-urls
-                                  {:run-id run-id
-                                   :conversation-id conversation-id
-                                   :session-id session-id
-                                   :ts (:updated_at run)
-                                   :node-id (str session-project ":run:" run-id ":assistant")
-                                   :node-type "assistant_message"
-                                   :text answer
-                                   :label "Assistant message"
-                                   :model (:model run)
-                                   :scope-extra scope-extra}))
+                                  (session-graph-params/legacy-assistant-graph-params run ctx)))
      (when-not (str/blank? reasoning-text)
        (session-text-graph-events config extract-mentioned-devel-paths extract-mentioned-urls
-                                  {:run-id run-id
-                                   :conversation-id conversation-id
-                                   :session-id session-id
-                                   :ts (:updated_at run)
-                                   :node-id (str session-project ":run:" run-id ":reasoning")
-                                   :node-type "reasoning"
-                                   :text reasoning-text
-                                   :label "Reasoning"
-                                   :model (:model run)
-                                   :scope-extra scope-extra})))))
+                                  (session-graph-params/legacy-reasoning-graph-params run ctx))))))
 
 (defn- legacy-media-events
   [config run ctx]
