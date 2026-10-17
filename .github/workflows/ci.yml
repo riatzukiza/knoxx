@@ -18,13 +18,13 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     env:
-      EXPECTED_SOURCE: dbb3b1db3d66381069e0f2268230b754fd0e3a90
-      EXPECTED_TREE: 1bc8d4a4e02c9ab5cbded25ca83485ec49f92f76
+      EXPECTED_SOURCE: df221475eccc743fd3afc73412561636dfec1849
+      EXPECTED_TREE: ac00dd6a8a9c249a6f6cbb24510aef5ca43157b3
     steps:
       - name: Check out the exact test-only application source
         uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
         with:
-          ref: dbb3b1db3d66381069e0f2268230b754fd0e3a90
+          ref: df221475eccc743fd3afc73412561636dfec1849
           fetch-depth: 1
           persist-credentials: false
       - name: Set up Java 21
