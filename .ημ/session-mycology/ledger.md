@@ -1277,3 +1277,12 @@
   spore: none
   receipt-refs: d048f94b-3d5e-4e21-9db0-30815d2f8ced
   note: Bind all three index stages before resolving only known independent provenance append conflicts as current full prefix plus exact committed suffix; no semantic parser or historical field edits. Preserve all six code/test postimages and prior P/doc/fixture source. Global169FAIL remains and final coherent runtime waits source freeze/performance decision; no pilot-to-campaign transfer. No spore.
+- ts: 2026-10-17T17:25:27.758386034Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-full-CI-workflow-repair-over933-v1
+  task: Preserve registered publication dispatch contracts while splitting the sole new filelength cause
+  p-efficiency: 0.92
+  p-friction: 0.12
+  p-skill-candidate: 0.08
+  spore: none
+  receipt-refs: 31893d94-042a-4f06-a1de-9ee3264f2af7
+  note: Keep cohesive registered facade tests in their own namespace and expand opaque auto-resolved fixture keywords to the original runtime identities before moving. Preserve all16 names/52 assertions/6async/14awaits; final owning0E0W and global169→168/native2FAIL, all168 other rows exact. Retain the single EOF separator refusal and native board comment. Actual combined backend typecheck/corpus/discovery remains pending; no spore or globalPASS claim.
