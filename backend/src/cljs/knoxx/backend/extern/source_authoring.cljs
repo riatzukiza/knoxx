@@ -4,16 +4,31 @@
             ["node:fs/promises" :as fs]
             ["node:path" :as path]
             [cljs.reader :as reader]
+            [knoxx.backend.domain.error-observatory :as observatory]
             [knoxx.backend.law.source-review :as law]))
 
 (defonce ^:private tails (atom {}))
+(defn- degraded!
+  "Attempt one fixed warning without exposing source keys or replacing rejection."
+  [operation primary-error]
+  (let [context {:operation operation :fallback :nil
+                 :primary-error-present? (some? primary-error)}]
+    (try
+      (observatory/log-warning! "source-authoring.sequence-degraded" context)
+      (catch :default observer-error
+        {:observed? false :observation-unavailable? true
+         :boundary "source-authoring.sequence-degraded" :context context
+         :observer-error-present? (some? observer-error)}))))
+
 (defn- ^:async after! [previous operation]
-  (when previous (try (await previous) (catch :default _ nil)))
+  (when previous
+    (try (await previous)
+         (catch :default primary-error (degraded! :await-predecessor primary-error) nil)))
   (await (operation)))
 (defn- ^:async release-tail! [key task]
   (try
     (await task)
-    (catch :default _ nil)
+    (catch :default primary-error (degraded! :release-tail primary-error) nil)
     (finally
       (when (identical? task (get @tails key)) (swap! tails dissoc key)))))
 (defn with-document-lock!
