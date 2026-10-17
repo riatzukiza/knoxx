@@ -1223,3 +1223,12 @@
   spore: none
   receipt-refs: de3c052e-0552-4a51-b7d4-38e11d3c7309
   note: Use actual reader-node identity and source-preserving edits for compound mutation operators. Real hosted pilot third compile was invalid from generated read-string; causal owning unit44/507 changed16FAIL to0 with all prior controls held. Keep source-unit qualification separate from genuine baseline/kills, current equivalent acceptance and four250 campaign evidence. Preserve old failures and fresh source bindings. No spore.
+- ts: 2026-10-17T15:45:21.342613445Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-mutation-source-reader-over-fde4-v1
+  task: Measure canonical child elapsed through cleanup without changing qualification
+  p-efficiency: 0.94
+  p-friction: 0.12
+  p-skill-candidate: 0.0
+  spore: none
+  receipt-refs: e26c60f6-f312-425b-9253-bbaa310d2efe
+  note: Add monotonic adapter elapsed as evidence, preserving all command/custody/classifier semantics. Private inert three-controls RED3 to GREEN0 is causal field evidence; real process-custody and owning Clojure gates remain pending hosted execution. Keep genuine pilot two kills plus one SURVIVOR and full source/payload restoration explicit. Never substitute compiler seconds or log windows for full child duration; no campaign-fit or spore promotion claim.
