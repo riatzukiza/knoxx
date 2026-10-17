@@ -1385,3 +1385,12 @@
   spore: none
   receipt-refs: a9ba3e4e-cb17-4d72-96a5-7e99937a3a49
   note: Exact raw inverse and finite source expansion preserve decoded content/trace/reply assembly. Original p/let names/count and direct formatter lookup held; source/static is not direct attachment/audio or runtime evidence. Ordinary decoded data scope; all original tests/config/checker policy held; no spore.
+- ts: 2026-10-17T22:39:07.921343689Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-full-CI-workflow-repair-over933-v1
+  task: Separate action and tool input/output data; retain actual global136 static warnings
+  p-efficiency: 0.9
+  p-friction: 0.1
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: baba53ac-43ef-46b9-8de8-153e4257252e
+  note: Exact expression tokens and complete source inverses preserve three input/output data assembly responsibilities. Existing run-steps tests cover the missing-action path; direct actor-target and validation-tool coverage was not recovered. Coherent normal runtime remains pending. All original tests/config/checker policy held; no spore.
