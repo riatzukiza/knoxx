@@ -1106,3 +1106,12 @@
   spore: none
   receipt-refs: sha256:75c0917a0275d25ba33c132c4e00b0e2de78637334be20bc893ac8b447844930,1f533d5343bcf56fda038c2180aa095ff9ed1549
   note: Real public queue controls preserve original Error and nil rejection, eagerly queued successor and identity-fenced tail ownership when observer records, is absent, throws Error or nil. Unchanged-source baseline passes; missing-observation RED gives six exact record-only failures, then GREEN2175/12470/0/0 and one servercompile0warnings.210 inherited lint warnings and31 remaining boundary failures stay actual failed global gates. Keep deliberate refusal fixture output and tiny read-only artifact count-selector mistake honest; no QA replay or product/artifact restoration. Candidate0, no new spore or promotion.
+- ts: 2026-10-17T02:07:41.341007183Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-CMS-controller-integration-over8cd5-v1
+  task: CMS sandbox cleanup degraded observations with native Error/nil and observer-restoration controls
+  p-efficiency: 0.85
+  p-friction: 0.24
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: sha256:9c3e0e770ff3f99f31722ad3c5ea687e7e899bce8a0110a7f2cdec150bf29bf2,2626e09d9a9c7866b4338424a452e2c8ad15d79b
+  note: Two actual native cleanup catches gain only fixed scalar warning attempts while success/options/idempotent absence/nil fallback and following cleanup remain unchanged even observer Error/nil/absent. Quiet metadata read remains intentional. Genuine RED26missing-record/0error preceded product; full source-bound GREEN2179/12656/0/0 and179NodePASS/compiler0warnings. First registered full lint caught deliberate literal nil-throw fixture type error; exact existing parameterized native fault helper preserves true nil throw, then one corrected GREEN/full lint clears touched error. Preserve failed lint and wrong-cwd hook failure, no assertion/policy weakening. Existing210 lint warnings and29 remaining boundary occurrence rows are literal global findings, not invented current CI steps; shared snippetID stays for quiet read. Scope canonical existing async5, no next family. Candidate0/no spore or promotion; no public/model/service/deploy effect.
