@@ -179,7 +179,7 @@ class LegacyReviewPreflightProcessTest(unittest.TestCase):
 
     @contextmanager
     def legacy_phase(self, mode="closed", cleanup_failure=False, project="real-synthetic-project",
-                     actual_verifier=False, recover=False):
+                     actual_verifier=False, recover=False, list_response=None, jq_failure=None):
         with tempfile.TemporaryDirectory(prefix="knoxx-legacy-phase-synthetic-") as temporary:
             root = Path(temporary)
             checkout = root / "checkout"
@@ -240,7 +240,10 @@ elif not auth:
  if s['mode']=='counter-change':s['counter']+=1;save()
  body={'detail':'Not authenticated','error_code':'missing_error' if s['mode']=='missing-error' else 'no_session','unexpected_content':'DO_NOT_LOG_SYNTHETIC_SECRET'}
  if s['mode']=='error-only':body={'detail':'Not authenticated','error':'no_session','unexpected_content':'DO_NOT_LOG_SYNTHETIC_SECRET'}
-elif path=='/api/translations/documents':status=200;body={'documents':[] if not s['present'] else [{'document_id':os.environ['VERIFY_LEGACY_DOCUMENT_ID']}]}
+elif path=='/api/translations/documents':
+ if s.get('list_response') is not None:
+  print(s['list_response']['body']);print(s['list_response']['status']);sys.exit(0)
+ status=200;body={'documents':[] if not s['present'] else [{'document_id':os.environ['VERIFY_LEGACY_DOCUMENT_ID']}]}
 else:
  i=identity();segment=dict(id=i['segment_id'],document_id=i['document_id'],org_id=i['org_id'],project=i['project'],garden_id=None,target_lang='es',status='pending',labels=[],source_text='synthetic source',translated_text='synthetic translation')
  if s['mode']=='wrong-live-database':segment['id']='64b000000000000000000099'
@@ -250,11 +253,28 @@ print(json.dumps(body));print(status)
             stub.chmod(0o755)
             (checkout / "bin/curl").symlink_to(stub)
             (checkout / "backend/node_modules/.bin/nbb").symlink_to(stub)
+            if jq_failure:
+                jq = checkout / "bin/jq"
+                jq.write_text("""#!/usr/bin/env python3
+import json,os,sys
+from pathlib import Path
+args=sys.argv[1:]; mode=os.environ['SYNTHETIC_JQ_FAILURE']
+guard='(.documents | type) == "array" and ([.documents[].document_id] | index($doc)) == null'
+if (mode=='guard' and guard in args) or (mode.startswith('diagnostic') and '-Rsc' in args):
+ sys.stdin.buffer.read()
+ with Path(os.environ['SYNTHETIC_EVENTS']).open('a') as f:print(json.dumps(dict(kind='jq-failure',mode=mode)),file=f)
+ print('DO_NOT_LOG_SYNTHETIC_JQ_SECRET',file=sys.stderr)
+ if mode.startswith('diagnostic'): print('DO_NOT_LOG_SYNTHETIC_JQ_SECRET')
+ sys.exit(127 if mode=='diagnostic-missing' else 7)
+os.execv(os.environ['SYNTHETIC_REAL_JQ'],[os.environ['SYNTHETIC_REAL_JQ'],*args])
+""")
+                jq.chmod(0o755)
             clojure = checkout / "bin/clojure"
             clojure.write_text("#!/bin/sh\nexit 0\n")
             clojure.chmod(0o755)
             state = root / "synthetic-store.json"
-            state.write_text(json.dumps(dict(mode=mode, cleanup_failure=cleanup_failure, present=False, counter=0)))
+            state.write_text(json.dumps(dict(mode=mode, cleanup_failure=cleanup_failure, present=False, counter=0,
+                                            list_response=list_response)))
             events = root / "synthetic-events.jsonl"
             events.touch()
             ownership = root / "durable/ownership.json"
@@ -281,7 +301,8 @@ printf 'RESOURCE_NAVIGATION_ALLOWED\\n'
                             VERIFY_LEGACY_GARDEN_ID="__NONE__", VERIFY_LEGACY_OWNERSHIP_FILE=str(ownership),
                             VERIFY_TMP_DIR=str(checkout/"scratch"), KNOXX_PUBLICATION_CONTENT_ROOT=str(root/"durable"),
                             BASE_URL="http://127.0.0.1:8000", API_KEY="synthetic-key", KNOXX_API_KEY="synthetic-key", LOOPBACK_HTTP="1",
-                            SYNTHETIC_STATE=str(state), SYNTHETIC_EVENTS=str(events)))
+                            SYNTHETIC_STATE=str(state), SYNTHETIC_EVENTS=str(events),
+                            SYNTHETIC_JQ_FAILURE=jq_failure or "", SYNTHETIC_REAL_JQ=shutil.which("jq")))
             command = checkout / "scripts/verify-translation-split-review.sh" if actual_verifier else wrapper
             result = subprocess.run(["bash",str(command)],env=env,cwd=checkout,capture_output=True,text=True,timeout=15)
             if recover:
@@ -294,6 +315,90 @@ printf 'RESOURCE_NAVIGATION_ALLOWED\\n'
                 result.recovery = subprocess.run(["bash",str(recovery)],env=env,cwd=checkout,capture_output=True,text=True,timeout=15)
                 result.first_failure_after_recovery = first_failure.read_bytes()
             yield result, [json.loads(line) for line in events.read_text().splitlines()], json.loads(state.read_text()), ownership
+
+    def test_cleanup_list_diagnostic_preserves_public_success_and_refusal(self):
+        owned = "knoxx.verifysplit.rcausal-owned-run/legacy-auth"
+        secret = "DO_NOT_LOG_SYNTHETIC_LIST_SECRET"
+        cases = [
+            ("empty", 200, json.dumps({"documents": [], "secret": secret}), None),
+            ("owned", 200, json.dumps({"documents": [{"document_id": owned, "secret": secret}]}),
+             dict(json_valid=True, root_type="object", documents_type="array", documents_count=1, owned_match_count=1, protocol_error_class=None)),
+            ("shape", 200, json.dumps({"documents": {}, "secret": secret}),
+             dict(json_valid=True, root_type="object", documents_type="object", documents_count=None, owned_match_count=None, protocol_error_class="documents_shape")),
+            ("unauthorized", 401, json.dumps({"error_code": "no_session", "secret": secret}),
+             dict(json_valid=True, root_type="object", documents_type="null", documents_count=None, owned_match_count=None, error_code="no_session", protocol_error_class="documents_shape")),
+            ("invalid", 200, secret + "{not-json", dict(json_valid=False, root_type=None, documents_type=None,
+                                                     documents_count=None, owned_match_count=None, protocol_error_class="invalid_json")),
+        ]
+        for name, status, body, expected in cases:
+            with self.subTest(name=name), self.legacy_phase(list_response=dict(status=status, body=body)) as (result, events, state, ownership):
+                self.assertFalse(state['present'])
+                self.assertEqual(1, sum(e['kind']=='helper' and e['action']=='legacy-cleanup' for e in events))
+                self.assertEqual(1, sum(e['kind']=='http' and urlsplit(e['url']).path=='/api/translations/documents' for e in events))
+                self.assertNotIn(secret, result.stdout+result.stderr)
+                self.assertNotIn('synthetic-key', result.stdout+result.stderr)
+                if expected is None:
+                    self.assertEqual(0, result.returncode, result.stdout+result.stderr)
+                    self.assertFalse(ownership.exists())
+                    self.assertIn('RESOURCE_NAVIGATION_ALLOWED', result.stdout)
+                    self.assertNotIn('DIAGNOSTIC legacy cleanup list', result.stderr)
+                    continue
+                self.assertNotEqual(0, result.returncode)
+                self.assertTrue(ownership.exists())
+                self.assertNotIn('RESOURCE_NAVIGATION_ALLOWED', result.stdout)
+                first_failure=json.loads(Path(str(ownership)+'.failure.json').read_text())
+                self.assertEqual('legacy cleanup could not prove authenticated document-list absence', first_failure['first_failure'])
+                guards=[json.loads(line.split(': ',1)[1]) for line in result.stderr.splitlines()
+                        if line.startswith('DIAGNOSTIC legacy cleanup list guard: ')]
+                responses=[json.loads(line.split(': ',1)[1]) for line in result.stderr.splitlines()
+                           if line.startswith('DIAGNOSTIC legacy cleanup list response: ')]
+                self.assertEqual(1, len(guards))
+                self.assertEqual(1, len(responses))
+                self.assertEqual({'guard_exit','pipeline_statuses'},set(guards[0]))
+                self.assertEqual({'http_status','json_valid','root_type','documents_type','documents_count',
+                                  'owned_match_count','error_code','protocol_error_class'},set(responses[0]))
+                self.assertNotEqual(0, guards[0]['guard_exit'])
+                self.assertTrue(all(isinstance(code,int) and 0 <= code <= 255 for code in guards[0]['pipeline_statuses']))
+                self.assertEqual(status, responses[0]['http_status'])
+                for key,value in expected.items():
+                    self.assertEqual(value, responses[0][key], key)
+                self.assertLessEqual(len(json.dumps(responses[0])), 1024)
+                self.assertNotIn(owned, json.dumps(responses))
+
+    def test_cleanup_list_diagnostic_retains_original_guard_pipeline_without_retry(self):
+        with self.legacy_phase(list_response=dict(status=200, body='{"documents":[]}'), jq_failure='guard') as (result,events,state,ownership):
+            self.assertNotEqual(0, result.returncode)
+            self.assertTrue(ownership.exists())
+            self.assertFalse(state['present'])
+            self.assertNotIn('RESOURCE_NAVIGATION_ALLOWED', result.stdout)
+            self.assertEqual(1, sum(e['kind']=='jq-failure' and e['mode']=='guard' for e in events))
+            guards=[json.loads(line.split(': ',1)[1]) for line in result.stderr.splitlines()
+                    if line.startswith('DIAGNOSTIC legacy cleanup list guard: ')]
+            responses=[json.loads(line.split(': ',1)[1]) for line in result.stderr.splitlines()
+                       if line.startswith('DIAGNOSTIC legacy cleanup list response: ')]
+            self.assertEqual(1,len(guards))
+            self.assertEqual(1,len(responses))
+            guard,response=guards[0],responses[0]
+            self.assertEqual(dict(guard_exit=7,pipeline_statuses=[0,7]), guard)
+            self.assertEqual(0,response['owned_match_count'])
+            self.assertNotIn('DO_NOT_LOG_SYNTHETIC_JQ_SECRET',result.stdout+result.stderr)
+
+    def test_cleanup_list_diagnostic_failure_does_not_replace_primary_or_retire_ownership(self):
+        body=json.dumps({'documents':[{'document_id':'knoxx.verifysplit.rcausal-owned-run/legacy-auth'}]})
+        for jq_failure in ['diagnostic','diagnostic-missing']:
+            with self.legacy_phase(list_response=dict(status=200,body=body),jq_failure=jq_failure) as (result,events,state,ownership):
+                self.assertNotEqual(0,result.returncode)
+                self.assertTrue(ownership.exists())
+                self.assertFalse(state['present'])
+                self.assertNotIn('RESOURCE_NAVIGATION_ALLOWED',result.stdout)
+                self.assertEqual(1,sum(e['kind']=='jq-failure' and e['mode']==jq_failure for e in events))
+                self.assertIn('legacy cleanup could not prove authenticated document-list absence',result.stdout)
+                self.assertIn('DIAGNOSTIC legacy cleanup list guard: {"guard_exit":1,"pipeline_statuses":[0,1]}',result.stderr)
+                self.assertIn('DIAGNOSTIC legacy cleanup list response: {"diagnostic_error":"unavailable"}',result.stderr)
+                self.assertNotIn('DO_NOT_LOG_SYNTHETIC_JQ_SECRET',result.stdout+result.stderr)
+                first=json.loads(Path(str(ownership)+'.failure.json').read_text())
+                self.assertEqual('legacy cleanup could not prove authenticated document-list absence',first['first_failure'])
+
 
     def test_closed_phase_has_exact_three_isolated_probes_before_resource_navigation(self):
         with self.legacy_phase(project='real scope + β') as (result,events,state,ownership):

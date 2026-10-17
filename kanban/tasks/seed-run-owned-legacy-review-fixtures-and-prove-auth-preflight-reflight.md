@@ -4,7 +4,7 @@ labels: "tasks, 5sp, has-parent, verification, translations, cms"
 dependency: []
 parent: "knoxx-translation-review-chat-panel"
 type: "task"
-write-id: "1792120266199-0.xrupddoq1nkilooxprs"
+write-id: "1792279090483-0.3s2b5i0n4ahs5awa4v9"
 points: "5"
 title: "Seed run-owned legacy review fixtures and prove auth preflight"
 priority: "P0"
@@ -377,5 +377,15 @@ Root-reviewed local planning correction for Codex5539622567/currente9 root428805
 Root-reviewed local planning correction for Codex5539948033/current1c6282bd root4288291896: extend the already-owned complete touched fixture-entry extern boundary beyond Mongo. Reuse actual extern.node-env/variable and extern.clock/instant-iso; add only named extern.node-cli encoding/output/error/exit adapter with explicit CLJS contracts/tests so the script retains no raw host interop/native handles. Preserve pure fixture/domain/tenant semantics, safe errors/first cause/checked cleanup, full backend zero-warning gates and all existing resource actions. Same fixture5/status/deps/history and repair18total; no new fixture family/endpoint/product behavior. Exact three-BODY patch11222B SHA41aec60aa05bcf77506315baa6bfb262cf5ff2811be06f73efc730089b289980. No app/auth/test/browser/model/runtime/readiness/release/public effect.
 
 Root-reviewed local planning correction for Codex5540235261/current2c09de085f0558d32f57c9998173c732dae7cd54 root4288525597: require an enforceable strict no-interop assertion for the exact touched fixture entry under registered backend boundary:check, not only source-walk inclusion or generic-import inventory. Preserve existing source-tree allowlist semantics, refuse missing/unreadable/unknown entry scans, and add actual-checker process controls for every forbidden host-interoperability category plus clean CLJS/named-extern controls under existing backend JS test discovery. Same fixture5/status/deps/labels/history and repair18total. Exact reviewed3357B BODY patchSHA15b6fccdd1883be0b8b40fcc86d3af0877fdd2444f7c99ddf4915fe68639449a. No product/checker implementation, gate/test/auth/browser/model/runtime/readiness/public/deployment effect.
+
+Bounded continuation of existing fixture/auth5 owner on immutable709aaf46c1b8b5ec81c150104c4425e65df8ab6f after actual fullCI39076529146 first refusal at the authenticated document-list absence guard. Source/test scope is only scripts/lib/translation-split-review-fixture.sh and scripts/test-cms-verifier-preconditions.py.
+
+Add failure-only sanitized evidence at the SAME predicate: expand original "$?" and "${PIPESTATUS[*]}" as direct first-call arguments before any new command. Emit native numeric exit/pipeline statuses, HTTP status, JSON validity/root/documents type, document count, owned-match count and fixed/allowlisted protocol error classes/codes. No response body, document content/identity, cookie/header/API token/credential/URI or raw error message is emitted. Diagnostic response summary is capped at1024bytes; diagnostic parser/output failure cannot replace the unchanged original legacy_fail/return1.
+
+Keep original predicate byteexact and executed once; no new HTTP/Mongo action, request reissue, timeout, retry, auth policy, source/data scope, acceptance threshold or cleanup change. Preserve exact owned deletion/zero readback, all original order, retained ownership until authenticated absence, original first-failure records and recovery identity. No underlying fault is claimed.
+
+Extend only the existing explicitly synthetic legacy_phase data/fault inputs and three public cleanup tests. Preserve all16 original test method bodies; cover silent empty200 success, owned-present200, wrong-shape200,401/no_session, invalidJSON, a deterministic original guard7 and broken/missing diagnostic jq (7/127), secret sentinels and retained ownership/primary failure. Execute meaningful test-only RED before helper implementation, then the unchanged full registered Python precondition suite and shell syntax GREEN; no backend application test selection changes.
+
+Existing UUID knoxx-translation-review-legacy-fixture-auth-preflight remains in_progress/P0/5 with parent/dependencies/history unchanged. Global0E136W/native2FAIL and all skipped fullCI/runtime/review/adoption/migration/staging/publication obligations remain. No readiness/state/points/dependency/public/ref/QA/model/production DB/PM2/account/deployment change; any next source-bound fullCI needs separate admission.
 
 ---
