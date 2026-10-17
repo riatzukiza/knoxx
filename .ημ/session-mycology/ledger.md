@@ -1187,3 +1187,12 @@
   spore: none
   receipt-refs: bbfe3b76-34ee-4134-b4e2-03b9f5399125
   note: Preserve explicit namespace loads when removing unused aliases. For dead-code cleanup, compare full registered warning classes after exact source peers and owning lint; do not relabel retained size warnings or historical CI as current success. Inverse checks for deleted regions must retain their original position, because replacing an empty string inserts at byte0. Retain early guard refusals without candidate/test credit. No spore.
+- ts: 2026-10-17T17:50:46.160610884Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-publication-validation-plan-over-public612-v1
+  task: Prepare bounded publication planning and consume accepted review source on its independent owner
+  p-efficiency: 0.76
+  p-friction: 0.32
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: eeccd6d3f8321719dc00ee733c4bfc3b75f551eb89c4dc039e0078fbdf6cbe58
+  note: Planning readiness and review infrastructure are separate authorities. A safe stacked base can preserve application scope while a narrowly owned accepted caller fixes stale skills/context. Qualify retained native captures after formatting refusals without repeating effects. Preserve all warnings and actual source tiers; no spore.
