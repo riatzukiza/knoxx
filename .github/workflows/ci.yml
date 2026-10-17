@@ -14,7 +14,7 @@ jobs:
       - name: Check out the immutable application source
         uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
         with:
-          ref: 3978bb91af806dc6c7373969bcfa88ee3d6161b6
+          ref: 13c81a13e1d4fc7772629ea257bbe1d41d8ec05c
           fetch-depth: 0
           persist-credentials: false
       - name: Bind actual source and worker before setup
@@ -32,9 +32,9 @@ jobs:
           head = read(['rev-parse', 'HEAD']).decode().strip()
           tree = read(['rev-parse', 'HEAD^{tree}']).decode().strip()
           status = read(['status', '--porcelain=v1', '-z', '--untracked-files=all'])
-          assert head == '3978bb91af806dc6c7373969bcfa88ee3d6161b6'
-          assert tree == '051b17082b4aaff24dce2e0a22ee839efb9ff33e' and not status
-          rows = {'AGENTS.md': {'bytes': 13198, 'sha256': 'a9aae6e9cc829df7319b267c8b93fa188abcc52a2c7e6e87c56846173f29701e'}, '.github/actions/knoxx-setup/action.yml': {'bytes': 3782, 'sha256': 'e659dbe3309c139c0afdc4f6a0c157bc02f8f0ab82100a2318df5bccbbd68b1f'}, 'backend/deps.edn': {'bytes': 3204, 'sha256': 'f602dbfa145df71642fb45f9945984303a0acd2b74baac42b05e8a7be4bddc76'}, 'backend/package.json': {'bytes': 3570, 'sha256': 'b33b47e00c0e50db074e2e8407c83d1f2f7706ac02ea0c100b251ab574753d90'}, 'backend/mutation/README.md': {'bytes': 1848, 'sha256': 'b09fe3379ede9eefa0ac238bc112ba470f2371d0fcda60fe9e4980b029fc7c4d'}, 'backend/mutation/knoxx/mutation_test.clj': {'bytes': 50310, 'sha256': 'e451de93d2663b7d5ecc588900483ef8e08be4845b89d1b9c22184f2701586a0'}, 'backend/mutation/reviewed-equivalents.edn': {'bytes': 1549, 'sha256': '2769a3c6c529a213e288faafc89c38321a4796dd1aad8a8a58ec597195b097df'}, 'backend/scripts/run-mutation-process.py': {'bytes': 18407, 'sha256': '899fbac9de15e8603cb21b52835fe44f068fe118e76988c67b8c1784abaf39d5'}, 'backend/scripts/run-mutation-tests.mjs': {'bytes': 773, 'sha256': '4a420d47ca177742ffbfbb1cdedc1f65450b4b9dcc2278d47b79dbfc4d425e0d'}, 'backend/scripts/shadow-test-environment.mjs': {'bytes': 781, 'sha256': '9cb72b8d1cafc7136b95e6d5241289b1ad388638fc5edb683279d1f28ef102a8'}, 'backend/shadow-cljs.edn': {'bytes': 9554, 'sha256': 'cb45b403d669710e33fabcf359af6d580548b9ebfa194a4d55e2c40a6cb08a51'}, '.github/workflows/deploy-production.yml': {'bytes': 7975, 'sha256': '8fe8a62967a1412541c7e17d8ccff997a7881a11941a290ff43ee978349e410b'}}
+          assert head == '13c81a13e1d4fc7772629ea257bbe1d41d8ec05c'
+          assert tree == 'd8809453e3fdd2b51900e24b991a4a3c596fb2de' and not status
+          rows = {'AGENTS.md': {'bytes': 13198, 'sha256': 'a9aae6e9cc829df7319b267c8b93fa188abcc52a2c7e6e87c56846173f29701e'}, '.github/actions/knoxx-setup/action.yml': {'bytes': 3782, 'sha256': 'e659dbe3309c139c0afdc4f6a0c157bc02f8f0ab82100a2318df5bccbbd68b1f'}, 'backend/deps.edn': {'bytes': 3204, 'sha256': 'f602dbfa145df71642fb45f9945984303a0acd2b74baac42b05e8a7be4bddc76'}, 'backend/package.json': {'bytes': 3570, 'sha256': 'b33b47e00c0e50db074e2e8407c83d1f2f7706ac02ea0c100b251ab574753d90'}, 'backend/mutation/README.md': {'bytes': 1848, 'sha256': 'b09fe3379ede9eefa0ac238bc112ba470f2371d0fcda60fe9e4980b029fc7c4d'}, 'backend/mutation/knoxx/mutation_test.clj': {'bytes': 50310, 'sha256': 'e451de93d2663b7d5ecc588900483ef8e08be4845b89d1b9c22184f2701586a0'}, 'backend/mutation/reviewed-equivalents.edn': {'bytes': 1549, 'sha256': '9ab9e0368236e9d918e5c4d0092c05524c3a94cec6ae4e7c170e73cfe131d8d9'}, 'backend/scripts/run-mutation-process.py': {'bytes': 18518, 'sha256': '747b7dde9e480e9e5e9eee57985d66265c2cf0f2caf0341388cb10fc07303bbe'}, 'backend/scripts/run-mutation-tests.mjs': {'bytes': 773, 'sha256': '4a420d47ca177742ffbfbb1cdedc1f65450b4b9dcc2278d47b79dbfc4d425e0d'}, 'backend/scripts/shadow-test-environment.mjs': {'bytes': 781, 'sha256': '9cb72b8d1cafc7136b95e6d5241289b1ad388638fc5edb683279d1f28ef102a8'}, 'backend/shadow-cljs.edn': {'bytes': 9554, 'sha256': 'cb45b403d669710e33fabcf359af6d580548b9ebfa194a4d55e2c40a6cb08a51'}, '.github/workflows/deploy-production.yml': {'bytes': 7975, 'sha256': '8fe8a62967a1412541c7e17d8ccff997a7881a11941a290ff43ee978349e410b'}, 'backend/test/python/test_mutation_process.py': {'bytes': 26614, 'sha256': '1a793fe0b13201b0e70a15269044ed250f2fbe6aa774c74861de36f33ca490e8'}, 'backend/test/clj/knoxx/mutation_test_test.clj': {'bytes': 68973, 'sha256': '383b458de6505fe6e21e803b88e2f8d52832fad8dae6c5f8d3c737f45956d8ff'}, 'backend/test/cljs/knoxx/backend/extern/bootstrap_readiness_test.cljs': {'bytes': 15271, 'sha256': '439cc9f87679aeead1eb0ae4312cf8fc682fefdd5c916d5d064ef619a6976512'}}
           for relative, row in rows.items():
               data = (root / relative).read_bytes()
               assert len(data) == row['bytes'] and hashlib.sha256(data).hexdigest() == row['sha256']
@@ -83,6 +83,51 @@ jobs:
           status = subprocess.run(['git', '-C', str(root), 'status', '--porcelain=v1', '-z', '--untracked-files=all'], capture_output=True, timeout=30)
           assert status.returncode == 0 and not status.stderr and not status.stdout, 'Application must be clean before the canonical mutation harness.'
           SDK_SOURCE
+      - name: Run the existing full registered Python process-custody suite
+        shell: bash
+        run: |
+          set -euo pipefail
+          set -C
+          proof="$RUNNER_TEMP/mutation-pilot-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          python3 backend/scripts/run-mutation-process.py \
+            --timeout-ms 600000 --max-output-bytes 8388608 --cleanup-ms 30000 \
+            -- python3 backend/test/python/test_mutation_process.py \
+            > "$proof/registered-python-native.json" 2> "$proof/registered-python-adapter.stderr"
+          python3 - <<'PYTHON_GATE'
+          import hashlib, json, os, pathlib
+          proof = pathlib.Path(os.environ['RUNNER_TEMP']) / ('mutation-pilot-' + os.environ['GITHUB_RUN_ID'] + '-' + os.environ['GITHUB_RUN_ATTEMPT'])
+          native = json.loads((proof / 'registered-python-native.json').read_bytes())
+          assert not (proof / 'registered-python-adapter.stderr').read_bytes()
+          assert native['exit-code'] == 0 and native['termination'] == 'exited'
+          assert native['cleanup-complete?'] and not native['capture-truncated?'] and not native['timed-out?']
+          output = native['output'].encode()
+          assert hashlib.sha256(output).hexdigest() == native['output-sha256']
+          assert len(output) == native['captured-output-bytes']
+          print(native['output'])
+          PYTHON_GATE
+      - name: Run the existing full registered mutation owning unit suite
+        working-directory: backend
+        shell: bash
+        run: |
+          set -euo pipefail
+          set -C
+          proof="$RUNNER_TEMP/mutation-pilot-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          python3 scripts/run-mutation-process.py \
+            --timeout-ms 600000 --max-output-bytes 8388608 --cleanup-ms 30000 \
+            -- clojure -M:mutation-test \
+            > "$proof/registered-unit-native.json" 2> "$proof/registered-unit-adapter.stderr"
+          python3 - <<'UNIT_GATE'
+          import hashlib, json, os, pathlib
+          proof = pathlib.Path(os.environ['RUNNER_TEMP']) / ('mutation-pilot-' + os.environ['GITHUB_RUN_ID'] + '-' + os.environ['GITHUB_RUN_ATTEMPT'])
+          native = json.loads((proof / 'registered-unit-native.json').read_bytes())
+          assert not (proof / 'registered-unit-adapter.stderr').read_bytes()
+          assert native['exit-code'] == 0 and native['termination'] == 'exited'
+          assert native['cleanup-complete?'] and not native['capture-truncated?'] and not native['timed-out?']
+          output = native['output'].encode()
+          assert hashlib.sha256(output).hexdigest() == native['output-sha256']
+          assert len(output) == native['captured-output-bytes']
+          print(native['output'])
+          UNIT_GATE
       - name: Run the canonical baseline and three actual source mutations
         working-directory: backend
         shell: bash
@@ -126,8 +171,8 @@ jobs:
               rows[label] = {'exit': r.returncode, 'stdoutBytes': len(r.stdout),
                              'stdoutSHA256': hashlib.sha256(r.stdout).hexdigest(), 'stderrBytes': len(r.stderr)}
           clean = (all(row['exit'] == 0 and not row['stderrBytes'] for row in rows.values())
-                   and (proof / 'post-head.stdout').read_text().strip() == '3978bb91af806dc6c7373969bcfa88ee3d6161b6'
-                   and (proof / 'post-tree.stdout').read_text().strip() == '051b17082b4aaff24dce2e0a22ee839efb9ff33e'
+                   and (proof / 'post-head.stdout').read_text().strip() == '13c81a13e1d4fc7772629ea257bbe1d41d8ec05c'
+                   and (proof / 'post-tree.stdout').read_text().strip() == 'd8809453e3fdd2b51900e24b991a4a3c596fb2de'
                    and all(rows[label]['stdoutBytes'] == 0 for label in ['status', 'index', 'diff']))
           with (proof / 'post-source-custody.json').open('x') as stream: json.dump({'actualClean': clean, 'nativeReads': rows}, stream, indent=2)
           assert clean, 'Canonical source did not restore; no reset or synthetic cleanup is performed.'
