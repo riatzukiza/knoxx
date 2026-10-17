@@ -15,7 +15,7 @@
     {
       "relative": "portable-assets.json",
       "bytes": 27561,
-      "sha256": "efa9f23c34484201876df22db54e6604b29e1b526480c27c66e11ee0fc77c562"
+      "sha256": "fcf471ff56b8359aed4fb6dd00a9effb7060e29c8b64206592f3fc89170516d8"
     },
     {
       "relative": "observe-original-probe.cjs",

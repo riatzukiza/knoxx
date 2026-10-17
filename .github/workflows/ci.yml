@@ -78,7 +78,7 @@ jobs:
           bundle = pathlib.Path('.github/qa/model-compatibility').resolve(strict=True)
           manifest = bundle / 'composition-inputs.json'
           program = bundle / 'full-job.py'
-          assert hashlib.sha256(manifest.read_bytes()).hexdigest() == 'c96ca17de21b774c2bba3b3d3050b758541ce59c84466659857bd4d748448f3b'
+          assert hashlib.sha256(manifest.read_bytes()).hexdigest() == '2a5b22ce9490324a2151bdd6bb3d8b84e563b8b44be5feeaa6f690df87cdbe66'
           assert hashlib.sha256(program.read_bytes()).hexdigest() == 'b10b3e75bbe39e91a58c541a3092366841ed74c459dc03329a8608ef88765e53'
           assert hashlib.sha256((bundle / 'owned-process-supervisor.py').read_bytes()).hexdigest() == '348bd2f8451e0c7d232407cd0dcdd328698e896b80838e68e8681a3b7892941b'
           inputs = json.loads(manifest.read_bytes())
