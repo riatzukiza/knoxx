@@ -481,3 +481,174 @@
   spore: none
   receipt-refs: /home/err/.local/share/openhax-codex/20261010/review-state/Knoxx-b637-KW-KD-KE-private-source-composition-v1/canonical-pre-build-composition-receipt-event.edn
   note: Three ordinary detached-worktree merges in KW then KD then KE order preserve all2642 non-ledger tree entries and sole owned deletion. Only two ledger conflicts resolved by exact target prefix plus incoming post-base suffix; all histories/events retained without dedup/reorder/normalization. Independent audit agrees source union and ledger hashes. Original four source worktrees unchanged. Pre-build preparation only: no gates/dependencies/build/readiness/admission/board/provider/production effects; KWaccepted8 and other incoming scopes remain unadmitted. Candidate0/no spore.
+- ts: 2026-10-15T09:40:59.394703833Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: Plan resource-backed translation locale filter repair under existing UI owner
+  p-efficiency: 0.62
+  p-friction: 0.74
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#15044096-b98b-462f-925c-a9517eccc97a
+  note: Actual normal UI browser read exposed All-only target choices despite a real Spanish work item. Plan unfiltered project/generation-bound inventory locales and preserve legacy choices; test selection retention, legacy failure and stale responses before implementation. Canonical composed views omit parent, so a zero unsupported parent query cannot prove absence; complete read-task census and whole-document custody closed dedup before commit. Canonical writer emits dependency[] with no omission surface; retain the upstream gap without a custom setter or invented relation. This commit is planning only: no ready/source/build/runtime/review/publication credit. Candidate zero, no spore.
+- ts: 2026-10-15T10:12:47.427960820Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: PR16 source-backed planning findings: explicit fixture, ordering and project-boundary verification
+  p-efficiency: 0.71
+  p-friction: 0.56
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#006da400-04de-409f-8860-85a7276f5af7
+  note: Accepted all six real Codex planning findings. Make fixture ownership, exact order, immediate installed-state hiding/All reset, existing request deltas and nl-outside-fallback causality executable in the bounded 3-point plan. Keep planning review and implementation proof separate; preserve original browser failures and SDK source-family CI limitation. Candidate0; no spore or runtime/model/content action.
+- ts: 2026-10-15T10:27:20.273091404Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: PR16 planning refinement: run-owned causal manifest and installed detail boundary
+  p-efficiency: 0.73
+  p-friction: 0.59
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#9c06a569-fd27-425c-9fac-0adb0c2a2fb0
+  note: Accept three source-backed current-head findings: control and disclose exact project manifest response in private opt-in browser scenario with teardown, await empty-map render/nl witness before RED, and clear installed selected work/detail with generation invalidation at project change. Keep causal UI fixture evidence separate from genuine backend/provider health. MiMo model submit completed but invocation trace guard failed; retain native failure without credential fallback. No app/runtime effect, candidate0.
+- ts: 2026-10-15T10:46:29.022132541Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: PR16 two-P1 plan: immediate inventory boundary and pending mutation UI guard
+  p-efficiency: 0.81
+  p-friction: 0.44
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#4a394adb-7844-4d4a-88a8-04128a9bd7ce
+  note: Keep first-render row exclusion separate from passive loader side effects, and distinguish zero-new-mutation passive tests from an already pending one-call API-stub case. Guard stale UI completion/reload while preserving already-authorized server operation semantics. Qualified source18f4647 committed separately from this provenance. No app/runtime/live model/content effect; preserve current actual MiMo run and historical trace rejection. Candidate0/no spore.
+- ts: 2026-10-15T11:15:24.737530104Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: PR16 reviewed split: locale3 plus current-view lifecycle5, three genuine P1s
+  p-efficiency: 0.79
+  p-friction: 0.62
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#1fa5beaf-9c49-4017-877c-a34359f4caf5
+  note: Source-backed planning scope grew beyond3points; root reviewed the full21,384B proposal before an explicit+5 split. Native fresh265-card parent census/261 shared-byte equivalents+3 reads found no duplicate. Native incoming→accepted→breakdown P0/5 sibling and locale3 dependency preserve full view closure, operation-owned saving, original six server sequences, pending current load and controlled human race proof. Parentaccepted8 unchanged/open; no app/runtime effect, no silent model/provider or release pass. Keep old MiMo failures/approvals and all eleven native settlements. Candidate0/no spore; source commit c36d0f314596c10c4fee4a09fa001a654064707f separate from provenance.
+- ts: 2026-10-15T11:33:50.340967482Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: PR16 body review5532308090: installed context state and explicit read-only export feedback
+  p-efficiency: 0.87
+  p-friction: 0.38
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#9e006db8-050c-4cd4-bbd0-9e465b471370
+  note: Root reviewed precise6018B boundary addition before adding read-only SFT shared feedback to existing5point lifecycle. Keep original read/download bytes+filename, no retarget/reissue/saving ownership; six mutations remain6. Distinguish project/filter/work synchronous retained/excluded state, already-installed feedback and causal pre-passive unit/controlled browser evidence. Native body findings remain obligations even when status omits them. Preserve3point locale dependency/accepted8 parent and14 native Fixed roots. No app/runtime or provider/content effect; source d63ebe4c628a6b3c487f9453da8479cc73dc2488 separate from RR/SM. Candidate0, no spore.
+- ts: 2026-10-15T12:05:07.869318400Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: PR16 six source-backed locale/current-view planning findings
+  p-efficiency: 0.43
+  p-friction: 0.77
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#752f1cdf-2949-46fe-892b-842fa21fceee
+  note: Source ac32871f qualifies six native P1 planning corrections within existing3+5. Pending segment/draft context, pre-passive load invalidation, held legacy options, option selection validity, genuine anonymous SFT auth boundary, and required coalesced post-snapshot refresh have causal unit and visibly synthetic browser obligations. Preserve native comments/event history and parent. Repeated process error: failed guard did not stop next mutation; exact terminal separator was canonical Rheos serialization, all comment content preserved, explicit POST-commit custody qualified. Every subsequent dependent effect must require actual exit/metadata guard before invocation. No app tests/runtime/readiness/merge claim; candidate0/no spore.
+- ts: 2026-10-15T13:01:14.270890945Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: PR16 reviewed thirteen-point lifecycle draft-refresh decomposition
+  p-efficiency: 0.68
+  p-friction: 0.62
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#e8226f6e-8c31-4723-a9b1-caa1576d6eba
+  note: Qualified LOCAL source a73ab71848f9ee849a9ecf0cbc75f874502928c3: exact root-read core5/newdraft5/locale3 split, actual UUIDv4 ae9a3cb7-a630-4d8d-8d60-c69b825d008d, native admission and single-key dependency. Preserve dirty D2 through all three submit/controller/form-sync paths while pristine external review rehydrates; explicit causal six-runner unmount/browser and bounded catch-up. New body scope only, no app execution. Fresh full native catalogs plus canonical bound unchanged source avoid a second board parser. Guard failures stopped before next effects; inspect real native result (create is text, read-task JSON) rather than repeat creation. Source/native-event and canonical provenance remain separate. Public push/body/replies/review requests held for root proof; no readiness/merge/runtime effects. Candidate0/no spore.
+- ts: 2026-10-15T14:58:13.419962026Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: CMS16 P1 all-reload-runner planning coverage
+  p-efficiency: 0.91
+  p-friction: 0.20
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#385f8746-ef8f-4fcf-ae46-e289481ca253
+  note: CMS16 P1 planning coverage correction closes all six reload-producing runners and seven normal-UI entries inside one existing draft5 mechanism. Trace every actual inventory/direct-detail/form-sync consumer; require actual Dispatch/Retry editable legacy-bridge eligibility, keep dirty/pristine synchronization and true candidate-authority reset, original approval->reconcile, payloads/follow-ups/counts/auth and bounded freshness. Root read exact proposal/patch before native owner comment and BODY-only repair. Qualified source64b94c8e0e17bdb927efe7c6d6e2af0f853da160 changes only owner card/native comment event; all2647 physical inputs checked. Keep current Rheos read-board rather than unsupported legacy count; retain actual failure. Candidate0/no spore. Native reflection84cbf3b5-767f-4deb-a418-9bd4d3c3651f is actual, one invocation; no product/test/browser/model/runtime/deployment success. Personal advance and native public settlement remain separate pending effects.
+- ts: 2026-10-15T15:25:35.205842680Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: CMS16 legacy anonymous route planning coverage
+  p-efficiency: 0.9
+  p-friction: 0.24
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#bf5324e7-2a60-4b5c-bac3-920b247d4ca5
+  note: CMS16 native body-only P1 review5535316442 is repaired in planning source0afa8141a68dd582649732686ee648cb7018b3ee: name and cover the exact legacy segment-label and document-review anonymous POST routes, not a resource-bulk request mislabeled document review. Preserve auth-enabled/legacy-route-ready preconditions, independent empty-cookie/no-auth/API/identity headers, source-built scope/query/payload,401/no_session plus authenticated unchanged-state/no-effective-write evidence; false non200/400/404/503/unready responses cannot qualify and unexpected content is not logged. Real anonymous probes precede synthetic interceptors and have explicit counts, while controlled races retain zero forwarded writes. Existing SFT/default18/locale20/13points/parent8/sixrunner-sevenentry and all other cards remain unchanged. Root admitted scope, native owner/inventory and all2648 original tracked inputs qualified; exact card/event source commit is separate from provenance. Retain the supervised read-only cleanup error and warning-carrier guard failure; never replay known successful comment/body effects. Candidate0/no spore; no application test/probe/browser/model/runtime/deployment/auth-result claim. Native reflection9a609682-ee6f-4de1-8b70-f9e5e809925b.
+- ts: 2026-10-15T17:00:30.247785569Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: CMS16 two-owner legacy fixture and locale-read planning correction
+  p-efficiency: 0.88
+  p-friction: 0.21
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#5d1029b9-f8b7-400e-9317-220e4538d450
+  note: Source19180ed14c53dc38a8dbf77ed2f18eb8b70cfee1; Codex5535724920 inline4285031557/body-only P1; exact approved patch e40ce45100723de196647e1b629455dd8f009fe9908bdaa90825ce22853010d2. Core5 fixture lifecycle and locale3 real anonymous GET preflight, draft5/13points/parent8 preserved. Native reflection80f6b6a1-9f4a-4f13-a5d4-5096bd9f9978. Planning-source custody only; no app/auth probe/fixture/build/browser/public/runtime effect. Preserve failed private read-only reader invocation and no-replay recovery. Candidate0/no spore.
+- ts: 2026-10-15T18:46:19.941520678Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: CMS16 separate five-point legacy fixture auth prerequisite
+  p-efficiency: 0.90
+  p-friction: 0.19
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#cddbfbe6-5ace-42cf-8229-4fdfb37e8265
+  note: Source70495d6fa5531cf05afe1cc8fd74bcf8e930772f; Codex5537788801/root4286589102. Newfixture/auth5->core5->draft5->locale3 total18/new+5; accepted8parent/history unchanged. Native7events, exact4BODYs/canonicalparser,2644otherinputs retained. Native reflection24171718-e3ee-4711-980a-a835715e3b00. Plan only/no fixture/auth/test/build/browser/model/public/runtime effects. Preserve refused772 HOSTtrace and Gitlink baseline-reader refusal/correction. Candidate0/no spore.
+- ts: 2026-10-15T19:32:58.440462290Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: CMS16 complete Mongo fixture lifecycle and export unmount planning
+  p-efficiency: 0.91
+  p-friction: 0.17
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#510fcf8e-ae13-4855-b44a-4dd87c2c1ce4
+  note: Source9a62cde06ac2fc0d3dc8777fb8a186f0c5ca12bd; Codex5538651862 roots4287284040/4069 and body-only export-unmount. Two native scope comments + exact two BODYs; all2649physical/Git inputs/modes and2646otherinputs preserved; metadata/history/dependencies/18total unchanged. Full system-named Mongo lifecycle and exact TERM mid-cleanup recovery; separate export-unmount callbacks/browser with captured download kept. Native reflectionc4a72401-74a3-4bbd-963b-3de723220f1f. Planning only/no implementation/app/fixture/auth/test/build/browser/model/runtime/public effects. Originalb19 UnknownError remains failed; conditional retry neverexecuted. Candidate0/no spore.
+- ts: 2026-10-15T20:23:01.716259650Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-native-resource-locale-filter-plan-19f-v1
+  task: CMS16 fixture contracts and async readiness planning
+  p-efficiency: 0.87
+  p-friction: 0.23
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#e97124e7-d61c-4155-aa1a-198062371b20
+  note: Source47316dde30e504d622e5dfc1185e9db27d40b185; Codex5539062909 four roots. Two BODYs/currentfilename+2nativecomments, uniqueUUID/currentpath, originalcreation/ledger/comment prefixes and2646otherinputs preserved. Fixture assertions/exact detailGET and changed-runner async/await planned;18total/metadata/deps unchanged. NativeSM919b6746-1de8-4550-ae09-58c970228f0a. No app/test/public/runtime effects. Read-only wrapper failures retained; candidate0/no spore.
+- ts: 2026-10-15T20:55:00.037621972Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-native-resource-locale-filter-plan-19f-v1
+  task: CMS16 dispatch auth and backend lint planning
+  p-efficiency: 0.92
+  p-friction: 0.14
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#cf89fbe5-2c12-4f94-a814-a20df5cc4eb1
+  note: Sourcee92fd17c099a9220f1406c113b990cf6443b8076; native2P1s5539622567. One separately counted dispatchPOST401 preflight/live hiddenstate vs registered writercall proof, exact scoped safe typedread, full warning-level backendlint planned. TwoBODYs+nativecomments,2646otherinputs/metadata/deps/history/18total preserved. NativeSM90b578da-b163-49c7-ac95-53845f9b5544. No app/auth/lint/test/server/model/public/runtime effect. Candidate0/no spore.
+- ts: 2026-10-15T21:22:16.760805519Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-native-resource-locale-filter-plan-19f-v1
+  task: CMS16 refresh authority and full touched-entry extern planning
+  p-efficiency: 0.91
+  p-friction: 0.18
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#298db334-b449-4a50-a7ea-df27045ea256
+  note: Source48296e06ed5d25c6a131744848a7462968022676; nativeCodex5539948033 four roots. First-render omission/candidate safety, filter-ABA export fence, complete Node/Mongo extern scope; same18points/history. Three BODYs/nativecomments and2645otherinputs preserved. NativeSMaed9cde5-e3a4-42a4-8e85-148d4c36b743. Canonical parser/custody only; no app/auth/browser/model/runtime/public effects. Candidate0/no spore.
+- ts: 2026-10-15T21:53:23.773497876Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-native-resource-locale-filter-plan-19f-v1
+  task: CMS16 strict fixture-entry boundary verification planning
+  p-efficiency: 0.92
+  p-friction: 0.15
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#6b4466cc-e247-43a5-b9c1-11183d3c6576
+  note: Source7adf11002889e11abb036627063b870dba73a6dd; nativeCodex5540235261/root4288525597. Exact fixture-entry strict assertion with each forbidden-category actual-checker controls, missing/unreadable refusal, unchanged legacy allowlist. Samefixture5/18points/history; oneBODY/nativeevent,2647otherinputs preserved. NativeSMefefc438-582a-4058-9553-7bda02916712. Canonical parser/custody only; tests/implementation/public/runtime remain unexecuted. Candidate0/no spore.
+- ts: 2026-10-17T00:44:36.825402592Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-core5-evidence-amendment-over03fc-PREP-v1
+  task: Existing core5 explicit evidence-method amendment on accepted personal PR16 planning source
+  p-efficiency: 0.88
+  p-friction: 0.32
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: sha256:a42477155f6b7f0ebe45291fc9040b194a01b28c55c233ba239c0d34d4339b8f,d9a1fadc5b57f97dcae3d988474eda78b5ebbe7d,03fc4d8e7bb6cce4634393cc01be5e60b9be1db4
+  note: A direct native continuation control and a real browser scheduling trace prove different things. Preserve the synchronous cancellation property while explicitly reviewing any evidence-method change. Current experimental browser case57 lacks the same-schedule B-fetch DOM checkpoint and held B responses; neither other scenarios nor later A-last traces fill it. Carry only two body hunks over accepted03fc, preserve its breakdown metadata/history, retain failed evidence and obtain independent native planning acceptance before predicate/completion changes. This private card carrier runs no application tests or browser. Earlier inventory no-counter failure remains historical even if its separately owned successor later qualifies. Portable candidate0; no spore or promotion.
+- ts: 2026-10-17T01:09:37.438895902Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-core5-evidence-amendment-over03fc-PREP-v1
+  task: Correct the three actual PR16 core5 planning provenance and checkpoint findings
+  p-efficiency: 0.82
+  p-friction: 0.45
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#528b7dfe-70d5-4685-b6e2-b7af755271b6,f08f74164f97d7a25972cf33f4f96edb67b6dd1c,review5555208222,roots4300597378/4300597381/4300597382
+  note: Use the repository-used Receipt River package event wrapper for addressable planning provenance; the global compatibility writer produced a valid historical bare record but did not match this PR format. Re-emit the original d9a1 observation as event528b7dfe with its original source commit, preserve the bare record and older SM reference byte-for-byte, and point this new entry to the stable event ID. Canonical Rheos comment records the actual missing amendment chronology on the same core5 owner; native write-id changes are engine-owned, with no status/points/dependency transition. Explicit wording distinguishes required future checkpoint/response-hold acceptance from the current failed experimental artifact. Own the successful comment even when a later read-only wrapper assertion fails; no effect replay. JSON-config warning and first wrapper failure remain retained. No public push/settlement, model, browser predicate/completion or deployment effect; original56/57FAIL/globalqualitygates remain. Portable candidate0, no spore/promotion.
