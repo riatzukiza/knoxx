@@ -1115,3 +1115,12 @@
   spore: none
   receipt-refs: sha256:9c3e0e770ff3f99f31722ad3c5ea687e7e899bce8a0110a7f2cdec150bf29bf2,2626e09d9a9c7866b4338424a452e2c8ad15d79b
   note: Two actual native cleanup catches gain only fixed scalar warning attempts while success/options/idempotent absence/nil fallback and following cleanup remain unchanged even observer Error/nil/absent. Quiet metadata read remains intentional. Genuine RED26missing-record/0error preceded product; full source-bound GREEN2179/12656/0/0 and179NodePASS/compiler0warnings. First registered full lint caught deliberate literal nil-throw fixture type error; exact existing parameterized native fault helper preserves true nil throw, then one corrected GREEN/full lint clears touched error. Preserve failed lint and wrong-cwd hook failure, no assertion/policy weakening. Existing210 lint warnings and29 remaining boundary occurrence rows are literal global findings, not invented current CI steps; shared snippetID stays for quiet read. Scope canonical existing async5, no next family. Candidate0/no spore or promotion; no public/model/service/deploy effect.
+- ts: 2026-10-17T02:17:10.993673906Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-CMS-controller-integration-over8cd5-v1
+  task: CMS one-file native async audit fallback and canonical protected-main frontend CI hygiene
+  p-efficiency: 0.96
+  p-friction: 0.08
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: sha256:eec5c0d2949d5a2521a5a48abc2f0fd674e9c757cf83ea7f39800d8e8df99158,0773588a18b963abdae52116e4922ea26c7d9302
+  note: Exact existing api.cljs preimage is now native async try/await with unchanged admin-to-caller fallback, fixed limit and vector/error behavior; session request gets intent doc only. Existing four real HTTP tests and all489tests/2698assertions pass with0fail0errors/0compilerwarnings. Registered changed frontend lint against true protectedmain3409977 selects20paths including uncommitted working api bytes and reports0E0W. Reused qualified owned frontend dependencies/runtime, fresh exclusiveconsumer, no install/newtest/artificialRED/baseline or production build; source inode/mode/owner and all324productionartifacts/sixclosedsets preserved. Single source commit then separate canonical append-only provenance, candidate0/no spore. Historical global findings and original browser57FAIL remain; no browser/fullrelease/model/staging/protected promotion/public/owner-completion credit. Optional migration product ratchet remains separately unexecuted PREP only.
