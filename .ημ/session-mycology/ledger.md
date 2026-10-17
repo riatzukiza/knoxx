@@ -1268,3 +1268,12 @@
   spore: none
   receipt-refs: e26c60f6-f312-425b-9253-bbaa310d2efe
   note: Add monotonic adapter elapsed as evidence, preserving all command/custody/classifier semantics. Private inert three-controls RED3 to GREEN0 is causal field evidence; real process-custody and owning Clojure gates remain pending hosted execution. Keep genuine pilot two kills plus one SURVIVOR and full source/payload restoration explicit. Never substitute compiler seconds or log windows for full child duration; no campaign-fit or spore promotion claim.
+- ts: 2026-10-17T16:59:18.440134878Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-full-CI-workflow-repair-over933-v1
+  task: Preserve reviewed G13c source and historical append-only provenance through ordinary merge
+  p-efficiency: 0.92
+  p-friction: 0.12
+  p-skill-candidate: 0.08
+  spore: none
+  receipt-refs: d048f94b-3d5e-4e21-9db0-30815d2f8ced
+  note: Bind all three index stages before resolving only known independent provenance append conflicts as current full prefix plus exact committed suffix; no semantic parser or historical field edits. Preserve all six code/test postimages and prior P/doc/fixture source. Global169FAIL remains and final coherent runtime waits source freeze/performance decision; no pilot-to-campaign transfer. No spore.
