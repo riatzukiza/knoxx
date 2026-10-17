@@ -4,8 +4,8 @@
   "bundleFiles": [
     {
       "relative": "controller.py",
-      "bytes": 35524,
-      "sha256": "0328b3d2a2fe9ccfc1c6845f98acf0e496f411c0c6478b26d002f5a26d650df6"
+      "bytes": 36126,
+      "sha256": "12ceb242965ab32a3de1ff453911a6da6ee375f96e83f2c8e1d29e371879dbf8"
     },
     {
       "relative": "acquire-assets.py",

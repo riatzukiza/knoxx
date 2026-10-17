@@ -19,7 +19,7 @@ import time
 
 IMAGE = 'sha256:dacbdaa86a43fb9ed58174a53d15627780829ba4c34badb15263d4104c0a37ec'
 REPO = 'ollama/ollama@sha256:98c19ced6600f2924e80b92d701cd867d8f7ef0c4dde516c619484e31e47f103'
-CEILING = 12884901888
+CEILING = 8326942720
 HEADROOM = 2147483648
 LOGS = 83886080
 SDK_ALLOWANCE = 4294967296
@@ -292,7 +292,8 @@ class Controller:
             argv += ['--mount', f'type=bind,src={src},dst={target}' + (',readonly' if ro else '')]
         argv += ['--tmpfs', f'/tmp:rw,noexec,nosuid,nodev,size=134217728,uid={self.uid},gid={self.gid},mode=0700',
                  '--entrypoint', '/usr/bin/env', IMAGE, '-i', 'PATH=/usr/bin:/bin', 'LANG=C.UTF-8', 'HOME=/qa-home', 'TMPDIR=/tmp',
-                 'OLLAMA_MODELS=/models', 'OLLAMA_HOST=0.0.0.0:11434', 'OLLAMA_NO_CLOUD=1', '/qualified-ollama/bin/ollama', 'serve']
+                 'OLLAMA_MODELS=/models', 'OLLAMA_HOST=0.0.0.0:11434', 'OLLAMA_NO_CLOUD=1',
+                 'OLLAMA_MAX_LOADED_MODELS=1', '/qualified-ollama/bin/ollama', 'serve']
         return argv
 
     def inspect(self, name, target=None):
@@ -349,6 +350,15 @@ class Controller:
         assert status == b'200' and response.stat().st_size <= 1048576
         response.chmod(0o600)
         return json.loads(response.read_text())
+
+    def single_residency(self, name):
+        observed = self.http(name, '/api/ps')
+        assert isinstance(observed.get('models'), list), 'Unknown model residency response'
+        actual = [(row.get('name', row.get('model')), row.get('digest')) for row in observed['models']]
+        expected = [('qwen3-embedding:8b', MODEL_Q)]
+        self.save(name + '-single-resident-guard.json', {'actual': actual, 'expected': expected})
+        assert actual == expected, 'Expected exactly the requested Qwen model after model switch'
+        return observed
 
     def owned_child(self, name, cap_ms, argv):
         supervisor = self.bundle / 'owned-process-supervisor.py'
@@ -410,7 +420,7 @@ class Controller:
         for i in range(1, 5):
             for tail in ['request.raw.json', 'response.raw.json']: assert (self.root / 'original-wire' / f'{i:02d}-{tail}').is_file()
         assert json.loads((self.root / 'original-wire/04-response.metadata.json').read_text())['exactEmbedding'] is True
-        self.metrics('after-original-probe'); self.http('after-original-residency', '/api/ps')
+        self.metrics('after-original-probe'); self.single_residency('after-original-residency')
         qa = self.root / 'sdk/filtered-build/packages/openplanner-sdk/.qa-live-embedding'
         # The two additional children are explicit, sequential and each hard-capped.
         # These are added phases after the original cold probe. The container's
@@ -441,7 +451,7 @@ class Controller:
             self.owned_child('ONE-' + tier + '-checked-SDK', 15000, argv)
             outcome = json.loads((target / 'outcome.json').read_text())
             assert outcome['success'] and outcome['calls'] == outcome['completedResponses'] == 1 and outcome['originalFetchRestored']
-            self.metrics('after-' + tier); self.http('after-' + tier + '-residency', '/api/ps')
+            self.metrics('after-' + tier); self.single_residency('after-' + tier + '-residency')
         self.source_guard(built=True); self.assets_guard()
         self.out['outcome'] = 'PASS-hosted-original-services-and-two-actual-checked-tiers'
         self.out['order'] = ['cold-catalog', 'original-translation-90s', 'original-tool-90s', 'original-embedding-15s', 'checked-hot-whole-child-15s', 'checked-compact-whole-child-15s']
