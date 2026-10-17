@@ -32,17 +32,17 @@
         (await (action)))
       (finally (restore-rm! descriptor replacement)))))
 
+(defn- refuse! [mode primary]
+  (case mode :throws (throw primary) :rejects (js/Promise.reject primary)))
+
 (defn- warning-recorder [seen mode]
   (when-not (= :absent mode)
     (fn [boundary context]
       (swap! seen conj [boundary context])
       (case mode
         :throws-error (throw (ex-info "Private observer error" {}))
-        :throws-nil (throw nil)
+        :throws-nil (refuse! :throws nil)
         nil))))
-
-(defn- refuse! [mode primary]
-  (case mode :throws (throw primary) :rejects (js/Promise.reject primary)))
 
 (defn- expected-warning [operation primary]
   ["sandbox-cleanup.degraded"
