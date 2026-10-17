@@ -265,6 +265,44 @@
     (approvals! [_ query]
       (evidence-store-api/approvals! delegate query))))
 
+(defn- approval-request-records
+  [revision]
+  {:wire-body (assoc valid-body
+                     :revision revision
+                     :translation_revision "sha256-target")
+   :receipt (assoc hydration-receipt
+                   :translation/source-revision revision)})
+
+(defn- approval-route-dependencies
+  [index source translated revision evidence-store content-reads]
+  {:evidence-store evidence-store
+   :resource-records! (fn [_] (js/Promise.resolve ::records))
+   :publication-index (constantly index)
+   :document-source-roots
+   (fn [_ _] {:knoxx.docs/probe "/contracts"})
+   :source-revisions!
+   (fn [_ _ _] (js/Promise.resolve {:knoxx.docs/probe revision}))
+   :ensure-contract-receipts!
+   (fn [_ _ _ _ _] (js/Promise.resolve []))
+   :authenticate-receipts!
+   (fn [_ _ _ _ receipts]
+     (doseq [candidate receipts]
+       (swap! content-reads conj
+              [:target (:translation/revision candidate)]))
+     (js/Promise.resolve
+      (filterv #(= (:translation/content-digest %)
+                   (source-revision/content-revision translated))
+               receipts)))
+   :source-content!
+   (fn [_ document]
+     (swap! content-reads conj [:source (:document/id document)])
+     (js/Promise.resolve source))
+   :agent-content!
+   (fn [_ candidate]
+     (swap! content-reads conj
+            [:target (:translation/revision candidate)])
+     (js/Promise.resolve translated))})
+
 (defn- ^:async invoke-registered-approval!
   "Drive the registered Fastify handler through the real approval facade/store."
   [{:keys [index source translated revision]
@@ -276,43 +314,13 @@
         permission-checks (atom [])
         content-reads (atom [])
         evidence-store (evidence-store-api/memory-store)
-        wire-body (assoc valid-body
-                         :revision revision
-                         :translation_revision "sha256-target")
-        receipt (assoc hydration-receipt
-                       :translation/source-revision revision)]
+        {:keys [wire-body receipt]} (approval-request-records revision)]
     (await (evidence-store-api/record-translation!
             evidence-store receipt))
     (adapter/register-translation-review-routes!
      app {} approval-config (approval-handlers permission-checks)
-     {:evidence-store evidence-store
-      :resource-records! (fn [_] (js/Promise.resolve ::records))
-      :publication-index (constantly index)
-      :document-source-roots
-      (fn [_ _] {:knoxx.docs/probe "/contracts"})
-      :source-revisions!
-      (fn [_ _ _]
-        (js/Promise.resolve {:knoxx.docs/probe revision}))
-      :ensure-contract-receipts!
-      (fn [_ _ _ _ _] (js/Promise.resolve []))
-      :authenticate-receipts!
-      (fn [_ _ _ _ receipts]
-        (doseq [candidate receipts]
-          (swap! content-reads conj
-                 [:target (:translation/revision candidate)]))
-        (js/Promise.resolve
-         (filterv #(= (:translation/content-digest %)
-                      (source-revision/content-revision translated))
-                  receipts)))
-      :source-content!
-      (fn [_ document]
-        (swap! content-reads conj [:source (:document/id document)])
-        (js/Promise.resolve source))
-      :agent-content!
-      (fn [_ candidate]
-        (swap! content-reads conj
-               [:target (:translation/revision candidate)])
-        (js/Promise.resolve translated))})
+     (approval-route-dependencies index source translated revision
+                                  evidence-store content-reads))
     (let [route (second @routes)]
       (await
        ((aget route "handler")
