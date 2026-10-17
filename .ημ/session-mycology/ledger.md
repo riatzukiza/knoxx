@@ -1403,3 +1403,12 @@
   spore: none
   receipt-refs: 60cfd6d4-3a38-4b9b-867c-e447b2eb28bc
   note: Full19 causalRED isolates six missing-diagnostic assertions to3new controls with original16PASS. Exact helper implementation and shell syntax are source evidence; unchanged normal hosted fullGREEN and original cleanup cause diagnosis remain pending. No spore.
+- ts: 2026-10-17T23:40:38.456341774Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-full-CI-workflow-repair-over933-v1
+  task: Separate message and text data; retain actual global132 static warnings
+  p-efficiency: 0.9
+  p-friction: 0.1
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: 87648b51-f451-444c-bbbc-5a9e29303494
+  note: Exact expression tokens and complete source inverses preserve message decoding and result-presentation responsibilities. Existing transcript/stored-message controls retained; direct selected multimodal/text-renderer coverage was not recovered. Coherent normal runtime remains pending. All original tests/config/checker policy held; no spore.
