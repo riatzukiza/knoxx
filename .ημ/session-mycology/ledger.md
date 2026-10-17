@@ -1178,3 +1178,12 @@
   spore: none
   receipt-refs: fd090bba-422d-4ac3-ae83-12488c568001
   note: Bind editor identity to immutable source and raw candidate identity while allowing derived review-output receipt revisions to advance. Retain exact pure negative controls and genuine browser notice failure before repair. A GitHub continue-on-error step conclusion can say success despite native test exit1; logs/outcome and final failure control truth. Keep legacy test lint outside scope by moving the equivalent new interaction into the existing modern fixture while preserving every old assertion and the same unchanged lint selection. RuntimeGREEN remains separate. No spore.
+- ts: 2026-10-17T11:39:34.331014677Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-full-CI-workflow-repair-over933-v1
+  task: Twenty scoped backend warnings removed while preserving loader behavior
+  p-efficiency: 0.88
+  p-friction: 0.28
+  p-skill-candidate: 0.21
+  spore: none
+  receipt-refs: bbfe3b76-34ee-4134-b4e2-03b9f5399125
+  note: Preserve explicit namespace loads when removing unused aliases. For dead-code cleanup, compare full registered warning classes after exact source peers and owning lint; do not relabel retained size warnings or historical CI as current success. Inverse checks for deleted regions must retain their original position, because replacing an empty string inserts at byte0. Retain early guard refusals without candidate/test credit. No spore.
