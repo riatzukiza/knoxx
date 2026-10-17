@@ -7,21 +7,23 @@
             [knoxx.backend.law.embedding :as law]))
 
 (defn ^:async run
-  "Perform one actual hot or compact embedding; the owning process cap is 15s.
-  No SDK provider factory, Mongo client, test seam or mock is invoked."
+  "Perform one actual hot or compact embedding; the owning process cap is 15s. No SDK provider factory, Mongo client, test seam or mock is invoked."
   [tier-name]
   (when-not (contains? #{"hot" "compact"} tier-name)
     (throw (ex-info "QA tier must be hot or compact" {:code "qa_tier_invalid"})))
   (let [configuration (embedding/configuration!)
-        native (sdk-embedding/createEmbeddingRuntime (sdk-config/loadConfig))
+        ^js native (sdk-embedding/createEmbeddingRuntime (sdk-config/loadConfig))
         scope #js {:source "owned-live-embedding-qa"
                    :kind "checked-embedding" :project "owned-live-embedding-qa"}
-        native-hot-model (law/assert-model! (.getModel (.-hot native) scope))
-        native-compact-model (law/assert-model! (.getModel (.-compact native)))
+        ^js native-hot (.-hot native)
+        native-hot-model (law/assert-model! (.getModel native-hot scope))
+        ^js native-compact (.-compact native)
+        native-compact-model (law/assert-model! (.getModel native-compact))
         checked (embedding/runtime native configuration)
-        tier (if (= tier-name "hot") (.-hot (:handle checked)) (.-compact (:handle checked)))
+        ^js checked-handle (:handle checked)
+        ^js tier (if (= tier-name "hot") (.-hot checked-handle) (.-compact checked-handle))
         selected (if (= tier-name "hot") (.getModel tier scope) (.getModel tier))
-        provider (if (= tier-name "hot")
+        ^js provider (if (= tier-name "hot")
                    (.getBackgroundEmbeddingFunction tier scope)
                    (.getBackgroundEmbeddingFunction tier))
         vectors (xjson/to-cljs

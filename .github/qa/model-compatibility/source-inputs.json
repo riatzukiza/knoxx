@@ -15,13 +15,13 @@
     },
     {
       "path": "qa-native-driver.mjs",
-      "bytes": 6490,
-      "sha256": "f1eaadcca19097783ba3ce7b4f18711858c546670da54479d239ce00b64a17bd"
+      "bytes": 6767,
+      "sha256": "67a8ec49696a19ca78b473addd56d9c4ccef569b8157db5eb9ced34f3ae9083c"
     },
     {
       "path": "qa-shadow-cljs.edn",
       "bytes": 502,
-      "sha256": "6044021d722ce6b9c7271fc6311a6b550aedd9df3413826508e4dd4ffb616c18"
+      "sha256": "7b880ebd4d2fed406596a5c8f658a305e80fa4f3d50958896e9ca2dec3a2b635"
     },
     {
       "path": "qa-deps.edn",
@@ -30,8 +30,8 @@
     },
     {
       "path": "qa-src/knoxx/backend/extern/live_checked_embedding_qa.cljs",
-      "bytes": 1989,
-      "sha256": "a0cac9dd1298c93ddcf21d1bd1fdd3efa924e432289d027bd3ffad9c0a521bbe"
+      "bytes": 2114,
+      "sha256": "6cc18c9bb8282eda2ddd874d4e9576b21c72af7e55c12fb1d295f25e4926d0d6"
     },
     {
       "path": "owned-process-supervisor.py",

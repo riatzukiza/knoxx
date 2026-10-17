@@ -116,6 +116,15 @@ try {
     vectorBytes: vectorBytes.length, vectorSHA256: sha(vectorBytes)}, null, 2) + '\n');
 } catch (error) {
   primary = {name: error.name, message: error.message};
+  try {
+    const stack = error.stack;
+    if (typeof stack === 'string') {
+      primary.stack = stack.slice(0, 8192);
+      primary.stackTruncated = stack.length > 8192;
+    }
+  } catch {
+    primary.stackUnavailable = true; // A diagnostic must not replace the primary.
+  }
   process.exitCode = 1;
 } finally {
   globalThis.fetch = originalFetch;

@@ -9,4 +9,4 @@
    :js-options {:js-provider :import
                 :keep-as-import #{"@open-hax/openplanner-sdk/config"
                                   "@open-hax/openplanner-sdk/embedding-runtime"}}
-   :compiler-options {:output-feature-set :es-next :infer-externs false}}}}
+   :compiler-options {:output-feature-set :es-next :infer-externs :auto}}}}
