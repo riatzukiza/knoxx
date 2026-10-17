@@ -1,7 +1,7 @@
 ---
 category: "tasks"
 labels: ["tasks", "5sp"]
-write-id: "1792280425735-0.341fc6wbusgc6nrh1ad"
+write-id: "1792280695579-0.2qgde2pogos17a5khtq"
 points: "5"
 source: "specs/tasks/knoxx-backend-lint-async-workflows-src.md"
 title: "Knoxx Backend Lint — Async Workflow Refactor for Source Namespaces"
@@ -252,5 +252,15 @@ Portable text/result.cljc receives decoded data and already prepared node/edge t
 After separate root admission and actual successor binding, append this scope once through official Rheos with exact ACK/readback/history/write-id guards; apply exactly four existing postimages and exclusively create the one new result.cljc. Run unchanged five-complete-file owning and full registered backend lint once. Expected full136 to132 and owning one retained file-length warning are predictions, not observed results. Require exact four cause removals/no new errors/causes, outside-five-file rows/coordinates exact, and actual retained touched coordinates recorded. No warning suppression or count-only success.
 
 Preserve direct coverage limits: transcript and stored-message public controls exist, but no direct multimodal-constructor or selected text-renderer assertions were recovered. Full coherent ordinary typecheck/compile-test/server/runtime and native review/release gates remain downstream; no mirrored tests/private export seam or runtime claim. Use one explicit seven-path source/card/event commit, then separate canonical RR/portableSM two-path provenance with exact prefixes and command-local Git auto-maintenance disabled. No public/refpush/QA/PR/Ready/merge/adoption/model/provider/DB/PM2/account/deployment effects.
+
+Continue the existing in-progress backend source-lint owner with the exact reviewed source-line and Markdown block-span responsibility boundary, after the preceding G-helper and B-five-source phases close and their actual clean successor is frozen. This scope changes no status, priority, points, dependencies or readiness.
+
+Change only law/translation_source_split.cljc and the new law/translation_source_blocks.cljc. Move the contiguous exact source-line coordinate and root Markdown block-span family into the new portable namespace. Keep ordered/list subtrees, protected-span precedence, blank-line partitioning and canonical source admission in the original owner. Preserve complete existing public exact-source-parts? and source-parts forms and public arglists. The thirteen moved internal helper exports supply calls between these two namespaces, with no captured aliases or native/callback authority.
+
+For indented code, retain original blank/code classification, branch short circuits, one next-remaining call, selected field lookup/conj order, loop state and terminal close. Preserve source bytes/offsets, CRLF/BOM/Unicode behavior, indentation/regex rules, list/table/fence/front-matter precedence, tests/assertions, coverage inputs, schemas and checker configuration. Exact raw inverses restore the moved block and entire source. No additional Markdown conformance is claimed.
+
+Before effects, freeze actual clean source/preimages/new-path absence, owner/write-id, all local refs, empty index and four prefixes. The law parent directory already exists: create only the new regular0644 file, the sole allowed untracked path before explicit staging. Run unchanged two-full-file owning lint and full registered backend lint once. Require both original target causes removed, no added causes, owning zero warnings/errors, and outside-target rows/locations exact. Retain failed global status and record actual counts; historical709a136 or prospective post-B132 is not the executable baseline.
+
+Commit exactly two product files plus the official owner card/event. Append one canonical Receipt River record and one portable Session Mycology entry, then commit only those two provenance paths. Use command-local no-auto-GC Git options on both supervised commits. Preserve historical prefixes and foreign refs/dirt. Uncertain effects stop for read-only reconciliation without comment/source/lint/commit replay. No tests/JVM/compiler/runtime/hosted QA, public ref/PR, provider/model, DB, PM2 or deployment effect is included. Coherent unchanged backend qualification remains required.
 
 ---
