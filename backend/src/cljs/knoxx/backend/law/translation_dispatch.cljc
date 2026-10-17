@@ -309,6 +309,28 @@
   [left right]
   (= (attempt-binding left) (attempt-binding right)))
 
+(defn- new-dispatch-binding
+  "Project required work, context, identity and time into one attempt."
+  [work context outcome at attempt-id]
+  {:dispatch/key (dispatch-key
+                  {:org-id (:dispatch/org-id context)
+                   :project (:dispatch/project context)
+                   :garden (:dispatch/garden context)
+                   :document (:document work)
+                   :source-locale (:dispatch/source-locale context)
+                   :locale (:locale work)
+                   :revision (:revision work)})
+   :dispatch/attempt-id attempt-id
+   :dispatch/outcome outcome
+   :dispatch/org-id (:dispatch/org-id context)
+   :dispatch/garden (wire-resource-id (:dispatch/garden context))
+   :dispatch/document (:document work)
+   :dispatch/document-wire-id (:dispatch/document-wire-id context)
+   :dispatch/source-locale (:dispatch/source-locale context)
+   :dispatch/locale (:locale work)
+   :dispatch/revision (:revision work)
+   :dispatch/at at})
+
 (defn dispatch-record
   "Build a dispatch record for one new attempt. Pure: identity and time are
    supplied, not sampled here.
@@ -321,24 +343,7 @@
     (throw (ex-info "new translation dispatch records require an attempt id"
                     {:dispatch/attempt-id attempt-id})))
   (assert-record!
-   (cond-> {:dispatch/key (dispatch-key
-                           {:org-id (:dispatch/org-id context)
-                            :project (:dispatch/project context)
-                            :garden (:dispatch/garden context)
-                            :document (:document work)
-                            :source-locale (:dispatch/source-locale context)
-                            :locale (:locale work)
-                            :revision (:revision work)})
-            :dispatch/attempt-id attempt-id
-            :dispatch/outcome outcome
-            :dispatch/org-id (:dispatch/org-id context)
-            :dispatch/garden (wire-resource-id (:dispatch/garden context))
-            :dispatch/document (:document work)
-            :dispatch/document-wire-id (:dispatch/document-wire-id context)
-            :dispatch/source-locale (:dispatch/source-locale context)
-            :dispatch/locale (:locale work)
-            :dispatch/revision (:revision work)
-            :dispatch/at at}
+   (cond-> (new-dispatch-binding work context outcome at attempt-id)
      (some? (:dispatch/project context))
      (assoc :dispatch/project (:dispatch/project context))
 
