@@ -78,8 +78,8 @@ jobs:
           bundle = pathlib.Path('.github/qa/model-compatibility').resolve(strict=True)
           manifest = bundle / 'composition-inputs.json'
           program = bundle / 'full-job.py'
-          assert hashlib.sha256(manifest.read_bytes()).hexdigest() == 'b2a3e62ce05283dc79eb0d952b54c23c749b166859873553370cd367401d255e'
-          assert hashlib.sha256(program.read_bytes()).hexdigest() == '58151d939cceb97d49d729900b6fcf1388bc2cb4935795413f10141aa8572d12'
+          assert hashlib.sha256(manifest.read_bytes()).hexdigest() == 'feaf3313e72393b40ea1f341504a99376f2e35485de719c3ec32a3738eae264a'
+          assert hashlib.sha256(program.read_bytes()).hexdigest() == 'b10b3e75bbe39e91a58c541a3092366841ed74c459dc03329a8608ef88765e53'
           assert hashlib.sha256((bundle / 'owned-process-supervisor.py').read_bytes()).hexdigest() == '348bd2f8451e0c7d232407cd0dcdd328698e896b80838e68e8681a3b7892941b'
           inputs = json.loads(manifest.read_bytes())
           metadata = {key: os.environ[key] for key in inputs['metadataEnvironmentNames']}
@@ -182,17 +182,19 @@ jobs:
           def add(path):
               global total, count
               value = path.lstat()
-              assert not stat.S_ISLNK(value.st_mode), 'Unexpected proof symlink'
-              assert time.monotonic() <= deadline and count <= 100000, 'Finite proof scan bound exceeded'
+              assert stat.S_ISREG(value.st_mode) or stat.S_ISDIR(value.st_mode), 'Unexpected nonregular proof node'
               if stat.S_ISREG(value.st_mode):
                   count += 1
                   total += value.st_size
+              assert time.monotonic() <= deadline and count <= 100000, 'Finite proof scan bound exceeded'
+          def traversal_error(error): raise error
           try:
               for name in roots:
                   root = run / name
                   if root.exists() or root.is_symlink():
                       add(root)
-                      for path in root.rglob('*'): add(path)
+                      for parent, dirs, files in os.walk(root, onerror=traversal_error, followlinks=False):
+                          for leaf in dirs + files: add(pathlib.Path(parent) / leaf)
               for path in outside:
                   if path.exists() or path.is_symlink(): add(path)
               # Reserve at most64KiB for this size receipt in the upload itself.

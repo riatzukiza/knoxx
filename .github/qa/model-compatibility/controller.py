@@ -81,7 +81,8 @@ class Controller:
         assert str(self.root) == self.b['root']
         assert self.b['sourceRoots'] == {'Knoxx': str(self.root / 'source'), 'SDK': str(self.root / 'sdk-source')}
         assert str(Path(sys.executable).resolve()) == self.b['python']
-        assert {r['path'] for r in self.b['tools']} == {self.b['node'], self.b['python'], '/usr/bin/docker', '/usr/bin/curl', '/usr/sbin/ip', '/usr/bin/git'}
+        assert len(self.b['tools']) == 6 and {r['path'] for r in self.b['tools']} == {self.b['node'], self.b['python'], '/usr/bin/docker', '/usr/bin/curl', self.b['ip'], '/usr/bin/git'}
+        assert [r['path'] for r in self.b['tools'] if r.get('role') == 'ip'] == [self.b['ip']]
         self.owner = 'openhax-model-compat-' + token
         self.name = self.owner
         self.network = self.owner
@@ -156,6 +157,8 @@ class Controller:
             assert hashlib.sha256(status.stdout).hexdigest() == self.b['sourceState'][role]['statusSHA256']
         for row in self.assets['bundleFiles']:
             exact_file(self.bundle / row['relative'], row)
+        ip = Path(self.b['ip']); mode = ip.lstat().st_mode
+        assert ip.is_absolute() and ip.resolve(strict=True) == ip and stat.S_ISREG(mode), {'toolRole': 'ip', 'path': str(ip), 'mode': oct(mode)}
         for tool in self.b['tools']:
             exact_file(tool['path'], tool)
         if built:
@@ -358,7 +361,7 @@ class Controller:
                 for cfg in net.get('IPAM', {}).get('Config', []) or []:
                     if cfg.get('Subnet'):
                         old = ipaddress.ip_network(cfg['Subnet']); assert old.version != 4 or not old.overlaps(SUBNET)
-        routes = json.loads(self.command('routes-before-create', ['/usr/sbin/ip', '-j', '-4', 'route', 'show', 'table', 'all']))
+        routes = json.loads(self.command('routes-before-create', [self.b['ip'], '-j', '-4', 'route', 'show', 'table', 'all']))
         for route in routes:
             if route.get('dst') and route['dst'] != 'default': assert not ipaddress.ip_network(route['dst'], strict=False).overlaps(SUBNET)
         assert self.command('same-name-container-absence', self.docker + ['ps', '-a', '--filter', 'name=^/' + self.name + '$', '--format', '{{.ID}}']) == b''

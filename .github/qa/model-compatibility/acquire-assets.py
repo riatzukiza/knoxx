@@ -237,13 +237,30 @@ class Acquisition:
         assert sum(r['bytes'] for r in self.assets['runtimeFiles']) == 2248016608
         self.save('actual-full-runtime-files-and-links.json', rows)
 
+    def guarded_acquisition_tools(self):
+        # These two roles are discovered once by the compositor. Execute only
+        # their exact resolved physical files; aliases are not runtime inputs.
+        rows = self.a['acquisitionTools']
+        assert len(rows) == 2 and {row['role'] for row in rows} == {'tar', 'zstd'}
+        assert len({row['path'] for row in rows}) == 2
+        selected = {row['role']: row for row in rows}
+        for role, row in selected.items():
+            p = Path(row['path']); mode = p.lstat().st_mode
+            detail = {'toolRole': role, 'path': str(p), 'mode': oct(mode)}
+            assert p.is_absolute() and p.resolve(strict=True) == p and stat.S_ISREG(mode), detail
+            # GNU tar treats its decompressor argument as a command string.
+            # Refuse shell metacharacters instead of escaping or PATH lookup.
+            assert re.fullmatch(r'/[A-Za-z0-9_./+-]+', str(p)) and os.access(p, os.X_OK), detail
+            assert p.stat().st_size == row['bytes'] and sha(p) == row['sha256'], detail
+        return selected
+
     def acquire(self):
         # Tools are required before any network acquisition. Their exact selected
         # binaries are the future binding's responsibility, no install fallback.
-        additional = self.a['acquisitionTools']
-        assert {x['path'] for x in additional} == {'/usr/bin/tar', '/usr/bin/zstd'}
-        tools = {x['path']: x for x in self.b['tools'] + additional}
-        for name in ['/usr/bin/docker', '/usr/bin/tar', '/usr/bin/zstd', self.b['python']]:
+        selected = self.guarded_acquisition_tools()
+        self.out['boundAcquisitionTools'] = list(selected.values())
+        tools = {x['path']: x for x in self.b['tools']}
+        for name in ['/usr/bin/docker', self.b['python']]:
             assert name in tools and Path(name).is_file()
             assert sha(name) == tools[name]['sha256'] and Path(name).stat().st_size == tools[name]['bytes']
         archive = self.dest / 'ollama-linux-amd64.tar.zst'
@@ -255,7 +272,9 @@ class Acquisition:
         self.out['effects'].append('ONE-exact-full-original-archive-extraction')
         # The archive SHA matches the retained full34file/17link qualification,
         # not an untrusted name-list approximation. Keep archive bytes afterward.
-        self.native('extract-full-original-runtime', ['/usr/bin/tar', '--extract', '--zstd', '--file', str(archive),
+        selected = self.guarded_acquisition_tools()
+        self.native('extract-full-original-runtime', [selected['tar']['path'], '--extract',
+                    '--use-compress-program=' + selected['zstd']['path'], '--file', str(archive),
                     '--directory', str(runtime), '--no-same-owner', '--same-permissions', '--keep-old-files'], 300000)
         self.verify_runtime()
         docker_config = self.dest / 'docker-client'
@@ -273,6 +292,7 @@ class Acquisition:
             p = self.dest / 'models' / row['relative']
             assert p.stat().st_size == row['bytes'] and sha(p) == row['sha256']
         assert archive.stat().st_size == 1422262024 and sha(archive) == ARCHIVE
+        self.guarded_acquisition_tools()
         self.out['outcome'] = 'PASS-exact-public-assets-acquired-once-only'
         self.out['limits'] = 'No runtime/server/model load, container creation, provider inference, SDK build or production claim'
 

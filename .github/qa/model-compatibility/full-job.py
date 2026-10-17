@@ -191,9 +191,11 @@ class Composition:
     def binding(self, phase, build=None):
         tools = []
         node = self.actual_tool('node')
-        for path in [node['path'], self.python, '/usr/bin/docker', '/usr/bin/curl', '/usr/sbin/ip', '/usr/bin/git']:
-            p = Path(path); assert stat.S_ISREG(p.lstat().st_mode)
-            tools.append(descriptor(p))
+        ip = self.actual_tool('ip')  # Bind the resolved installed file, never its PATH alias.
+        for path in [node['path'], self.python, '/usr/bin/docker', '/usr/bin/curl', ip['path'], '/usr/bin/git']:
+            p = Path(path); mode = p.lstat().st_mode
+            assert p.resolve(strict=True) == p and stat.S_ISREG(mode), {'toolPath': str(p), 'mode': oct(mode)}
+            tools.append({**descriptor(p), **({'role': 'ip'} if path == ip['path'] else {})})
         roots = {'Knoxx': str(self.root / 'source'), 'SDK': str(self.root / 'sdk-source')}
         state = {}
         for role, path in roots.items():
@@ -207,7 +209,7 @@ class Composition:
         data = physical(info['value']['output'].strip())
         b = {'job': self.job, 'uid': self.uid, 'gid': self.gid, 'runnerTemp': os.environ['RUNNER_TEMP'],
              'root': str(self.root), 'bundleRoot': str(self.bundle), 'dockerDataRoot': str(data),
-             'node': node['path'], 'python': self.python, 'assetManifest': descriptor(self.bundle / 'portable-assets.json'),
+             'node': node['path'], 'python': self.python, 'ip': ip['path'], 'assetManifest': descriptor(self.bundle / 'portable-assets.json'),
              'sourceRoots': roots, 'sourceState': state, 'tools': tools}
         if build: b['buildClosure'] = build
         path = self.root / 'bindings' / (phase + '-binding.json'); write(path, b)
@@ -250,9 +252,9 @@ class Composition:
              'programSHA256': sha(self.bundle / 'acquire-assets.py'), 'bindingSHA256': sha(binding),
              'assetManifestSHA256': b['assetManifest']['sha256'], 'job': self.job, 'admittedAtUnix': time.time(),
              'preAcquisitionReceipt': descriptor(pre_receipt),
-             'acquisitionTools': [self.actual_tool(x) for x in ['tar', 'zstd']],
+             'acquisitionTools': [{'role': role, **self.actual_tool(role)} for role in ['tar', 'zstd']],
              'derivedWithinRootGate': self.out['rootGateSHA256']}
-        assert {x['path'] for x in a['acquisitionTools']} == {'/usr/bin/tar', '/usr/bin/zstd'}
+        assert len(a['acquisitionTools']) == 2 and {x['role'] for x in a['acquisitionTools']} == {'tar', 'zstd'}
         admission = self.root / 'bindings/acquisition-admission.json'; write(admission, a)
         self.native('exact-public-acquisition', [self.python, str(self.bundle / 'acquire-assets.py'),
                     '--binding', str(binding), '--admission', str(admission)], 1800000, {**self.clean, **self.context})
