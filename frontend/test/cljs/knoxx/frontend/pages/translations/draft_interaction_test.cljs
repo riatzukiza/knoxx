@@ -286,3 +286,45 @@
           (test/is (nil? (.queryByLabelText r "Corrected translation")) "new authority is not auto-selected")
           (finally (set! controller/load-detail! original-load)
                    ((:resolve pending) {:status "recorded"}) (rtl/cleanup)))))))
+
+(test/deftest ^:async same-candidate-reviewed-output-revision-keeps-bulk-approval-feedback
+  (let [inventory (atom (fixture/resource-review-row fixture/resource-split-review))]
+    (set! api/list-publication-reviews
+          (fn []
+            (fixture/record! :publication-reviews true)
+            (js/Promise.resolve {:project "devel" :reviews [@inventory]})))
+    (set! api/submit-publication-bulk-review
+          (fn [payload]
+            (fixture/record! :publication-bulk-review payload)
+            (swap! inventory update-in [:split_review :splits]
+                   #(mapv (fn [split] (assoc split :review_status (:status payload))) %))
+            (when (= "approved" (:status payload))
+              (swap! inventory assoc
+                     :translation_revision "translation-effective-revision-after-bulk"))
+            (js/Promise.resolve {:status "recorded"})))
+    (let [r (rtl/render (hx/$ view/translation-review-page))]
+      (await (fixture/select-first-document r))
+      (.click rtl/fireEvent (.getByText r "Hola mundo"))
+      (await (fixture/wait-until "resource evaluation form"
+                                #(some? (.queryByLabelText r "fluency"))))
+      (.change rtl/fireEvent (.getByLabelText r "fluency")
+               #js {:target #js {:value "poor"}})
+      (.change rtl/fireEvent (.getByLabelText r "Corrected translation")
+               #js {:target #js {:value "Must remain split-local"}})
+      (.change rtl/fireEvent (.getByLabelText r "Editor notes")
+               #js {:target #js {:value "  Apply to every persisted split.  "}})
+      (.click rtl/fireEvent (.getByRole r "button" #js {:name "Needs Edit"}))
+      (await (fixture/wait-until "bulk review notice"
+                                #(some? (.queryByText r "All splits in-review."))))
+      (test/is (= [{:candidate_set_id "candidate-set/doc-1-es"
+                   :status "in-review" :adequacy "adequate" :fluency "poor"
+                   :terminology "minor_errors" :risk "sensitive"
+                   :editor_notes "Apply to every persisted split."}]
+                 (:publication-bulk-review @fixture/calls))
+               "the server owns split enumeration and document scope cannot carry a correction")
+      (test/is (empty? (:publication-split-review @fixture/calls)))
+      (.click rtl/fireEvent (.getByRole r "button" #js {:name "Approve All"}))
+      (await (fixture/wait-until "refreshed all-approved split aggregate"
+                                #(pos? (.-length (.queryAllByText r "2/2")))))
+      (test/is (some? (.queryByText r "All splits approved."))
+               "same-candidate reviewed-output revision keeps successful bulk feedback"))))

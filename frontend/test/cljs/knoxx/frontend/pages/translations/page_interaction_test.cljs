@@ -407,9 +407,6 @@
                    #(mapv (fn [split]
                             (assoc split :review_status (:status payload)))
                           %))
-            (when (= "approved" (:status payload))
-              (swap! inventory update 0 assoc
-                     :translation_revision "translation-effective-revision-after-bulk"))
             (js/Promise.resolve {:status "recorded"})))
     (let [r (rtl/render ($ translation-review-page))]
       (await (select-first-document r))
@@ -444,12 +441,7 @@
                :editor_notes "Apply to every persisted split."}]
              (:publication-bulk-review @calls))
           "the server owns split enumeration and document scope cannot carry a correction")
-      (is (empty? (:publication-split-review @calls)))
-      (.click rtl/fireEvent (.getByRole r "button" #js {:name "Approve All"}))
-      (await (wait-until "refreshed all-approved split aggregate"
-                        #(pos? (.-length (.queryAllByText r "2/2")))))
-      (is (some? (.queryByText r "All splits approved."))
-          "same-candidate reviewed-output revision keeps successful bulk feedback"))))
+      (is (empty? (:publication-split-review @calls))))))
 
 (deftest ^:async resource-split-rejection-is-granular-and-relocks-whole-output
   (let [approved-aggregate
