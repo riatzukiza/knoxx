@@ -3,6 +3,7 @@
   (:require [cljs.test :as test]
             [knoxx.backend.domain.action.run-state :as state]
             [knoxx.backend.domain.realtime :as realtime]
+            [knoxx.backend.extern.agent-session-fixture :as session-fixture]
             [knoxx.backend.extern.agent-turn-fixture :as fixture]
             [knoxx.backend.extern.event-queue-fixture :as waiting]
             [knoxx.backend.infra.agent.hydration :as hydration]
@@ -12,11 +13,12 @@
             [knoxx.backend.infra.run-events :as events]
             [knoxx.backend.infra.stores.session-store-registry :as registry]
             [knoxx.backend.infra.stores.session-titles :as titles]
-            [knoxx.backend.shape.agent :as agent]
             [knoxx.backend.shape.session-persistence :as runs]))
 
 (def ^:private hydration-types #{"passive_hydration" "memory_hydration"})
-(defn- provider-session [] (reify agent/IAgentSession (set-thinking-level! [_ _] nil) (messages [_] [])))
+(defn- provider-session [] (session-fixture/session
+                             {:set-thinking-level! (fn [_ _] nil)
+                              :messages (fn [_] [])}))
 (defn- gate []
   (let [release* (atom nil) reject* (atom nil)
         promise (js/Promise. (fn [release reject] (reset! release* release) (reset! reject* reject)))]

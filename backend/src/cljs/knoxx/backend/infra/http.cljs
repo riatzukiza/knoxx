@@ -109,9 +109,9 @@
 
 (defn http-error
   [status code message]
-  (doto (ex-info (str status " " message) {:status status :code code})
-    (aset "statusCode" status)
-    (aset "code" code)))
+  (xfastify/with-error-properties!
+   (ex-info (str status " " message) {:status status :code code})
+   {:status-code status :code code}))
 
 (defn error-status
   [err default-status]

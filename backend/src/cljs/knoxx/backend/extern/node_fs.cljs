@@ -1,6 +1,7 @@
 (ns knoxx.backend.extern.node-fs
   "Node fs/path boundary helpers used by route adapters."
-  (:require ["node:fs/promises" :as fs-promises]))
+  (:require ["node:fs/promises" :as fs-promises]
+            [knoxx.backend.domain.error-observatory :as observatory]))
 
 (defn ^:async ensure-private-sandbox-directory!
   "Create a new `directory` at `mode` and reassert that mode on reuse.
@@ -30,12 +31,24 @@
                      "utf8"))
   metadata)
 
+(defn- sandbox-cleanup-degraded!
+  "Observe unexpected cleanup failure without exposing a path or changing nil."
+  [operation primary-error]
+  (let [context {:operation operation :fallback :nil
+                 :primary-error-present? (some? primary-error)}]
+    (try
+      (observatory/log-warning! "sandbox-cleanup.degraded" context)
+      (catch :default observer-error
+        {:observed? false :observation-unavailable? true
+         :boundary "sandbox-cleanup.degraded" :context context
+         :observer-error-present? (some? observer-error)}))))
+
 (defn ^:async remove-sandbox-metadata!
   "Idempotently remove one host-only sandbox metadata file."
   [metadata-path]
   (try
     (await (.rm fs-promises metadata-path (clj->js {:force true})))
-    (catch :default _ nil)))
+    (catch :default primary-error (sandbox-cleanup-degraded! :remove-metadata primary-error) nil)))
 
 (defn ^:async remove-sandbox-directory!
   "Idempotently remove one validated sandbox workspace tree."
@@ -43,7 +56,7 @@
   (try
     (await (.rm fs-promises directory
                 (clj->js {:recursive true :force true})))
-    (catch :default _ nil)))
+    (catch :default primary-error (sandbox-cleanup-degraded! :remove-directory primary-error) nil)))
 
 (defn mkdir!
   [node-fs p opts]

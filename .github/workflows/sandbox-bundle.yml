@@ -68,17 +68,14 @@ jobs:
           git submodule status --recursive > "$OUT/metadata/submodules.txt" 2>&1 || true
 
       - name: Check out the OpenPlanner sibling dependency
+        id: sdk_source
+        continue-on-error: true
         uses: actions/checkout@v4
         with:
           repository: open-hax/openplanner
+          ref: 07085d6557b75834ce6f50e6c54b8ca47e1c7c08
           path: .sandbox-deps/openplanner
           persist-credentials: false
-
-      - name: Materialize Knoxx's expected sibling path
-        shell: bash
-        run: |
-          set -euo pipefail
-          ln -sfn "$GITHUB_WORKSPACE/.sandbox-deps/openplanner" "$GITHUB_WORKSPACE/../openplanner"
 
       - name: Set up Java 21
         uses: actions/setup-java@v4
@@ -91,10 +88,10 @@ jobs:
         with:
           node-version: "24"
 
-      - name: Set up pnpm 9
+      - name: Set up pnpm 10.20.0
         uses: pnpm/action-setup@v4
         with:
-          version: "9"
+          version: "10.20.0"
           run_install: false
 
       - name: Set up pinned Clojure CLI
@@ -102,6 +99,47 @@ jobs:
         with:
           cli: ${{ env.CLOJURE_TOOLS_VERSION }}
           clj-kondo: '2025.07.28'
+
+      - name: Install real FFmpeg for the registered media tests
+        id: ffmpeg
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends ffmpeg
+          ffmpeg -version
+          ffprobe -version
+
+      - name: Prepare the pinned OpenPlanner SDK
+        id: sdk_prepare
+        if: steps.sdk_source.outcome == 'success'
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -euo pipefail
+          sibling="$GITHUB_WORKSPACE/../openplanner"
+          if [[ -e "$sibling" && ! -L "$sibling" ]]; then
+            printf 'Refusing an existing real OpenPlanner sibling; preserve it and choose an owned workspace.\n' >&2
+            exit 1
+          fi
+          sdk="$(bash scripts/build-sandbox-openplanner-sdk.sh prepare --source "$GITHUB_WORKSPACE/.sandbox-deps/openplanner" --run-root "$RUNNER_TEMP/knoxx-sdk-initial" --evidence "$OUT/sdk")"
+          ln -sfn "$sdk" "$GITHUB_WORKSPACE/../openplanner"
+
+      - name: Verify retained SDK cold restoration
+        id: sdk_restore
+        if: always() && steps.sdk_prepare.outcome == 'success'
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -euo pipefail
+          sibling="$GITHUB_WORKSPACE/../openplanner"
+          if [[ -e "$sibling" && ! -L "$sibling" ]]; then
+            printf 'Refusing an existing real OpenPlanner sibling; preserve it and choose an owned workspace.\n' >&2
+            exit 1
+          fi
+          sdk="$(bash "$OUT/sdk/build-sandbox-openplanner-sdk.sh" restore --bundle "$OUT/sdk" --run-root "$RUNNER_TEMP/knoxx-sdk-restored")"
+          ln -sfn "$sdk" "$GITHUB_WORKSPACE/../openplanner"
 
       - name: Install root dependencies
         id: install_root
@@ -113,7 +151,7 @@ jobs:
 
       - name: Install backend dependencies
         id: install_backend
-        if: always()
+        if: always() && steps.sdk_restore.outcome == 'success'
         continue-on-error: true
         shell: bash
         run: |
@@ -131,16 +169,27 @@ jobs:
 
       - name: Run backend typecheck
         id: backend_typecheck
-        if: always()
+        if: always() && steps.install_backend.outcome == 'success'
         continue-on-error: true
         shell: bash
         run: |
           set -o pipefail
           pnpm -C backend run typecheck 2>&1 | tee "$OUT/logs/backend-typecheck.log"
 
+      - name: Prepare and retain the explicit native-error test evaluator
+        id: native_error_evaluator
+        if: always()
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -euo pipefail
+          node scripts/native-error-static-evaluator.mjs collect "$OUT"
+          evaluator="$(node scripts/native-error-static-evaluator.mjs restore "$OUT" "$RUNNER_TEMP/knoxx-native-error-evaluator")"
+          printf 'KNOXX_NATIVE_ERROR_KONDO=%s\n' "$evaluator" >> "$GITHUB_ENV"
+
       - name: Run backend tests and coverage
         id: backend_tests
-        if: always()
+        if: always() && steps.install_backend.outcome == 'success'
         continue-on-error: true
         shell: bash
         run: |
@@ -155,6 +204,15 @@ jobs:
         run: |
           set -o pipefail
           pnpm -C frontend run typecheck 2>&1 | tee "$OUT/logs/frontend-typecheck.log"
+
+      - name: Run registered frontend ClojureScript tests
+        id: frontend_cljs_tests
+        if: always() && steps.install_frontend.outcome == 'success'
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -o pipefail
+          pnpm -C frontend run test:cljs 2>&1 | tee "$OUT/logs/frontend-cljs-tests.log"
 
       - name: Run frontend tests and coverage
         id: frontend_tests
@@ -264,15 +322,21 @@ jobs:
             if (spawnSync("clj-kondo", ["--version"]).error?.code !== "ENOENT")
               throw new Error("clj-kondo unexpectedly available before restoration");'
           bin="$(env PATH="$bootstrap" "$bootstrap/node" "$OUT/toolchain/sandbox-clj-kondo.mjs" restore "$OUT" "$restored")"
-          env PATH="$bin:$bootstrap" "$bootstrap/node" --test \
+          evaluator="$(env PATH="$bootstrap" "$bootstrap/node" "$OUT/toolchain/native-error-static-evaluator.mjs" restore "$OUT" "$restored")"
+          env PATH="$bin:$bootstrap" KNOXX_NATIVE_ERROR_KONDO="$evaluator" "$bootstrap/node" --test \
             backend/test/js/defroute-lint-hook.test.mjs \
             backend/test/js/kondo-file-size-hook.test.mjs \
+            backend/test/js/fastify-error-property-boundary-lint.test.mjs \
             2>&1 | tee "$OUT/logs/clj-kondo-restore.log"
 
       - name: Write bundle metadata and checksums
         id: finalize_bundle
         if: always()
         env:
+          FFMPEG_OUTCOME: ${{ steps.ffmpeg.outcome }}
+          SDK_SOURCE_OUTCOME: ${{ steps.sdk_source.outcome }}
+          SDK_PREPARE_OUTCOME: ${{ steps.sdk_prepare.outcome }}
+          SDK_RESTORE_OUTCOME: ${{ steps.sdk_restore.outcome }}
           INSTALL_ROOT_OUTCOME: ${{ steps.install_root.outcome }}
           INSTALL_BACKEND_OUTCOME: ${{ steps.install_backend.outcome }}
           INSTALL_FRONTEND_OUTCOME: ${{ steps.install_frontend.outcome }}
@@ -280,6 +344,7 @@ jobs:
           BACKEND_TESTS_OUTCOME: ${{ steps.backend_tests.outcome }}
           FRONTEND_TYPECHECK_OUTCOME: ${{ steps.frontend_typecheck.outcome }}
           FRONTEND_TESTS_OUTCOME: ${{ steps.frontend_tests.outcome }}
+          FRONTEND_CLJS_TESTS_OUTCOME: ${{ steps.frontend_cljs_tests.outcome }}
           INGESTION_PREPARE_OUTCOME: ${{ steps.ingestion_prepare.outcome }}
           INGESTION_TESTS_OUTCOME: ${{ steps.ingestion_tests.outcome }}
           RUNTIME_OUTCOME: ${{ steps.collect_runtime.outcome }}
@@ -287,18 +352,28 @@ jobs:
           BABASHKA_ARCHIVE_OUTCOME: ${{ steps.collect_babashka.outcome }}
           CLJ_KONDO_ARCHIVE_OUTCOME: ${{ steps.collect_clj_kondo.outcome }}
           CLJ_KONDO_RESTORE_OUTCOME: ${{ steps.restore_clj_kondo.outcome }}
+          NATIVE_ERROR_EVALUATOR_OUTCOME: ${{ steps.native_error_evaluator.outcome }}
         shell: bash
         run: |
           set -euo pipefail
           for file in package.json pnpm-lock.yaml pnpm-workspace.yaml deps.edn shadow-cljs.edn; do
             [[ -f "$file" ]] && cp "$file" "$OUT/metadata/$file"
           done
+          ffmpeg_metadata_status=0
           {
             node --version
             pnpm --version
             clj-kondo --version
             java -version
             clojure -Sdescribe
+            if ! ffmpeg -version; then
+              printf 'FFmpeg version observation failed; setup outcome: %s\n' "$FFMPEG_OUTCOME"
+              ffmpeg_metadata_status=1
+            fi
+            if ! ffprobe -version; then
+              printf 'FFprobe version observation failed; setup outcome: %s\n' "$FFMPEG_OUTCOME"
+              ffmpeg_metadata_status=1
+            fi
           } > "$OUT/metadata/tool-versions.txt" 2>&1
 
           generated_at="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
@@ -307,6 +382,10 @@ jobs:
             --arg revision "$GITHUB_SHA" \
             --arg ref "$GITHUB_REF" \
             --arg generated_at "$generated_at" \
+            --arg ffmpeg "$FFMPEG_OUTCOME" \
+            --arg sdk_source "$SDK_SOURCE_OUTCOME" \
+            --arg sdk_prepare "$SDK_PREPARE_OUTCOME" \
+            --arg sdk_restore "$SDK_RESTORE_OUTCOME" \
             --arg install_root "$INSTALL_ROOT_OUTCOME" \
             --arg install_backend "$INSTALL_BACKEND_OUTCOME" \
             --arg install_frontend "$INSTALL_FRONTEND_OUTCOME" \
@@ -314,6 +393,7 @@ jobs:
             --arg backend_tests "$BACKEND_TESTS_OUTCOME" \
             --arg frontend_typecheck "$FRONTEND_TYPECHECK_OUTCOME" \
             --arg frontend_tests "$FRONTEND_TESTS_OUTCOME" \
+            --arg frontend_cljs_tests "$FRONTEND_CLJS_TESTS_OUTCOME" \
             --arg ingestion_prepare "$INGESTION_PREPARE_OUTCOME" \
             --arg ingestion_tests "$INGESTION_TESTS_OUTCOME" \
             --arg runtime "$RUNTIME_OUTCOME" \
@@ -321,7 +401,9 @@ jobs:
             --arg babashka_archive "$BABASHKA_ARCHIVE_OUTCOME" \
             --arg clj_kondo_archive "$CLJ_KONDO_ARCHIVE_OUTCOME" \
             --arg clj_kondo_restore "$CLJ_KONDO_RESTORE_OUTCOME" \
+            --arg native_error_evaluator "$NATIVE_ERROR_EVALUATOR_OUTCOME" \
             --argjson clj_kondo "$(node scripts/sandbox-clj-kondo.mjs describe)" \
+            --argjson native_error_static "$(node scripts/native-error-static-evaluator.mjs describe)" \
             '{
               sandbox_bundle_version: 1,
               repository: $repository,
@@ -329,6 +411,10 @@ jobs:
               ref: $ref,
               generated_at: $generated_at,
               outcomes: {
+                ffmpeg: $ffmpeg,
+                sdk_source: $sdk_source,
+                sdk_prepare: $sdk_prepare,
+                sdk_restore: $sdk_restore,
                 install_root: $install_root,
                 install_backend: $install_backend,
                 install_frontend: $install_frontend,
@@ -336,17 +422,22 @@ jobs:
                 backend_tests: $backend_tests,
                 frontend_typecheck: $frontend_typecheck,
                 frontend_tests: $frontend_tests,
+                frontend_cljs_tests: $frontend_cljs_tests,
                 ingestion_prepare: $ingestion_prepare,
                 ingestion_tests: $ingestion_tests,
                 runtime_collection: $runtime,
                 clojure_archive: $clojure_archive,
                 babashka_archive: $babashka_archive,
                 clj_kondo_archive: $clj_kondo_archive,
-                clj_kondo_restore: $clj_kondo_restore
+                clj_kondo_restore: $clj_kondo_restore,
+                native_error_evaluator: $native_error_evaluator
               },
-              toolchain: {clj_kondo: $clj_kondo},
+              toolchain: {clj_kondo: $clj_kondo, native_error_static: $native_error_static},
               setup_commands: [
+                "sudo apt-get update && sudo apt-get install --yes --no-install-recommends ffmpeg && ffmpeg -version && ffprobe -version",
                 "sandbox_kondo_bin=\"$(node \"${KNOXX_SANDBOX_BUNDLE:?}/toolchain/sandbox-clj-kondo.mjs\" restore \"$KNOXX_SANDBOX_BUNDLE\" \"$KNOXX_SANDBOX_BUNDLE/restored-toolchain\")\" && export PATH=\"$sandbox_kondo_bin:$PATH\"",
+                "export KNOXX_NATIVE_ERROR_KONDO=\"$(node \"${KNOXX_SANDBOX_BUNDLE:?}/toolchain/native-error-static-evaluator.mjs\" restore \"$KNOXX_SANDBOX_BUNDLE\" \"$KNOXX_SANDBOX_BUNDLE/restored-toolchain\")\"",
+                "[[ ! -e ../openplanner || -L ../openplanner ]] || { printf \"Refusing an existing real OpenPlanner sibling.\\n\" >&2; exit 1; }; sdk=\"$(bash \"${KNOXX_SANDBOX_BUNDLE:?}/sdk/build-sandbox-openplanner-sdk.sh\" restore --bundle \"$KNOXX_SANDBOX_BUNDLE/sdk\" --run-root \"${RUNNER_TEMP:?}/knoxx-sdk-restored\")\" && ln -sfn \"$sdk\" ../openplanner",
                 "pnpm install --frozen-lockfile",
                 "pnpm -C backend install --frozen-lockfile",
                 "pnpm -C frontend install --frozen-lockfile",
@@ -356,6 +447,7 @@ jobs:
                 "pnpm -C backend run typecheck",
                 "pnpm -C backend run test:coverage",
                 "pnpm -C frontend run typecheck",
+                "pnpm -C frontend run test:cljs",
                 "pnpm -C frontend run test:coverage",
                 "cd ingestion && clojure -M:test"
               ],
@@ -365,6 +457,10 @@ jobs:
           trap 'rm -f "$checksums"' EXIT
           (cd "$OUT" && find . -type f ! -name SHA256SUMS -print0 | sort -z | xargs -0 sha256sum) > "$checksums"
           mv "$checksums" "$OUT/SHA256SUMS"
+          if [[ "$ffmpeg_metadata_status" != 0 ]]; then
+            printf 'FFmpeg tool versions unavailable; bundle metadata and checksums retained.\n' >&2
+            exit 1
+          fi
 
       - name: Package optional dependency cache
         if: github.event_name == 'workflow_dispatch' && inputs.include_dependency_cache
@@ -409,13 +505,21 @@ jobs:
       - name: Preserve collection and validation result
         if: >-
           always() &&
-          (steps.install_root.outcome == 'failure' ||
+          (steps.ffmpeg.outcome != 'success' ||
+           steps.sdk_source.outcome != 'success' ||
+           steps.sdk_prepare.outcome != 'success' ||
+           steps.sdk_restore.outcome != 'success' ||
+           steps.install_backend.outcome != 'success' ||
+           steps.backend_typecheck.outcome != 'success' ||
+           steps.backend_tests.outcome != 'success' ||
+           steps.install_root.outcome == 'failure' ||
            steps.install_backend.outcome == 'failure' ||
            steps.install_frontend.outcome == 'failure' ||
            steps.backend_typecheck.outcome == 'failure' ||
            steps.backend_tests.outcome == 'failure' ||
            steps.frontend_typecheck.outcome == 'failure' ||
            steps.frontend_tests.outcome == 'failure' ||
+           steps.frontend_cljs_tests.outcome != 'success' ||
            steps.ingestion_prepare.outcome == 'failure' ||
            steps.ingestion_tests.outcome == 'failure' ||
            steps.collect_runtime.outcome == 'failure' ||
@@ -423,6 +527,7 @@ jobs:
            steps.collect_babashka.outcome == 'failure' ||
            steps.collect_clj_kondo.outcome == 'failure' ||
            steps.restore_clj_kondo.outcome == 'failure' ||
+           steps.native_error_evaluator.outcome == 'failure' ||
            steps.finalize_bundle.outcome == 'failure')
         shell: bash
         run: exit 1

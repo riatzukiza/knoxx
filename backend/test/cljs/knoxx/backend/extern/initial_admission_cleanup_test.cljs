@@ -4,6 +4,7 @@
             [knoxx.backend.domain.action.run-state :as state]
             [knoxx.backend.domain.error-observatory :as errors]
             [knoxx.backend.infra.agent.initial-admission :as initial]
+            [knoxx.backend.extern.agent-session-fixture :as session-fixture]
             [knoxx.backend.extern.agent-turn-fixture :as fixture]
             [knoxx.backend.extern.event-queue-fixture :as waiting]
             [knoxx.backend.infra.agent.hydration :as hydration]
@@ -13,12 +14,13 @@
             [knoxx.backend.infra.run-events :as events]
             [knoxx.backend.infra.stores.session-store-registry :as registry]
             [knoxx.backend.infra.stores.session-titles :as titles]
-            [knoxx.backend.shape.agent :as agent]
             [knoxx.backend.shape.session-persistence :as runs]
             [knoxx.backend.shape.startup-admission :as startup]))
 
 (def ^:private seed {:run_id "startup-seed" :session_id "startup-seed" :conversation_id "startup-seed"})
-(defn- provider-session [] (reify agent/IAgentSession (set-thinking-level! [_ _] nil) (messages [_] [])))
+(defn- provider-session [] (session-fixture/session
+                             {:set-thinking-level! (fn [_ _] nil)
+                              :messages (fn [_] [])}))
 (defn- request [id] {:run-id id :session-id (str id "-session") :conversation-id (str id "-conversation")
                      :model "fixture-model" :message "Do not prompt before durable admission."})
 (defn- gate []

@@ -71,37 +71,12 @@
   "translation-run-")
 
 (defn run-id
-  "The correlation value one dispatch attempt's agent run carries.
+  "Derive an attempt-specific correlation id before starting an agent session.
 
-   Minted by Knoxx *before* the session starts, which is what closes a race the
-   obvious design has. `law.translation-dispatch/output-revision` requires the
-   producing run id to already be bound to the claim, so if the id could only be
-   learned from the runtime's answer, an agent that submitted a pair quickly
-   would arrive before the binding and be refused as `:dispatch-record-missing`
-   — losing work that had actually been done.
-
-   Deliberately *not* the runtime's own session id. `domain.action.start-agent-session`
-   derives session and conversation ids from the trigger and the event, and
-   taking that over would couple this composition to identifiers whose format is
-   the runtime's business. The run id travels in the session's resource policies
-   instead, so the two identity schemes stay independent and the claim is joined
-   by the value Knoxx bound it to.
-
-   Derived from the dispatch key *and the immutable attempt id*, not from the key
-   alone. Historical records without an attempt id fall back to the claim instant.
-   The key is deliberately stable across attempts — that is what makes duplicate
-   dispatch a duplicate — so a run id derived from it would be identical on
-   re-translation, the output revision would not change, and an approval of the
-   first translation would silently authorize the second. That is the exact
-   failure `output-revision` exists to prevent, so the discriminator has to be
-   something a *replaced* claim changes. `reserve-dispatch!` replaces a retriable
-   claim wholesale with a fresh `:dispatch/attempt-id`, even when two attempts
-   are admitted in the same millisecond.
-
-   Digested rather than concatenated because a dispatch key contains `pr-str`ed
-   keywords and pipes, while this value ends up inside an output revision that
-   `infra.translation-agent-content` turns into a filename and a human has to be
-   able to read back."
+   Validate the dispatch key and attempt-id (legacy fallback: claim instant),
+   then digest their joined value with the supplied function and prefix it.
+   Runtime session identity stays separate. See the design rationale in
+   `docs/notes/contracts/translation-agent-run-and-split-authority.md`."
   [record digest-hex]
   (let [key (:dispatch/key record)
         attempt (or (:dispatch/attempt-id record) (:dispatch/at record))]
@@ -192,19 +167,11 @@
     (str (namespace value) "/" (name value))))
 
 (defn session-policies
-  "The policy overlay pinning a session to `record`'s claim.
+  "Build the validated SessionPolicies overlay from `record` and `turn`.
 
-   Derived from the dispatch record rather than from the publication intent,
-   because the record is the value that already survived
-   `law.translation-dispatch/assert-record!` — it carries the concrete revision,
-   the tenant, the garden and the document wire id as one validated whole. Built
-   from the intent instead, a caller could pin a session to a locale pair no
-   claim was ever taken for, and the sink's join would then find nothing while
-   the agent had already done the work.
-
-   The run id is supplied rather than read off the record, because at the moment
-   a session is started the claim is not yet bound to it — binding is what the
-   caller does with the value this map carries."
+   Record supplies tenant, document, garden and locales; turn supplies run,
+   manifest, candidate-claim and execution identities. Include project only
+   when present. See `docs/notes/contracts/translation-agent-run-and-split-authority.md`."
   [record turn]
   (let [run-id (:translation-turn/run-id turn)
         manifest (:translation-turn/manifest turn)
@@ -285,26 +252,11 @@
          "END TRANSLATION SPLIT")))
 
 (defn translation-brief
-  "The message the translating agent is actually handed.
+  "Render the admitted turn's split instructions and pinned memory snapshot.
 
-   Carried in the payload's `:content`, which is the field
-   `domain.action.start-agent-session/render-start-message` already renders into
-   a triggered session's opening message. Using the existing convention is what
-   makes this composition need *no* change to that generic action — the
-   alternative was teaching it a translation-shaped payload field, which is
-   domain knowledge a generic action must not hold.
-
-   The source document is embedded verbatim rather than referenced by path. That
-   is what makes the receipt honest: the agent translates the exact bytes the
-   claim was taken for, so `law.translation-dispatch/source-drift-refusal` stops
-   being the only available evidence of what was translated and becomes a
-   redundant second check. Referenced by path, the agent would read the file
-   *now*, which is the worker path's weakness restated.
-
-   Fenced with a long delimiter rather than triple backticks because the source
-   is Markdown and very often contains a fenced code block of its own; a
-   three-backtick fence would be closed early by the document's own content and
-   the tail would read as instructions."
+   Include every split's exact source text and its split_id, attempt_id and
+   segment_index. The agent must echo these boundaries to save_translation.
+   See `docs/notes/contracts/translation-agent-run-and-split-authority.md`."
   [turn]
   (let [manifest (:translation-turn/manifest turn)
         claim (:translation-turn/candidate-claim turn)
@@ -377,16 +329,8 @@
      [:resource-policies SessionPolicies]]]])
 
 (defn translation-needed-event
-  "The event `record`'s claim emits when it wants an agent run.
-
-   `run-id` is supplied rather than derived here so that the caller which bound
-   it to the claim is the same one that announces it. Deriving it again would be
-   a second chance to derive it differently, and the failure would be silent: the
-   agent would work, submit, and be refused for a claim nobody could find.
-
-   `source-content` is embedded in the brief rather than left for the agent to
-   fetch — see `translation-brief` for why that strengthens the receipt rather
-   than merely saving a tool call."
+  "Validate `turn`, then build its closed TranslationNeededEvent for `record`.
+   See `docs/notes/contracts/translation-agent-run-and-split-authority.md` for rationale."
   [record turn]
   (let [checked-turn (split-schema/assert-valid!
                       :translation-agent/turn

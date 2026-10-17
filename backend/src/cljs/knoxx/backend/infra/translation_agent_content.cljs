@@ -41,6 +41,7 @@
   makes the name total, and the file records the identity it was written under so
   a human reading the directory can still tell what each one is."
   (:require [clojure.edn :as edn]
+            [knoxx.backend.domain.error-observatory :as observatory]
             [knoxx.backend.domain.node.crypto :as crypto]
             [knoxx.backend.domain.node.fs :as fs]
             [knoxx.backend.infra.translation-content-integrity :as content-integrity]
@@ -168,11 +169,42 @@
   [value receipt]
   (= (coordinates value) (coordinates receipt)))
 
+(defonce ^:private decode-observation-unavailable* (atom nil))
+
+(defn- observe-malformed-entry!
+  "Attempt one fixed, content-free observation without replacing absence."
+  [error]
+  (try
+    (observatory/log-warning! "translation-agent-content.decode"
+                              {:phase :stored-entry :reason :malformed-edn})
+    (catch :default observer-error
+      (let [diagnostic {:observed? false :observation-unavailable? true
+                        :boundary "translation-agent-content.decode"
+                        :phase :stored-entry
+                        :primary-error-present? (some? error)
+                        :observer-error-present? (some? observer-error)}]
+        (reset! decode-observation-unavailable* diagnostic)
+        diagnostic))))
+
+(defn- decoded-entry
+  "Decode the same minimal stored-entry shape, or retain the nil fallback."
+  [raw]
+  (when raw
+    (try
+      (let [parsed (edn/read-string raw)]
+        (when (and (map? parsed)
+                   (evidence-law/nonblank-string?
+                    (:translation/revision parsed)))
+          parsed))
+      (catch :default error
+        (observe-malformed-entry! error)
+        nil))))
+
 (defn ^:async content-for-receipt!
   "The agent-submitted bytes `receipt` attests to, or nil.
 
-   Nil for every ordinary absence — no such file, an unreadable one, or one
-   describing something else — because absence has a legitimate meaning here:
+   Nil for a missing file, malformed entry, or one describing something else.
+   Other filesystem read failures still escape. Absence has a legitimate meaning here:
    this translation came from the authored fallback or from OpenPlanner
    segments, and the caller falls through to those. What it must never do is
    return the *wrong* bytes, which is why the identity is rechecked rather than
@@ -186,14 +218,7 @@
   (when (and (some? content-root) (some? receipt))
     (let [raw (await (fs/read-file-or-nil!
                       (entry-path content-root (:translation/revision receipt))))
-          value (when raw
-                  (try
-                    (let [parsed (edn/read-string raw)]
-                      (when (and (map? parsed)
-                                 (evidence-law/nonblank-string?
-                                  (:translation/revision parsed)))
-                        parsed))
-                    (catch :default _ nil)))]
+          value (decoded-entry raw)]
       (when (and value
                  (matches-receipt? value receipt)
                  (content-integrity/authenticated-content?

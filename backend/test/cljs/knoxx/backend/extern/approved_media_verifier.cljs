@@ -130,42 +130,76 @@
                                     (fs/readFileSync file "utf8") "</body></html>")))
                 (fastify/send-json! reply 404 {:error "No manifest route; private data stays private"}))))))
 
-(defn- prepare-fixture! [root art-file art-sha]
+(defn- prepare-fixture! [root art-file art-sha durable?]
   (let [art (fs/realpathSync art-file)
         content (path/join root "content")
         contracts (path/join root "contracts")
-        staged-art (path/join root "assets" "Sutured_Signal.svg")]
+        staged-art (path/join root "assets" "Sutured_Signal.svg")
+        receipt-directory (path/join root "publication-receipts")]
     (when-not (empty? (vec (fs/readdirSync root)))
       (throw (ex-info "Verifier requires its own empty directory" {})))
     (when-not (= art-sha (sha256 (fs/readFileSync art)))
       (throw (ex-info "Artwork bytes differ from the selected asset digest" {})))
-    (doseq [directory [content contracts (path/dirname staged-art)]]
+    (doseq [directory (cond-> [content contracts (path/dirname staged-art)]
+                       durable? (conj receipt-directory))]
       (fs/mkdirSync directory #js {:recursive true :mode 448}))
     (fs/copyFileSync art staged-art)
     (aset js/process.env "KNOXX_PUBLICATION_CONTENT_ROOT" content)
     (aset js/process.env "KNOXX_GENERATED_CONTRACTS_DIR" contracts)
     (reset! evidence-registry/store* (evidence/memory-store))
     (reset! split-registry/store* (splits/memory-store sha256))
-    {:content content :art staged-art
+    (cond-> {:content content :art staged-art
      :config {:contracts-dir contracts :generated-contracts-dir contracts
-              :publication-content-root content}}))
+              :publication-content-root content
+              :session-project-name "approved-media-fixture"}}
+              durable? (assoc-in [:config :publication-receipt-ledger-directory] receipt-directory))))
 
-(defn- write-receipt! [root cms public token org art-sha proof]
+(defn- write-receipt! [root cms public token org art-sha proof durable?]
   (let [origin (str "http://127.0.0.1:" (.-port (.address (.-server cms))))
         public-origin (str "http://127.0.0.1:" (.-port (.address (.-server public))))]
     (fs/writeFileSync (path/join root "receipt.json")
                      (.stringify js/JSON
                                  (clj->js {:origin origin :public-origin public-origin
                                            :start-url (str origin "/_verify/start/" token)
-                                           :org org :asset-sha256 art-sha :proof proof}))
+                                           :org org :session-token token :durable-receipts durable?
+                                           :process-id (.-pid js/process)
+                                           :asset-sha256 art-sha :proof proof}))
                      #js {:mode 384})))
 
-(defn- ^:async serve! [run-root proof-file art-file art-sha frontend]
+(defn- restart-fixture!
+  "Reopen only a prior owned durable fixture; never seed or reconcile here."
+  [root proof art-sha]
+  (let [prior (read-json (path/join root "receipt.json"))
+        content (path/join root "content")
+        contracts (path/join root "contracts")
+        art (path/join root "assets" "Sutured_Signal.svg")
+        receipts (path/join root "publication-receipts")
+        prior-proof (into {} (map (fn [[key value]] [(keyword key) value])) (:proof prior))]
+    (when-not (and (true? (:durable-receipts prior)) (= proof prior-proof)
+                   (= art-sha (:asset-sha256 prior))
+                   (= art-sha (sha256 (fs/readFileSync art)))
+                   (string? (:org prior)) (string? (:session-token prior))
+                   (every? #(.isDirectory (fs/statSync %)) [content contracts receipts]))
+      (throw (ex-info "Restart requires the exact prior owned durable fixture and source proof" {})))
+    (aset js/process.env "KNOXX_PUBLICATION_CONTENT_ROOT" content)
+    (aset js/process.env "KNOXX_GENERATED_CONTRACTS_DIR" contracts)
+    (reset! evidence-registry/store* (evidence/memory-store))
+    (reset! split-registry/store* (splits/memory-store sha256))
+    {:content content :art art :token (:session-token prior) :org (:org prior)
+     :config {:contracts-dir contracts :generated-contracts-dir contracts
+              :publication-content-root content :session-project-name "approved-media-fixture"
+              :publication-receipt-ledger-directory receipts}}))
+
+(defn- ^:async serve! [run-root proof-file art-file art-sha frontend mode]
   (let [root (fs/realpathSync run-root)
         proof (source-proof! proof-file)
-        {:keys [config content art]} (prepare-fixture! root art-file art-sha)
-        token (str (random-uuid))
-        org (str "media-verify-" (random-uuid))
+        durable? (contains? #{"--durable" "--durable-restart"} mode)
+        fixture (if (= mode "--durable-restart")
+                  (restart-fixture! root proof art-sha)
+                  (prepare-fixture! root art-file art-sha durable?))
+        {:keys [config content art]} fixture
+        token (or (:token fixture) (str (random-uuid)))
+        org (or (:org fixture) (str "media-verify-" (random-uuid)))
         principal {:org-id org :actor-id "approved-media-verifier"
                    :permissions ["org.publications.read" "org.publications.manage"]}
         cms (http/create-app!)
@@ -175,16 +209,17 @@
     (public-reader! public content art)
     (await (http/listen! cms "127.0.0.1" 0))
     (await (http/listen! public "127.0.0.1" 0))
-    (write-receipt! root cms public token org art-sha proof)
+    (write-receipt! root cms public token org art-sha proof durable?)
     (println "Disposable approved-media CMS and public reader ready")))
 
 (defn ^:async main
   "Serve only an owned disposable directory until its shell terminates it."
   [& args]
   (try
-    (when-not (= 5 (count args))
-      (throw (ex-info "Expected empty run root, proof, selected SVG, digest and optional frontend directory" {})))
-    (await (apply serve! args))
+    (when-not (and (contains? #{5 6} (count args))
+                   (or (= 5 (count args)) (contains? #{"--durable" "--durable-restart"} (last args))))
+      (throw (ex-info "Expected owned run root, proof, selected SVG, digest, frontend and optional durable mode" {})))
+    (await (apply serve! (if (= 5 (count args)) (conj (vec args) nil) args)))
     (catch :default error
       (js/console.error error)
       (js/process.exit 1))))

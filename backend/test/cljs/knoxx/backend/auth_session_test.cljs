@@ -32,16 +32,16 @@
                    :resolve-context!
                    (fn [headers]
                      (swap! calls* conj [:resolve headers])
-                     (js/Promise.resolve ctx))}]
-    (let [result (await (auth-session/ensure-user-membership! policy-db #js {"id" "gh-1" "login" "foamy"} "foamy125@gmail.com"))]
-      (testing "GitHub email is used as the canonical Knoxx username and syncs user actor contracts first"
-        (is (= ctx result))
-        (is (= [[:sync {:email "foamy125@gmail.com"
-                        :display-name "foamy"
-                        :auth-provider "github"
-                        :external-subject "github:gh-1"}]
-                [:resolve {"x-knoxx-user-email" "foamy125@gmail.com"}]]
-               @calls*))))))
+                     (js/Promise.resolve ctx))}
+        result (await (auth-session/ensure-user-membership! policy-db #js {"id" "gh-1" "login" "foamy"} "foamy125@gmail.com"))]
+    (testing "GitHub email is used as the canonical Knoxx username and syncs user actor contracts first"
+      (is (= ctx result))
+      (is (= [[:sync {:email "foamy125@gmail.com"
+                      :display-name "foamy"
+                      :auth-provider "github"
+                      :external-subject "github:gh-1"}]
+              [:resolve {"x-knoxx-user-email" "foamy125@gmail.com"}]]
+             @calls*)))))
 
 (deftest ^:async ensure-user-membership-propagates-lookup-failure
   (let [policy-db {:resolve-context!

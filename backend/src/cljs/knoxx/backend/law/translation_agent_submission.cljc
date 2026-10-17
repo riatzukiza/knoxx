@@ -173,6 +173,45 @@
                   (:candidate-claim-member/split-index claim-member)))
       [source-split claim-member])))
 
+(defn- split-index-refusal
+  "Refuse an absent or unadmitted ordinal before member coordinates."
+  [turn index source-split]
+  (cond
+    (nil? index)
+    {:refusal/type :pair-segment-index-missing}
+
+    (nil? source-split)
+    {:refusal/type :pair-segment-index-mismatch
+     :refusal/expected (mapv :split/index
+                             (get-in turn [:translation-turn/manifest
+                                           :split-manifest/splits]))
+     :refusal/actual index}))
+
+(defn- split-member-refusal
+  "Compare admitted split, attempt and source in the existing order."
+  [source-split claim-member submitted-split submitted-attempt pair]
+  (cond
+    (empty? submitted-split)
+    {:refusal/type :pair-split-id-missing}
+
+    (not= submitted-split (:split/id source-split))
+    {:refusal/type :pair-split-id-mismatch
+     :refusal/expected (:split/id source-split)
+     :refusal/actual submitted-split}
+
+    (empty? submitted-attempt)
+    {:refusal/type :pair-attempt-id-missing}
+
+    (not= submitted-attempt (:candidate-claim-member/attempt-id claim-member))
+    {:refusal/type :pair-attempt-id-mismatch
+     :refusal/expected (:candidate-claim-member/attempt-id claim-member)
+     :refusal/actual submitted-attempt}
+
+    (not= (:source_text pair) (:split/source-text source-split))
+    {:refusal/type :pair-source-text-mismatch
+     :refusal/expected (:split/source-text source-split)
+     :refusal/actual (:source_text pair)}))
+
 (defn split-pair-refusal
   "Why a submitted pair cannot become a member of this exact admitted turn."
   [turn policies pair]
@@ -186,36 +225,10 @@
        :refusal/expected (turn-binding turn)
        :refusal/actual (policy-turn-binding policies)}
 
-      (nil? index)
-      {:refusal/type :pair-segment-index-missing}
-
-      (nil? source-split)
-      {:refusal/type :pair-segment-index-mismatch
-       :refusal/expected (mapv :split/index
-                               (get-in turn [:translation-turn/manifest
-                                             :split-manifest/splits]))
-       :refusal/actual index}
-
-      (empty? submitted-split)
-      {:refusal/type :pair-split-id-missing}
-
-      (not= submitted-split (:split/id source-split))
-      {:refusal/type :pair-split-id-mismatch
-       :refusal/expected (:split/id source-split)
-       :refusal/actual submitted-split}
-
-      (empty? submitted-attempt)
-      {:refusal/type :pair-attempt-id-missing}
-
-      (not= submitted-attempt (:candidate-claim-member/attempt-id claim-member))
-      {:refusal/type :pair-attempt-id-mismatch
-       :refusal/expected (:candidate-claim-member/attempt-id claim-member)
-       :refusal/actual submitted-attempt}
-
-      (not= (:source_text pair) (:split/source-text source-split))
-      {:refusal/type :pair-source-text-mismatch
-       :refusal/expected (:split/source-text source-split)
-       :refusal/actual (:source_text pair)})))
+      :else
+      (or (split-index-refusal turn index source-split)
+          (split-member-refusal source-split claim-member submitted-split
+                                submitted-attempt pair)))))
 
 (def refusal-messages
   "What the agent is told, per refusal type.

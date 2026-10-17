@@ -4,7 +4,7 @@
             [knoxx.backend.domain.condition.builtin :as condition-builtins]
             [knoxx.backend.domain.driver.builtin :as driver-builtin]
             [knoxx.backend.domain.event.dispatch :as event-dispatch]
-            [knoxx.backend.domain.resources.loader :as resources]
+            [knoxx.backend.domain.resources.loader]
             [knoxx.backend.domain.source.runtime :as source-runtime]
             [knoxx.backend.domain.trigger.runtime :as trigger-runtime]))
 

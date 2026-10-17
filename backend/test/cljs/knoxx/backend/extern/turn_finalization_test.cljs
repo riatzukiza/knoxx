@@ -4,6 +4,7 @@
             [knoxx.backend.domain.action.run-state :as state]
             [knoxx.backend.domain.error-observatory :as errors]
             [knoxx.backend.domain.realtime :as realtime]
+            [knoxx.backend.extern.agent-session-fixture :as session-fixture]
             [knoxx.backend.extern.agent-turn-fixture :as fixture]
             [knoxx.backend.extern.event-queue-fixture :as queue-fixture]
             [knoxx.backend.extern.provider-recovery-fixture :as disk]
@@ -12,7 +13,6 @@
             [knoxx.backend.infra.run-events :as events]
             [knoxx.backend.infra.stores.mongo-session-store :as threads]
             [knoxx.backend.infra.stores.session-store-registry :as registry]
-            [knoxx.backend.shape.agent :as agent]
             [knoxx.backend.shape.session-persistence :as persistence]))
 
 (def ^:private coordinates
@@ -41,7 +41,8 @@
         complete! (^:async fn [] (swap! order* conj :complete) (when complete-fails? (throw completion-error)))
         previous-sink @state/event-stream-sink* previous-sessions @sessions/sessions*
         clear! state/clear-event-stream-sink-if! remove! sessions/remove-agent-session!
-        session (reify agent/IAgentSession (messages [_] []))]
+        session (session-fixture/session
+                  {:messages (fn [_] [])})]
     (try
       (state/set-event-stream-sink! (fn [_]))
       (swap! sessions/sessions* assoc (:conversation_id coordinates) {:session session})
@@ -81,7 +82,8 @@
      (fixture/with-run!
       coordinates
       (^:async fn []
-        (let [completed* (atom nil) session (reify agent/IAgentSession (messages [_] []))
+        (let [completed* (atom nil) session (session-fixture/session
+                                              {:messages (fn [_] [])})
               complete! (fn [payload] (reset! completed* payload))]
           (with-redefs [threads/complete-session! (fn ([_ _ payload] (complete! payload)) ([_ _ _ payload] (complete! payload)))
                         errors/log-error! (fn [_ _ error] {:message (ex-message error)})]
@@ -174,7 +176,8 @@
      (fixture/with-run!
       coordinates
       (^:async fn []
-        (let [session (reify agent/IAgentSession (messages [_] [#js {:role "assistant" :content #js []}]))
+        (let [session (session-fixture/session
+                        {:messages (fn [_] [#js {:role "assistant" :content #js []}])})
               previous-sink @state/event-stream-sink* previous-sessions @sessions/sessions*]
           (try
             (state/set-event-stream-sink! (fn [_]))

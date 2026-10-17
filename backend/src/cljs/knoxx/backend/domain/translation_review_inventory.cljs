@@ -108,6 +108,25 @@
    (pr-str (:dispatch/outcome record))
    (:dispatch/key record)])
 
+(defn- checked-dispatch
+  "Validate the complete dispatch body before its deterministic inventory join."
+  [record]
+  (let [checked (dispatch-law/assert-record! record)
+        encoded-garden (resource-identity/encode-keyword (:dispatch/garden checked))
+        expected-key (dispatch-law/dispatch-key
+                      {:org-id (:dispatch/org-id checked)
+                       :project (:dispatch/project checked)
+                       :garden encoded-garden
+                       :document (:dispatch/document checked)
+                       :source-locale (:dispatch/source-locale checked)
+                       :locale (:dispatch/locale checked)
+                       :revision (:dispatch/revision checked)})]
+    (when-not (= expected-key (:dispatch/key checked))
+      (throw (ex-info "translation dispatch body does not match its key"
+                      {:expected-dispatch-key expected-key
+                       :actual-dispatch-key (:dispatch/key checked)})))
+    checked))
+
 (defn- index-dispatches
   "Latest deterministic dispatch observation per exact work relation.
 
@@ -116,21 +135,7 @@
   store read or a later store retains attempt history."
   [dispatches]
   (reduce (fn [index record]
-            (let [checked (dispatch-law/assert-record! record)
-                  encoded-garden (resource-identity/encode-keyword
-                                  (:dispatch/garden checked))
-                  expected-key (dispatch-law/dispatch-key
-                                {:org-id (:dispatch/org-id checked)
-                                 :project (:dispatch/project checked)
-                                 :garden encoded-garden
-                                 :document (:dispatch/document checked)
-                                 :source-locale (:dispatch/source-locale checked)
-                                 :locale (:dispatch/locale checked)
-                                 :revision (:dispatch/revision checked)})
-                  _ (when-not (= expected-key (:dispatch/key checked))
-                      (throw (ex-info "translation dispatch body does not match its key"
-                                      {:expected-dispatch-key expected-key
-                                       :actual-dispatch-key (:dispatch/key checked)})))
+            (let [checked (checked-dispatch record)
                   relation (work-key checked)
                   incumbent (get index relation)]
               (if (or (nil? incumbent)
@@ -229,6 +234,23 @@
     (attach-observations (base-row work state receipt approval)
                          receipt approval dispatch)))
 
+(defn- desired-approvals
+  "Validate every approval before retaining exact desired work relations."
+  [desired-relations approvals]
+  (->> approvals
+       (map evidence-law/assert-approval!)
+       (filterv #(contains? desired-relations (approval-work-key %)))))
+
+(defn- desired-evidence
+  "Use only winners of the source-locale-aware join for publication evidence."
+  [receipts-by-work work approvals]
+  (let [desired-relations (set (map work-key work))
+        desired-receipts (into [] (keep #(get receipts-by-work %)) desired-relations)
+        approvals (desired-approvals desired-relations approvals)]
+    ;; The older evidence key omits source locale. Historical receipts from a
+    ;; document's former source locale must not displace the selected winners.
+    (translation-evidence/evidence {:receipts desired-receipts :approvals approvals})))
+
 (defn project-inventory
   "Left-join observed evidence onto resource-derived translation work.
 
@@ -241,22 +263,7 @@
   Values are ready for the existing recursive wire encoder: semantic enum and
   action values remain keywords here and become strings only at the HTTP edge."
   [work receipts approvals dispatches]
-  (let [receipts-by-work
-        (translation-evidence/current-receipts-by-work receipts)
-        desired-relations (set (map work-key work))
-        desired-receipts (into []
-                               (keep #(get receipts-by-work %))
-                               desired-relations)
-        desired-approvals (->> approvals
-                               (map evidence-law/assert-approval!)
-                               (filterv #(contains? desired-relations
-                                                    (approval-work-key %))))
-        ;; Build the established evidence projection from only the receipts that
-        ;; won the source-locale-aware join above. Its older key intentionally
-        ;; omits source locale, so feeding all receipt history into it here would
-        ;; let a newer translation from a document's former source locale win.
-        evidence (translation-evidence/evidence
-                  {:receipts desired-receipts
-                   :approvals desired-approvals})
+  (let [receipts-by-work (translation-evidence/current-receipts-by-work receipts)
+        evidence (desired-evidence receipts-by-work work approvals)
         dispatches-by-work (index-dispatches dispatches)]
     (mapv #(inventory-row receipts-by-work evidence dispatches-by-work %) work)))

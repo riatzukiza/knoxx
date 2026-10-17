@@ -5,7 +5,7 @@
    normalized message/voice callbacks to the generic event runtime instead of
    letting the runtime depend directly on discord-gateway internals."
   (:require [clojure.string :as str]
-            [knoxx.backend.domain.discord.gateway :as dg]
+            [knoxx.backend.infra.discord.gateway :as dg]
             [knoxx.backend.domain.discord.rest-client :as discord-rest]
             [knoxx.backend.domain.error-observatory :as errors]
             [knoxx.backend.infra.clients.openplanner :as openplanner-client]

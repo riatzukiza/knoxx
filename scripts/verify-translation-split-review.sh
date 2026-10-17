@@ -27,8 +27,8 @@ BASE_URL="${KNOXX_BASE_URL:-http://localhost:8000}"
 API_KEY="${KNOXX_API_KEY:-}"
 CONTRACTS_DIR="${KNOXX_CONTRACTS_DIR:-${REPO_ROOT}/contracts}"
 FIXTURE_DIR="${CONTRACTS_DIR}/_verify_translation_split_review"
-RUN_ID="$(date -u +%Y%m%d%H%M%S)$$"
-VERIFY_TMP_DIR="$(mktemp -d)"
+RUN_ID="${VERIFY_RUN_ID:-$(date -u +%Y%m%d%H%M%S)$$}"
+VERIFY_TMP_DIR=""
 VERIFY_ORG_ID="${VERIFY_ORG_ID:-${KNOXX_VERIFY_ORG_ID:-}}"
 KNOXX_PUBLICATION_CONTENT_ROOT="${KNOXX_PUBLICATION_CONTENT_ROOT:-}"
 LOOPBACK_HTTP=0
@@ -51,6 +51,13 @@ WARN_COUNT=0
 FAILURES=()
 FIXTURE_OWNED=0
 DURABLE_SEED_ATTEMPTED=0
+LEGACY_CLEANUP_FILE=""
+if [ "${1:-}" = --cleanup-legacy ] && [ "$#" -eq 2 ]; then
+  LEGACY_CLEANUP_FILE="$2"
+elif [ "$#" -gt 0 ]; then
+  printf 'Usage: %s [--cleanup-legacy /absolute/retained-ownership.json]\n' "$0" >&2
+  exit 2
+fi
 
 if [ -t 1 ]; then
   C_RESET=$'\033[0m'; C_DIM=$'\033[2m'; C_BOLD=$'\033[1m'
@@ -122,6 +129,12 @@ cleanup() {
   local code=$? signalled="${1:-}" cleanup_failed=0 durable_cleanup_succeeded=0
   [ -n "$signalled" ] && code="$signalled"
 
+  if ! translation_fixture_legacy_cleanup; then
+    printf '%s   WARN%s  legacy cleanup incomplete; retain the exact ownership record for reentry\n' \
+      "$C_YELLOW" "$C_RESET" >&2
+    cleanup_failed=1
+  fi
+
   if [ "$DURABLE_SEED_ATTEMPTED" -eq 1 ]; then
     if translation_fixture_helper cleanup >/dev/null 2>&1; then
       note "torn down this run's split turns, candidates, reviews, receipts, approvals and translation entries"
@@ -139,7 +152,7 @@ cleanup() {
   if [ "$durable_cleanup_succeeded" -eq 1 ]; then
     rm -rf -- "${KNOXX_PUBLICATION_CONTENT_ROOT}/artifacts/${TRANSLATION_FIXTURE_NS}"
   fi
-  rm -rf -- "$VERIFY_TMP_DIR"
+  [ -z "$VERIFY_TMP_DIR" ] || rm -rf -- "$VERIFY_TMP_DIR"
 
   if [ "$cleanup_failed" -eq 1 ] && [ "$code" -eq 0 ]; then code=1; fi
   exit "$code"
@@ -148,7 +161,7 @@ trap cleanup EXIT
 trap 'trap - EXIT; cleanup 130' INT
 trap 'trap - EXIT; cleanup 143' TERM
 
-for tool in curl jq clojure unzip node realpath; do
+for tool in curl jq clojure unzip node realpath git sha256sum; do
   command -v "$tool" >/dev/null 2>&1 || die "missing required tool: ${tool}"
 done
 transport_kind="$(knoxx_credential_transport_kind "$BASE_URL" 2>/dev/null)" \
@@ -166,6 +179,15 @@ note "contracts dir ${CONTRACTS_DIR}"
   || die "KNOXX_API_KEY is required and must match the running backend"
 [ -n "$VERIFY_ORG_ID" ] \
   || die "VERIFY_ORG_ID (or KNOXX_VERIFY_ORG_ID) must name the API key's organization"
+[[ "${VERIFY_SOURCE_COMMIT:-}" =~ ^[0-9a-f]{40}$ ]] \
+  && [ "$(git -C "$REPO_ROOT" rev-parse HEAD 2>/dev/null)" = "$VERIFY_SOURCE_COMMIT" ] \
+  || die "VERIFY_SOURCE_COMMIT must name this exact source checkout"
+VERIFY_TMP_DIR="$(mktemp -d)" || die "could not allocate owned verifier scratch"
+if [ -n "$LEGACY_CLEANUP_FILE" ]; then
+  translation_fixture_legacy_resume_cleanup "$LEGACY_CLEANUP_FILE" \
+    || die "legacy cleanup reentry failed; preserve its original failure and ownership evidence"
+  exit 0
+fi
 [ -n "$KNOXX_PUBLICATION_CONTENT_ROOT" ] \
   || die "KNOXX_PUBLICATION_CONTENT_ROOT must equal the running backend's content root"
 case "$KNOXX_PUBLICATION_CONTENT_ROOT" in
@@ -222,13 +244,18 @@ else
   note "review scope project ${VERIFY_PROJECT} (taken from the live response)"
 fi
 
+step "0b. exact run-owned legacy auth preflight, before the resource workflow"
+translation_fixture_legacy_preflight \
+  || die "legacy auth preflight failed; checked cleanup runs before exit"
+note "one independent anonymous detail GET and two independent legacy POST probes completed"
+
 step "1. every review mutation refuses an unauthenticated caller"
 placeholder='{"candidate_set_id":"not-present","split_id":"not-present","status":"approved"}'
 expect_status "GET split inventory is private" "401 403" \
   "$(http GET "$REVIEWS_URL" anon)"
 expect_status "POST one split review is private" "401 403" \
   "$(http POST "$REVIEWS_URL" anon "$placeholder")"
-expect_status "POST document review is private" "401 403" \
+expect_status "POST resource bulk review is private" "401 403" \
   "$(http POST "$BULK_REVIEWS_URL" anon '{"candidate_set_id":"not-present","status":"approved"}')"
 expect_status "POST whole-output approval is private" "401 403" \
   "$(http POST "$APPROVALS_URL" anon '{"document":"not/present","garden":"not/present","locale":"es","revision":"sha256-absent","translation_revision":"sha256-absent"}')"

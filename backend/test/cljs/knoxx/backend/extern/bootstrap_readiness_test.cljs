@@ -3,12 +3,19 @@
   (:require ["fastify" :default fastify]
             [cljs.test :as test]
             [knoxx.backend.bootstrap :as bootstrap]
+            [knoxx.backend.contract-runtime-deps :as contract-runtime-deps]
+            [knoxx.backend.domain.models :as runtime-models]
             [knoxx.backend.extern.provider-recovery-fixture :as fixture]
+            [knoxx.backend.infra.config :as runtime-config]
+            [knoxx.backend.infra.http-server :as http-server]
+            [knoxx.backend.infra.lifecycle :as lifecycle]
             [knoxx.backend.infra.run-events :as events]
             [knoxx.backend.infra.stores.clio-run-store :as clio]
             [knoxx.backend.infra.stores.mongo-run-store :as mongo]
             [knoxx.backend.infra.stores.run-provider-startup :as startup]
-            [knoxx.backend.infra.stores.session-store-registry :as registry]))
+            [knoxx.backend.infra.stores.session-flush :as session-flush]
+            [knoxx.backend.infra.stores.session-store-registry :as registry]
+            [knoxx.backend.runtime.state :as runtime-state]))
 
 (defn- deferred []
   (let [resolve* (atom nil) reject* (atom nil)]
@@ -119,3 +126,164 @@
           (test/is (= 200 (.-status response)))
           (test/is (= "provider ready" (await (.text response))))))
       (finally (await (.close app))))))
+
+(test/deftest ^:async hot-reload-close-log-reports-process-milliseconds
+  (let [previous-uptime (.-uptime js/process)
+        previous-log (.-log js/console)
+        logs* (atom [])
+        events* (atom [])]
+    (try
+      (aset js/process "uptime" (fn [] 1.25))
+      (aset js/console "log"
+            (fn [message metadata]
+              (swap! logs* conj {:message message
+                                :pid (.-pid metadata)
+                                :uptime-ms (.-uptimeMs metadata)})))
+      (with-redefs [session-flush/stop-periodic-flush!
+                    (fn [] (swap! events* conj :stop-flush))
+                    lifecycle/close-current-http!
+                    (fn []
+                      (swap! events* conj :close-http)
+                      (js/Promise.resolve true))]
+        (await (bootstrap/stop-http-before-load!
+                (fn [] (swap! events* conj :done)))))
+      (aset js/process "uptime" previous-uptime)
+      (aset js/console "log" previous-log)
+      (test/is (= [:stop-flush :close-http :done] @events*)
+               "The real public reload callback completes its close before done")
+      (test/is (= ["[knoxx-hot-reload] before-load: closing HTTP server"
+                   "[knoxx-hot-reload] before-load: HTTP server closed"]
+                  (mapv :message @logs*)))
+      (test/is (= [1250 1250] (mapv :uptime-ms @logs*))
+               "1.25 seconds of process uptime is reported as 1,250 milliseconds")
+      (test/is (= [(.-pid js/process) (.-pid js/process)]
+                  (mapv :pid @logs*)))
+      (finally
+        (aset js/process "uptime" previous-uptime)
+        (aset js/console "log" previous-log)))))
+
+(test/deftest ^:async default-bootstrap-request-hook-marks-only-hmr-probe
+  (let [app (fastify #js {:logger false})
+        boundary-error (ex-info "Stop fixture before plugins, persistence and listening" {})
+        closed* (atom [])
+        probe-logs* (atom [])
+        previous-log (.-log js/console)]
+    (try
+      (.get app "/api/dev/hmr" (fn [_request _reply] "hmr fixture"))
+      (.get app "/health" (fn [_request _reply] "healthy fixture"))
+      ;; Retain the real default dependency map, JSON parser and onRequest hook.
+      ;; Only an outer plugin boundary is rejected; no DB or listener is opened.
+      (with-redefs [runtime-state/remember-context! (fn [& _])
+                    http-server/create-app! (fn [] app)
+                    http-server/register-default-plugins!
+                    (fn [_app] (js/Promise.reject boundary-error))
+                    http-server/close!
+                    (fn [server]
+                      (swap! closed* conj server)
+                      ;; Keep this owned in-process app for inject; finally closes it.
+                      (js/Promise.resolve true))]
+        (try
+          (await (bootstrap/start-http!
+                  #js {} {:host "127.0.0.1" :port 0} {} false))
+          (test/is false "The fixture must stop before later startup effects")
+          (catch :default error
+            (test/is (identical? boundary-error error)))))
+      (test/is (= 1 (count @closed*)))
+      (test/is (identical? app (first @closed*)))
+      (test/is (false? (.-listening (.-server app))))
+      (let [response (try
+                       (aset js/console "log"
+                             (fn [& args] (swap! probe-logs* conj (vec args))))
+                       (await (.inject app #js {:method "GET" :url "/api/dev/hmr"}))
+                       (finally (aset js/console "log" previous-log)))]
+        (test/is (= 200 (.-statusCode response)))
+        (test/is (= "hmr fixture" (.-body response)))
+        (test/is (= bootstrap/hmr-probe-token
+                    (aget (.-headers response) "x-knoxx-hmr-probe")))
+        (test/is (= [["[knoxx-hot-reload-probe]" bootstrap/hmr-probe-token]]
+                    (mapv #(vec (take 2 %)) @probe-logs*))
+                 "The HMR request emits the process probe marker"))
+      (let [response (try
+                       (aset js/console "log"
+                             (fn [& args] (swap! probe-logs* conj (vec args))))
+                       (await (.inject app #js {:method "GET" :url "/health"}))
+                       (finally (aset js/console "log" previous-log)))]
+        (test/is (= 200 (.-statusCode response)))
+        (test/is (= "healthy fixture" (.-body response)))
+        (test/is (nil? (aget (.-headers response) "x-knoxx-hmr-probe")))
+        (test/is (= 1 (count @probe-logs*))
+                 "An ordinary request emits no HMR probe log"))
+      (test/is (false? (.-listening (.-server app))))
+      (finally
+        (aset js/console "log" previous-log)
+        (await (.close app))))))
+
+(test/deftest ^:async hot-reload-after-load-awaits-http-with-refreshed-context
+  (let [runtime {:owned :runtime} policy {:owned :policy}
+        fresh {:port 8321} enriched (assoc fresh :models :fresh)
+        injected (assoc enriched :deps :fresh) gate (deferred)
+        observed* (atom []) previous-log (.-log js/console)]
+    (try
+      (aset js/console "log" (fn [& _]))
+      (with-redefs [lifecycle/context
+                    (fn [] {:runtime runtime :policy-context policy
+                            :config {:port 1} :cookie-hook? true})
+                    runtime-config/cfg (fn [] fresh)
+                    runtime-models/enrich-config
+                    (fn [config]
+                      (swap! observed* conj [:enrich config]) enriched)
+                    contract-runtime-deps/inject-deps!
+                    (fn [config]
+                      (swap! observed* conj [:inject config]) injected)
+                    lifecycle/remember-context!
+                    (fn [& args] (swap! observed* conj [:remember (vec args)]))
+                    bootstrap/start-http!
+                    (fn
+                      ([runtime config policy cookie-hook?]
+                       (swap! observed* conj
+                              [:start-http [runtime config policy cookie-hook?]])
+                       (:promise gate))
+                      ([_runtime _config _policy _cookie-hook? _deps]
+                       (throw (ex-info "HMR must use the four-argument HTTP boundary" {}))))]
+        (let [pending (bootstrap/start-http-after-load!
+                       (fn [] (swap! observed* conj :done)))
+              before [[:enrich fresh] [:inject enriched]
+                      [:remember [runtime injected policy true]]
+                      [:start-http [runtime injected policy true]]]]
+          (await (fixture/drain!))
+          (test/is (= before @observed*)
+                   "The public HMR callback forwards refreshed config and durable context, and holds done")
+          ((:resolve! gate))
+          (await pending)
+          (test/is (= (conj before :done) @observed*)
+                   "Done runs exactly once, after the held HTTP start settles")))
+      (finally (aset js/console "log" previous-log)))))
+
+(test/deftest ^:async hot-reload-after-load-skips-incomplete-context
+  (let [previous-log (.-log js/console) previous-warn (.-warn js/console)]
+    (try
+      (aset js/console "log" (fn [& _]))
+      (aset js/console "warn" (fn [& _]))
+      (doseq [context [{:runtime {:owned :runtime} :policy-context nil}
+                       {:runtime nil :policy-context {:owned :policy}}
+                       {:runtime nil :policy-context nil}]]
+        (let [observed* (atom [])]
+          (with-redefs [lifecycle/context (fn [] context)
+                        runtime-config/cfg (fn [] {:port 8321})
+                        runtime-models/enrich-config identity
+                        contract-runtime-deps/inject-deps! identity
+                        lifecycle/remember-context!
+                        (fn [& _] (swap! observed* conj :remember))
+                        bootstrap/start-http!
+                        (fn
+                          ([_runtime _config _policy _cookie-hook?]
+                           (swap! observed* conj :start-http))
+                          ([_runtime _config _policy _cookie-hook? _deps]
+                           (throw (ex-info "HMR must use the four-argument HTTP boundary" {}))))]
+            (await (bootstrap/start-http-after-load!
+                    (fn [] (swap! observed* conj :done))))
+            (test/is (= [:done] @observed*)
+                     "Missing either durable handle cannot publish context or start HTTP"))))
+      (finally
+        (aset js/console "log" previous-log)
+        (aset js/console "warn" previous-warn)))))

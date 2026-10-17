@@ -5,7 +5,7 @@
    OpenPlanner corpus. The reaction is also written as a weak quality claim when
    it has a reserved meaning: ✅ = good output, ❌ = bad output."
   (:require [clojure.string :as str]
-            [knoxx.backend.domain.discord.gateway :as dg]
+            [knoxx.backend.infra.discord.gateway :as dg]
             [knoxx.backend.infra.clients.openplanner :as openplanner-client]
             [knoxx.backend.domain.time :as time]))
 

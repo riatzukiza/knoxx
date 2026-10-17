@@ -91,9 +91,18 @@
         (test/is (true? (:value (await (outcome! #(flush! "never-admitted")))))
                  "releasing a run that admitted no event leaves the queue usable"))))))
 
+(defn- unexpected-run-operation! [operation]
+  (throw (ex-info (str "Unexpected refusing event store operation: " (name operation))
+                  {:operation operation})))
+
 (defrecord RefusingEventStore []
   persistence/ISessionStore
   (put-run! [_ _run] (js/Promise.resolve true))
+  (get-run [_ _run-id] (unexpected-run-operation! :get-run))
+  (patch-run! [_ _run-id _patch] (unexpected-run-operation! :patch-run!))
+  (list-active-runs [_ _session-id] (unexpected-run-operation! :list-active-runs))
+  (complete-run! [_ _run-id _opts] (unexpected-run-operation! :complete-run!))
+  (delete-run! [_ _run-id] (unexpected-run-operation! :delete-run!))
   persistence/IRunEventStore
   (append-event! [_ _event]
     (js/Promise.reject (ex-info "Event collections unavailable"

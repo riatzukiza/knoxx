@@ -7,7 +7,7 @@ set -euo pipefail
 umask 077
 media_repo="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd -P)"
 media_mode="${1:---check}"
-case "$media_mode" in --check|--browser|--serve) ;; *) printf 'Usage: %s [--check|--browser|--serve]\n' "$0" >&2; exit 2 ;; esac
+case "$media_mode" in --check|--durable-check|--browser|--serve) ;; *) printf 'Usage: %s [--check|--durable-check|--browser|--serve]\n' "$0" >&2; exit 2 ;; esac
 for media_tool in git node pnpm clojure python3 timeout rg; do command -v "$media_tool" >/dev/null; done
 if [[ "$media_mode" == --browser ]]; then command -v agent-browser >/dev/null; fi
 media_head="$(git -C "$media_repo" rev-parse --verify 'HEAD^{commit}')"
@@ -71,8 +71,10 @@ after=json.load(open(sys.argv[2]))
 if any(after.get(key) != value for key,value in before.items()):
     raise SystemExit('FAIL source or checkout identity changed during fixture compilation')
 PY
+media_durable_args=()
+if [[ "$media_mode" == --durable-check ]]; then media_durable_args=(--durable); fi
 NODE_PATH="$media_repo/backend/node_modules" CONTRACTS_DIR="$media_fixture/contracts" \
-  node "$media_run/fixture.cjs" "$media_fixture" "$media_run/proof.json" "$media_art" "$media_art_sha" "$media_frontend" \
+  node "$media_run/fixture.cjs" "$media_fixture" "$media_run/proof.json" "$media_art" "$media_art_sha" "$media_frontend" "${media_durable_args[@]}" \
   >"$media_run/server.log" 2>&1 &
 media_pid=$!
 for ((media_attempt=0; media_attempt<200; media_attempt++)); do
@@ -83,6 +85,36 @@ done
 [[ -s "$media_fixture/receipt.json" ]] || { cat "$media_run/server.log"; printf 'FAIL disposable server readiness timeout\n' >&2; exit 1; }
 if ! python3 "$media_repo/scripts/verify-approved-cms-media.py" "$media_fixture" "$media_run/proof.json"; then
   cat "$media_run/server.log"; printf 'FAIL native approved-media checks did not pass\n' >&2; exit 1
+fi
+if [[ "$media_mode" == --durable-check ]]; then
+  media_initial_pid="$media_pid"
+  kill "$media_pid"
+  for ((media_attempt=0; media_attempt<50; media_attempt++)); do
+    kill -0 "$media_pid" 2>/dev/null || break
+    sleep 0.1
+  done
+  if kill -0 "$media_pid" 2>/dev/null; then kill -KILL "$media_pid"; fi
+  wait "$media_pid" 2>/dev/null || true
+  printf 'PASS terminated initial owned publisher OS process %s before restart\n' "$media_initial_pid"
+  NODE_PATH="$media_repo/backend/node_modules" CONTRACTS_DIR="$media_fixture/contracts" \
+    node "$media_run/fixture.cjs" "$media_fixture" "$media_run/proof.json" "$media_art" "$media_art_sha" "$media_frontend" --durable-restart \
+    >"$media_run/restart-server.log" 2>&1 &
+  media_pid=$!
+  media_restart_ready=0
+  for ((media_attempt=0; media_attempt<200; media_attempt++)); do
+    if python3 - "$media_fixture/receipt.json" "$media_pid" <<'PY_READY'
+import json,sys
+raise SystemExit(0 if json.load(open(sys.argv[1]))['process-id'] == int(sys.argv[2]) else 1)
+PY_READY
+    then media_restart_ready=1; break; fi
+    if ! kill -0 "$media_pid" 2>/dev/null; then cat "$media_run/restart-server.log"; printf 'FAIL fresh owned publisher stopped before ready\n' >&2; exit 1; fi
+    sleep 0.1
+  done
+  [[ "$media_restart_ready" == 1 ]] || { cat "$media_run/restart-server.log"; printf 'FAIL fresh publisher readiness timeout\n' >&2; exit 1; }
+  if ! python3 "$media_repo/scripts/verify-approved-cms-media.py" --verify-restart "$media_fixture" "$media_run/proof.json"; then
+    cat "$media_run/restart-server.log"; printf 'FAIL durable restart readbacks did not pass\n' >&2; exit 1
+  fi
+  exit 0
 fi
 media_public_url="$(python3 - "$media_fixture/verification.json" <<'PY'
 import json,sys
