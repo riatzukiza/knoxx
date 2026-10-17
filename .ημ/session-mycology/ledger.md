@@ -1151,3 +1151,12 @@
   spore: none
   receipt-refs: 619985a60e8766495c69b194d0c8385e3ac861ee97026853644a87cd82a438fd
   note: Reused the reviewed exact two-mapping/four-pin delta, replaced the future candidate with actual protected48c9, verified full caller/callee schema and immutable other bytes, and bound actual integration-base/labels/queue nonactivation. No new deployment gate or capability claim. Native mycology connector remains unconfirmed from earliernullcwd and was not retried.
+- ts: 2026-10-17T09:44:37.232468370Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-full-CI-workflow-repair-over933-v1
+  task: Repair actual CMS CI prerequisites and manual full-source qualification inputs
+  p-efficiency: 0.87
+  p-friction: 0.28
+  p-skill-candidate: 0.30
+  spore: none
+  receipt-refs: e9983e13-6045-40a1-a1ff-7f80c4ae7f58
+  note: Use actual complete failed job logs before changing runner setup. Real NBB/FFmpeg fixtures require installed dependencies; provision those dependencies and preserve assertions. Keep explicit browser source guards and bind the checkout selected by each caller. Manual full-source QA needs an immutable ancestor baseline and explicit product mode, rather than last-commit or automatic infrastructure defaults. Source peer review caught evidence finalization aborting on an absent tool: retain manifest/checksums then report failure. All local checks here are narrow; genuine hosted app/model qualification and reviews remain separate. No spore or native connector retry.

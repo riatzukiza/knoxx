@@ -74,6 +74,8 @@ jobs:
       - name: Real backend end-to-end tests
         run: pnpm -C backend test:e2e
       - name: Browser translation workflow
+        env:
+          VERIFY_SOURCE_COMMIT: ${{ needs.source.outputs.sha }}
         run: bash scripts/verify-translation-browser-ci.sh
       - name: Build production artifacts
         run: |

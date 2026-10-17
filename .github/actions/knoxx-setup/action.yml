@@ -17,6 +17,14 @@ runs:
     - uses: actions/setup-node@v5
       with:
         node-version: '24'
+    - name: Install real FFmpeg for the registered media tests
+      shell: bash
+      run: |
+        set -euo pipefail
+        sudo apt-get update
+        sudo apt-get install --yes --no-install-recommends ffmpeg
+        ffmpeg -version
+        ffprobe -version
     - name: Prepare the explicit native-error test evaluator
       shell: bash
       run: |

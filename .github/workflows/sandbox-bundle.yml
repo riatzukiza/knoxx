@@ -100,6 +100,17 @@ jobs:
           cli: ${{ env.CLOJURE_TOOLS_VERSION }}
           clj-kondo: '2025.07.28'
 
+      - name: Install real FFmpeg for the registered media tests
+        id: ffmpeg
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends ffmpeg
+          ffmpeg -version
+          ffprobe -version
+
       - name: Prepare the pinned OpenPlanner SDK
         id: sdk_prepare
         if: steps.sdk_source.outcome == 'success'
@@ -313,6 +324,7 @@ jobs:
         id: finalize_bundle
         if: always()
         env:
+          FFMPEG_OUTCOME: ${{ steps.ffmpeg.outcome }}
           SDK_SOURCE_OUTCOME: ${{ steps.sdk_source.outcome }}
           SDK_PREPARE_OUTCOME: ${{ steps.sdk_prepare.outcome }}
           SDK_RESTORE_OUTCOME: ${{ steps.sdk_restore.outcome }}
@@ -337,12 +349,21 @@ jobs:
           for file in package.json pnpm-lock.yaml pnpm-workspace.yaml deps.edn shadow-cljs.edn; do
             [[ -f "$file" ]] && cp "$file" "$OUT/metadata/$file"
           done
+          ffmpeg_metadata_status=0
           {
             node --version
             pnpm --version
             clj-kondo --version
             java -version
             clojure -Sdescribe
+            if ! ffmpeg -version; then
+              printf 'FFmpeg version observation failed; setup outcome: %s\n' "$FFMPEG_OUTCOME"
+              ffmpeg_metadata_status=1
+            fi
+            if ! ffprobe -version; then
+              printf 'FFprobe version observation failed; setup outcome: %s\n' "$FFMPEG_OUTCOME"
+              ffmpeg_metadata_status=1
+            fi
           } > "$OUT/metadata/tool-versions.txt" 2>&1
 
           generated_at="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
@@ -351,6 +372,7 @@ jobs:
             --arg revision "$GITHUB_SHA" \
             --arg ref "$GITHUB_REF" \
             --arg generated_at "$generated_at" \
+            --arg ffmpeg "$FFMPEG_OUTCOME" \
             --arg sdk_source "$SDK_SOURCE_OUTCOME" \
             --arg sdk_prepare "$SDK_PREPARE_OUTCOME" \
             --arg sdk_restore "$SDK_RESTORE_OUTCOME" \
@@ -378,6 +400,7 @@ jobs:
               ref: $ref,
               generated_at: $generated_at,
               outcomes: {
+                ffmpeg: $ffmpeg,
                 sdk_source: $sdk_source,
                 sdk_prepare: $sdk_prepare,
                 sdk_restore: $sdk_restore,
@@ -399,6 +422,7 @@ jobs:
               },
               toolchain: {clj_kondo: $clj_kondo, native_error_static: $native_error_static},
               setup_commands: [
+                "sudo apt-get update && sudo apt-get install --yes --no-install-recommends ffmpeg && ffmpeg -version && ffprobe -version",
                 "sandbox_kondo_bin=\"$(node \"${KNOXX_SANDBOX_BUNDLE:?}/toolchain/sandbox-clj-kondo.mjs\" restore \"$KNOXX_SANDBOX_BUNDLE\" \"$KNOXX_SANDBOX_BUNDLE/restored-toolchain\")\" && export PATH=\"$sandbox_kondo_bin:$PATH\"",
                 "export KNOXX_NATIVE_ERROR_KONDO=\"$(node \"${KNOXX_SANDBOX_BUNDLE:?}/toolchain/native-error-static-evaluator.mjs\" restore \"$KNOXX_SANDBOX_BUNDLE\" \"$KNOXX_SANDBOX_BUNDLE/restored-toolchain\")\"",
                 "[[ ! -e ../openplanner || -L ../openplanner ]] || { printf \"Refusing an existing real OpenPlanner sibling.\\n\" >&2; exit 1; }; sdk=\"$(bash \"${KNOXX_SANDBOX_BUNDLE:?}/sdk/build-sandbox-openplanner-sdk.sh\" restore --bundle \"$KNOXX_SANDBOX_BUNDLE/sdk\" --run-root \"${RUNNER_TEMP:?}/knoxx-sdk-restored\")\" && ln -sfn \"$sdk\" ../openplanner",
@@ -420,6 +444,10 @@ jobs:
           trap 'rm -f "$checksums"' EXIT
           (cd "$OUT" && find . -type f ! -name SHA256SUMS -print0 | sort -z | xargs -0 sha256sum) > "$checksums"
           mv "$checksums" "$OUT/SHA256SUMS"
+          if [[ "$ffmpeg_metadata_status" != 0 ]]; then
+            printf 'FFmpeg tool versions unavailable; bundle metadata and checksums retained.\n' >&2
+            exit 1
+          fi
 
       - name: Package optional dependency cache
         if: github.event_name == 'workflow_dispatch' && inputs.include_dependency_cache
@@ -464,7 +492,8 @@ jobs:
       - name: Preserve collection and validation result
         if: >-
           always() &&
-          (steps.sdk_source.outcome != 'success' ||
+          (steps.ffmpeg.outcome != 'success' ||
+           steps.sdk_source.outcome != 'success' ||
            steps.sdk_prepare.outcome != 'success' ||
            steps.sdk_restore.outcome != 'success' ||
            steps.install_backend.outcome != 'success' ||
