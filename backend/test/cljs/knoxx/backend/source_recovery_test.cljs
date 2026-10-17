@@ -1,6 +1,7 @@
 (ns knoxx.backend.source-recovery-test
   (:require [clio.extern.js.fs :as fs]
             [cljs.test :as test]
+            [knoxx.backend.domain.error-observatory :as observatory]
             [knoxx.backend.domain.source-authoring :as authoring-domain]
             [knoxx.backend.domain.source-review :as domain]
             [knoxx.backend.extern.clio-store-fixture :as disk]
@@ -56,6 +57,58 @@
       (test/is (= :second-result (await second-task)))
       (test/is (= :third-result (await third-task)))
       (test/is (= [:first :second :third] @started)))))
+
+(defn- ^:async queue-outcome! [task]
+  (try {:caught? false :value (await task)}
+       (catch :default cause {:caught? true :cause cause})))
+
+(defn- ^:async rejected-queue! [primary]
+  (let [key (str (random-uuid)) first-gate (disk/deferred) second-gate (disk/deferred)
+        started (atom [])
+        first-operation (fn [] (swap! started conj :first) (:promise first-gate))
+        second-operation (fn [] (swap! started conj :second) (:promise second-gate))
+        third-operation (fn [] (swap! started conj :third) :third-result)
+        first-task (files/with-document-lock! key first-operation)
+        first-outcome (queue-outcome! first-task)
+        second-task (files/with-document-lock! key second-operation)]
+    (try
+      (test/is (= [:first] @started))
+      ((:reject! first-gate) primary)
+      (let [outcome (await first-outcome)]
+        (test/is (true? (:caught? outcome)))
+        (test/is (identical? primary (:cause outcome))))
+      (await (disk/drain!))
+      (test/is (= [:first :second] @started))
+      (let [third-task (files/with-document-lock! key third-operation)]
+        (test/is (= [:first :second] @started) "Failed-tail cleanup cannot unlock the held successor")
+        ((:resolve! second-gate) :second-result)
+        (test/is (= :second-result (await second-task)))
+        (test/is (= :third-result (await third-task)))
+        (test/is (= [:first :second :third] @started)))
+      (finally
+        ((:resolve! first-gate) :drain-first)
+        ((:resolve! second-gate) :drain-second)
+        (await first-outcome)
+        (await (queue-outcome! second-task))
+        (await (disk/drain!))))))
+
+(test/deftest ^:async rejected-queue-observation-cannot-replace-errors-or-break-ownership
+  (doseq [mode [:records :throws-error :throws-nil :absent]
+          primary [(ex-info "Original source failure" {:private "not logged"}) nil]]
+    (let [seen (atom [])
+          observer-error (when (= :throws-error mode) (ex-info "Observer unavailable" {}))
+          observer (when-not (= :absent mode)
+                     (fn [boundary context]
+                       (swap! seen conj [boundary context])
+                       (when (contains? #{:throws-error :throws-nil} mode) (throw observer-error))))
+          context {:fallback :nil :primary-error-present? (some? primary)}
+          expected (if (= :absent mode) []
+                       (mapv (fn [operation]
+                               ["source-authoring.sequence-degraded" (assoc context :operation operation)])
+                             [:release-tail :await-predecessor]))]
+      (with-redefs [observatory/log-warning! observer]
+        (await (rejected-queue! primary)))
+      (test/is (= expected @seen) "Only fixed scalar context is observed, including nil rejection"))))
 
 (defn- ^:async accept! [config document dependencies]
   (let [current (await (review/read! config document dependencies))
