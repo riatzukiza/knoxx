@@ -1376,3 +1376,12 @@
   spore: none
   receipt-refs: 3cd91256-9697-4628-b054-7c5459feb9d0
   note: Exact ordered data descriptors and complete source inverses preserve ten projection responsibilities. Source/static conservation is not direct private-auth or enabled-legacy behavioral coverage; coherent normal runtime remains pending. All original tests/config/checker policy held; no spore.
+- ts: 2026-10-17T22:35:56.873847601Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-full-CI-workflow-repair-over933-v1
+  task: Separate decoded media result projections; retain global139FAIL
+  p-efficiency: 0.9
+  p-friction: 0.1
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: a9ba3e4e-cb17-4d72-96a5-7e99937a3a49
+  note: Exact raw inverse and finite source expansion preserve decoded content/trace/reply assembly. Original p/let names/count and direct formatter lookup held; source/static is not direct attachment/audio or runtime evidence. Ordinary decoded data scope; all original tests/config/checker policy held; no spore.
