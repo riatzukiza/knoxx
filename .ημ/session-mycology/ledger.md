@@ -1187,3 +1187,12 @@
   spore: none
   receipt-refs: bbfe3b76-34ee-4134-b4e2-03b9f5399125
   note: Preserve explicit namespace loads when removing unused aliases. For dead-code cleanup, compare full registered warning classes after exact source peers and owning lint; do not relabel retained size warnings or historical CI as current success. Inverse checks for deleted regions must retain their original position, because replacing an empty string inserts at byte0. Retain early guard refusals without candidate/test credit. No spore.
+- ts: 2026-10-17T12:57:01.794007644Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-full-CI-workflow-repair-over933-v1
+  task: Portable sub-agent projections remove two measured warnings; global183 remains failed
+  p-efficiency: 0.91
+  p-friction: 0.12
+  p-skill-candidate: 0.1
+  spore: none
+  receipt-refs: a423f231-9cd8-47dc-809a-33fff4f29fd1
+  note: Extract portable disjoint field/lineage projections while leaving compaction, selections and effects at their existing adapter. Exact inverse/field source review plus original owning lint and complete global diagnostic multiplicities distinguish a two-warning improvement from whole-candidate readiness. Retain all183 other warnings and hold runtime/typecheck/test/coverage/build claims for actual new-source hosted QA. No spore.
