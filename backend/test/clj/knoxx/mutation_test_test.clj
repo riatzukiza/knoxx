@@ -911,9 +911,12 @@
 (deftest source-reader-resolves-cljs-namespace-aliases-without-loading-them
   (let [source (str "(ns mutation.source-reader-fixture\n"
                     "  (:require #?(:clj [unloaded.clj-law :as law]\n"
-                    "               :cljs [unloaded.cljs-law :as law])))\n"
-                    "(def value [::law/configuration ::local #::law{:flag true}])\n")
-        names ['mutation.source-reader-fixture 'unloaded.clj-law 'unloaded.cljs-law]
+                    "               :cljs [unloaded.cljs-law :as law])\n"
+                    "            [unloaded.full-ns]))\n"
+                    "(def value [::law/configuration ::local #::law{:flag true}\n"
+                    "            #::unloaded.full-ns{:flag true} ::unloaded.full-ns/configuration])\n")
+        names ['mutation.source-reader-fixture 'unloaded.clj-law
+               'unloaded.cljs-law 'unloaded.full-ns]
         before (mapv find-ns names)
         forms (try (mutation/read-top-level-sexprs source)
                    (catch Exception error error))]
@@ -922,7 +925,9 @@
            (when (vector? forms) (second (first forms)))))
     (is (= [:unloaded.cljs-law/configuration
             :mutation.source-reader-fixture/local
-            {:unloaded.cljs-law/flag true}]
+            {:unloaded.cljs-law/flag true}
+            {:unloaded.full-ns/flag true}
+            :unloaded.full-ns/configuration]
            (when (vector? forms) (last (last forms)))))
     (is (= before (mapv find-ns names)))))
 
@@ -947,8 +952,8 @@
             "(if (not (= ::law/configuration value)) #::law{:ok true} ::local)"]
            ["(= ::law/configuration value)" :comparison-flip
             "(not= ::law/configuration value)"]
-           ["(+ (get #::law{:n 0} ::law/n) 1)" :arithmetic-operator-flip
-            "(- (get #::law{:n 0} ::law/n) 1)"]]]
+           ["(+ (get #::unloaded.law{:n 0} ::unloaded.law/n) 1)" :arithmetic-operator-flip
+            "(- (get #::unloaded.law{:n 0} ::unloaded.law/n) 1)"]]]
     (let [prefix "(ns mutation.alias-compound (:require [unloaded.law :as law]))\n"
           source (str prefix body "\n")
           result (try
