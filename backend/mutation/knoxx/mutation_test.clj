@@ -275,8 +275,17 @@
          (tree-seq #(boolean (z/down %))
                    #(take-while identity (iterate z/right (z/down %))) loc))))
 
+(defn- js-literal-containing-location?
+  "Find actual #js reader nodes without interpreting their contents."
+  [loc]
+  (boolean
+   (some #(and (= :reader-macro (z/tag %))
+               (= 'js (safe-sexpr (z/down %))))
+         (tree-seq #(boolean (z/down %))
+                   #(take-while identity (iterate z/right (z/down %))) loc))))
+
 (defn rewrite-anonymous-compound
-  "Change only the selected operator/test; retain nested #() syntax verbatim."
+  "Change only the selected operator/test; retain nested reader syntax verbatim."
   [loc operator]
   (case operator
     :if-test-negation
@@ -297,7 +306,8 @@
     (when (and (not= ::unreadable form) (reader-conditional-free-location? loc))
       (let [{:keys [line column]} (safe-position loc)
             syntax? (or (anonymous-function-containing-location? loc)
-                        (auto-resolved-containing-location? loc))]
+                        (auto-resolved-containing-location? loc)
+                        (js-literal-containing-location? loc))]
         (mapv (fn [{:keys [operator replacement]}]
                 (merge {:relative-path relative-path
                         :line line :column column :operator operator}
