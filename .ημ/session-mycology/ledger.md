@@ -1142,3 +1142,12 @@
   spore: none
   receipt-refs: 66282ece7c74238b20be9174ab1b91617694029a,d695688ef81c358111a089a0c8ed3a19f1c6fe50,sha256:beedae4923cb1505c18d78e8a482d96f2231af2c5c2ffbfe0378b603da57f638,sha256:50da4190472a97d4cc1c38647e1b88305c51c72cca52e88fec1c76fd3a6677ec,sha256:093b73525419e85ed7cb1101b3f661ca1aadd64c862781ecf9cc76fe6f173fd7,sha256:d454dbaac06d3f1730fdedae6f13c1d0a714302d2acca596365161958857e41e,sha256:ebc87fb3c3673c04f11bdc37af812bd139a2cb66b2abff568117e8b328c6233a
   note: Use actual registered outputs and original custody results as separate facts. Browser driver57 and required realDocker23tests118assertions passed, while browser immediate transientzombie and planned read-only Docker eventCLI TERM143 kept both original wrapper1 results. Complete exact resource/port/source/artifact cleanup only after native reaping; never replay a successful test or rewrite frozen predicates to manufacture overall0. Generated project .cpcache is an allowed mutable compiler output: preserve sealed priorbytes/currentclasspath correspondence and unknown creator, then narrow current snapshot, not attribution. Docker Go format templates support json/index/range; optional mount fields need index and selected projected fields avoid exec-command/rawattribute exposure. Append truthful evidence and update only same draftPR; candidate0/no spore or promotion and no deployment/review approval credit.
+- ts: 2026-10-17T08:15:35.310621801Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-caller-accepted-Services-M0-48c9-over733-v1
+  task: Bind both Knoxx environment callers to the actual adopted optional-secret Services interface
+  p-efficiency: 0.9
+  p-friction: 0.2
+  p-skill-candidate: 0.2
+  spore: none
+  receipt-refs: 619985a60e8766495c69b194d0c8385e3ac861ee97026853644a87cd82a438fd
+  note: Reused the reviewed exact two-mapping/four-pin delta, replaced the future candidate with actual protected48c9, verified full caller/callee schema and immutable other bytes, and bound actual integration-base/labels/queue nonactivation. No new deployment gate or capability claim. Native mycology connector remains unconfirmed from earliernullcwd and was not retried.
