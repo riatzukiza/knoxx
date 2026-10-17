@@ -1,7 +1,7 @@
 ---
 category: "tasks"
 labels: ["tasks", "5sp"]
-write-id: "1792270168581-0.qrnykrwlmf1aj4gsl"
+write-id: "1792270838743-0.7o8p4a75mv7x0dufxl8"
 points: "5"
 source: "specs/tasks/knoxx-backend-lint-async-workflows-src.md"
 title: "Knoxx Backend Lint — Async Workflow Refactor for Source Namespaces"
@@ -180,5 +180,15 @@ Only two source paths are proposed. In law/svg.cljs, separate the original first
 Exact private patch SHA256 c45e164203fb2139a6d332a60b579993804e70650e9e55212739453c74abdb0a. Complete byte inverse reproduces both24e originals. Target only four measured span warnings;159-to155global and4-to0selected owning are predictions until actual unchanged registered checker runs. Global159warning/native2FAIL remains current evidence. Omit consent-actor-unchanged? because its preserved security docstring alone prevents a useful under30line delegate; omit normalize-chat-body rather than move raw-body reads into a purported pure helper. Keep both warnings and all wording/interop unchanged.
 
 No new or mirrored tests, schema/error/API/default, checker/config/threshold/suppression, execution/permission/provider/model/DB/PM2/account/public PR/source/ref/deploy effect. Future separately admitted application requires fresh source/owner guards, actual owning and full registered static checks, ordinary source/native-owner then separate canonical append-only provenance commits, and coherent registered backend typecheck/compile-test/server/full-runtime qualification. This proposed scope note itself supplies no application, zero-warning PASS, runtime, Ready, completion, review or adoption credit.
+
+Finite three-warning pure marker/policy continuation over immutable897f65b9c51c3f252c2b8431f6cefe0a285cc573 under the existing in_progress/P1/5 source owner. Preserve all metadata and native history; this extends only the same reviewed pure source-responsibility cleanup, without reactivating the done function-length owner or claiming residual/performance readiness.
+
+Exact proposed patch SHA2563fad4da4803d35a14d100ecfac3c583a8a18b4953446adb5d1d81a92847fc6c9 touches three existing source files only. In law/translation_source_split.cljc, factor list-marker's four identity fields into one private CLJC helper, then append the original branch-specific content? value. Keep indentation/marker/padding calls, empty-versus-whitespace-versus-invalid branch priority, ordered zero-prefix test, alias-free marker kinds, false content, entry order and later content-cursor comparison. Do not move that comparison before kind/starts-at-one computation; the five-field array-map shape stays the same. Original indented-code loop is untouched rather than introducing a larger state-transition interface.
+
+In open_hax/contracts/policy/eval.cljs, separate exact comparison, value-access/coercion/predicate and string case arms into three private helpers. All27 original symbols route exactly once; each original arm/body is copied byteexact, no operator normalization/table/eager speculative fallback. Keep logical not/and/or bodies and short-circuiting in eval-core-form, all eval-args/eval-form* lookups/order, unknown ::unknown semantics and the complete public evaluator/catch/injection suffix unchanged. In fulfillment.cljs, extract only the original per-field cond behind the same every? and [k v] destructuring; preserve missing-versus-nil defaults, literal keyword/string distinction, parameter/output predicate results, error truthiness, unknown-key false and all-match action ordering. Public names/arities/docstrings and all existing tests remain exact; no new seam/interop/export or portable migration.
+
+Three warning removals and global155to152 are predictions until actual unchanged owning/full registered static checks; the indented-code38 and file-length warning remain failed contracts. Existing partition and fulfillment public tests remain the runtime carrier. No direct evaluator test reference was found in tracked backend/test/cljs; source-arm conservation is not runtime coverage, and any claim of evaluator runtime qualification requires a real public-API registered route, not unrelated tests or a new private export. No tests are changed or mirrored here.
+
+This proposed scope/comment supplies no application, test/runtime, zero-warning PASS, Ready/completion/review/adoption/deployment credit. Any later separately admitted application requires fresh owner/source/index/ref guards, one official comment/readback, exact source/native-owner commit and separate append-only canonical RR/portableSM, actual owning/global static and coherent backend typecheck/compile-test/server/full-runtime qualification. No checker/config/threshold/suppression, board metadata/status/points/dependencies, QAref/current24e observation, publicpush/PR/review/dispatch/merge, model/provider/DB/PM2/account/spend effect. B's timing-profile proposal remains separate and untouched.
 
 ---

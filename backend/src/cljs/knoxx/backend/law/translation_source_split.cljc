@@ -401,6 +401,16 @@
         {:cursor cursor :column column})
       {:cursor cursor :column column})))
 
+(defn- marker-result-fields
+  "Describe marker identity before the original branch computes content presence."
+  [marker-indent content-indent unordered? ordered-digits]
+  {:indent marker-indent
+   :content-indent content-indent
+   :kind (if unordered? :unordered :ordered)
+   :starts-at-one? (boolean
+                    (and ordered-digits
+                         (re-matches #"0*1" ordered-digits)))})
+
 (defn- list-marker
   "Describe a Markdown list marker and its required continuation column."
   [source line]
@@ -417,25 +427,17 @@
                              (subs source marker-start (dec marker-end)))]
         (cond
           (= marker-end content-end)
-          {:indent marker-indent
-           :content-indent (inc marker-column)
-           :kind (if unordered? :unordered :ordered)
-           :starts-at-one? (boolean
-                            (and ordered-digits
-                                 (re-matches #"0*1" ordered-digits)))
-           :content? false}
+          (assoc (marker-result-fields marker-indent (inc marker-column)
+                                       unordered? ordered-digits)
+                 :content? false)
 
           (contains? #{" " "\t"}
                      (source-character source marker-end))
           (let [padding (marker-padding-info source marker-end content-end
                                              marker-column)]
-            {:indent marker-indent
-             :content-indent (:column padding)
-             :kind (if unordered? :unordered :ordered)
-             :starts-at-one? (boolean
-                              (and ordered-digits
-                                   (re-matches #"0*1" ordered-digits)))
-             :content? (< (:cursor padding) content-end)})
+            (assoc (marker-result-fields marker-indent (:column padding)
+                                         unordered? ordered-digits)
+                   :content? (< (:cursor padding) content-end)))
 
           :else nil)))))
 

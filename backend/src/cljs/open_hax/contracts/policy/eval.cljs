@@ -29,7 +29,8 @@
   [args ctx injected-fns]
   (mapv #(eval-form* % ctx injected-fns) args))
 
-(defn- eval-core-form
+(defn- eval-comparison-form
+  "Evaluate comparison arguments in their original eager order."
   [op args ctx injected-fns]
   (case op
     ;; Equality / comparison
@@ -39,16 +40,12 @@
     >    (apply > (eval-args args ctx injected-fns))
     <=   (apply <= (eval-args args ctx injected-fns))
     >=   (apply >= (eval-args args ctx injected-fns))
+    ::unknown))
 
-    ;; Logic
-    not  (not (eval-form* (first args) ctx injected-fns))
-    and  (reduce (fn [_ arg]
-                   (let [result (eval-form* arg ctx injected-fns)]
-                     (if result result (reduced nil))))
-                 true
-                 args)
-    or   (some #(eval-form* % ctx injected-fns) args)
-
+(defn- eval-value-form
+  "Evaluate existing collection, coercion and predicate forms."
+  [op args ctx injected-fns]
+  (case op
     ;; Collection access
     get    (let [[m k not-found] (eval-args args ctx injected-fns)]
              (get m k not-found))
@@ -68,7 +65,12 @@
     nil?   (nil? (eval-form* (first args) ctx injected-fns))
     empty? (empty? (eval-form* (first args) ctx injected-fns))
     string? (string? (eval-form* (first args) ctx injected-fns))
+    ::unknown))
 
+(defn- eval-string-form
+  "Evaluate existing string forms without changing argument evaluation."
+  [op args ctx injected-fns]
+  (case op
     ;; String operations
     clojure.string/includes?    (let [[s substr] (eval-args args ctx injected-fns)]
                                   (str/includes? s substr))
@@ -82,6 +84,32 @@
                                   (str/lower-case s))
     clojure.string/trim         (let [[s] (eval-args args ctx injected-fns)]
                                   (str/trim s))
+    ::unknown))
+
+(defn- eval-core-form
+  [op args ctx injected-fns]
+  (case op
+    (= not= < > <= >=)
+    (eval-comparison-form op args ctx injected-fns)
+
+    ;; Logic
+    not  (not (eval-form* (first args) ctx injected-fns))
+    and  (reduce (fn [_ arg]
+                   (let [result (eval-form* arg ctx injected-fns)]
+                     (if result result (reduced nil))))
+                 true
+                 args)
+    or   (some #(eval-form* % ctx injected-fns) args)
+
+    (get get-in first second count
+     keyword str name
+     some? nil? empty? string?)
+    (eval-value-form op args ctx injected-fns)
+
+    (clojure.string/includes? clojure.string/split
+     clojure.string/starts-with? clojure.string/ends-with?
+     clojure.string/lower-case clojure.string/trim)
+    (eval-string-form op args ctx injected-fns)
 
     ;; Unknown op
     ::unknown))
