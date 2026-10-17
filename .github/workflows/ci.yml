@@ -1,240 +1,233 @@
-name: knoxx-ci
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Isolated QA branch variant of registered ci.yml; never application CI credit.
+name: Hosted worker metadata pilot (QA only)
 
 on:
-  pull_request:
-    # Infrastructure admission depends on the current PR body.
-    types: [opened, synchronize, reopened, edited, ready_for_review]
-    branches:
-      - main
-  push:
-    branches:
-      - main
   workflow_dispatch:
     inputs:
       comparison_base_sha:
-        description: Full 40-character commit SHA of the intended comparison base, a proper ancestor of this checkout
+        description: Recorded 40-character comparison SHA; this metadata job does not verify ancestry
         required: true
         type: string
       migration_infrastructure:
-        description: Declare migration infrastructure for this manual run; leave false for product validation
+        description: Keep false for this metadata-only pilot; no product validation or migration runs
         required: false
         default: false
         type: boolean
 
+
 permissions:
   contents: read
 
-env:
-  # ubuntu runners ship a snap-wrapper /usr/bin/chromium-browser that hangs
-  # under CI; point puppeteer-core at the real Chrome binary instead.
-  PUPPETEER_EXECUTABLE_PATH: /usr/bin/google-chrome
-
 jobs:
-  deployment-boundary:
-    name: deployment-boundary
-    runs-on: ubuntu-latest
+  hosted-worker-metadata:
+    name: Selected worker metadata only
+    if: ${{ github.repository_id == '1401249297' && github.event.repository.private == false }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
     steps:
-      - name: Checkout Knoxx
-        uses: actions/checkout@v5
-        with:
-          persist-credentials: false
-      - name: Setup Node.js
-        uses: actions/setup-node@v5
-        with:
-          node-version: 22
-      - name: Prepare checkout verifier Python
-        run: |
-          python3 -m venv "$RUNNER_TEMP/knoxx-qualification-python"
-          "$RUNNER_TEMP/knoxx-qualification-python/bin/python" -m pip install --disable-pip-version-check --no-input 'PyYAML==6.0.2'
-      - name: Reject retired deployment authority
-        run: |
-          node scripts/check-deployment-boundary.mjs --self-test
-          node scripts/check-deployment-boundary.mjs
-          "$RUNNER_TEMP/knoxx-qualification-python/bin/python" scripts/test-production-checkout.py
-          python3 backend/test/python/test_mutation_process.py
-
-  knoxx:
-    name: knoxx (backend + frontend)
-    runs-on: ubuntu-latest
-    timeout-minutes: 45
-
-    services:
-      mongodb:
-        # Policy bootstrap performs transactions and intentionally refuses a
-        # standalone mongod. Atlas Local supplies the same single-node replica
-        # topology used by `pnpm local:up`, so the browser gate exercises the
-        # production persistence contract instead of dying before HTTP bind.
-        image: mongodb/mongodb-atlas-local@sha256:5941a11ca0fa4f4ed7ffc6c476253f95449cd96797fbf66a2deade10f54e0cd5
-        ports:
-          - 27017:27017
-
-    steps:
-      - name: Checkout Knoxx
-        uses: actions/checkout@v5
-        with:
-          fetch-depth: 0
-          persist-credentials: false
-
-      - name: Validate the explicit manual comparison base
-        if: github.event_name == 'workflow_dispatch'
+      - name: Observe selected Linux and Docker metadata without checkout
         env:
-          COMPARISON_BASE_SHA: ${{ inputs.comparison_base_sha }}
+          PILOT_REPOSITORY: ${{ github.repository }}
+          PILOT_REPOSITORY_ID: ${{ github.repository_id }}
+          PILOT_REPOSITORY_PRIVATE: ${{ github.event.repository.private }}
+          PILOT_EVENT: ${{ github.event_name }}
+          PILOT_RUN_ID: ${{ github.run_id }}
+          PILOT_RUN_ATTEMPT: ${{ github.run_attempt }}
+          PILOT_JOB: ${{ github.job }}
+          PILOT_SOURCE_SHA: ${{ github.sha }}
+          PILOT_WORKFLOW_SHA: ${{ github.workflow_sha }}
+          PILOT_WORKFLOW_REF: ${{ github.workflow_ref }}
+          PILOT_RUNNER_ENVIRONMENT: ${{ runner.environment }}
+          PILOT_RUNNER_OS: ${{ runner.os }}
+          PILOT_RUNNER_ARCH: ${{ runner.arch }}
+          PILOT_ADAPTER_SHA256: 8acdfba65abb1c133e4e5cf746a4ab31fad9655bbf6c84291d7fb3ccce92cb44
+          PILOT_COMPARISON_BASE_SHA: ${{ inputs.comparison_base_sha }}
+          PILOT_MIGRATION_INFRASTRUCTURE: ${{ inputs.migration_infrastructure }}
+        shell: bash
         run: |
-          set -euo pipefail
-          if [[ ! "$COMPARISON_BASE_SHA" =~ ^[0-9a-f]{40}$ ]]; then
-            printf 'comparison_base_sha must be a full lowercase 40-character commit SHA.\n' >&2
-            exit 1
-          fi
-          if [[ "$(git rev-parse --verify "${COMPARISON_BASE_SHA}^{commit}")" != "$COMPARISON_BASE_SHA" ]]; then
-            printf 'comparison_base_sha must name an available commit.\n' >&2
-            exit 1
-          fi
-          if [[ "$COMPARISON_BASE_SHA" == "$(git rev-parse HEAD)" ]]; then
-            printf 'comparison_base_sha must precede this checkout.\n' >&2
-            exit 1
-          fi
-          git merge-base --is-ancestor "$COMPARISON_BASE_SHA" HEAD
+          python3 - <<'PY'
+          # SPDX-License-Identifier: GPL-3.0-or-later
+          import datetime, json, math, os, pathlib, platform, re, subprocess, sys
 
-      - name: Setup Java (required by shadow-cljs / Closure Compiler)
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          # Closure Compiler artifacts used by shadow-cljs now require Java 21
-          # (class file version 65).
-          java-version: "21"
+          os.umask(0o077)
+          context_names = {
+              "repository": "PILOT_REPOSITORY", "repositoryId": "PILOT_REPOSITORY_ID",
+              "repositoryPrivate": "PILOT_REPOSITORY_PRIVATE", "event": "PILOT_EVENT",
+              "runId": "PILOT_RUN_ID", "runAttempt": "PILOT_RUN_ATTEMPT", "job": "PILOT_JOB",
+              "runSourceSha": "PILOT_SOURCE_SHA", "workflowSha": "PILOT_WORKFLOW_SHA",
+              "workflowRef": "PILOT_WORKFLOW_REF", "runnerEnvironment": "PILOT_RUNNER_ENVIRONMENT",
+              "runnerOs": "PILOT_RUNNER_OS", "runnerArch": "PILOT_RUNNER_ARCH",
+              "adapterSha256": "PILOT_ADAPTER_SHA256",
+              "declaredComparisonBaseSha": "PILOT_COMPARISON_BASE_SHA",
+              "declaredMigrationInfrastructure": "PILOT_MIGRATION_INFRASTRUCTURE",
+          }
+          context = {key: os.environ.get(name, "") for key, name in context_names.items()}
+          assert all(len(value) <= 512 and "\x00" not in value for value in context.values())
+          assert re.fullmatch(r"[0-9]+", context["runId"]) and re.fullmatch(r"[0-9]+", context["runAttempt"])
+          temporary = pathlib.Path(os.environ["RUNNER_TEMP"])
+          workspace = pathlib.Path(os.environ["GITHUB_WORKSPACE"])
+          assert temporary.is_absolute() and temporary.is_dir() and workspace.is_absolute() and workspace.is_dir()
+          output = temporary / ("hosted-worker-metadata-" + context["runId"] + "-" + context["runAttempt"])
+          output.mkdir(mode=0o700)
+          result = {
+              "schema": "openhax-hosted-worker-selected-metadata/v1",
+              "observedAtUTC": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+              "source": context, "uid": os.geteuid(), "gid": os.getegid(),
+              "hostname": platform.node(), "kernel": platform.release(), "machine": platform.machine(),
+              "python": {"version": platform.python_version(), "executable": sys.executable},
+              "runnerImage": {key: os.environ.get(key, "") for key in ("ImageOS", "ImageVersion")},
+              "raw": {}, "errors": [], "filesystems": [],
+              "limits": "Metadata-only single sample. No model/SDK/production compatibility or runtime admission credit.",
+          }
+          reasons = []
 
-      - name: Setup Clojure CLI
-        uses: DeLaGuardo/setup-clojure@13
-        with:
-          # backend/shadow-cljs.edn runs in :deps mode, so shadow-cljs resolves
-          # its classpath (including the katamorph Git dependency) through
-          # tools.deps and needs the clojure CLI on PATH.
-          cli: '1.12.5.1654'
-          clj-kondo: "2025.07.28"
+          def read_small(path):
+              with pathlib.Path(path).open("rb") as stream:
+                  value = stream.read(4097)
+              if len(value) > 4096:
+                  raise ValueError("Selected kernel metadata exceeds 4096 bytes")
+              return value.decode("utf-8", errors="strict")
 
-      - name: Production mutation evidence verifier contracts
-        run: |
-          python3 -m venv "$RUNNER_TEMP/knoxx-production-evidence-python"
-          "$RUNNER_TEMP/knoxx-production-evidence-python/bin/python" -m pip install --disable-pip-version-check --no-input 'PyYAML==6.0.2'
-          "$RUNNER_TEMP/knoxx-production-evidence-python/bin/python" scripts/test-production-mutation-evidence.py
+          def filesystem(role, path):
+              path = pathlib.Path(path)
+              if not path.is_absolute():
+                  raise ValueError("Selected filesystem path must be absolute")
+              resolved = path.resolve(strict=True)
+              values, identity = os.statvfs(resolved), resolved.stat()
+              row = {"role": role, "requestedPath": str(path), "resolvedPath": str(resolved),
+                     "device": identity.st_dev, "fragmentBytes": values.f_frsize,
+                     "blocks": values.f_blocks, "freeBlocks": values.f_bfree,
+                     "availableBlocks": values.f_bavail,
+                     "availableBytes": values.f_bavail * values.f_frsize}
+              result["filesystems"].append(row)
+              if row["availableBytes"] < 24 * 1024**3:
+                  reasons.append(role + ": actual available bytes below 24GiB")
 
-      - name: Prepare the pinned SDK and Knoxx verification dependencies
-        uses: ./.github/actions/knoxx-setup
-
-      - name: CMS verifier preconditions with installed backend NBB
-        run: python3 scripts/test-cms-verifier-preconditions.py
-
-      - name: Shared markup lint
-        run: pnpm -C backend run lint:shared-markup
-
-      - name: Backend typecheck (shadow-cljs compile app)
-        run: pnpm -C backend run typecheck
-
-      - name: Backend production release
-        run: pnpm -C backend run build
-
-      - name: Production ESM route registration
-        run: pnpm -C backend run test:routes:release
-
-      # Verify the browser against the production backend artifact.
-      # The route proof writes to a separate verification output directory.
-      # Keeping these checks isolated from later coverage and
-      # e2e processes makes the required visual contract deterministic and
-      # lets browser regressions fail fast without weakening the job: every
-      # remaining suite below must still pass before this required check does.
-      - name: Translation review browser contract
-        env:
-          VERIFY_SOURCE_COMMIT: ${{ github.sha }}
-          MONGODB_URI: mongodb://127.0.0.1:27017/knoxx_translation_browser_ci?directConnection=true
-          MONGODB_DB: knoxx_translation_browser_ci
-          KNOXX_SHOT_DIR: ${{ runner.temp }}/knoxx-translation-browser
-          KNOXX_PUBLICATION_CONTENT_ROOT: ${{ runner.temp }}/knoxx-publication-content
-        run: ./scripts/verify-translation-browser-ci.sh
-
-      - name: Upload translation browser storyboard
+          try:
+              expected = {"repository": "riatzukiza/knoxx", "repositoryId": "1401249297",
+                          "repositoryPrivate": "false", "event": "workflow_dispatch",
+                          "runnerEnvironment": "github-hosted", "runnerOs": "Linux", "runnerArch": "X64"}
+              reasons.extend("context mismatch: " + key for key, value in expected.items() if context[key] != value)
+              result["dispatchInputs"] = {"comparisonBaseSha": context["declaredComparisonBaseSha"],
+                                          "migrationInfrastructure": {"true": True, "false": False}.get(context["declaredMigrationInfrastructure"]),
+                                          "limit": "Recorded dispatch inputs only; no checkout or comparison/ancestor validation is performed by this metadata job."}
+              if not re.fullmatch(r"[0-9a-f]{40}", context["declaredComparisonBaseSha"]):
+                  reasons.append("missing full declared comparison-base SHA")
+              if context["declaredMigrationInfrastructure"] != "false":
+                  reasons.append("metadata pilot expects explicit migration_infrastructure=false")
+              if not all(re.fullmatch(r"[0-9a-f]{40}", context[key]) for key in ("runSourceSha", "workflowSha")):
+                  reasons.append("missing exact run/workflow source SHA")
+              if not context["workflowRef"].startswith("riatzukiza/knoxx/.github/workflows/ci.yml@"):
+                  reasons.append("unexpected workflow source path")
+              if not re.fullmatch(r"[0-9a-f]{64}", context["adapterSha256"]):
+                  reasons.append("missing frozen adapter hash")
+              if os.geteuid() == 0:
+                  reasons.append("metadata worker actor is root")
+              release = dict(line.split("=", 1) for line in read_small("/etc/os-release").splitlines() if "=" in line)
+              result["osRelease"] = {key: release.get(key, "").strip('"') for key in ("ID", "VERSION_ID")}
+              if result["osRelease"] != {"ID": "ubuntu", "VERSION_ID": "24.04"} or platform.machine() != "x86_64":
+                  reasons.append("worker OS/architecture differs from selected ubuntu-24.04 x64")
+              result["cpu"] = {"logicalCount": os.cpu_count(), "affinityCount": len(os.sched_getaffinity(0))}
+              if result["cpu"]["affinityCount"] < 4:
+                  reasons.append("fewer than four available CPU affinity slots")
+              memory = {}
+              for line in read_small("/proc/meminfo").splitlines():
+                  key = line.split(":", 1)[0]
+                  if key in ("MemTotal", "MemAvailable", "SwapTotal", "SwapFree"):
+                      result["raw"].setdefault("selectedMeminfoLines", []).append(line)
+                      match = re.fullmatch(r"[A-Za-z]+:\s+([0-9]+) kB", line)
+                      if not match:
+                          raise ValueError("Unexpected selected memory field")
+                      memory[key] = int(match.group(1))
+              if set(memory) != {"MemTotal", "MemAvailable", "SwapTotal", "SwapFree"}:
+                  raise ValueError("Incomplete selected memory fields")
+              result["memoryKiB"] = memory
+              if memory["MemAvailable"] < 10228932:
+                  reasons.append("MemAvailable below unchanged 10228932KiB startup threshold")
+              pressure = read_small("/proc/pressure/memory")
+              result["raw"]["memoryPressure"] = pressure
+              psi = {line.split()[0]: dict(part.split("=", 1) for part in line.split()[1:]) for line in pressure.splitlines()}
+              values = {kind: float(psi[kind]["avg10"]) for kind in ("some", "full")}
+              result["memoryPsiAvg10"] = values
+              if not all(math.isfinite(value) for value in values.values()) or values["some"] > 10 or values["full"] > 5:
+                  reasons.append("memory pressure exceeds unchanged some10/full5 thresholds")
+              membership = read_small("/proc/self/cgroup")
+              own = next(line[3:] for line in membership.splitlines() if line.startswith("0::"))
+              root = pathlib.Path("/sys/fs/cgroup").resolve(strict=True)
+              selected = (root / own.lstrip("/")).resolve(strict=True)
+              if not selected.is_relative_to(root):
+                  raise ValueError("Own cgroup escapes cgroup root")
+              fields = {name: read_small(selected / name) for name in
+                        ("cpu.max", "memory.current", "memory.max", "memory.swap.current", "memory.swap.max", "memory.pressure")}
+              result["ownCgroupV2"] = {"membership": own, "selectedFieldsRaw": fields,
+                                      "limit": "Own cgroup only; no effective ancestor-limit or future container claim."}
+              quota, period = fields["cpu.max"].split()
+              if quota != "max" and int(quota) / int(period) < 4:
+                  reasons.append("own cgroup CPU quota below four CPUs")
+              if fields["memory.max"].strip() != "max" and int(fields["memory.max"]) < 10228932 * 1024:
+                  reasons.append("own cgroup memory ceiling below selected startup headroom")
+              filesystem("runner-temp", temporary)
+              filesystem("workspace", workspace)
+              client = output / "empty-docker-client"
+              client.mkdir(mode=0o700)
+              (client / "config.json").write_text("{}\n")
+              clean = {"PATH": "/usr/bin:/bin", "LANG": "C.UTF-8"}
+              docker = ["/usr/bin/docker", "--host", "unix:///var/run/docker.sock", "--config", str(client)]
+              def docker_selected(label, arguments):
+                  process = subprocess.run(docker + arguments, env=clean, capture_output=True, timeout=10, check=False)
+                  if len(process.stdout) > 8192 or len(process.stderr) > 8192:
+                      raise ValueError("Selected Docker metadata exceeds 8192 bytes")
+                  stdout, stderr = process.stdout.decode("utf-8"), process.stderr.decode("utf-8")
+                  result["raw"][label] = {"exitCode": process.returncode, "stdout": stdout, "stderr": stderr}
+                  if process.returncode:
+                      raise ValueError("Selected Docker metadata query failed: " + label)
+                  return json.loads(stdout)
+              result["dockerServer"] = docker_selected("dockerVersion", ["version", "--format",
+                  '{"version":{{json .Server.Version}},"apiVersion":{{json .Server.ApiVersion}},"os":{{json .Server.Os}},"arch":{{json .Server.Arch}}}'])
+              info = docker_selected("dockerInfoSelected", ["info", "--format",
+                  '{"dataRoot":{{json .DockerRootDir}},"cgroupVersion":{{json .CgroupVersion}},"cgroupDriver":{{json .CgroupDriver}}}'])
+              result["dockerSelected"] = info
+              if info["cgroupVersion"] != "2":
+                  reasons.append("Docker does not report cgroup2")
+              filesystem("docker-data-root", info["dataRoot"])
+          except Exception as error:
+              result["errors"].append({"type": type(error).__name__, "message": str(error)[:512]})
+              reasons.append("selected metadata observation incomplete")
+          finally:
+              result["thresholds"] = {"eachFilesystemAvailableBytes": 24 * 1024**3,
+                                      "MemAvailableKiB": 10228932, "memoryPsiSomeAvg10Max": 10,
+                                      "memoryPsiFullAvg10Max": 5, "minimumCpuAffinity": 4}
+              result["classification"] = "HOLD" if reasons else "METADATA_THRESHOLDS_MET"
+              result["reasons"] = reasons
+              result["completedAtUTC"] = datetime.datetime.now(datetime.timezone.utc).isoformat()
+              encoded = (json.dumps(result, indent=2, sort_keys=True) + "\n").encode()
+              if len(encoded) > 65536:
+                  raise ValueError("Finite metadata artifact exceeds 64KiB")
+              with (output / "measurement.json").open("xb") as stream:
+                  stream.write(encoded)
+              print(encoded.decode(), end="")
+          PY
+      - name: Preserve finite selected measurements even on HOLD
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # official current v4
         with:
-          name: knoxx-translation-browser-storyboard
-          path: ${{ runner.temp }}/knoxx-translation-browser
-          # A browser-contract failure still creates this directory and must
-          # upload its evidence. An earlier setup failure has no browser
-          # evidence; preserve that original failure instead of adding a
-          # misleading second artifact error.
-          if-no-files-found: warn
-
-      - name: Backend tests + coverage (cljs.test via shadow-cljs + c8)
-        run: pnpm -C backend run test:coverage
-
-      # Boots a real Fastify app on an ephemeral port and drives the MCP tool
-      # surface over HTTP. Hermetic — the policy context and fetch are supplied
-      # by the harness — except the sandbox tools, which need a real docker
-      # daemon. Runners have one, so absence is a failure here rather than a
-      # silent skip: a skipped sandbox test reads exactly like a passing one.
-      - name: Backend e2e (real server, MCP tool surface)
-        env:
-          KNOXX_E2E_REQUIRE_DOCKER: "true"
-        run: pnpm -C backend run test:e2e
-
-      - name: Upload backend coverage artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: knoxx-backend-coverage
-          path: backend/coverage
+          name: hosted-worker-metadata-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/hosted-worker-metadata-${{ github.run_id }}-${{ github.run_attempt }}/measurement.json
           if-no-files-found: error
-
-      - name: Backend coverage summary
-        run: node --input-type=module -e "import fs from 'node:fs'; const p='backend/coverage/coverage-summary.json'; const s=JSON.parse(fs.readFileSync(p,'utf8')).total; const f=(x)=>x?.pct??0; console.log('Backend coverage — Lines:',f(s.lines),'%','Statements:',f(s.statements),'%','Functions:',f(s.functions),'%','Branches:',f(s.branches),'%');"
-
-      - name: Frontend typecheck (tsc)
-        run: pnpm -C frontend run typecheck
-
-      - name: Frontend CLJS lint
-        env:
-          KNOXX_LINT_BASE_SHA: "${{ github.event_name == 'workflow_dispatch' && inputs.comparison_base_sha || github.event.pull_request.base.sha || github.event.before || 'HEAD^' }}"
-        run: pnpm -C frontend run lint:cljs:changed
-
-      - name: Frontend migration manifest and ratchets
-        env:
-          KNOXX_MIGRATION_BASE_SHA: "${{ github.event_name == 'workflow_dispatch' && inputs.comparison_base_sha || github.event.pull_request.base.sha || github.event.before || 'HEAD^' }}"
-          KNOXX_MANUAL_MIGRATION_INFRASTRUCTURE: ${{ inputs.migration_infrastructure }}
-        run: |
-          KNOXX_MIGRATION_INFRASTRUCTURE="$(node -e '
-            const fs = require("node:fs");
-            const event = JSON.parse(fs.readFileSync(process.env.GITHUB_EVENT_PATH, "utf8"));
-            const declared = (event.pull_request?.body || "").split(/\r?\n/)
-              .some(line => line.trim() === "Migration infrastructure: yes");
-            const infrastructure = process.env.GITHUB_EVENT_NAME === "workflow_dispatch"
-              ? process.env.KNOXX_MANUAL_MIGRATION_INFRASTRUCTURE === "true"
-              : process.env.GITHUB_EVENT_NAME !== "pull_request" || declared;
-            console.log(infrastructure);
-          ')"
-          export KNOXX_MIGRATION_INFRASTRUCTURE
-          pnpm -C frontend run migration:check
-
-      - name: Upload frontend migration manifest
+          retention-days: 1
+          compression-level: 0
+          overwrite: false
+          include-hidden-files: false
+      - name: Retain HOLD as a failed resource classification
         if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: knoxx-frontend-migration-manifest
-          path: frontend/migration/manifest.ndedn
-          if-no-files-found: error
-
-      - name: Frontend CLJS tests
-        run: pnpm -C frontend run test:cljs
-
-      - name: Frontend production Shadow release (zero warnings)
-        run: pnpm -C frontend run build:cljs
-
-      - name: Frontend tests + coverage (vitest)
-        run: pnpm -C frontend run test:coverage
-
-      - name: Upload frontend coverage artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: knoxx-frontend-coverage
-          path: frontend/coverage
-          if-no-files-found: error
-
-      - name: Coverage summary
-        run: node --input-type=module -e "import fs from 'node:fs'; const p='frontend/coverage/coverage-summary.json'; const s=JSON.parse(fs.readFileSync(p,'utf8')).total; const f=(x)=>x?.pct??0; console.log('Lines:',f(s.lines),'%','Statements:',f(s.statements),'%','Functions:',f(s.functions),'%','Branches:',f(s.branches),'%');"
+        env:
+          PILOT_OUTPUT: ${{ runner.temp }}/hosted-worker-metadata-${{ github.run_id }}-${{ github.run_attempt }}/measurement.json
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json, os, pathlib, sys
+          value = json.loads(pathlib.Path(os.environ["PILOT_OUTPUT"]).read_text())
+          print(value["classification"] + ": metadata-only observation; no model execution or application CI credit")
+          sys.exit(0 if value["classification"] == "METADATA_THRESHOLDS_MET" else 1)
+          PY
