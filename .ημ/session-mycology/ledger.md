@@ -1097,3 +1097,12 @@
   spore: none
   receipt-refs: sha256:888ec80a55de22aa930fe7f72ca82cc2378ec26d8f778ea40488ad72831e2938,cc98929c668aba6c483ce91665428d6df9090511
   note: Actual caller wiring needs a real omission kill: retain complete native inventory task through the actual page boundary, settle success/error with B absent, and await legacy/catch/finally. First unqualified run exposed async higher-order argument lifting: prebind pure arguments before retaining a native Promise. Pinned source and compiled shape confirmed the causal correction, then four scoped assertion failures and489/2698 restored GREEN. Preserve first failure and old browser57FAIL. Candidate0; no spore or promotion.
+- ts: 2026-10-17T01:25:24.434234178Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-CMS-controller-integration-over8cd5-v1
+  task: CMS backend source queue two degraded boundary observations with public native-task TDD
+  p-efficiency: 0.92
+  p-friction: 0.15
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: sha256:75c0917a0275d25ba33c132c4e00b0e2de78637334be20bc893ac8b447844930,1f533d5343bcf56fda038c2180aa095ff9ed1549
+  note: Real public queue controls preserve original Error and nil rejection, eagerly queued successor and identity-fenced tail ownership when observer records, is absent, throws Error or nil. Unchanged-source baseline passes; missing-observation RED gives six exact record-only failures, then GREEN2175/12470/0/0 and one servercompile0warnings.210 inherited lint warnings and31 remaining boundary failures stay actual failed global gates. Keep deliberate refusal fixture output and tiny read-only artifact count-selector mistake honest; no QA replay or product/artifact restoration. Candidate0, no new spore or promotion.
