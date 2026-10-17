@@ -4,7 +4,7 @@ labels: "tasks, 5sp, has-parent, regression, translations, frontend, cms"
 dependency: ["knoxx-translation-review-legacy-fixture-auth-preflight"]
 parent: "knoxx-translation-review-chat-panel"
 type: "task"
-write-id: "1792099190069-0.kvpmgitgtgitorex9xv"
+write-id: "1792199283389-0.khkfzngzh9hygd1x1v"
 points: "5"
 title: "Keep translation review mutations bound to the current view"
 priority: "P0"
@@ -291,6 +291,10 @@ A must install or clear no current state before B's held responses are released.
 This browser schedule does not supply the separate before-B causal evidence;
 that belongs to the actual-wiring native-continuation controls above. Polling or
 a later loading render cannot replace the request-entry DOM checkpoint.
+These checkpoint/hold clauses govern the future browser-harness repair below;
+the current experimental artifact does not assert them and remains failed.
+No activation occurs before independent/native acceptance of this evidence
+assignment, and completion still requires the repaired schedule to pass.
 Filter changes invalidate only input-dependent
 loads, retaining a valid same-project manifest without refetch. Add a causal
 pending-operation -> unmount -> success/error/finally matrix and an unmount ->
@@ -508,5 +512,7 @@ Root-reviewed local planning correction for native Codex5539062909/current0429, 
 Root-reviewed local planning correction for Codex5539622567/currente9 root4288059104: independently require ONE real credential-free POST /api/publications/translations/dispatch using the frontend publication-only selector from authenticated run-owned resource inventory, source/route/auth/store readiness, no cookies/auth/API/identity headers or redirects,401/no_session and unchanged hidden owned writer state before interception/resource cleanup. Registered route/harness controls separately prove zero queue/agent/event-turn writer calls; live snapshots do not imply call-level proof. Add dispatch200/malformed/unavailable/missing-code and changed-state/writer adverse controls. Keep dispatch count separate from legacy2POST+detailGET/SFT/resource-review probes and preserve zero-forwarded synthetic Dispatch/Retry counts, original failure/checked cleanup. Do not run the standalone script real dispatch/provider steps. Samecore5/deps/status/history/18total; no application/test/auth/model/runtime/public effects.
 
 Root-reviewed local planning correction for Codex5539948033/current1c6282bd roots4288291874 and4288291902: explicitly cover inventory omission of current work with synchronous first-render exclusion of vanished detail/segment/form/feedback/actions before passive cleanup and zero stale submit; preserve refreshed list/current context without ambient fallback. Version effective filter transitions (including es->fr->es) so an earlier export cannot regain shared feedback authority by value equality; retain one original captured download/no reissue and add causal callback/browser schedules. Same existing core5 and dependency chain18total; preserve metadata/history and qualified earlier dispositions. Exact three-BODY patch11222B SHA41aec60aa05bcf77506315baa6bfb262cf5ff2811be06f73efc730089b289980. No application/test/auth/browser/model/runtime/readiness/release or public effect.
+
+Planning provenance correction for native PR16 review5555208222 on660a366be824023f01675bdb78fd8428d68f7de3, roots4300597378/4300597381/4300597382. Record the actual existing-core5 evidence-method BODY amendment delivered by source d9a1fadc5b57f97dcae3d988474eda78b5ebbe7d plus separate provenance660a366b, which had no matching native kanban.comment event. Preserve the original requirement: the actual project boundary synchronously invalidates old inventory/manifest/detail authority. The current experimental browser case57 remains FAILED and has no same-held-A B-inventory fetch-entry checkpoint or held B responses. The clarified checkpoint/hold clauses are acceptance criteria for the future harness repair after independent/native method acceptance, and the owner cannot complete until that repaired schedule passes. Actual private manifest488 and inventory489 omission controls remain separate local evidence, not browser/native-planning acceptance. This comment records chronology on the same breakdown/P0/5point owner; it does not transition status or change points/dependencies. Preserve all historical events/comments and failed evidence. Re-emit the original d9a1 private receipt through the repository-used canonical Receipt River event wrapper; preserve the immutable bare compatibility record and its original SM hash reference, with the new addressable event linked to that original source/hash. No application/browser/fixture/model/account/production effect or release waiver.
 
 ---
