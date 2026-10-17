@@ -323,50 +323,62 @@
        "\n\n"
        content))
 
+(defn- string-preview-text
+  [value]
+  (let [trimmed (str/trim (str value))
+        lowered (str/lower-case trimmed)]
+    (cond
+      (str/blank? trimmed) ""
+      (or (= lowered "null") (= lowered "undefined")) ""
+      :else (or (summarize-json-string value)
+                trimmed))))
+
+(defn- runtime-preview-text
+  [value]
+  (try
+    (let [clj-value (js->clj value :keywordize-keys true)]
+      (or (summarize-structured clj-value)
+          (markdown-bullets clj-value)
+          (let [json (.stringify js/JSON value nil 2)]
+            (if (string? json) json (str value)))))
+    (catch :default _
+      (str value))))
+
+(defn- unclipped-preview-text
+  [value]
+  (cond
+    (backend-http/no-content? value) ""
+    (string? value) (string-preview-text value)
+    (or (map? value) (vector? value) (seq? value))
+    (or (summarize-structured value)
+        (markdown-bullets value)
+        (pr-str value))
+    :else (runtime-preview-text value)))
+
+(defn- empty-preview-fallback
+  [value max-chars]
+  ;; Guaranteed fallback: for non-nil, non-scalar objects, always produce
+  ;; a JSON preview so callers (e.g. tool input_preview) never get nil
+  ;; for a real value that simply didn't match preferred keys.
+  (when (and (not (nil? value))
+             (not= value js/undefined)
+             (not (string? value))
+             (not (number? value))
+             (not (boolean? value)))
+    (try
+      (let [json (.stringify js/JSON value)]
+        (when (and (string? json) (not (str/blank? json)))
+          (let [[jt jtrunc] (clip-text json max-chars)]
+            (if jtrunc (str jt "…") jt))))
+      (catch :default _ nil))))
+
 (defn value->preview-text
   ([value] (value->preview-text value 800))
   ([value max-chars]
-   (let [raw (cond
-               (backend-http/no-content? value) ""
-               (string? value)
-               (let [trimmed (str/trim (str value))
-                     lowered (str/lower-case trimmed)]
-                 (cond
-                   (str/blank? trimmed) ""
-                   (or (= lowered "null") (= lowered "undefined")) ""
-                   :else (or (summarize-json-string value)
-                             trimmed)))
-
-               (or (map? value) (vector? value) (seq? value))
-               (or (summarize-structured value)
-                   (markdown-bullets value)
-                   (pr-str value))
-
-               :else
-               (try
-                 (let [clj-value (js->clj value :keywordize-keys true)]
-                   (or (summarize-structured clj-value)
-                       (markdown-bullets clj-value)
-                       (let [json (.stringify js/JSON value nil 2)]
-                         (if (string? json) json (str value)))))
-                 (catch :default _
-                   (str value))))
+   (let [raw (unclipped-preview-text value)
          [text truncated] (clip-text raw max-chars)]
      (if (str/blank? text)
-       ;; Guaranteed fallback: for non-nil, non-scalar objects, always produce
-       ;; a JSON preview so callers (e.g. tool input_preview) never get nil
-       ;; for a real value that simply didn't match preferred keys.
-       (when (and (not (nil? value))
-                  (not= value js/undefined)
-                  (not (string? value))
-                  (not (number? value))
-                  (not (boolean? value)))
-         (try
-           (let [json (.stringify js/JSON value)]
-             (when (and (string? json) (not (str/blank? json)))
-               (let [[jt jtrunc] (clip-text json max-chars)]
-                 (if jtrunc (str jt "…") jt))))
-           (catch :default _ nil)))
+       (empty-preview-fallback value max-chars)
        (if truncated
          (str text "…")
          text)))))
