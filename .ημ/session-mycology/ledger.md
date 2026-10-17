@@ -634,3 +634,12 @@
   spore: none
   receipt-refs: .ημ/receipts.edn#6b4466cc-e247-43a5-b9c1-11183d3c6576
   note: Source7adf11002889e11abb036627063b870dba73a6dd; nativeCodex5540235261/root4288525597. Exact fixture-entry strict assertion with each forbidden-category actual-checker controls, missing/unreadable refusal, unchanged legacy allowlist. Samefixture5/18points/history; oneBODY/nativeevent,2647otherinputs preserved. NativeSMefefc438-582a-4058-9553-7bda02916712. Canonical parser/custody only; tests/implementation/public/runtime remain unexecuted. Candidate0/no spore.
+- ts: 2026-10-17T00:44:36.825402592Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-core5-evidence-amendment-over03fc-PREP-v1
+  task: Existing core5 explicit evidence-method amendment on accepted personal PR16 planning source
+  p-efficiency: 0.88
+  p-friction: 0.32
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: sha256:a42477155f6b7f0ebe45291fc9040b194a01b28c55c233ba239c0d34d4339b8f,d9a1fadc5b57f97dcae3d988474eda78b5ebbe7d,03fc4d8e7bb6cce4634393cc01be5e60b9be1db4
+  note: A direct native continuation control and a real browser scheduling trace prove different things. Preserve the synchronous cancellation property while explicitly reviewing any evidence-method change. Current experimental browser case57 lacks the same-schedule B-fetch DOM checkpoint and held B responses; neither other scenarios nor later A-last traces fill it. Carry only two body hunks over accepted03fc, preserve its breakdown metadata/history, retain failed evidence and obtain independent native planning acceptance before predicate/completion changes. This private card carrier runs no application tests or browser. Earlier inventory no-counter failure remains historical even if its separately owned successor later qualifies. Portable candidate0; no spore or promotion.
