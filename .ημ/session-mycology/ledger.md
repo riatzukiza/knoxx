@@ -1340,3 +1340,12 @@
   spore: none
   receipt-refs: 9d2ab78e6fc4bc5b7401bcc9bbb5b5491d235614dc3a1b0d4e02087bee18df25
   note: A caller Reduced default must stay outside alias-search reduction; source peer caught the private reducer defect before effects. Actual public old-product T tests and full source/artifact custody preceded the exact two-path V3 extraction. Preserve live Var lookup, false/nil/default identity and native effect order; partial static160 warnings stays FAIL. P hosted runtime remains pending. No spore or global/readiness/deployment promotion.
+- ts: 2026-10-17T20:34:08.763254142Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-full-CI-workflow-repair-over933-v1
+  task: Isolate reviewed ready-output projection; retain exact public behavior and159warningFAIL
+  p-efficiency: 0.85
+  p-friction: 0.2
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: b880fe64-f0f4-438e-a078-980dab0135cb
+  note: Small pure same-namespace extraction keeps original ready/not-ready data, eager order and unchanged public tests. Native owner scope before source; owning0E0W and global160to159/native2FAIL are exact static evidence, not runtime verification. Preserve the env-isolation commit failure and correct actual native ABI rather than replaying effects. Hosted backend compilation/tests/server remain pending. No spore or promotion.
