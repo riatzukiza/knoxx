@@ -1223,3 +1223,12 @@
   spore: none
   receipt-refs: df1154cf-d647-4038-ab51-278f458efcaf
   note: Separate doc metadata from executable forms. Three precise API docstrings plus verbatim dated rationale remove three measured span warnings while preserving all bodies/arities/validation/assertions. Owning6→3 and global175→172 both retain native2FAIL. Body-driven remaining warnings require real later refactoring. No behavioral/runtime PASS transfer; no spore.
+- ts: 2026-10-17T16:34:12.683147857Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-full-CI-workflow-repair-over933-v1
+  task: Name approval request and dependency fixture boundaries while preserving all test behavior
+  p-efficiency: 0.92
+  p-friction: 0.12
+  p-skill-candidate: 0.08
+  spore: none
+  receipt-refs: 4e37c54e-8f18-4f4e-ad81-fa23a0ee4e77
+  note: Extract actual cohesive test setup boundaries without changing test/assertion bytes or effect ordering. Measure owning1→0 and full172→171/native2FAIL; correct unobserved predicted file-length warning rather than manufacture retained evidence. Source-only static result; coherent runtime qualification remains pending. No spore.
