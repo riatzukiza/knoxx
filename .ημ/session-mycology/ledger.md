@@ -1304,3 +1304,12 @@
   spore: none
   receipt-refs: 950673af-1e1f-47b3-bfa2-637b8da86402
   note: Pure map assembly boundary removes actual owning1W and registered167 to166W, native2FAIL retained. Preserve complete inline rationale, mutable public Var lookup/effect order and existing tests. Original private syntax refusal retained before any source effect. Full defn span includes docs, so comment relocation was withdrawn without application. Coherent successor full-product CI planned; no runtime credit from older51bda, no spore/promotion.
+- ts: 2026-10-17T18:43:30.885655593Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-full-CI-workflow-repair-over933-v1
+  task: Preserve public preview behavior while separating normalization and fallback
+  p-efficiency: 0.89
+  p-friction: 0.12
+  p-skill-candidate: 0.0
+  spore: none
+  receipt-refs: ec6f4a98-2d97-4032-b67e-e3bb9d361f70
+  note: Actual one-source public preview responsibility split removes one owning/globalspan warning; global166to165W/0E/native2FAIL retained, filelength/graph52 remain. Expanded lexical tokens/sourceoutsideform/existing public tests held. Native existing source-owner scope precedes effect and in_progress/P1/5 held. Coherent successor runtime pending; isolated templateT/current6e48CI source-specific. No new behavior, mirror tests, suppression/config/interop expansion, spore/promotion or rollout.
