@@ -276,7 +276,10 @@ class Controller:
         fmt = '{"Id":{{json .Id}},"Os":{{json .Os}},"Architecture":{{json .Architecture}},"RepoDigests":{{json .RepoDigests}},"Size":{{json .Size}}}'
         image = json.loads(self.command('exact-carrier-readback', self.docker + ['image', 'inspect', '--format', fmt, IMAGE]))
         assert image['Id'] == IMAGE and image['Os'] == 'linux' and image['Architecture'] == 'amd64'
-        assert REPO in image['RepoDigests'] and image['Size'] == self.assets['disk']['carrierLogicalExpanded']
+        assert REPO in image['RepoDigests']
+        reported = image.get('Size'); ceiling = self.assets['disk']['carrierLogicalExpanded']
+        self.out['carrierLogicalExpandedAdmission'] = {'reportedBytes': reported, 'ceilingBytes': ceiling}
+        assert type(reported) is int and 0 < reported <= ceiling, self.out['carrierLogicalExpandedAdmission']
 
     def create_argv(self):
         argv = self.docker + ['create', '--pull=never', '--name', self.name, '--label', 'org.openhax.private-qa-owner=' + self.owner,

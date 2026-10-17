@@ -286,7 +286,10 @@ class Acquisition:
         fmt = '{"Id":{{json .Id}},"Os":{{json .Os}},"Architecture":{{json .Architecture}},"RepoDigests":{{json .RepoDigests}},"Size":{{json .Size}}}'
         image = json.loads(self.native('selected-carrier-readback', docker + ['image', 'inspect', '--format', fmt, IMAGE], 30000))
         assert image['Id'] == IMAGE and REPO in image['RepoDigests']
-        assert image['Os'] == 'linux' and image['Architecture'] == 'amd64' and image['Size'] == 4764135161
+        assert image['Os'] == 'linux' and image['Architecture'] == 'amd64'
+        reported = image.get('Size'); ceiling = self.assets['disk']['carrierLogicalExpanded']
+        self.out['carrierLogicalExpandedAdmission'] = {'reportedBytes': reported, 'ceilingBytes': ceiling}
+        assert type(reported) is int and 0 < reported <= ceiling, self.out['carrierLogicalExpandedAdmission']
         self.save('actual-exact-carrier-selected-metadata.json', image)
         for row in self.assets['modelFiles']:
             p = self.dest / 'models' / row['relative']

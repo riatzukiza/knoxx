@@ -4,13 +4,13 @@
   "bundleFiles": [
     {
       "relative": "controller.py",
-      "bytes": 33341,
-      "sha256": "8019fc4f4c4cc2d5885076565c5062c07dfc28206e9c5c7ffdc7af109299bb3c"
+      "bytes": 33585,
+      "sha256": "003d515d905612912dde357d4449e243b5c845da8288a3d7e70abbf9af41d42d"
     },
     {
       "relative": "acquire-assets.py",
-      "bytes": 18614,
-      "sha256": "a591b69de2ffa00d4b6bd7a00b2648e1fc52abe1aea42f8595014d183261cd9d"
+      "bytes": 18893,
+      "sha256": "219f641fc72319ea7cb3c9131b21bd55ee9f830db302e4881380e9d52c114868"
     },
     {
       "relative": "portable-assets.json",
