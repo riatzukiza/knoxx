@@ -1358,3 +1358,12 @@
   spore: none
   receipt-refs: b863c05e-b5f1-4914-8f1c-6e7343be8e8b
   note: Keep raw adapters and long security rationale untouched when a pure finite extraction cannot clear their warning honestly. Exact inverse and public-boundary tests preserve order, errors, aliases and nil/false/zero. Native complete-file owning1 and global159to155/native2FAIL are actual static evidence; selected4to0 is not a full-file PASS. Current24e hosted runtime and QAref remain isolated; new-source runtime pending. No spore.
+- ts: 2026-10-17T21:03:14.997252771Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-full-CI-workflow-repair-over933-v1
+  task: Separate marker and policy decisions; retain exact27arm semantics and global152FAIL
+  p-efficiency: 0.9
+  p-friction: 0.1
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: 37a76ef5-1137-4e1a-a343-15c0cd6a6f11
+  note: Named pure responsibilities preserve marker content evaluation order, evaluator short-circuit/default behavior and fulfillment missing/nil semantics. Complete source inverses and27arm coverage support conservation; actual global155to152/native2FAIL keeps all other diagnostic rows exact. A missing direct evaluator runtime test reference stays an explicit coverage limit, not repaired by unrelated tests or a private export. Coherent successor runtime pending; stop further source proposals. No spore.
