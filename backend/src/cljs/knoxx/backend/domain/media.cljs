@@ -2,6 +2,7 @@
   "Shared media infrastructure: workspace path resolution, temp files,
    mime-type detection, data-URL decoding, and source loading."
   (:require [clojure.string :as str]
+            [knoxx.backend.domain.media.result :as media-result]
             [knoxx.backend.infra.document-state :refer [normalize-relative-path]]
             [knoxx.backend.domain.text :refer [tool-text-result]]
             [knoxx.backend.infra.actor.credentials :as actor-credentials]
@@ -377,11 +378,8 @@
         _ (await (exec-file-async "ffmpeg" args #js {:timeout 120000 :maxBuffer 1048576}))
         buffer (await (fs-read-file! fs output-path))
         filename (str base-name "-" label ".png")
-        part {:type "image"
-              :data (buffer->data-url buffer "image/png")
-              :mimeType "image/png"
-              :filename filename
-              :size (.-length buffer)}]
+        part (media-result/content-part "image" (buffer->data-url buffer "image/png")
+                                         "image/png" filename (.-length buffer))]
     (tool-text-result
      (str "Rendered " label " for " (or (:filename source) (:relative source) raw-source) ".")
      {:source raw-source

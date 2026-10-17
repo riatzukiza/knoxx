@@ -1,7 +1,7 @@
 ---
 category: "tasks"
 labels: ["tasks", "5sp"]
-write-id: "1792276121828-0.nwi3fdkdvrsdro6amc"
+write-id: "1792276324435-0.y6hwdhumuqpwce38bzn"
 points: "5"
 source: "specs/tasks/knoxx-backend-lint-async-workflows-src.md"
 title: "Knoxx Backend Lint — Async Workflow Refactor for Source Namespaces"
@@ -214,5 +214,17 @@ This narrow correction (patch SHA256 b870a8f318e70c2846d189e4c326f324328b023feec
 Move exactly three newly introduced pure legacy user/assistant/reasoning graph parameter constructors, with their original ordered map bodies, into that portable decoded-data shape namespace. Qualify only their three owning calls. Keep every public event factory, guard, lazy/conditional call position and all quality/time fallback-bearing helpers in the existing CLJS owner. New internal CLJC namespace has no runtime imports, clock, I/O, provider, schema or test/export seam. The original seven other target extractions and all existing tests stay exact; direct private-auth/sink/enabled-legacy coverage is still not established by source conservation.
 
 After separate root admission, append this corrective scope text once through official Rheos with exact ACK/readback and original history; apply only the two corrected existing postimages plus explicit new shape path, preserving the other four admitted product files. Run unchanged complete-seven-file owning and full registered static once for the corrected source. Expected0E8W/native2 and global0E142W/native2 remain predictions. Refuse new causes/errors; keep actual touched-file coordinates and retained file-length failure, with all outside-seven-file rows/locations exact. Commit seven product paths plus the two native owner/event paths explicitly, then separate canonical RR/portableSM with failure references/no spore. Coherent backend typecheck/compile-test/server/full suites and every final release gate remain required. No comment replay, source reset, config/checker/policy/model/controller change, public/QA/refpush/dispatch/PR/review/merge/adoption/deploy/DB/PM2/account/spend effect.
+
+Finite decoded media result continuation over 0e05f8e90fe3d6e15b1d0c3567f97d4d7d5e8426, under the existing in_progress/P1/5 source owner. This continues the current source responsibility cleanup without a status, priority, points, dependency, readiness, planning, or completion change. Preserve every historical card/event/receipt byte.
+
+Exact patch SHA256 0331962cbbf3ec77db5041c129e008051f2813a09ea4f12f155d9eecbbc7cd0d changes backend/src/cljs/knoxx/backend/domain/media.cljs, domain/media/workspace.cljs, and domain/media/blaze.cljs, and adds the portable domain/media/result.cljc. Extract only already-decoded content-part maps, attachment labels, and Blaze request trace/completion/reply data. All original public definitions/arities and direct tool-text-result lookup remain. Original p/let binding names/count/order remain; the pure message/details projection is assembled in an ordinary final let before the existing direct formatter call.
+
+Native getters, JSON/buffer encoding, authentication, filesystem/process/provider operations, on-update/log effects, request/fallback timing, response/write order, retry/refusal rules and timeouts remain in owners. This ordinary decoded-data equivalence supplies no arbitrary effectful ILookup/core-Var redefinition guarantee. Leave resolve-workspace-media-path, load-media-source!, Blaze build-body and attempt-generation! spans, and existing Blaze file length unchanged.
+
+Static verification is exactly one complete four-file owning lint and one full registered backend lint after exact application, comparing the actual prior measured successor rows against removal of only the three selected span causes. Preserve all remaining FAIL results, complete outside-four-file rows/locations, and raw retained touched-file coordinates. Three predicted removals are not measured PASS before execution. No checker, threshold, ignore, suppression, fixture, assertion, test registration, package or workflow change.
+
+Raw source inverse and read-without-evaluation helper expansion preserve original forms; they provide no compiled/runtime credit. Existing local mock HTTP/FS Blaze public tests stay intact. No dedicated direct attach-execute/audio-result assertion was established; live-provider integration remains opt-in and provides no live credit. Full coherent normal backend typecheck/compile-test/server and applicable runtime gates remain required after composed source freezes. No local JVM/compiler/model/QA dispatch, public ref/PR, DB, PM2, provider/account or deployment effect is part of this source/static slice.
+
+After actual static cause conservation, use one explicit six-path source/card/event commit and a separate canonical Receipt River plus portable Session Mycology two-path provenance commit. New result.cljc alone is permitted as untracked between exclusive creation and staging; all other unexpected source/index/untracked/ref drift refuses. Unknown mutation outcomes stop for read-only reconciliation without replay.
 
 ---

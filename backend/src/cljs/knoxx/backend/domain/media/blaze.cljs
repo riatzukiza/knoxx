@@ -1,6 +1,7 @@
 (ns knoxx.backend.domain.media.blaze
   "BlazeAPI-backed media and chat generation tools."
   (:require [clojure.string :as str]
+            [knoxx.backend.domain.media.result :as media-result]
             [promesa.core :as p]
             [knoxx.backend.infra.auth.authz :refer [ctx-tool-allowed?]]
             [knoxx.backend.domain.text :refer [tool-text-result]]
@@ -581,20 +582,9 @@
         output-path (media/normalize-tool-path-arg (aget params "output_path"))
         _api-key (or (proxx-api-key config)
                      (throw (js/Error. (str tool-name ": PROXX_AUTH_TOKEN/PROXY_AUTH_TOKEN not configured for Proxx-authenticated Blaze proxying"))))
-        log-context {:tool tool-name
-                     :tool_call_id (blank->nil tool-call-id)
-                     :modality modality
-                     :explicit_model (boolean requested-model)
-                     :candidate_models models
-                     :prompt_chars (count prompt)
-                     :output_path output-path
-                     :endpoint (case modality
-                                 "image" "/v1/images/generations"
-                                 "video" "/v1/videos/generations"
-                                 "music" "/v1/music/generations"
-                                 "tts" "/v1/audio/speech"
-                                 "/v1/chat/completions")
-                     :proxx_base_url (proxx-base-url config)}]
+        log-context (media-result/blaze-context tool-name (blank->nil tool-call-id)
+                                                modality (boolean requested-model) models
+                                                (count prompt) output-path (proxx-base-url config))]
     (log-info! "execute-start" log-context)
     (maybe-tool-update! on-update (str "Proxx Blaze " modality " generation via " (str/join ", " models) "…"))
     (p/let [result (attempt-generation! config params modality prompt models [] log-context)
@@ -604,31 +594,11 @@
             asset-text (str text "\n" (pr-str payload))
             saved (maybe-save-asset! runtime config modality output-path asset-text payload)
             response-artifact (when-not saved (write-response-json! runtime config payload))
-            _ (log-info! "execute-complete" (assoc log-context
-                                                   :model model
-                                                   :attempts (:attempts result)
-                                                   :saved_asset (boolean saved)
-                                                   :asset_workspace_path (:workspace-path saved)
-                                                   :response_artifact_workspace_path (:workspace-path response-artifact)))]
-      (tool-text-result
-       (str "Proxx Blaze " modality " response from " model
-            (if saved
-              (str ". Saved asset: " (:workspace-path saved) " (" (:bytes saved) " bytes). Use workspace_media.attach to embed it.")
-              (str ". No media URL/data URL was found; saved JSON response: " (:workspace-path response-artifact) ".")))
-       (cond-> {:provider "blaze"
-                :via "proxx"
-                :endpoint (case modality
-                            "image" "/v1/images/generations"
-                            "video" "/v1/videos/generations"
-                            "music" "/v1/music/generations"
-                            "tts" "/v1/audio/speech"
-                            "/v1/chat/completions")
-                :modality modality
-                :model model
-                :attempts (:attempts result)
-                :response_text text}
-         saved (assoc :asset saved)
-         response-artifact (assoc :response_artifact response-artifact))))))
+            _ (log-info! "execute-complete"
+                         (media-result/blaze-completion log-context model (:attempts result) saved response-artifact))]
+      (let [[message details] (media-result/blaze-generation-result
+                               modality model (:attempts result) text saved response-artifact)]
+        (tool-text-result message details)))))
 
 (def blaze-generate-tool
   (partial create-tool-obj
