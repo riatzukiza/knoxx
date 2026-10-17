@@ -412,8 +412,8 @@
     },
     {
       "relative": "probe-ollama.js",
-      "bytes": 32534,
-      "sha256": "93e3ca2950bb4af4b3b79bdb9eaf2db3b2e8dedb25f170d41af531604cb9e752"
+      "bytes": 32408,
+      "sha256": "b8997e6eb55daa560457c0c8f99bdd3236d362bb7f2c282b9450220a694a3266"
     },
     {
       "relative": "observe-original-probe.cjs",

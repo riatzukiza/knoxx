@@ -331,6 +331,14 @@ class Controller:
         self.save(name + '.json', {'atUTC': NOW(), 'containerState': v[7], 'cgroup': values})
         assert int(values['memory.max']) == CEILING and int(values['memory.swap.max']) == int(values['memory.swap.current']) == 0
         quota, period = values['cpu.max'].split(); assert int(quota) / int(period) == 4
+        events = {}
+        for line in values['memory.events'].splitlines():
+            key, value = line.split()
+            assert key not in events and re.fullmatch(r'[0-9]+', value), 'Unknown memory.events format'
+            events[key] = int(value)
+        assert {'oom', 'oom_kill'} <= events.keys(), 'Missing OOM resource counters'
+        assert all(events.get(key, 0) == 0 for key in ['oom', 'oom_kill', 'oom_group_kill']), 'Owned cgroup reported OOM'
+        assert v[7].get('OOMKilled') is False, 'Owned container OOM state unknown or true'
         return values
 
     def http(self, name, route):
@@ -451,13 +459,28 @@ class Controller:
         if self.cid:
             try:
                 v = self.inspect('cleanup-current-identity'); self.ensure_container(v, bool(v[7]['Running']))
+                if self.phase == 'measure':
+                    try:
+                        assert v[7]['Running'] is True, 'Final live resource state unavailable: owned container is not running'
+                        self.metrics('final-live-before-graceful-stop')
+                        self.out['finalResourceGuard'] = 'PASS'
+                    except BaseException as e:
+                        self.out['finalResourceGuard'] = 'FAIL'
+                        self.out['finalResourceFailure'] = {'type': type(e).__name__, 'message': str(e)[:2000]}
+                        self.save('final-resource-before-stop-failure.json', self.out['finalResourceFailure'])
                 if v[7]['Running']:
                     self.out['effects'].append('ONE-owned-graceful-stop')
                     self.command('ONE-owned-graceful-stop', self.docker + ['stop', '--timeout', '30', self.cid], 45)
                 stopped = self.inspect('stopped-identity'); self.ensure_container(stopped, False)
                 self.out['stoppedState'] = stopped[7]; self.out['containerRetained'] = True
+                if self.phase == 'measure' and stopped[7].get('OOMKilled') is not False:
+                    self.out['finalResourceGuard'] = 'FAIL'
+                    self.out.setdefault('finalResourceFailure', {'type': 'AssertionError', 'message': 'Stopped owned container OOM state unknown or true'})
             except BaseException as e:
                 self.out['cleanupFailure'] = repr(e)
+        if self.phase == 'measure' and self.out.get('finalResourceGuard') != 'PASS':
+            if self.out.get('outcome', '').startswith('PASS-'):
+                self.out['outcome'] = 'FAIL-final-resource-qualification'
         self.out['networkCreateAttemptedNoRemoval'] = self.net_attempted
         try:
             self.source_guard(built=self.phase == 'measure')
@@ -496,7 +519,10 @@ def main():
         c.cleanup()
     print(json.dumps(c.out))
     ok = c.out.get('outcome', '').startswith('PASS-') and c.out.get('finalSourceGuard') == 'PASS'
-    if args.phase == 'measure': ok = ok and c.out.get('containerRetained') and c.out.get('stoppedState', {}).get('Running') is False
+    if args.phase == 'measure':
+        ok = ok and c.out.get('finalResourceGuard') == 'PASS' and not c.out.get('finalResourceFailure')
+        ok = ok and c.out.get('containerRetained') and c.out.get('stoppedState', {}).get('Running') is False
+        ok = ok and c.out.get('stoppedState', {}).get('OOMKilled') is False
     return 0 if ok and not c.out.get('cleanupFailure') and not c.out.get('sourcePostflightFailure') else 1
 
 

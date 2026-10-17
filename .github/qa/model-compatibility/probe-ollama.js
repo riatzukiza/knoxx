@@ -330,12 +330,11 @@ async function probe(env = process.env, fetchImpl = globalThis.fetch) {
     // A native translation completion alone cannot prove this parser path or
     // the exact save_publication_draft arguments are healthy.
     //
-    // The body is the deployed request, field for field. The openai-completions
-    // adapter emits `reasoning_effort` only when the model declares reasoning
-    // AND compat.supportsReasoningEffort; contracts/knoxx/models/gemma4_e2b.edn
-    // declares both false, so production omits the field and so does this
-    // canary. check-edn-contracts.clj holds that declaration in place, and the
-    // thinkingBlank assertion below still proves the turn carried no reasoning.
+    // Match Knoxx's governed required-first Ollama request. Its onPayload hook
+    // adds reasoning_effort: 'none' after pi-ai builds the payload for a model
+    // whose effective contract declares reasoning off. Ollama's compatibility
+    // endpoint needs that explicit control; keep the strict thinkingBlank
+    // assertion below as well as the exact tool/argument checks.
     const agentToolCallResponse = await fetchImpl(`${ollamaBaseUrl}/v1/chat/completions`, {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
@@ -356,6 +355,7 @@ async function probe(env = process.env, fetchImpl = globalThis.fetch) {
         stream: false,
         temperature: 0,
         seed: 0,
+        reasoning_effort: 'none',
       }),
       signal: AbortSignal.timeout(inferenceTimeoutMs),
     });
@@ -550,12 +550,12 @@ async function selfTest() {
     stream: false,
     temperature: 0,
     seed: 0,
+    reasoning_effort: 'none',
   });
-  // The deployed openai-completions adapter emits reasoning_effort only for a
-  // model contract that declares reasoning; gemma4:e2b declares it off, so the
-  // production request carries no such field and neither may this canary.
+  // Knoxx's governed Ollama onPayload hook disables thinking after pi-ai
+  // builds the required-first tool request for a reasoning-off model.
   const agentRequestBody = JSON.parse(calls[2].options.body);
-  assert.equal('reasoning_effort' in agentRequestBody, false);
+  assert.equal(agentRequestBody.reasoning_effort, 'none');
   assert.equal(calls[2].options.headers.Authorization, undefined);
   assert.deepEqual(JSON.parse(calls[3].options.body), {
     model: 'qwen3-embedding:8b',

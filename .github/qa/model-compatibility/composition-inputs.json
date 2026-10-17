@@ -4,8 +4,8 @@
   "bundleFiles": [
     {
       "relative": "controller.py",
-      "bytes": 33585,
-      "sha256": "003d515d905612912dde357d4449e243b5c845da8288a3d7e70abbf9af41d42d"
+      "bytes": 35523,
+      "sha256": "3781618dc9b2873c88a7a5b515833ee725ce6ebebaae4b4d847de0431fefaf36"
     },
     {
       "relative": "acquire-assets.py",
@@ -15,7 +15,7 @@
     {
       "relative": "portable-assets.json",
       "bytes": 27561,
-      "sha256": "61a9464469334068b78be9af0e89184354df85f3ce8f942f8ff10fbf7a3936e0"
+      "sha256": "efa9f23c34484201876df22db54e6604b29e1b526480c27c66e11ee0fc77c562"
     },
     {
       "relative": "observe-original-probe.cjs",
@@ -24,8 +24,8 @@
     },
     {
       "relative": "probe-ollama.js",
-      "bytes": 32534,
-      "sha256": "93e3ca2950bb4af4b3b79bdb9eaf2db3b2e8dedb25f170d41af531604cb9e752"
+      "bytes": 32408,
+      "sha256": "b8997e6eb55daa560457c0c8f99bdd3236d362bb7f2c282b9450220a694a3266"
     },
     {
       "relative": "owned-process-supervisor.py",
