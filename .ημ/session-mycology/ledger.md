@@ -643,3 +643,12 @@
   spore: none
   receipt-refs: sha256:a42477155f6b7f0ebe45291fc9040b194a01b28c55c233ba239c0d34d4339b8f,d9a1fadc5b57f97dcae3d988474eda78b5ebbe7d,03fc4d8e7bb6cce4634393cc01be5e60b9be1db4
   note: A direct native continuation control and a real browser scheduling trace prove different things. Preserve the synchronous cancellation property while explicitly reviewing any evidence-method change. Current experimental browser case57 lacks the same-schedule B-fetch DOM checkpoint and held B responses; neither other scenarios nor later A-last traces fill it. Carry only two body hunks over accepted03fc, preserve its breakdown metadata/history, retain failed evidence and obtain independent native planning acceptance before predicate/completion changes. This private card carrier runs no application tests or browser. Earlier inventory no-counter failure remains historical even if its separately owned successor later qualifies. Portable candidate0; no spore or promotion.
+- ts: 2026-10-17T01:09:37.438895902Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-core5-evidence-amendment-over03fc-PREP-v1
+  task: Correct the three actual PR16 core5 planning provenance and checkpoint findings
+  p-efficiency: 0.82
+  p-friction: 0.45
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#528b7dfe-70d5-4685-b6e2-b7af755271b6,f08f74164f97d7a25972cf33f4f96edb67b6dd1c,review5555208222,roots4300597378/4300597381/4300597382
+  note: Use the repository-used Receipt River package event wrapper for addressable planning provenance; the global compatibility writer produced a valid historical bare record but did not match this PR format. Re-emit the original d9a1 observation as event528b7dfe with its original source commit, preserve the bare record and older SM reference byte-for-byte, and point this new entry to the stable event ID. Canonical Rheos comment records the actual missing amendment chronology on the same core5 owner; native write-id changes are engine-owned, with no status/points/dependency transition. Explicit wording distinguishes required future checkpoint/response-hold acceptance from the current failed experimental artifact. Own the successful comment even when a later read-only wrapper assertion fails; no effect replay. JSON-config warning and first wrapper failure remain retained. No public push/settlement, model, browser predicate/completion or deployment effect; original56/57FAIL/globalqualitygates remain. Portable candidate0, no spore/promotion.
