@@ -1088,3 +1088,12 @@
   spore: none
   receipt-refs: sha256:921a51ad4a87a956716b9ee543c6d84f85415cdd78b5a51a5310b70d15a1274a,f02c99f59e3e067d6547f2c4ec36c0065a692218
   note: An invalidation primitive test cannot prove its actual page caller invokes it. Exercise the actual private boundary factory via supported Var access, keep B loaders/passive cleanup absent, and await the exact native promise already awaited by the real loader. Actual manifest-wire omission produced4 assertion failures across success/error; exact reverse restoration gave488tests2688assert0fail0error0compilerwarnings. Preserve source and324production artifacts; original browser case57 remains failed, with no scheduler/product/public changes or acceptance substitution. Portable candidate0, no spore or promotion.
+- ts: 2026-10-17T00:44:17.582413597Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-CMS-controller-integration-over8cd5-v1
+  task: CMS core5 actual inventory factory wire negative-control RED and native-task GREEN
+  p-efficiency: 0.82
+  p-friction: 0.35
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: sha256:888ec80a55de22aa930fe7f72ca82cc2378ec26d8f778ea40488ad72831e2938,cc98929c668aba6c483ce91665428d6df9090511
+  note: Actual caller wiring needs a real omission kill: retain complete native inventory task through the actual page boundary, settle success/error with B absent, and await legacy/catch/finally. First unqualified run exposed async higher-order argument lifting: prebind pure arguments before retaining a native Promise. Pinned source and compiled shape confirmed the causal correction, then four scoped assertion failures and489/2698 restored GREEN. Preserve first failure and old browser57FAIL. Candidate0; no spore or promotion.
