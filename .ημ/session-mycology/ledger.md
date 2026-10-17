@@ -1304,3 +1304,12 @@
   spore: none
   receipt-refs: 950673af-1e1f-47b3-bfa2-637b8da86402
   note: Pure map assembly boundary removes actual owning1W and registered167 to166W, native2FAIL retained. Preserve complete inline rationale, mutable public Var lookup/effect order and existing tests. Original private syntax refusal retained before any source effect. Full defn span includes docs, so comment relocation was withdrawn without application. Coherent successor full-product CI planned; no runtime credit from older51bda, no spore/promotion.
+- ts: 2026-10-17T18:36:49.235412864Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-template-public-controls-QA-over6e48-v1
+  task: Preserve public template lookup and trusted auth behavior before pure extraction
+  p-efficiency: 0.82
+  p-friction: 0.28
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: sha256:584797e76928f83c03384b5547d42914c2b7d4e138020dcdf864c9535ad17aff,d5a46839d3255bbfdefc3011d6c912434a5d6cf0
+  note: Independent source peer caught a caller Reduced default being consumed by reduce before application. Keep the caller default outside the reduction protocol; public missing-default, later-alias, false-key and found-Reduced controls document existing behavior. Actual static test0E0W and all166global warning rows unchanged/native2FAIL; genuine hosted runtime preservation still PENDING. Native board readback representation corrected without replay; no spore, model, service or production effect.
