@@ -12,7 +12,8 @@
             [knoxx.backend.domain.action.registry :refer [run-action!]]
             [knoxx.backend.domain.contracts.loader :as contracts]
             [knoxx.backend.domain.contracts.roles :as roles]
-            [knoxx.backend.infra.registry.tools :as tools]))
+            [knoxx.backend.infra.registry.tools :as tools]
+            [knoxx.backend.shape.sub-agent-spawn :as spawn-shape]))
 
 (defn- id->string
   [value]
@@ -168,33 +169,10 @@
                            (:context-policy sub-agent-config))
         tool-policies (resolve-tool-policies config parent-spec sub-agent-config sub-agent-contract)]
     (compact-spec
-     {:model model
-      :role role
-      ;; Event-agent runner consumes camel-case keys; direct-start also accepts
-      ;; snake/kebab variants after this becomes an HTTP/direct payload.
-      :thinkingLevel thinking
-      :thinking-level thinking
-      :systemPrompt full-system-prompt
-      :system-prompt full-system-prompt
-      :taskPrompt task-prompt
-      :task-prompt task-prompt
-      :toolPolicies tool-policies
-      :tool-policies tool-policies
-      :contextPolicy context-policy
-      :context-policy context-policy
-      :subAgentId (:contract/id sub-agent-contract)
-      :sub-agent-id (:contract/id sub-agent-contract)
-      :parentAgentId (:id (:parent-job sub-agent-config))
-      :parent-agent-id (:id (:parent-job sub-agent-config))
-      :parentRunId (:parent-run-id sub-agent-config)
-      :parent-run-id (:parent-run-id sub-agent-config)
-      :parentConversationId (:parent-conversation-id sub-agent-config)
-      :parent-conversation-id (:parent-conversation-id sub-agent-config)
-      :parentSessionId (:parent-session-id sub-agent-config)
-      :parent-session-id (:parent-session-id sub-agent-config)
-      :spawnKind "sub-agent"
-      :spawn-kind "sub-agent"
-      :parentCapabilitiesMode (:sub-agent/parent-capabilities sub-agent-contract)})))
+     (spawn-shape/agent-spec
+      sub-agent-config sub-agent-contract full-system-prompt task-prompt
+      {:model model :role role :thinking thinking
+       :tool-policies tool-policies :context-policy context-policy}))))
 
 (defn- build-sub-agent-payload
   "Build the spawn payload for a sub-agent run."
@@ -202,25 +180,11 @@
   (let [parent-spec (:agentSpec parent-job {})
         system-prompt (get-in sub-agent-contract [:prompts :system] "")
         task-prompt (get-in sub-agent-contract [:prompts :task] "")
-        shared-context (or (:shared-context sub-agent-config)
-                           (get-in sub-agent-config [:shared-context])
-                           (get-in sub-agent-contract [:context])
-                           {})
+        shared-context (spawn-shape/shared-context sub-agent-config sub-agent-contract)
         context-preamble (parent-context-preamble parent-job parent-event)
         full-system-prompt (str context-preamble system-prompt)
         result-key (or (:result-key sub-agent-config) (id->string sub-agent-id))
-        sub-agent-config (assoc sub-agent-config
-                                :parent-job parent-job
-                                :parent-run-id (or (get-in parent-job [:data :run-id])
-                                                   (get-in parent-job [:data :run_id]))
-                                :parent-conversation-id (or (get-in parent-job [:data :conversation-id])
-                                                            (get-in parent-job [:data :conversation_id])
-                                                            (get-in parent-event [:payload :conversationId])
-                                                            (get-in parent-event [:payload :conversation_id]))
-                                :parent-session-id (or (get-in parent-job [:data :session-id])
-                                                       (get-in parent-job [:data :session_id])
-                                                       (get-in parent-event [:payload :sessionId])
-                                                       (get-in parent-event [:payload :session_id])))
+        sub-agent-config (spawn-shape/with-parent-lineage sub-agent-config parent-job parent-event)
         agent-spec (merge-sub-agent-spec config parent-spec sub-agent-config sub-agent-contract full-system-prompt task-prompt)
         spawn-id (str "sub-agent-" (id->string sub-agent-id) "-" (:id parent-job) "-" (.now js/Date))
         timeout-ms (or (:sub-agent/timeout-ms sub-agent-contract)
