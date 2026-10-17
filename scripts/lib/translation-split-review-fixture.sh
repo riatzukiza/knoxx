@@ -296,6 +296,36 @@ translation_fixture_legacy_snapshot() {
     --argjson stored "$stored" '{detail:$detail,segment:$segment,stored:$stored}')" || return 1
 }
 
+translation_fixture_legacy_list_absence_diagnostic() {
+  # Caller expands the original guard status/PIPESTATUS before any new command.
+  local guard_exit="$1" pipeline_statuses="$2" response="$3" owned_doc="$4" diagnostic
+  printf 'DIAGNOSTIC legacy cleanup list guard: {"guard_exit":%s,"pipeline_statuses":[%s]}\n' \
+    "$guard_exit" "${pipeline_statuses// /,}" >&2 || :
+  diagnostic="$(printf '%s' "${response#*$'\n'}" | jq -Rsc \
+    --arg status "${response%%$'\n'*}" --arg doc "$owned_doc" '
+    (try {valid:true,value:fromjson} catch {valid:false}) as $parsed |
+    $parsed.value as $value |
+    (if $parsed.valid and ($value | type) == "object" then $value.documents else null end) as $docs |
+    (if ($docs | type) == "array" then all($docs[]; type == "object") else false end) as $entries |
+    {http_status:(if ($status | test("^[0-9]{3}$")) then ($status | tonumber) else null end),
+     json_valid:$parsed.valid,
+     root_type:(if $parsed.valid then ($value | type) else null end),
+     documents_type:(if $parsed.valid and ($value | type) == "object" then ($docs | type) else null end),
+     documents_count:(if ($docs | type) == "array" then ($docs | length) else null end),
+     owned_match_count:(if $entries then ([$docs[] | select(.document_id == $doc)] | length) else null end),
+     error_code:(if $parsed.valid and ($value | type) == "object" then
+       ([$value.error_code,$value.code,$value.error] |
+        map(select(type == "string" and IN("no_session","unauthorized","forbidden","permission_denied","not_found"))) | .[0])
+       else null end),
+     protocol_error_class:(if $parsed.valid | not then "invalid_json"
+       elif ($value | type) != "object" then "root_shape"
+       elif ($docs | type) != "array" then "documents_shape"
+       elif $entries | not then "documents_entry_shape" else null end)}' 2>/dev/null)" \
+    || diagnostic='{"diagnostic_error":"unavailable"}'
+  [ "${#diagnostic}" -le 1024 ] || diagnostic='{"diagnostic_error":"oversized"}'
+  printf 'DIAGNOSTIC legacy cleanup list response: %s\n' "$diagnostic" >&2 || :
+}
+
 translation_fixture_legacy_cleanup() {
   local result paths response record ownership_digest
   [ "$LEGACY_SEED_ATTEMPTED" -eq 1 ] || return 0
@@ -320,7 +350,11 @@ translation_fixture_legacy_cleanup() {
   [ "${response%%$'\n'*}" = 200 ] \
     && printf '%s' "${response#*$'\n'}" | jq -e --arg doc "$VERIFY_LEGACY_DOCUMENT_ID" \
       '(.documents | type) == "array" and ([.documents[].document_id] | index($doc)) == null' >/dev/null 2>&1 \
-    || { translation_fixture_legacy_fail "legacy cleanup could not prove authenticated document-list absence"; return 1; }
+    || {
+      translation_fixture_legacy_list_absence_diagnostic "$?" "${PIPESTATUS[*]}" \
+        "$response" "$VERIFY_LEGACY_DOCUMENT_ID" || :
+      translation_fixture_legacy_fail "legacy cleanup could not prove authenticated document-list absence"; return 1;
+    }
   [ "$ownership_digest" = "$(sha256sum -- "$VERIFY_LEGACY_OWNERSHIP_FILE" 2>/dev/null)" ] \
     || { translation_fixture_legacy_fail "legacy cleanup ownership changed before verified retirement"; return 1; }
   rm -- "$VERIFY_LEGACY_OWNERSHIP_FILE" \
