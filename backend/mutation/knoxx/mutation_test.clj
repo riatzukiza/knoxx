@@ -46,18 +46,92 @@
   []
   (assoc reader/*data-readers* 'js identity))
 
+(def cljs-reader-options
+  {:eof ::eof :read-cond :allow :features #{:cljs}})
+
+(defn- libspec-aliases
+  "Read symbolic namespace aliases as data; never require a library."
+  [prefix spec]
+  (cond
+    (symbol? spec) (libspec-aliases prefix [spec])
+
+    (vector? spec)
+    (let [[lib & options] spec
+          target (when (symbol? lib)
+                   (if prefix (symbol (str prefix "." lib)) lib))
+          explicit-nil-as? (some (fn [[option alias]]
+                                   (and (= :as option) (nil? alias)))
+                                 (partition 2 options))]
+      ;; CLJS aliases a symbolic library to itself unless :as is explicitly nil.
+      ;; :as-alias is reader-only and keeps only its explicit alias binding.
+      (into (if (and target (not explicit-nil-as?)
+                     (not (some #{:as-alias} options)))
+              {target target} {})
+            (keep (fn [[option alias]]
+                       (when (and target (#{:as :as-alias} option)
+                                  (symbol? alias) (nil? (namespace alias)))
+                         [alias target])))
+            (partition 2 options)))
+
+    (seq? spec)
+    (let [[lib & children] spec
+          target (when (symbol? lib)
+                   (if prefix (symbol (str prefix "." lib)) lib))]
+      (when target (into {} (mapcat #(libspec-aliases target %) children))))
+
+    :else {}))
+
+(defn- source-reader-context
+  "Select the CLJS ns declaration as data without evaluating ns/require forms."
+  [source]
+  (binding [reader/*read-eval* false
+            reader/*alias-map* {}
+            reader/*data-readers* (cljs-reader-data-readers)]
+    (let [form (reader/read cljs-reader-options
+                            (reader-types/string-push-back-reader source))
+          declaration? (and (seq? form) (= 'ns (first form))
+                            (symbol? (second form)))]
+      {:namespace (if declaration? (second form) (ns-name *ns*))
+       :aliases (if declaration?
+                  (into {} (mapcat (fn [clause]
+                                     (when (and (seq? clause)
+                                                (#{:require :require-macros} (first clause)))
+                                       (mapcat #(libspec-aliases nil %) (rest clause))))
+                                   (drop 2 form)))
+                  {})})))
+
+(declare assert-source-auto-resolution!)
+
 (defn read-top-level-sexprs
   [source]
-  (binding [reader/*data-readers* (cljs-reader-data-readers)]
-    (let [rdr (reader-types/string-push-back-reader source)]
-      (loop [forms []]
-        (let [form (reader/read {:eof ::eof
-                                 :read-cond :allow
-                                 :features #{:cljs}}
-                                rdr)]
-          (if (= ::eof form)
-            forms
-            (recur (conj forms form))))))))
+  (assert-source-auto-resolution! source)
+  (let [{:keys [namespace aliases]} (source-reader-context source)
+        existing (find-ns namespace)
+        reader-ns (or existing (create-ns namespace))]
+    (try
+      (binding [*ns* reader-ns
+                reader/*read-eval* false
+                reader/*alias-map* aliases
+                reader/*data-readers* (cljs-reader-data-readers)]
+        (let [rdr (reader-types/string-push-back-reader source)]
+          (loop [forms []]
+            (let [form (reader/read cljs-reader-options rdr)]
+              (if (= ::eof form) forms (recur (conj forms form)))))))
+      (finally
+        (when-not existing (remove-ns namespace))))))
+
+(defn- source-zipper
+  "Give rewrite-clj the same exact namespace/alias interpretation as the reader."
+  [source]
+  (let [{:keys [namespace aliases]} (source-reader-context source)]
+    (z/of-string source
+                 {:track-position? true
+                  :auto-resolve (fn [alias]
+                                  (if (= :current alias)
+                                    namespace
+                                    (or (get aliases alias)
+                                        (throw (ex-info "Unknown source namespace alias"
+                                                        {:alias alias})))))})))
 
 (defn list-form?
   [form]
@@ -155,6 +229,21 @@
           (recur parent)))
         true))))
 
+(defn- assert-source-auto-resolution!
+  "Refuse active undeclared ::aliases before safe-sexpr can skip their parents."
+  [source]
+  (loop [loc (source-zipper source)]
+    (if (z/end? loc)
+      true
+      (do
+        (when (and (active-cljs-location? loc)
+                   (contains? #{:token :map-qualifier} (z/tag loc))
+                   (str/starts-with? (z/string loc) "::"))
+          ;; In particular tools.reader may otherwise resolve #::full.ns via
+          ;; global find-ns even when this file declares no such alias.
+          (z/sexpr loc))
+        (recur (z/next loc))))))
+
 (defn source-files
   [src-dir]
   (->> (file-seq (io/file src-dir))
@@ -177,8 +266,26 @@
          (tree-seq #(boolean (z/down %))
                    #(take-while identity (iterate z/right (z/down %))) loc))))
 
+(defn auto-resolved-containing-location?
+  "Keep ::keywords and #::maps in their original source spelling when rewriting."
+  [loc]
+  (boolean
+   (some #(and (contains? #{:token :map-qualifier} (z/tag %))
+               (str/starts-with? (z/string %) "::"))
+         (tree-seq #(boolean (z/down %))
+                   #(take-while identity (iterate z/right (z/down %))) loc))))
+
+(defn- js-literal-containing-location?
+  "Find actual #js reader nodes without interpreting their contents."
+  [loc]
+  (boolean
+   (some #(and (= :reader-macro (z/tag %))
+               (= 'js (safe-sexpr (z/down %))))
+         (tree-seq #(boolean (z/down %))
+                   #(take-while identity (iterate z/right (z/down %))) loc))))
+
 (defn rewrite-anonymous-compound
-  "Change only the selected operator/test; retain nested #() syntax verbatim."
+  "Change only the selected operator/test; retain nested reader syntax verbatim."
   [loc operator]
   (case operator
     :if-test-negation
@@ -198,7 +305,9 @@
   (let [form (safe-sexpr loc)]
     (when (and (not= ::unreadable form) (reader-conditional-free-location? loc))
       (let [{:keys [line column]} (safe-position loc)
-            syntax? (anonymous-function-containing-location? loc)]
+            syntax? (or (anonymous-function-containing-location? loc)
+                        (auto-resolved-containing-location? loc)
+                        (js-literal-containing-location? loc))]
         (mapv (fn [{:keys [operator replacement]}]
                 (merge {:relative-path relative-path
                         :line line :column column :operator operator}
@@ -215,7 +324,7 @@
   ;; tools.reader supplies a reader-level sanity pass; rewrite-clj supplies the
   ;; zipper we mutate so comments and surrounding source survive in temp output.
   (read-top-level-sexprs source)
-  (loop [loc (z/of-string source {:track-position? true})
+  (loop [loc (source-zipper source)
          acc []]
     (if (z/end? loc)
       acc
@@ -334,7 +443,8 @@
 
 (defn apply-mutant-to-source
   [source mutant]
-  (loop [loc (z/of-string source {:track-position? true})]
+  (assert-source-auto-resolution! source)
+  (loop [loc (source-zipper source)]
     (cond
       (z/end? loc)
       (throw (ex-info "Mutant location no longer matches source"

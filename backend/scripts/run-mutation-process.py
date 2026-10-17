@@ -423,6 +423,7 @@ class JsonArgumentParser(argparse.ArgumentParser):
 
 
 def main(argv=None):
+    started_ns = time.monotonic_ns()
     parser = JsonArgumentParser(add_help=False)
     parser.add_argument("--timeout-ms", required=True, type=int)
     parser.add_argument("--max-output-bytes", type=int, default=DEFAULT_MAX_OUTPUT_BYTES)
@@ -435,6 +436,7 @@ def main(argv=None):
         result = result_record("setup-error", diagnostic=f"{type(error).__name__}: {error}")
     else:
         result = supervise(command, args.timeout_ms, args.max_output_bytes, args.cleanup_ms)
+    result["elapsed-ms"] = (time.monotonic_ns() - started_ns) / 1_000_000
     print(json.dumps(result, ensure_ascii=True, separators=(",", ":")))
 
 

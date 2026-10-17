@@ -3,6 +3,7 @@
 import ctypes
 import hashlib
 import importlib.util
+import io
 import json
 import os
 from pathlib import Path
@@ -13,6 +14,7 @@ import tempfile
 import time
 import unittest
 from unittest.mock import patch
+from contextlib import redirect_stdout
 
 
 SUPERVISOR = Path(os.environ.get(
@@ -494,6 +496,76 @@ module.main(sys.argv[2:])
             result = module.supervise(["must-not-spawn"], 100)
             self.assertEqual(result["termination"], "setup-error")
             spawn.assert_not_called()
+
+
+class MutationProcessTimingTests(unittest.TestCase):
+    """Inert main-protocol controls; never create or signal any process."""
+
+    def load_adapter(self):
+        spec = importlib.util.spec_from_file_location("mutation_process_timing", SUPERVISOR)
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        return module
+
+    def test_elapsed_includes_supervision_and_cleanup_return(self):
+        module = self.load_adapter()
+        expected = module.result_record("exited", b"owned output\n", exit_code=0)
+        order, samples = [], iter([10_000_000_000, 12_500_125_000])
+        def now():
+            order.append("clock")
+            return next(samples)
+        def supervise(*args):
+            order.append(("supervise", args))
+            order.append("cleanup-return")
+            return expected.copy()
+        output = io.StringIO()
+        with patch.object(module.time, "monotonic_ns", side_effect=now), \
+                patch.object(module, "supervise", side_effect=supervise), \
+                patch.object(module.subprocess, "Popen", side_effect=AssertionError("must not spawn")), \
+                redirect_stdout(output):
+            module.main(["--timeout-ms", "700", "--max-output-bytes", "99",
+                         "--cleanup-ms", "300", "--", "inert-command", "argument"])
+        result = json.loads(output.getvalue())
+        self.assertEqual(result.get("elapsed-ms"), 2500.125)
+        self.assertEqual(order, ["clock", ("supervise", (["inert-command", "argument"],
+                                                       700, 99, 300)), "cleanup-return", "clock"])
+        self.assertEqual({key: value for key, value in result.items() if key != "elapsed-ms"}, expected)
+        self.assertEqual(output.getvalue().count("\n"), 1)
+
+    def test_elapsed_is_additive_for_failed_and_incomplete_results(self):
+        module = self.load_adapter()
+        cases = [("exited", 7, False, True), ("timeout", -9, True, True),
+                 ("cancelled", -15, False, True), ("cleanup-error", 0, False, False),
+                 ("setup-error", None, False, True)]
+        for termination, exit_code, timed_out, cleanup_complete in cases:
+            expected = module.result_record(termination, b"retained output\n", exit_code,
+                                            timed_out, False, cleanup_complete, 99,
+                                            "retained diagnostic")
+            output = io.StringIO()
+            with self.subTest(termination=termination), \
+                    patch.object(module.time, "monotonic_ns", side_effect=[1_000_000, 2_125_000]), \
+                    patch.object(module, "supervise", return_value=expected.copy()), \
+                    patch.object(module.subprocess, "Popen", side_effect=AssertionError("must not spawn")), \
+                    redirect_stdout(output):
+                module.main(["--timeout-ms", "700", "--", "inert-command"])
+            result = json.loads(output.getvalue())
+            self.assertEqual(result.get("elapsed-ms"), 1.125)
+            self.assertEqual({key: value for key, value in result.items() if key != "elapsed-ms"}, expected)
+
+    def test_argument_refusal_keeps_original_setup_error_without_supervision(self):
+        module = self.load_adapter()
+        output = io.StringIO()
+        with patch.object(module.time, "monotonic_ns", side_effect=[100_000_000, 102_000_000]), \
+                patch.object(module, "supervise", side_effect=AssertionError("must not supervise")) as supervise, \
+                patch.object(module.subprocess, "Popen", side_effect=AssertionError("must not spawn")), \
+                redirect_stdout(output):
+            module.main([])
+        result = json.loads(output.getvalue())
+        self.assertEqual(result.get("elapsed-ms"), 2.0)
+        supervise.assert_not_called()
+        expected = module.result_record("setup-error", diagnostic=
+                                        "ValueError: the following arguments are required: --timeout-ms")
+        self.assertEqual({key: value for key, value in result.items() if key != "elapsed-ms"}, expected)
 
 
 if __name__ == "__main__":

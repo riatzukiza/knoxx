@@ -907,3 +907,156 @@
     (is (= true (:original-form candidate)))
     (is (= false (:replacement-form candidate)))
     (is (not (contains? candidate :syntax-preserving?)))))
+
+(deftest source-reader-resolves-cljs-namespace-aliases-without-loading-them
+  (let [source (str "(ns mutation.source-reader-fixture\n"
+                    "  (:require #?(:clj [unloaded.clj-law :as law]\n"
+                    "               :cljs [unloaded.cljs-law :as law])\n"
+                    "            [unloaded.full-ns]))\n"
+                    "(def value [::law/configuration ::local #::law{:flag true}\n"
+                    "            #::unloaded.full-ns{:flag true} ::unloaded.full-ns/configuration])\n")
+        names ['mutation.source-reader-fixture 'unloaded.clj-law
+               'unloaded.cljs-law 'unloaded.full-ns]
+        before (mapv find-ns names)
+        forms (try (mutation/read-top-level-sexprs source)
+                   (catch Exception error error))]
+    (is (vector? forms) (str forms))
+    (is (= 'mutation.source-reader-fixture
+           (when (vector? forms) (second (first forms)))))
+    (is (= [:unloaded.cljs-law/configuration
+            :mutation.source-reader-fixture/local
+            {:unloaded.cljs-law/flag true}
+            {:unloaded.full-ns/flag true}
+            :unloaded.full-ns/configuration]
+           (when (vector? forms) (last (last forms)))))
+    (is (= before (mapv find-ns names)))))
+
+(deftest source-reader-still-refuses-unknown-alias-malformed-keyword-and-eval
+  (doseq [body ["::missing/configuration" "::law/" "#=(+ 1 2)"
+                "#::clojure.string{:flag true}"]]
+    (let [source (str "(ns mutation.reader-refusal (:require [unloaded.law :as law]))\n(def value " body ")")]
+      (is (thrown? Exception (mutation/read-top-level-sexprs source)))
+      (is (nil? (find-ns 'mutation.reader-refusal)))))
+  (is (thrown? Exception
+               (mutation/mutants-in-source "unknown.cljs"
+                                            "(ns mutation.reader-refusal) (if ::missing/key 1 0)")))
+  (is (thrown-with-msg? clojure.lang.ExceptionInfo #"Unknown source namespace alias"
+                       (mutation/mutants-in-source
+                        "loaded-map.cljs"
+                        "(ns mutation.reader-refusal) (def value #::clojure.string{:flag true})"))))
+
+(deftest auto-resolved-compound-mutations-preserve-source-spelling-and-identity
+  (doseq [[body operator expected]
+          [["(if (= ::law/configuration value) #::law{:ok true} ::local)"
+            :if-test-negation
+            "(if (not (= ::law/configuration value)) #::law{:ok true} ::local)"]
+           ["(= ::law/configuration value)" :comparison-flip
+            "(not= ::law/configuration value)"]
+           ["(+ (get #::unloaded.law{:n 0} ::unloaded.law/n) 1)" :arithmetic-operator-flip
+            "(- (get #::unloaded.law{:n 0} ::unloaded.law/n) 1)"]]]
+    (let [prefix "(ns mutation.alias-compound (:require [unloaded.law :as law]))\n"
+          source (str prefix body "\n")
+          result (try
+                   (let [discover #(mutation/assign-mutant-ids
+                                    (mutation/mutants-in-source "alias.cljs" source))
+                         first-read (discover)
+                         second-read (discover)
+                         mutant (first (filter #(and (= operator (:operator %))
+                                                    (= 2 (:line %)) (= 1 (:column %))) first-read))]
+                     {:first-read first-read :second-read second-read :mutant mutant
+                      :rewritten (mutation/apply-mutant-to-source source mutant)
+                      :first-binding (mutation/bind-mutant-source source mutant)
+                      :second-binding (mutation/bind-mutant-source
+                                       source (first (filter #(= (:fingerprint mutant) (:fingerprint %)) second-read)))})
+                   (catch Exception error error))]
+      (is (map? result) (str result))
+      (is (some? (:mutant result)))
+      (is (true? (get-in result [:mutant :syntax-preserving?])))
+      (is (= (:first-read result) (:second-read result)))
+      (is (= (str prefix expected "\n") (:rewritten result)))
+      (is (= (:first-binding result) (:second-binding result))))))
+
+(deftest explicit-nil-as-keeps-ordinary-source-readable-and-rewritable
+  (let [source (str "(ns mutation.nil-as-fixture (:require [unloaded.nil-lib :as nil]))\n"
+                    "(def value true)\n")
+        before (find-ns 'unloaded.nil-lib)
+        forms (try (mutation/read-top-level-sexprs source)
+                   (catch Exception error error))
+        candidates (try (mutation/assign-mutant-ids
+                         (mutation/mutants-in-source "nil-as.cljs" source))
+                        (catch Exception error error))
+        mutant (when (vector? candidates) (first candidates))
+        rewritten (try (mutation/apply-mutant-to-source source mutant)
+                       (catch Exception error error))]
+    (is (vector? forms) (str forms))
+    (is (= '(:require [unloaded.nil-lib :as nil])
+           (when (vector? forms) (last (first forms)))))
+    (is (vector? candidates) (str candidates))
+    (is (= 1 (count (when (vector? candidates) candidates))))
+    (is (= (str "(ns mutation.nil-as-fixture (:require [unloaded.nil-lib :as nil]))\n"
+                "(def value false)\n") rewritten))
+    (is (= before (find-ns 'unloaded.nil-lib)))))
+
+(deftest explicit-nil-as-does-not-install-a-full-namespace-reader-alias
+  (doseq [body ["::clojure.string/configuration" "#::clojure.string{:flag true}"]]
+    (let [source (str "(ns mutation.nil-as-refusal (:require [clojure.string :as nil]))\n"
+                      "(def value " body ")\n")]
+      (is (thrown-with-msg? clojure.lang.ExceptionInfo #"Unknown source namespace alias"
+                           (mutation/read-top-level-sexprs source)))
+      (is (thrown-with-msg? clojure.lang.ExceptionInfo #"Unknown source namespace alias"
+                           (mutation/mutants-in-source "nil-as-refusal.cljs" source))))))
+
+
+(deftest js-literal-compound-mutations-preserve-native-source-and-bindings
+  (doseq [[body operator expected]
+          [["(if ready\n ; preserve existing metadata syntax\n (.log js/console \"ready\" #js {:pid (.-pid js/process)\n                              :uptimeMs (process-uptime-ms)})\n (done))"
+            :if-test-negation
+            "(if (not ready)\n ; preserve existing metadata syntax\n (.log js/console \"ready\" #js {:pid (.-pid js/process)\n                              :uptimeMs (process-uptime-ms)})\n (done))"]
+           ["(if ready #js [#js {:ok true}] #js [false])"
+            :if-test-negation
+            "(if (not ready) #js [#js {:ok true}] #js [false])"]
+           ["(= expected #js {:pid (.-pid js/process)})"
+            :comparison-flip
+            "(not= expected #js {:pid (.-pid js/process)})"]
+           ["(+ (.-length #js [1 0]) 1)"
+            :arithmetic-operator-flip
+            "(- (.-length #js [1 0]) 1)"]]]
+    (let [prefix "(ns mutation.js-compound)\n"
+          source (str prefix body "\n")
+          expected-source (str prefix expected "\n")
+          result (try
+                   (let [discover #(mutation/assign-mutant-ids
+                                    (mutation/mutants-in-source "js-compound.cljs" source))
+                         first-read (discover)
+                         second-read (discover)
+                         mutant (first (filter #(and (= operator (:operator %))
+                                                    (= 2 (:line %)) (= 1 (:column %))) first-read))]
+                     {:first-read first-read :second-read second-read :mutant mutant
+                      :rewritten (mutation/apply-mutant-to-source source mutant)
+                      :first-binding (mutation/bind-mutant-source source mutant)
+                      :second-binding (mutation/bind-mutant-source
+                                       source (first (filter #(= (:fingerprint mutant) (:fingerprint %)) second-read)))})
+                   (catch Exception error error))]
+      (is (map? result) (str result))
+      (is (true? (get-in result [:mutant :syntax-preserving?])))
+      (is (= (:first-read result) (:second-read result)))
+      (is (= expected-source (:rewritten result)))
+      (is (not (str/includes? (or (:rewritten result) "") "(read-string")))
+      (is (= (:first-binding result) (:second-binding result)))
+      (is (= (mutation/sha256 expected-source)
+             (get-in result [:first-binding :mutated-sha256]))))))
+
+(deftest js-reader-like-text-does-not-change-ordinary-compound-identities
+  (doseq [[body original]
+          [["(if ready \"#js {:ok true}\" false)"
+            "(if ready \"#js {:ok true}\" false)"]
+           ["(if ready\n ; #js is comment text, not a reader node\n true false)"
+            "(if ready true false)"]]]
+    (let [source (str "(ns mutation.js-text)\n" body "\n")
+          mutant (first (filter #(and (= :if-test-negation (:operator %))
+                                      (= 2 (:line %)) (= 1 (:column %)))
+                                (mutation/assign-mutant-ids
+                                 (mutation/mutants-in-source "js-text.cljs" source))))]
+      (is (not (contains? mutant :syntax-preserving?)))
+      (is (= original (:original mutant)))
+      (is (not (str/includes? (:replacement mutant) "(read-string"))))))
