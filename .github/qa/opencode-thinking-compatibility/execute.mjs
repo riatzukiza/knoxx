@@ -14,6 +14,7 @@ const physical = p => { const s = fs.lstatSync(p); check(!s.isSymbolicLink() && 
 const write = (p, value) => fs.writeFileSync(p, JSON.stringify(value, null, 2) + '\n', { flag: 'wx', mode: 0o600 });
 let gate, evidence, summary = { status: 'failed', primary: null, secondary: [], cases: [] };
 let sequence = 0, discovery, catalogSHA, binarySHA, sourceRows;
+const workDirectories = [];
 function cleanEnvironment(extra = {}) {
   return { PATH: gate.pathEnvironment, LANG: 'C.UTF-8', LC_ALL: 'C.UTF-8', TZ: 'UTC', TMPDIR: `${runRoot}/tmp`, ...extra };
 }
@@ -41,6 +42,9 @@ function guard() {
   check(git(['status', '--porcelain=v1', '-z', '--untracked-files=all']) === '', 'QA checkout dirty');
   for (const row of sourceRows) {
     check(physical(row.path).isFile() && sha(fs.readFileSync(row.path)) === row.sha256, `Source/tool changed: ${row.path}`);
+  }
+  for (const cwd of workDirectories) {
+    check(physical(cwd).isDirectory() && fs.readdirSync(cwd).length === 0, `Empty read-only case work directory changed: ${cwd}`);
   }
   if (discovery) {
     check(sha(fs.readFileSync(discovery.file)) === discovery.sha256, 'Discovery proof changed');
@@ -87,8 +91,15 @@ try {
       catalogPath: discovery.proof.catalog_source.path, pathEnvironment: gate.pathEnvironment });
     fs.mkdirSync(c.root, { mode: 0o700 });
     for (const leaf of ['work', 'xdg-config', 'xdg-data', 'xdg-cache', 'xdg-state', 'tmp']) fs.mkdirSync(`${c.root}/${leaf}`, { mode: 0o700 });
+    workDirectories.push(c.cwd);
+    check(fs.readdirSync(c.cwd).length === 0, `Case work directory is not empty: ${mode}`);
     write(`${c.root}/config.json`, c.config); const configSHA = sha(fs.readFileSync(`${c.root}/config.json`));
     write(`${evidence}/${mode}-case-source-projection.json`, { ...c, environment: Object.keys(c.environment), configSHA, requestProjectionIsWireCapture: false });
+    const registration = JSON.parse(native(`${mode}-native-agent`, c.registrationArgv, c.environment, c.cwd, 30000).output);
+    const visibleTools = Object.entries(registration.tools).filter(([, value]) => value === true).map(([id]) => id).sort();
+    check(registration.name === 'build' && registration.native === true && registration.steps === 1 &&
+      isDeepStrictEqual(visibleTools, ['bash', 'glob', 'grep', 'read']), `Native read-only tool registration differs: ${mode}`);
+    guard();
     const model = selectFreeMiMoFlash(parseOpenCodeModelCatalog(Buffer.from(native(`${mode}-configured-models`, c.modelsArgv, c.environment, c.cwd, 30000).output)));
     const expected = { ...baseline, options: { ...baseline.options, thinking: { type: mode } } };
     check(isDeepStrictEqual(model, expected), `Effective model source/options differ: ${mode}`);
@@ -106,7 +117,7 @@ try {
     if (usageKnown) check(usage.output + usage.reasoning <= 512, `Reported generated tokens exceed requested cap: ${mode}`);
     check(sha(fs.readFileSync(`${c.root}/config.json`)) === configSHA, `Temporary config changed: ${mode}`);
     summary.cases.push({ mode, oneVisibleStep: true, finish: ends[0].part.reason, visibleText: text, tokens: usage ?? null, cost,
-      usageKnown, nativeExit: capture['exit-code'], termination: capture.termination, cleanupComplete: capture['cleanup-complete?'], captureTruncated: capture['capture-truncated?'], timedOut: capture['timed-out?'],
+      usageKnown, nativeAgent: registration.native, visibleToolIDs: visibleTools, nativeExit: capture['exit-code'], termination: capture.termination, cleanupComplete: capture['cleanup-complete?'], captureTruncated: capture['capture-truncated?'], timedOut: capture['timed-out?'],
       wireRequestCaptured: false, transportRetryCount: 'not independently observed; stock client behavior is unchanged and bounded by90s' });
     guard();
   }

@@ -21,11 +21,13 @@ export function prepareCase({ discovery, mode, binary, runRoot, catalogPath, pat
   const config = {
     $schema: 'https://opencode.ai/config.json',
     enabled_providers: ['opencode'],
+    model,
     share: 'disabled',
     autoupdate: false,
     snapshot: false,
     compaction: { auto: false, prune: false },
-    permission: { '*': 'deny' },
+    permission: { '*': 'deny', read: 'allow', glob: 'allow', grep: 'allow', list: 'allow',
+      bash: { '*': 'deny', true: 'allow' }, external_directory: 'deny' },
     plugin: [],
     agent: { build: { steps: 1 } },
     provider: { opencode: { models: { [id]: { options: { thinking: { type: mode } } } } } },
@@ -48,6 +50,7 @@ export function prepareCase({ discovery, mode, binary, runRoot, catalogPath, pat
   return {
     role: mode, root, cwd: `${root}/work`, config, environment,
     modelsArgv: [binary, 'models', 'opencode', '--verbose'],
+    registrationArgv: [binary, 'debug', 'agent', 'build'],
     inferenceArgv: [binary, 'run', '--format', 'json', '--agent', 'build', '--model', model,
       '--title', title, prompt],
     expectedRequestProjection: {
@@ -57,7 +60,9 @@ export function prepareCase({ discovery, mode, binary, runRoot, catalogPath, pat
       bodyFields: { model: id, max_tokens: perRequestOutputCap, thinking: { type: mode },
         stream: true, stream_options: { include_usage: true } },
       intentionallyAbsent: ['reasoning_effort', 'reasoningEffort', 'max_completion_tokens'],
-      messages: 'Native pinned OpenCode system and one literal user prompt; no attachments/history/tools',
+      messages: 'Native pinned OpenCode system and one literal user prompt; no attachments/history; native read-only tools are registered but tool use is not requested',
+      nativeToolDefinitionIDsExpected: ['bash', 'glob', 'grep', 'read'],
+      nativeRegistrationIsWireCapture: false,
     },
   };
 }
