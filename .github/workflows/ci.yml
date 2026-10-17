@@ -1,208 +1,159 @@
-# SPDX-License-Identifier: GPL-3.0-or-later
-name: Genuine three source mutations on pinned CMS (QA only)
+name: Mutation source reader owning suite (QA only)
+
 on:
   workflow_dispatch:
+    inputs:
+      comparison_base_sha:
+        required: true
+        default: "fde4d2381345174869530abc9bb05b6c5c053e5b"
+      migration_infrastructure:
+        type: boolean
+        default: false
+
 permissions:
   contents: read
+
 jobs:
-  genuine-three-mutations:
-    name: One real baseline and three canonical source mutations
-    if: ${{ github.repository_id == '1401249297' && github.event.repository.private == false }}
+  mutation-reader-owning-suite:
     runs-on: ubuntu-24.04
-    timeout-minutes: 90
+    timeout-minutes: 20
+    env:
+      EXPECTED_SOURCE: dbb3b1db3d66381069e0f2268230b754fd0e3a90
+      EXPECTED_TREE: 1bc8d4a4e02c9ab5cbded25ca83485ec49f92f76
     steps:
-      - name: Check out the immutable application source
+      - name: Check out the exact test-only application source
         uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
         with:
-          ref: 2c4fc51a98936ed73c47ec94cef9ee51ca6bc19a
-          fetch-depth: 0
+          ref: dbb3b1db3d66381069e0f2268230b754fd0e3a90
+          fetch-depth: 1
           persist-credentials: false
-      - name: Bind actual source and worker before setup
+      - name: Set up Java 21
+        uses: actions/setup-java@cf277c60eb25467037889841efdb72551f06f6c3
+        with:
+          distribution: temurin
+          java-version: "21"
+      - name: Set up Node 24
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444
+        with:
+          node-version: "24"
+      - name: Set up pinned Clojure
+        uses: DeLaGuardo/setup-clojure@3fe9b3ae632c6758d0b7757b0838606ef4287b08
+        with:
+          cli: "1.12.5.1654"
+      - name: Bind actual source and unchanged canonical adapter
         shell: bash
         run: |
           python3 - <<'PRE'
           import hashlib, json, os, pathlib, subprocess
-          root = pathlib.Path(os.environ['GITHUB_WORKSPACE']).resolve(strict=True)
-          proof = pathlib.Path(os.environ['RUNNER_TEMP']) / ('mutation-pilot-' + os.environ['GITHUB_RUN_ID'] + '-' + os.environ['GITHUB_RUN_ATTEMPT'])
-          proof.mkdir(mode=0o700)
-          def read(args):
-              r = subprocess.run(['git', '-C', str(root), *args], capture_output=True, timeout=30)
-              assert r.returncode == 0 and not r.stderr
-              return r.stdout
-          head = read(['rev-parse', 'HEAD']).decode().strip()
-          tree = read(['rev-parse', 'HEAD^{tree}']).decode().strip()
-          status = read(['status', '--porcelain=v1', '-z', '--untracked-files=all'])
-          assert head == '2c4fc51a98936ed73c47ec94cef9ee51ca6bc19a'
-          assert tree == '6a661d955975c72cd8c4140f18d4162475f4b2b4' and not status
-          rows = {'AGENTS.md': {'bytes': 13198, 'sha256': 'a9aae6e9cc829df7319b267c8b93fa188abcc52a2c7e6e87c56846173f29701e'}, '.github/actions/knoxx-setup/action.yml': {'bytes': 3782, 'sha256': 'e659dbe3309c139c0afdc4f6a0c157bc02f8f0ab82100a2318df5bccbbd68b1f'}, 'backend/deps.edn': {'bytes': 3204, 'sha256': 'f602dbfa145df71642fb45f9945984303a0acd2b74baac42b05e8a7be4bddc76'}, 'backend/package.json': {'bytes': 3570, 'sha256': 'b33b47e00c0e50db074e2e8407c83d1f2f7706ac02ea0c100b251ab574753d90'}, 'backend/mutation/README.md': {'bytes': 1848, 'sha256': 'b09fe3379ede9eefa0ac238bc112ba470f2371d0fcda60fe9e4980b029fc7c4d'}, 'backend/mutation/knoxx/mutation_test.clj': {'bytes': 49905, 'sha256': '9845a6422b32e9fd695c4c6a8cc73c2b1f570bbdbc03d3806a8136cb17dad158'}, 'backend/mutation/reviewed-equivalents.edn': {'bytes': 1549, 'sha256': '2769a3c6c529a213e288faafc89c38321a4796dd1aad8a8a58ec597195b097df'}, 'backend/scripts/run-mutation-process.py': {'bytes': 18407, 'sha256': '899fbac9de15e8603cb21b52835fe44f068fe118e76988c67b8c1784abaf39d5'}, 'backend/scripts/run-mutation-tests.mjs': {'bytes': 773, 'sha256': '4a420d47ca177742ffbfbb1cdedc1f65450b4b9dcc2278d47b79dbfc4d425e0d'}, 'backend/scripts/shadow-test-environment.mjs': {'bytes': 781, 'sha256': '9cb72b8d1cafc7136b95e6d5241289b1ad388638fc5edb683279d1f28ef102a8'}, 'backend/shadow-cljs.edn': {'bytes': 9554, 'sha256': 'cb45b403d669710e33fabcf359af6d580548b9ebfa194a4d55e2c40a6cb08a51'}, '.github/workflows/deploy-production.yml': {'bytes': 7975, 'sha256': '8fe8a62967a1412541c7e17d8ccff997a7881a11941a290ff43ee978349e410b'}}
-          for relative, row in rows.items():
-              data = (root / relative).read_bytes()
-              assert len(data) == row['bytes'] and hashlib.sha256(data).hexdigest() == row['sha256']
-          data = {'sourceHead': head, 'sourceTree': tree, 'workflowSHA': os.environ['GITHUB_SHA'],
-                  'workflowRef': os.environ['GITHUB_WORKFLOW_REF'], 'run': os.environ['GITHUB_RUN_ID'],
-                  'attempt': os.environ['GITHUB_RUN_ATTEMPT'], 'sourceRows': rows,
-                  'worker': {'UID': os.getuid(), 'GID': os.getgid(), 'CPU': os.cpu_count(),
-                             'meminfo': pathlib.Path('/proc/meminfo').read_text(),
-                             'memoryPSI': pathlib.Path('/proc/pressure/memory').read_text()},
-                  'limits': 'Read-only source and worker facts; no production or minimum-capacity claim.'}
-          with (proof / 'pre-setup-source-and-worker.json').open('x') as stream: json.dump(data, stream, indent=2)
+          root = pathlib.Path(os.environ['GITHUB_WORKSPACE'])
+          proof = pathlib.Path(os.environ['RUNNER_TEMP']) / 'mutation-reader-proof'
+          proof.mkdir()
+          def git(*args):
+              p = subprocess.run(['git', '-C', str(root), *args], capture_output=True, timeout=30)
+              assert p.returncode == 0 and not p.stderr
+              return p.stdout
+          observed = {'source': git('rev-parse', 'HEAD').decode().strip(),
+                      'tree': git('rev-parse', 'HEAD^{tree}').decode().strip(),
+                      'statusHex': git('status', '--porcelain=v1', '-z', '--untracked-files=all').hex(),
+                      'QAWorkflowSource': os.environ['GITHUB_SHA'],
+                      'run': os.environ['GITHUB_RUN_ID'], 'attempt': os.environ['GITHUB_RUN_ATTEMPT']}
+          adapter = root / 'backend/scripts/run-mutation-process.py'
+          observed['adapterSHA256'] = hashlib.sha256(adapter.read_bytes()).hexdigest()
+          (proof / 'pre-source.json').write_text(json.dumps(observed, indent=2) + '\n')
+          assert observed['source'] == os.environ['EXPECTED_SOURCE']
+          assert observed['tree'] == os.environ['EXPECTED_TREE'] and observed['statusHex'] == ''
+          assert observed['adapterSHA256'] == '899fbac9de15e8603cb21b52835fe44f068fe118e76988c67b8c1784abaf39d5'
           PRE
-      - name: Prepare the unchanged registered SDK and verification dependencies
-        uses: ./.github/actions/knoxx-setup
-      - name: Relocate only the closed setup source outside the clean application tree
-        shell: bash
-        run: |
-          python3 - <<'SDK_SOURCE'
-          import json, os, pathlib, subprocess
-          root = pathlib.Path(os.environ['GITHUB_WORKSPACE']).resolve(strict=True)
-          temp = pathlib.Path(os.environ['RUNNER_TEMP']).resolve(strict=True)
-          stem = os.environ['GITHUB_RUN_ID'] + '-' + os.environ['GITHUB_RUN_ATTEMPT']
-          proof = temp / ('mutation-pilot-' + stem)
-          old = root / '_deps'
-          new = temp / ('mutation-setup-source-' + stem)
-          assert old.resolve(strict=True) == old and old.is_dir() and [p.name for p in old.iterdir()] == ['openplanner']
-          assert not new.exists() and not new.is_symlink() and old.stat().st_dev == temp.stat().st_dev
-          def observe(source):
-              result = {}
-              for label, args in [('head', ['rev-parse', 'HEAD']), ('tree', ['rev-parse', 'HEAD^{tree}']),
-                                  ('status', ['status', '--porcelain=v1', '-z', '--untracked-files=all'])]:
-                  native = subprocess.run(['git', '-C', str(source), *args], capture_output=True, timeout=30)
-                  assert native.returncode == 0 and not native.stderr and len(native.stdout) <= 65536
-                  result[label] = native.stdout.decode().strip()
-              assert result == {'head': '07085d6557b75834ce6f50e6c54b8ca47e1c7c08',
-                                'tree': '1dc69c04c8e832661d8062c15ee24a853f135d35', 'status': ''}
-              value = source.stat(); result['inode'] = value.st_ino; result['device'] = value.st_dev
-              return result
-          before = observe(old / 'openplanner')
-          os.rename(old, new)
-          after = observe(new / 'openplanner')
-          assert before == after and not old.exists()
-          record = {'oldSetupParent': str(old), 'newSetupParent': str(new), 'before': before, 'after': after,
-                    'scope': 'Same-filesystem rename of this job own completed setup source only; no ignore, deletion, reset or SDK helper/source edit. The built SDK sibling link and filtered build remain at their original paths.'}
-          with (proof / 'sdk-setup-source-relocation.json').open('x') as stream: json.dump(record, stream, indent=2)
-          status = subprocess.run(['git', '-C', str(root), 'status', '--porcelain=v1', '-z', '--untracked-files=all'], capture_output=True, timeout=30)
-          assert status.returncode == 0 and not status.stderr and not status.stdout, 'Application must be clean before the canonical mutation harness.'
-          SDK_SOURCE
-      - name: Run the canonical baseline and three actual source mutations
-        working-directory: backend
+      - name: Run the unchanged registered full mutation-test suite
         shell: bash
         run: |
           set -euo pipefail
-          set -C
-          proof="$RUNNER_TEMP/mutation-pilot-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
-          python3 scripts/run-mutation-process.py --timeout-ms 2400000 --max-output-bytes 8388608 --cleanup-ms 30000 \
-            -- clojure -M:mutation --run --batch-count 4 --batch-index 0 --limit 3 --min-evaluated 3 \
-            --timeout-ms 240000 --report target/mutation/pilot-3.edn \
-            > "$proof/canonical-pilot-native.json" 2> "$proof/canonical-pilot-adapter.stderr"
-          python3 - <<'CHECK'
+          cd backend
+          python3 scripts/run-mutation-process.py \
+            --timeout-ms 600000 --max-output-bytes 8388608 --cleanup-ms 30000 \
+            -- clojure -M:mutation-test > "$RUNNER_TEMP/mutation-reader-proof/unit-native.json"
+          python3 - <<'UNIT'
           import json, os, pathlib
-          proof = pathlib.Path(os.environ['RUNNER_TEMP']) / ('mutation-pilot-' + os.environ['GITHUB_RUN_ID'] + '-' + os.environ['GITHUB_RUN_ATTEMPT'])
-          native = json.loads((proof / 'canonical-pilot-native.json').read_bytes())
-          assert not (proof / 'canonical-pilot-adapter.stderr').read_bytes()
-          assert native['exit-code'] == 0 and native['termination'] == 'exited'
-          assert native['cleanup-complete?'] and not native['capture-truncated?']
-          # The canonical harness owns baseline validity, actual rewrites, kills and restores.
-          assert pathlib.Path('target/mutation/pilot-3.edn').is_file()
-          assert pathlib.Path('target/mutation/pilot-3.edn.json').is_file()
-          print(native['output'])
-          CHECK
-      - name: Preserve actual final source custody without resetting it
+          p = pathlib.Path(os.environ['RUNNER_TEMP']) / 'mutation-reader-proof/unit-native.json'
+          result = json.loads(p.read_bytes())
+          print(result['output'])
+          assert result['termination'] == 'exited' and result['cleanup-complete?']
+          assert not result['capture-truncated?']
+          assert result['exit-code'] == 0, 'The actual owning suite failed; native capture retained unchanged.'
+          UNIT
+      - name: Preserve actual final source custody
         if: always()
         shell: bash
         run: |
           python3 - <<'POST'
           import hashlib, json, os, pathlib, subprocess
-          root = pathlib.Path(os.environ['GITHUB_WORKSPACE']).resolve(strict=True)
-          proof = pathlib.Path(os.environ['RUNNER_TEMP']) / ('mutation-pilot-' + os.environ['GITHUB_RUN_ID'] + '-' + os.environ['GITHUB_RUN_ATTEMPT'])
-          proof.mkdir(mode=0o700, exist_ok=True)
-          rows = {}
-          for label, args in [('head', ['rev-parse', 'HEAD']), ('tree', ['rev-parse', 'HEAD^{tree}']),
+          root = pathlib.Path(os.environ['GITHUB_WORKSPACE'])
+          proof = pathlib.Path(os.environ['RUNNER_TEMP']) / 'mutation-reader-proof'
+          proof.mkdir(exist_ok=True)
+          observed = {}
+          for label, args in [('source', ['rev-parse', 'HEAD']), ('tree', ['rev-parse', 'HEAD^{tree}']),
                               ('status', ['status', '--porcelain=v1', '-z', '--untracked-files=all']),
-                              ('index', ['diff', '--cached', '--raw', '-z']), ('diff', ['diff', 'HEAD', '--'])]:
-              r = subprocess.run(['git', '-C', str(root), *args], capture_output=True, timeout=30)
-              assert len(r.stdout) <= 1048576 and len(r.stderr) <= 65536
-              for suffix, data in [('stdout', r.stdout), ('stderr', r.stderr)]:
-                  with (proof / ('post-' + label + '.' + suffix)).open('xb') as stream: stream.write(data)
-              rows[label] = {'exit': r.returncode, 'stdoutBytes': len(r.stdout),
-                             'stdoutSHA256': hashlib.sha256(r.stdout).hexdigest(), 'stderrBytes': len(r.stderr)}
-          clean = (all(row['exit'] == 0 and not row['stderrBytes'] for row in rows.values())
-                   and (proof / 'post-head.stdout').read_text().strip() == '2c4fc51a98936ed73c47ec94cef9ee51ca6bc19a'
-                   and (proof / 'post-tree.stdout').read_text().strip() == '6a661d955975c72cd8c4140f18d4162475f4b2b4'
-                   and all(rows[label]['stdoutBytes'] == 0 for label in ['status', 'index', 'diff']))
-          with (proof / 'post-source-custody.json').open('x') as stream: json.dump({'actualClean': clean, 'nativeReads': rows}, stream, indent=2)
-          assert clean, 'Canonical source did not restore; no reset or synthetic cleanup is performed.'
+                              ('index', ['diff', '--cached', '--binary']), ('diff', ['diff', '--binary'])]:
+              p = subprocess.run(['git', '-C', str(root), *args], capture_output=True, timeout=30)
+              observed[label] = {'exit': p.returncode, 'stdoutBytes': len(p.stdout),
+                                 'stdoutSHA256': hashlib.sha256(p.stdout).hexdigest(), 'stderrBytes': len(p.stderr)}
+              if label in ['source', 'tree']: observed[label]['value'] = p.stdout.decode().strip()
+          (proof / 'post-source.json').write_text(json.dumps(observed, indent=2) + '\n')
+          assert all(v['exit'] == 0 and v['stderrBytes'] == 0 for v in observed.values())
+          assert observed['source']['value'] == os.environ['EXPECTED_SOURCE']
+          assert observed['tree']['value'] == os.environ['EXPECTED_TREE']
+          assert all(observed[k]['stdoutBytes'] == 0 for k in ['status', 'index', 'diff'])
           POST
-      - name: Bound complete reports and payload evidence even after failure
-        id: evidence-size
+      - name: Bound the explicit finite unit evidence
+        id: unit_proof
         if: always()
         shell: bash
         run: |
           python3 - <<'SIZE'
-          import hashlib, json, os, pathlib, stat, sys, time
-          temp = pathlib.Path(os.environ['RUNNER_TEMP'])
-          stem = os.environ['GITHUB_RUN_ID'] + '-' + os.environ['GITHUB_RUN_ATTEMPT']
-          proof = temp / ('mutation-pilot-' + stem)
-          proof.mkdir(mode=0o700, exist_ok=True)
-          roots = [proof, pathlib.Path(os.environ['GITHUB_WORKSPACE']) / 'backend/target/mutation', temp / 'knoxx-setup-sdk/evidence']
+          import hashlib, json, os, pathlib, stat
+          proof = pathlib.Path(os.environ['RUNNER_TEMP']) / 'mutation-reader-proof'
+          proof.mkdir(exist_ok=True)
+          allowed = {'pre-source.json', 'unit-native.json', 'post-source.json'}
+          rows = []
           total = 0
-          count = 0
-          deadline = time.monotonic() + 60
-          receipt = {'admissible': False, 'scope': 'Three-mutation pilot only; no four250 or equivalent-adjudication credit.'}
-          def traversal_error(error): raise error
-          def paths(root):
-              yield root
-              for parent, dirs, files in os.walk(root, onerror=traversal_error, followlinks=False):
-                  for leaf in dirs + files: yield pathlib.Path(parent) / leaf
-          try:
-              for root in roots:
-                  if root.exists() or root.is_symlink():
-                      for path in paths(root):
-                          value = path.lstat()
-                          assert stat.S_ISREG(value.st_mode) or stat.S_ISDIR(value.st_mode), 'Unexpected nonregular evidence node'
-                          if stat.S_ISREG(value.st_mode): count += 1; total += value.st_size
-                          assert time.monotonic() <= deadline and count <= 50000
-              receipt['admissible'] = total + 65536 <= 256 * 1024**2
-              assert receipt['admissible'], 'Complete pilot proof exceeds256MiB including receipt reserve'
-          except BaseException as error:
-              receipt['admissible'] = False
-              receipt['artifactFailure'] = {'type': type(error).__name__, 'message': str(error)[:1000]}
-          receipt.update({'rawBytes': total, 'regularFiles': count})
-          native_path = proof / 'canonical-pilot-native.json'
-          if native_path.is_file() and not native_path.is_symlink() and native_path.stat().st_size <= 16 * 1024**2:
-              raw = native_path.read_bytes(); receipt['nativeCaptureSHA256'] = hashlib.sha256(raw).hexdigest()
-              try:
-                  native = json.loads(raw)
-                  receipt['native'] = {key: native.get(key) for key in ['exit-code', 'termination', 'cleanup-complete?', 'capture-truncated?', 'diagnostic']}
-              except ValueError: receipt['native'] = 'Unavailable; original capture hash retained.'
-          if not receipt['admissible']: receipt['limit'] = 'Complete proof omitted; finite diagnostic only, no qualification.'
-          data = (json.dumps(receipt, indent=2) + '\n').encode(); assert len(data) <= 65536
-          path = temp / ('mutation-artifact-size-' + stem + '.json')
-          with path.open('xb') as stream: stream.write(data)
-          with pathlib.Path(os.environ['GITHUB_OUTPUT']).open('a') as stream: stream.write('admissible=' + str(receipt['admissible']).lower() + '\n')
-          print(data.decode()); sys.exit(0 if receipt['admissible'] else 1)
+          for p in proof.iterdir():
+              assert len(rows) < 3, 'Unexpected extra evidence entry'
+              info = p.lstat()
+              assert p.name in allowed and stat.S_ISREG(info.st_mode)
+              total += info.st_size
+              assert total + 65536 <= 64 * 1024**2
+              rows.append({'name': p.name, 'bytes': info.st_size, 'sha256': hashlib.sha256(p.read_bytes()).hexdigest()})
+          out = {'scope': 'Full owning unit suite only; no genuine kill/model/runtime/release credit.',
+                 'rawBytes': total, 'files': rows, 'missing': sorted(allowed - {v['name'] for v in rows})}
+          (proof / 'artifact-admission.json').write_text(json.dumps(out, indent=2) + '\n')
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as f: f.write('admissible=true\n')
           SIZE
-      - name: Preserve complete canonical pilot evidence
-        if: ${{ always() && steps.evidence-size.outputs.admissible == 'true' }}
+      - name: Preserve actual finite unit and source evidence
+        if: always() && steps.unit_proof.outputs.admissible == 'true'
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: genuine-three-mutation-pilot-${{ github.run_id }}-${{ github.run_attempt }}
-          path: |
-            ${{ runner.temp }}/mutation-pilot-${{ github.run_id }}-${{ github.run_attempt }}
-            ${{ github.workspace }}/backend/target/mutation
-            ${{ runner.temp }}/knoxx-setup-sdk/evidence
-            ${{ runner.temp }}/mutation-artifact-size-${{ github.run_id }}-${{ github.run_attempt }}.json
+          name: mutation-reader-owning-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/mutation-reader-proof/
           if-no-files-found: error
           retention-days: 1
-          compression-level: 6
-          overwrite: false
-          include-hidden-files: true
-      - name: Preserve a finite evidence-bound failure diagnostic
-        if: ${{ always() && steps.evidence-size.outputs.admissible == 'false' }}
+      - name: Preserve a bounded diagnostic when complete proof is inadmissible
+        if: always() && steps.unit_proof.outputs.admissible != 'true'
+        shell: bash
+        run: |
+          python3 - <<'DIAG'
+          import json, os, pathlib
+          p = pathlib.Path(os.environ['RUNNER_TEMP']) / 'mutation-reader-failure.json'
+          out = {'run': os.environ['GITHUB_RUN_ID'], 'source': os.environ['EXPECTED_SOURCE'],
+                 'scope': 'Complete proof unavailable or inadmissible; native job logs retained, no qualification.'}
+          data = (json.dumps(out, indent=2) + '\n').encode()
+          assert len(data) <= 65536
+          p.write_bytes(data)
+          DIAG
+      - name: Preserve only the bounded diagnostic
+        if: always() && steps.unit_proof.outputs.admissible != 'true'
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: three-mutation-evidence-bound-failure-${{ github.run_id }}-${{ github.run_attempt }}
-          path: ${{ runner.temp }}/mutation-artifact-size-${{ github.run_id }}-${{ github.run_attempt }}.json
+          name: mutation-reader-diagnostic-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/mutation-reader-failure.json
           if-no-files-found: error
           retention-days: 1
-          compression-level: 6
-          overwrite: false
