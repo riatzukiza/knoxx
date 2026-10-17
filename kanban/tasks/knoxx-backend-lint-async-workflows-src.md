@@ -1,7 +1,7 @@
 ---
 category: "tasks"
 labels: ["tasks", "5sp"]
-write-id: "1792276735974-0.foq59begvcz2ueysui"
+write-id: "1792280425735-0.341fc6wbusgc6nrh1ad"
 points: "5"
 source: "specs/tasks/knoxx-backend-lint-async-workflows-src.md"
 title: "Knoxx Backend Lint — Async Workflow Refactor for Source Namespaces"
@@ -240,5 +240,17 @@ All public names/arities, tests, schemas, configs, 27 policy evaluator arms, mod
 After separately admitted application, measure the unchanged three-complete-file owning lint and full registered backend lint against the actual preceding coherent source and raw diagnostics. Three cause removals and possible owning0/global-minus3 are predictions only. Outside-three-file diagnostic rows and coordinates must stay exact; retain and bind any touched-file remaining causes/shifted coordinates and reject added causes/errors. Preserve failed global-static contract and later coherent typecheck/build/test/server/full runtime, native review, mutation, migration and release gates.
 
 Serialize after the actual G then C source/provenance closure, guard exact source/index/foreign refs and all three preimages, append this exact scope once through official Rheos with readback/history/frontmatter/prefix preservation, then apply only reviewed postimages. Use separate explicit source/native-owner and canonical RR/portableSM provenance commits with all historical prefixes held. No public/QAref/dispatch/PR/review/merge/adoption/Ready, provider/model/DB/PM2/account/permission/spend/deployment effect is included.
+
+Finite message decoding and result presentation continuation under the existing knoxx-knoxx-backend-lint-async-workflows-src in_progress/P1/5 owner. No status, priority, points, dependency or readiness change. Source baseline is actual clean post-diagnostic 5cf843b66d453a88d586daadcdded235a4b2f08e / tree ad4b9c9e5df2f1436b41a36f9b2c3dd09eec271d, preserving all preceding source/card/event/receipt history.
+
+Five product paths only: infra/agent/transcript.cljs, infra/agent/hydration.cljs, extern/agent_message.cljs, domain/text.cljs and new domain/text/result.cljc (all beneath backend/src/cljs/knoxx/backend). Exact composed patch SHA256 bfe0c5368fa9eb1efa53cbceeef63e3a2fb3ee3f5fbfc860bd0a4639dc1a4bbe. Three message spans plus graph-query-result-text are four selected causes; domain/text.cljs file length remains an explicit failed cause.
+
+Preserve the full existing per-message transcript body and per-part multimodal decoder, native getter/case order, repeated text calls and per-item live helper lookup. Retain image/audio conditional native body construction and all six eager owner accessors. Native bodies remain in their original owner namespaces; this makes no portable-purity or new boundary-contract claim and adds no native expressions. Stored-message clock/usage mutation, roles, normalization and all public names/arities stay unchanged.
+
+Portable text/result.cljc receives decoded data and already prepared node/edge text only. Retain original live public float-format/value->preview-text lookup at original lazy map/map-indexed visits, JS Number behavior in the same native adapters, node-before-edge-before-cluster-before-header evaluation, defaults/error text and existing concatenation. No native/callback/provider/clock authority enters CLJC. All other source, tests/assertions, imports outside reviewed requires, policies, configs, controller/model identities and thresholds remain exact.
+
+After separate root admission and actual successor binding, append this scope once through official Rheos with exact ACK/readback/history/write-id guards; apply exactly four existing postimages and exclusively create the one new result.cljc. Run unchanged five-complete-file owning and full registered backend lint once. Expected full136 to132 and owning one retained file-length warning are predictions, not observed results. Require exact four cause removals/no new errors/causes, outside-five-file rows/coordinates exact, and actual retained touched coordinates recorded. No warning suppression or count-only success.
+
+Preserve direct coverage limits: transcript and stored-message public controls exist, but no direct multimodal-constructor or selected text-renderer assertions were recovered. Full coherent ordinary typecheck/compile-test/server/runtime and native review/release gates remain downstream; no mirrored tests/private export seam or runtime claim. Use one explicit seven-path source/card/event commit, then separate canonical RR/portableSM two-path provenance with exact prefixes and command-local Git auto-maintenance disabled. No public/refpush/QA/PR/Ready/merge/adoption/model/provider/DB/PM2/account/deployment effects.
 
 ---

@@ -1,7 +1,8 @@
 (ns knoxx.backend.domain.text
   (:require [clojure.string :as str]
             [knoxx.backend.infra.http :as backend-http]
-            [knoxx.backend.shape.text-preview :as preview]))
+            [knoxx.backend.shape.text-preview :as preview]
+            [knoxx.backend.domain.text.result :as result-text]))
 
 (declare value->preview-text)
 
@@ -317,11 +318,7 @@
 
 (defn semantic-read-result-text
   [{:keys [database path content truncated]}]
-  (str "Active corpus: " (:name database) "\n"
-       "Path: " path
-       (when truncated "\nNote: content truncated for tool safety.")
-       "\n\n"
-       content))
+  (result-text/semantic-read-text database path content truncated))
 
 (defn- string-preview-text
   [value]
@@ -413,17 +410,7 @@
 
 (defn websearch-result-text
   [{:keys [output sources model]}]
-  (str "Web search"
-       (when model (str " via " model))
-       "\n\n"
-       (or output "")
-       (when (seq sources)
-         (str "\n\nSources:\n"
-              (str/join "\n"
-                        (map (fn [source]
-                               (str "- " (or (:title source) (:url source))
-                                    " — " (:url source)))
-                             sources))))))
+  (result-text/websearch-text output sources model))
 
 (defn openplanner-session-text
   [session-id rows]
@@ -439,56 +426,43 @@
            rows)))
     (str "OpenPlanner session " session-id " is empty or missing.")))
 
+(defn- graph-node-result-text
+  "Keep native formatting and live public preview lookups at each map visit."
+  [idx node]
+  (let [data (or (:data node) {})
+        label (or (:label node) (:id node))
+        text (or (:text node) (:preview (:data node)))]
+    (str (inc idx) ". [" (:lake node) "/" (:nodeType node) "] " label
+         (when-let [s (:score node)]
+           (str " (score=" (float-format s) ")"))
+         "\n   id=" (:id node)
+         (when-let [path (or (:path data) (some-> (:id node) (str/replace #"^[^:]+:" "")))]
+           (str "\n   path=" path))
+         (when-let [url (:url data)]
+           (str "\n   url=" url))
+         (when text
+           (str "\n   text=" (or (value->preview-text text 280) ""))))))
+
+(defn- graph-edge-result-text
+  "Keep the native numeric fallback at the original lazy edge visit."
+  [edge]
+  (let [etype (or (:edgeType edge) (when-let [sim (:similarity edge)]
+                                      (str "sim=" (float-format sim))))]
+    (str "- [" (or etype "link") "] " (:source edge) " -> " (:target edge))))
+
 (defn graph-query-result-text
   [result]
   (let [nodes (vec (or (:nodes result) []))
         edges (vec (or (:edges result) []))
         stats (:stats result)]
     (if (seq nodes)
-      (let [node-text (str/join
-                       "\n\n"
-                       (map-indexed
-                        (fn [idx node]
-                          (let [data (or (:data node) {})
-                                label (or (:label node) (:id node))
-                                text (or (:text node) (:preview (:data node)))]
-                            (str (inc idx) ". [" (:lake node) "/" (:nodeType node) "] " label
-                                 (when-let [s (:score node)]
-                                   (str " (score=" (float-format s) ")"))
-                                 "\n   id=" (:id node)
-                                 (when-let [path (or (:path data) (some-> (:id node) (str/replace #"^[^:]+:" "")))]
-                                   (str "\n   path=" path))
-                                 (when-let [url (:url data)]
-                                   (str "\n   url=" url))
-                                 (when text
-                                   (str "\n   text=" (or (value->preview-text text 280) ""))))))
-                        nodes))
+      (let [node-text (str/join "\n\n"
+                                (map-indexed (fn [idx node]
+                                               (graph-node-result-text idx node)) nodes))
             edge-text (when (seq edges)
-                        (str/join
-                         "\n"
-                         (map (fn [edge]
-                                (let [etype (or (:edgeType edge) (when-let [sim (:similarity edge)]
-                                                                    (str "sim=" (float-format sim))))]
-                                  (str "- [" (or etype "link") "] " (:source edge) " -> " (:target edge))))
-                              edges)))
+                        (str/join "\n"
+                                  (map (fn [edge] (graph-edge-result-text edge)) edges)))
             clusters-text (when-let [clusters (seq (:clusters result))]
-                            (str "\n\nClusters:\n"
-                                 (str/join "\n"
-                                           (map (fn [c]
-                                                  (str "  " (:lake c) ": " (:count c) " nodes"
-                                                       (when-let [top (seq (:topNodes c))]
-                                                         (str "\n    top: " (str/join ", " (map :id top))))))
-                                                clusters))))]
-        (str "Knowledge graph query"
-             (when-let [q (:query result)]
-               (str "\nQuery: " q))
-             (when-let [projects (seq (:projects result))]
-               (str "\nProjects: " (str/join ", " projects)))
-             (when stats
-               (str "\nStats: " (pr-str stats)))
-             "\n\nNodes:\n"
-             node-text
-             edge-text
-             clusters-text))
-      (str "Knowledge graph query returned no matching nodes."
-           (when stats (str " " (pr-str stats)))))))
+                            (result-text/graph-clusters-text clusters))]
+        (result-text/graph-query-text result stats node-text edge-text clusters-text))
+      (result-text/empty-graph-text stats))))

@@ -33,6 +33,42 @@
        :mimeType mime-type
        :format (or (mime->audio-format mime-type) "mp3")})
 
+(defn- image-agent-part
+  "Route stored image data or URL into its existing agent SDK representation."
+  [data mime-type url]
+  (cond
+    (and (string? data) (not (str/blank? data)) (str/starts-with? data "data:"))
+    #js {:type "image"
+         :data (data-url-raw data)
+         :mimeType (data-url-mime data (or mime-type "image/png"))}
+
+    (and (string? data) (not (str/blank? data)))
+    #js {:type "image"
+         :data data
+         :mimeType (or mime-type "image/png")}
+
+    (and (string? url) (not (str/blank? url)))
+    #js {:type "image_url"
+         :image_url #js {:url url}}
+
+    :else nil))
+
+(defn- audio-agent-part
+  "Route stored audio data or URL into its existing agent SDK representation."
+  [data mime-type url]
+  (cond
+    (and (string? data) (not (str/blank? data)) (str/starts-with? data "data:"))
+    (let [mime (data-url-mime data (or mime-type "audio/mpeg"))]
+      (audio-part (data-url-raw data) mime))
+
+    (and (string? data) (not (str/blank? data)))
+    (audio-part data mime-type)
+
+    (and (string? url) (not (str/blank? url)))
+    (audio-part url mime-type)
+
+    :else nil))
+
 (defn content-part->agent-part
   [part]
   (let [part-type (some-> (:type part) str str/lower-case)
@@ -48,35 +84,9 @@
       ;; Image part routing for the eta-mu SDK:
       ;; eta-mu requires {type "image" :data <RAW-base64-no-prefix> :mimeType "image/..."}.
       ;; Never use image_url shape for already-materialized data.
-      "image" (cond
-                (and (string? data) (not (str/blank? data)) (str/starts-with? data "data:"))
-                #js {:type "image"
-                     :data (data-url-raw data)
-                     :mimeType (data-url-mime data (or mime-type "image/png"))}
+      "image" (image-agent-part data mime-type url)
 
-                (and (string? data) (not (str/blank? data)))
-                #js {:type "image"
-                     :data data
-                     :mimeType (or mime-type "image/png")}
-
-                (and (string? url) (not (str/blank? url)))
-                #js {:type "image_url"
-                     :image_url #js {:url url}}
-
-                :else nil)
-
-      "audio" (cond
-                (and (string? data) (not (str/blank? data)) (str/starts-with? data "data:"))
-                (let [mime (data-url-mime data (or mime-type "audio/mpeg"))]
-                  (audio-part (data-url-raw data) mime))
-
-                (and (string? data) (not (str/blank? data)))
-                (audio-part data mime-type)
-
-                (and (string? url) (not (str/blank? url)))
-                (audio-part url mime-type)
-
-                :else nil)
+      "audio" (audio-agent-part data mime-type url)
 
       "video" (when (not (str/blank? (str (or data url))))
                 #js {:type "video"
