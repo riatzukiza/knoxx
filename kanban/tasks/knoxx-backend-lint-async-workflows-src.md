@@ -1,7 +1,7 @@
 ---
 category: "tasks"
 labels: ["tasks", "5sp"]
-write-id: "1792276324435-0.y6hwdhumuqpwce38bzn"
+write-id: "1792276735974-0.foq59begvcz2ueysui"
 points: "5"
 source: "specs/tasks/knoxx-backend-lint-async-workflows-src.md"
 title: "Knoxx Backend Lint — Async Workflow Refactor for Source Namespaces"
@@ -226,5 +226,19 @@ Static verification is exactly one complete four-file owning lint and one full r
 Raw source inverse and read-without-evaluation helper expansion preserve original forms; they provide no compiled/runtime credit. Existing local mock HTTP/FS Blaze public tests stay intact. No dedicated direct attach-execute/audio-result assertion was established; live-provider integration remains opt-in and provides no live credit. Full coherent normal backend typecheck/compile-test/server and applicable runtime gates remain required after composed source freezes. No local JVM/compiler/model/QA dispatch, public ref/PR, DB, PM2, provider/account or deployment effect is part of this source/static slice.
 
 After actual static cause conservation, use one explicit six-path source/card/event commit and a separate canonical Receipt River plus portable Session Mycology two-path provenance commit. New result.cljc alone is permitted as untracked between exclusive creation and staging; all other unexpected source/index/untracked/ref drift refuses. Unknown mutation outcomes stop for read-only reconciliation without replay.
+
+Finite agent/action/tool input and output data assembly under this existing in_progress/P1/5 source owner, continuing the exact existing nonfunctional responsibility-cleanup scope. Exact patch SHA256 713bca4d7d24dc9662d0e40afc56bcbaa4eb8938ad93d3deb30f81293a3450f8 changes only backend/src/cljs/knoxx/backend/domain/action/registry.cljs, domain/actor/tools.cljs and domain/contracts/tools.cljs. No status, priority, points, dependency, readiness or planning authority changes.
+
+In run-steps-handler, retain the original first-step lookup, then move only the original ordered action-key/with/handler bindings into step-dispatch-data; return the same handler value for invocation by the owner. Move the complete missing-handler error map into missing-step-result, invoked only in that original branch. Loop/recur, handler lookup timing, temp-memory resolution/interpolation, await, handler call/catch, failed-result tagging and output-store behavior remain in the original async owner.
+
+In resolve-target-sync, leave current-context, all original raw-JS parameter accesses, default/alias normalization and eager parent-context call in their original order. Move only the complete ordered cond-> target-address map into resolved-target-address. All self/parent/type-hint combinations, precedence, explicit overrides, nil/false handling and merging remain unchanged. No raw-JS access or authorization/runtime operation is added to the private data helper.
+
+In contract-validate-execute, keep callback selection, parameter validation, client construction, update notification, HTTP validation/await and original ok/errors/warnings bindings in the owner. Move only the original result-message str expression into contract-validation-message; retain every success/error/warning string, default, lazy map/join expression and order. The live tool-text-result call remains in the owner and receives the identical original result value.
+
+All public names/arities, tests, schemas, configs, 27 policy evaluator arms, model/controller identity and all other source forms remain unchanged. The template operator interpreter and extension async dispatcher are expressly excluded. No execution wrapper is relabeled as pure. Exact whole-file inverse and expression-token controls are source conservation only: existing run-steps public tests cover the missing-action path, while no direct actor-target or validation-tool rendering test reference was recovered. Do not invent direct coverage or add mirrored tests/private exports.
+
+After separately admitted application, measure the unchanged three-complete-file owning lint and full registered backend lint against the actual preceding coherent source and raw diagnostics. Three cause removals and possible owning0/global-minus3 are predictions only. Outside-three-file diagnostic rows and coordinates must stay exact; retain and bind any touched-file remaining causes/shifted coordinates and reject added causes/errors. Preserve failed global-static contract and later coherent typecheck/build/test/server/full runtime, native review, mutation, migration and release gates.
+
+Serialize after the actual G then C source/provenance closure, guard exact source/index/foreign refs and all three preimages, append this exact scope once through official Rheos with readback/history/frontmatter/prefix preservation, then apply only reviewed postimages. Use separate explicit source/native-owner and canonical RR/portableSM provenance commits with all historical prefixes held. No public/QAref/dispatch/PR/review/merge/adoption/Ready, provider/model/DB/PM2/account/permission/spend/deployment effect is included.
 
 ---

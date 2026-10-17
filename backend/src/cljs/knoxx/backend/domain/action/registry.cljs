@@ -203,6 +203,22 @@
 
 ;; ── Run-Steps Handler (Phase 2) ────────────────────────────────────────
 
+(defn- step-dispatch-data
+  [ctx step]
+  (let [step-action-key (:action step)
+        step-with (or (:with step) {})
+        handler (get-in ctx [:scope step-action-key])]
+    {:step-action-key step-action-key
+     :step-with step-with
+     :handler handler}))
+
+(defn- missing-step-result
+  [idx step-action-key]
+  {:ok false
+   :error (str "Action " step-action-key " not found in scope")
+   :failed-step idx
+   :failed-action step-action-key})
+
 (defn ^:async run-steps-handler
   "Execute a sequence of actions from scope. Steps are pre-ordered.
    Each step is {:action :actions/... :with {...}}.
@@ -219,14 +235,9 @@
             (await (temp-memory/mem-set! (:key output-cfg) last-result {:ttl (:ttl output-cfg)})))
           {:ok true :action/kind :actions/run-steps :steps-run idx :result last-result})
         (let [step (first remaining)
-              step-action-key (:action step)
-              step-with (or (:with step) {})
-              handler (get-in ctx [:scope step-action-key])]
+              {:keys [step-action-key step-with handler]} (step-dispatch-data ctx step)]
           (if-not handler
-            {:ok false
-             :error (str "Action " step-action-key " not found in scope")
-             :failed-step idx
-             :failed-action step-action-key}
+            (missing-step-result idx step-action-key)
             (let [resolved-temps (await (temp-memory/resolve-temps step-with))
                   interpolated (pipeline-shape/interpolate-map step-with resolved-temps)
                   step-action {:action/kind step-action-key :action/with interpolated}
