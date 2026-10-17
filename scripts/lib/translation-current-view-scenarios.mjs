@@ -276,16 +276,51 @@ async function filterCase(io, mode, number) {
   const filtered = [get('filter-inventory', reviewsPath, [], { project: a.project, reviews: [a.row] },
     { hold: true, checkpoint: { project: a.project, absent: [a.title, a.detail.segments[0].translated_text], formAbsent: true } }),
     get('filter-legacy', '/api/translations/documents', [['project', a.project], ['target_lang', 'fr']], { documents: [], total: 0 })];
-  await install(io, { runId, origin: io.config.origin, steps: [...bootSteps(a), ...mutationSteps(a, 'filter-old-A', mode), ...filtered], requiredCheckpoints: ['filter-inventory'] });
+  // A successful old mutation still owes one fresh read of the current filter.
+  const fresh = mode === 'success' ? [
+    get('filter-fresh-inventory', reviewsPath, [], { project: a.project, reviews: [a.row] },
+      { hold: true, checkpoint: { project: a.project, absent: [a.title, a.detail.segments[0].translated_text], formAbsent: true } }),
+    get('filter-fresh-legacy', '/api/translations/documents', [['project', a.project], ['target_lang', 'fr']], { documents: [], total: 0 }),
+  ] : [];
+  await install(io, { runId, origin: io.config.origin, steps: [...bootSteps(a), ...mutationSteps(a, 'filter-old-A', mode), ...filtered, ...fresh],
+    requiredCheckpoints: ['filter-inventory', ...(mode === 'success' ? ['filter-fresh-inventory'] : [])],
+    ...(mode === 'success' ? { requiredOrder: ['request:filter-old-A', 'request:filter-inventory', 'release:filter-old-A', 'release:filter-inventory',
+      'request:filter-legacy', 'request:filter-fresh-inventory', 'release:filter-fresh-inventory', 'request:filter-fresh-legacy'] } : {}) });
   await evaluate(io, domAction('route', '/translations')); await openWork(io, a);
   await evaluate(io, domAction('button', 'Approve split'));
   await evaluate(io, filterAction('fr'));
   await waitDom(io, `window.__knoxxControlledCore.report().pending.includes('filter-inventory')`, 'fr-held');
   await releaseMutation(io, 'filter-old-A', a, mode);
-  assert.ok((await adapter(io, 'report')).pending.includes('filter-inventory'));
+  const held = await adapter(io, 'report');
+  assert.ok(held.pending.includes('filter-inventory'));
+  if (mode === 'success') assert.equal(held.consumed.includes('filter-fresh-inventory'), false);
   await adapter(io, 'release', 'filter-inventory', 'success');
   await waitDom(io, `window.__knoxxControlledCore.report().consumed.includes('filter-legacy')`, 'filter-loaded');
   assert.equal(await evaluate(io, `document.body.innerText.includes(${js(a.title)})`), false);
+  if (mode === 'success') {
+    await waitDom(io, `window.__knoxxControlledCore.report().pending.includes('filter-fresh-inventory')`, 'fresh-fr-held');
+    const trailing = await adapter(io, 'report');
+    assert.equal(trailing.failed, false);
+    for (const id of ['filter-inventory', 'filter-legacy'])
+      assert.equal(trailing.records.filter(x => x === 'request:' + id).length, 1);
+    assert.ok(trailing.consumed.includes('filter-inventory') && trailing.consumed.includes('filter-legacy'));
+    assert.ok(trailing.checkpoints.some(x => x.id === 'filter-inventory' && x.ok));
+    assert.deepEqual(trailing.pending, ['filter-fresh-inventory']);
+    assert.equal(await evaluate(io, `document.querySelector('input[placeholder="devel"]').value === ${js(a.project)} &&
+      document.querySelector('select').value === 'fr' &&
+      !document.body.innerText.includes(${js(a.title)}) &&
+      !document.body.innerText.includes(${js(a.detail.segments[0].translated_text)}) &&
+      document.querySelectorAll('textarea').length === 0`), true);
+    await adapter(io, 'release', 'filter-fresh-inventory', 'success');
+    await waitDom(io, `window.__knoxxControlledCore.report().consumed.includes('filter-fresh-legacy')`, 'fresh-fr-loaded');
+    const complete = await adapter(io, 'report');
+    assert.equal(complete.failed, false);
+    assert.equal(complete.consumed.length, 10);
+    for (const id of ['filter-fresh-inventory', 'filter-fresh-legacy'])
+      assert.equal(complete.records.filter(x => x === 'request:' + id).length, 1);
+    assert.deepEqual(complete.pending, []);
+    assert.equal(await evaluate(io, `document.body.innerText.includes(${js(a.title)})`), false);
+  }
   return await finish(io, `${io.config.evidenceDir}/${number}-first-filter-render-${mode}.png`);
 }
 function filterAction(value) {
