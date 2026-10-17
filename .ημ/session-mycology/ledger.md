@@ -1196,3 +1196,12 @@
   spore: none
   receipt-refs: a423f231-9cd8-47dc-809a-33fff4f29fd1
   note: Extract portable disjoint field/lineage projections while leaving compaction, selections and effects at their existing adapter. Exact inverse/field source review plus original owning lint and complete global diagnostic multiplicities distinguish a two-warning improvement from whole-candidate readiness. Retain all183 other warnings and hold runtime/typecheck/test/coverage/build claims for actual new-source hosted QA. No spore.
+- ts: 2026-10-17T13:19:27.914046046Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-full-CI-workflow-repair-over933-v1
+  task: Isolate pure model catalog data; clear3warnings while retaining180globalFAIL
+  p-efficiency: 0.9
+  p-friction: 0.16
+  p-skill-candidate: 0.12
+  spore: none
+  receipt-refs: e3e7b75b-6639-4259-83be-102e64103a6c
+  note: Separate immutable model/provider map normalization from contract-loader and environment effects. Preserve configured-provider evaluation before defaults, nil/false/key/header precedence and all existing public APIs/tests; actual original/postimage/full diagnostic multiplicities distinguish three removals from retained enrich/global failures. Keep candidate runtime qualification and immutable modelQA612 evidence separate. No spore.
