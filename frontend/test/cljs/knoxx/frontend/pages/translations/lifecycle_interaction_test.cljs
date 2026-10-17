@@ -192,3 +192,58 @@
           ;; throws; the expected rejection is checked above, not hidden here.
           ((:resolve held) manifest)
           (try (await (:promise held)) (catch :default _ nil)))))))
+
+(test/deftest ^:async actual-project-boundary-excludes-old-inventory-before-any-B-loader
+  (doseq [mode [:success :error]]
+    (let [held (fixture/deferred)
+          calls (atom [])
+          events (atom [])
+          response {:project "devel" :reviews []}
+          original-error (js/Error. "Controlled old inventory failure")
+          context #js {:current (controller/initial-view "devel" "")}
+          documents #js {:current 1 :pending true}
+          manifest-load #js {:current 0}
+          detail #js {:current 0}
+          setters (into {} (map (fn [setter-key]
+                                 [setter-key #(swap! events conj [setter-key %])])
+                               [:set-draft-work! :set-detail! :set-detail-loading!
+                                :set-seg-idx! :set-form! :set-notice! :set-error!
+                                :set-saving! :set-documents! :set-loading!
+                                :set-selected! :set-manifest! :set-target-lang! :set-project!]))
+          factory @#'view/boundary-setters
+          boundaries (factory context documents manifest-load detail setters)
+          page-setters (merge setters boundaries)
+          run-generation! @#'controller/load-documents-generation!
+          load-id (.-current documents)]
+      (set! api/list-publication-reviews
+            (fn [] (swap! calls conj :original-inventory) (:promise held)))
+      (set! api/list-documents
+            (fn [params]
+              (swap! events conj [:legacy-read params])
+              (js/Promise.resolve {:documents [fixture/doc-summary] :total 1})))
+      ;; Retain the actual task, including its nested compatibility await and
+      ;; finally. The public wrapper returns only its numeric generation ID.
+      (let [running (run-generation! "devel" "" documents load-id page-setters)]
+        (try
+          (test/is (= [:original-inventory] @calls) "the original real inventory stage is pending")
+          ;; No replacement loader, React cleanup or manual cancel can supply
+          ;; the actual page factory's project-boundary invalidation here.
+          ((:set-project! boundaries) "fresh")
+          (test/is (= "fresh" (:project (.-current context))))
+          (test/is (= (inc load-id) (.-current documents))
+                   "the actual project boundary invalidates the inventory generation")
+          (let [boundary-events @events]
+            (if (= mode :success)
+              ((:resolve held) response)
+              ((:reject held) original-error))
+            ;; Await the complete real native task, not just its held response:
+            ;; a current response can enter another await before installing rows.
+            (await running)
+            (test/is (= [:original-inventory] @calls) "no replacement inventory request has run")
+            (test/is (= boundary-events @events)
+                     "old success starts no legacy read or install; old rejection/finally changes no current state"))
+          (finally
+            ;; Drain the owned task even if an unexpected path throws before
+            ;; release. Expected rejection is handled by the real loader.
+            ((:resolve held) response)
+            (await running)))))))
