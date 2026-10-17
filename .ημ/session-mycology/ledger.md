@@ -1232,3 +1232,12 @@
   spore: none
   receipt-refs: 4e37c54e-8f18-4f4e-ad81-fa23a0ee4e77
   note: Extract actual cohesive test setup boundaries without changing test/assertion bytes or effect ordering. Measure owning1→0 and full172→171/native2FAIL; correct unobserved predicted file-length warning rather than manufacture retained evidence. Source-only static result; coherent runtime qualification remains pending. No spore.
+- ts: 2026-10-17T16:39:05.086762037Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-full-CI-workflow-repair-over933-v1
+  task: Integrate independently qualified preview lineage while keeping final candidate evidence exact
+  p-efficiency: 0.92
+  p-friction: 0.12
+  p-skill-candidate: 0.08
+  spore: none
+  receipt-refs: 16248fa6-6287-4529-a910-8b89f3990bbd
+  note: Preserve real T/P commits with ordinary merge and exact3path index/blob guards. Measure integrated169/globalFAIL instead of adding separate branch warning deltas arithmetically; retain all historical immutable QA scope. Compose HMR/canonical harness lineage before one final candidate qualification. No spore.
