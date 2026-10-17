@@ -1295,3 +1295,12 @@
   spore: none
   receipt-refs: 2104c246-d839-4fae-be0e-6a38dd9aa136
   note: Exact finite one-function nested-let collapse; independent source/inverse/order peer, actual owning9 to8 and registered168 to167 warnings. Native2FAIL retained; existing status length37 to36 stillwarns and other messages held. Raw stdout qualifier and writer template parse refusals preserved; canonical writer v2 restores literal HEAD, original receipt bytes exact before the sole successful append. Source-bound hosted qualification pending; no new spore or globalPASS.
+- ts: 2026-10-17T18:05:13.807685377Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-full-CI-workflow-repair-over933-v1
+  task: Preserve lazy migration guards while extracting pure candidate assembly
+  p-efficiency: 0.90
+  p-friction: 0.14
+  p-skill-candidate: 0.0
+  spore: none
+  receipt-refs: 950673af-1e1f-47b3-bfa2-637b8da86402
+  note: Pure map assembly boundary removes actual owning1W and registered167 to166W, native2FAIL retained. Preserve complete inline rationale, mutable public Var lookup/effect order and existing tests. Original private syntax refusal retained before any source effect. Full defn span includes docs, so comment relocation was withdrawn without application. Coherent successor full-product CI planned; no runtime credit from older51bda, no spore/promotion.
