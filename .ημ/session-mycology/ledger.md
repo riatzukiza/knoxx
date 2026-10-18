@@ -1439,3 +1439,12 @@
   spore: none
   receipt-refs: 71581866-2983-4720-9b84-1c3e6a87c90f
   note: Exact SQL literals/21parameter expressions/native JSON positions remain inside original enabled query phase. Media complete original candidate cond stays at original absolute binding, with native getters/shim calls before unchanged containment/error guards. UUID/native parsing/DB clocks/locking and media conditional workspace lookups stay native-owned; no purity claim or new callbacks/exports. Existing7mailbox public controls and Blaze path consumers held; enabled-DB and direct containment/native-order gaps remain. Coherent successor runtime pending; all tests/config/checker policy held, no spore.
+- ts: 2026-10-18T01:14:18.728351996Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-full-CI-workflow-repair-over933-v1
+  task: Separate material mailbox and evidence-store responsibilities; retain actual global121 static warnings
+  p-efficiency: 0.9
+  p-friction: 0.1
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: 5e83094c-827c-4a55-a4c6-027ec4ad53bb
+  note: Whole-source inverses preserve exact mailbox SQL/21parameter/native phases, root private SQL lookup, store protocol/factory/public defns and live public policy calls. One root scope destructure, native Promise/swap/validation/claim/complete sequence and leaf laws remain source-bound. New internal SQL data/adapter/leaf/state exports and private alias loadtime/metadata limits explicit. Unchanged seven mailbox/four store controls leave enabled DB/private metadata/reload/newmodule/exotic-data runtime gaps; static results provide no compiler/runtime credit. All tests/config/checker policy held; no spore.
