@@ -253,6 +253,19 @@
         (throw (js/Error. (str "Transport not supported: "
                                (get-in server [:config :transport]))))))))
 
+(defn- agent-tool-descriptor
+  "Assemble one SDK descriptor after its execute closure has been constructed."
+  [tool tool-id input-schema execute-fn]
+  {:name tool-id
+   :label (or (:name tool) tool-id)
+   :description (or (:description tool) "")
+   :promptSnippet (str "Call MCP tool " tool-id)
+   :promptGuidelines [(str "Use " tool-id
+                           " when the task requires capabilities from the "
+                           (:serverId tool) " MCP server.")]
+   :parameters (clj->js (or input-schema {}))
+   :execute execute-fn})
+
 (defn mcp-tools-for-agent
   "Return MCP tools formatted as agent SDK custom tools (JavaScript array)."
   []
@@ -279,13 +292,5 @@
                                                              :text (str "MCP tool error: "
                                                                         (or (aget err "message")
                                                                             (str err)))}]})))))]
-                 {:name tool-id
-                  :label (or (:name tool) tool-id)
-                  :description (or (:description tool) "")
-                  :promptSnippet (str "Call MCP tool " tool-id)
-                  :promptGuidelines [(str "Use " tool-id
-                                          " when the task requires capabilities from the "
-                                          (:serverId tool) " MCP server.")]
-                  :parameters (clj->js (or input-schema {}))
-                  :execute execute-fn}))
+                 (agent-tool-descriptor tool tool-id input-schema execute-fn)))
              tools)))))

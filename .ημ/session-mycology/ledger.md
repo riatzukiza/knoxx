@@ -292,3 +292,1168 @@
   spore: none
   receipt-refs: 139ae20e4a813bc7461453445e7766d21853ea73,264d62bec18e2ee618b8a4fd0952f060448489d23add28e5eac43c80ebc0a3c1
   note: A failing migration progress law needs actual source retirement with preserved behavior. Keep a small slice within its existing card and preserve all metadata and historical body. Separate native API parity from inherited lifecycle hardening, and an observed local browser runtime from required hosted capability. Publish concrete scope and use canonical planning/readiness before RED; no inflated estimate, inaccurate infrastructure exemption, invented readiness or new planning stack. No new spore or promotion.
+- ts: 2026-10-15T00:50:50.299092065Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: Persist canonical Knoxx lint test-boundaries owner start and explicit source-admission order
+  p-efficiency: 0.83
+  p-friction: 0.29
+  p-skill-candidate: 0.00
+  spore: none
+  receipt-refs: 752c53944338bf02a6e5fb8fb4ed2cc729680d6210fb18921a201f38a40c5ed7
+  note: Read the whole existing card and its real history before deciding scope. The public-boundary and regression mandate admits the explicit auxiliary strict-Throwable evaluator subset; configured Rheos performed one lawful todo to in_progress transition with actual WIP checks. Preserve its native event root and write-ID without inventing creation history or task completion. Keep private source passes separate from composed full release and current native gates. Retain engine EOF normalization explicitly, all ledger prefixes, eight errors and 284 warnings. No model, DB, provider, PM2, deployment, push, request, new spore or promotion.
+- ts: 2026-10-15T01:53:56.463121594Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: Record translation test extraction on the existing active owner
+  p-efficiency: 0.80
+  p-friction: 0.57
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: /home/err/.local/share/openhax-codex/20261010/review-state/root-K0f-translation-test-boundaries-canonical-plan-comment-v1/canonical-receipt-event.edn
+  note: Canonical comment records the four-test-path slice with full existing regression coverage before implementation. Bind actual native comment/write-ID and preserve body/history; do not require an unchanged write-ID from a legitimate write operation. Existing JSON config deprecation retained. No runtime test, source adoption or production credit; no spore.
+- ts: 2026-10-15T02:06:57.382576713Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: Qualified translation-test boundaries with complete retained regression coverage
+  p-efficiency: 0.86
+  p-friction: 0.61
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: /home/err/.local/share/openhax-codex/20261010/review-state/root-Kdde-translation-test-source-qualified-provenance-v1/canonical-receipt-event.edn
+  note: Cohesive suites and complete named protocol fixtures remove the selected hard error without policy weakening. All40 tests/167 assertion forms and pause/fault semantics retained;75Node and1918CLJS tests pass. Preserve setup failure and genuine unavailableMongo diagnostic separately. Whole backend still7errors280warnings; no combined release or live DB/CMS credit. No new spore/promotion.
+- ts: 2026-10-15T02:38:51.576353295Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: Record strict OpenPlanner history fixture slice on existing active test-boundaries owner
+  p-efficiency: 0.82
+  p-friction: 0.46
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: /home/err/.local/share/openhax-codex/20261010/review-state/Knoxx-K54606-history-test-boundaries-actual-GREEN-v1/canonical-plan-receipt-event.edn
+  note: Record exact three-test-path plan before implementation; preserve all17 names/34 assertion forms and previous four qualified paths. Native Rheos coalesces final comment and moves closing delimiter while retaining all previous content; verify generated write-ID and actual event rather than repeat an uncertain operation. Existing JSON config deprecation retained. No new source/runtime/production credit or spore.
+- ts: 2026-10-15T02:48:15.708379356Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: Qualify strict complete OpenPlanner history-client test fixtures under active five-point Knoxx owner
+  p-efficiency: 0.86
+  p-friction: 0.24
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: /home/err/.local/share/openhax-codex/20261010/review-state/Knoxx-K54606-history-test-boundaries-actual-GREEN-v1/canonical-result-receipt-event.edn
+  note: Exact approved three test paths committed c468ce0f; owning lint0/0 and registered typecheck/fulltests pass. Six targeted warnings removed, full primary lint remains7errors274warnings with complete unchanged-diagnostic custody. Preserve all17names34assertionforms and prior4translationfiles. Existing Mongo DNS connection failed; no liveDB credit. Git path lists use NUL-delimited UTF8 and checked sequential effects; earlier failed guards retained without repeating comment/rewriting commit. No public/prod/provider effects or spore.
+- ts: 2026-10-15T03:14:29.896214732Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: Record approved complete agent-session lifecycle test-fixture slice on active five-point Knoxx owner
+  p-efficiency: 0.90
+  p-friction: 0.12
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: /home/err/.local/share/openhax-codex/20261010/review-state/Knoxx-K27763-agent-session-protocol-actual-GREEN-v1/canonical-plan-receipt-event.edn
+  note: Fresh canonical owner read and exactly one scoped comment preserve in_progress and five points; actual write-ID/event read back, old card and event prefixes retained. Exact independent-reviewed seven-test-path patch remains unapplied. Use actual primary2025 lint RED before source application, then owning GREEN and registered gates. No release/production/provider credit or spore.
+- ts: 2026-10-15T03:19:52.171228082Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: Qualify complete opaque agent-session fixtures across lifecycle persistence tests
+  p-efficiency: 0.94
+  p-friction: 0.08
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: /home/err/.local/share/openhax-codex/20261010/review-state/Knoxx-K27763-agent-session-protocol-actual-GREEN-v1/canonical-result-receipt-event.edn
+  note: Exact approved seven test paths committed 1908bf7e. Genuine original owning lint RED reproduced eight protocol warnings; owning lint GREEN 0/0, registered typecheck and full tests pass with 1918 CLJS tests / 9921 assertions and 75 Node pass. No callback/assertion/default weakening. Complete full-lint delta removed only eight warnings; full release lint remains 7 errors / 266 unchanged warnings across 127 unchanged owning files. Prior seven qualified sources exact. Existing real Mongo DNS failure is retained without availability credit. All guards checked with NUL UTF8 Git paths, no unexpected qualification failure or repeated passing gate. No public/production/provider action or spore.
+- ts: 2026-10-15T03:31:57.485283588Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: Record approved one-file refusing event-store protocol completion slice on active Knoxx test owner
+  p-efficiency: 0.95
+  p-friction: 0.06
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: /home/err/.local/share/openhax-codex/20261010/review-state/Knoxx-K57b54-event-store-protocol-actual-GREEN-v1/canonical-plan-receipt-event.edn
+  note: Fresh actual source/config/owner guards and one canonical scoped comment preserve in_progress and five points; exact native write-ID/event and historical prefixes read back. Approved one-file patch remains unapplied before genuine owning primary2025 lint RED. Preserve all original callbacks, identity, five test names, 12 assertions and prior 14 qualified files. No release/provider/production credit or spore.
+- ts: 2026-10-15T03:36:47.866678889Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: Qualify complete refusing event-store protocol in the existing retirement tests
+  p-efficiency: 0.95
+  p-friction: 0.05
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: /home/err/.local/share/openhax-codex/20261010/review-state/Knoxx-K57b54-event-store-protocol-actual-GREEN-v1/canonical-result-receipt-event.edn
+  note: Exact approved one-file source committed af07ccf4. Genuine owning lint RED reproduced one missing-protocol warning; owning GREEN 0/0, registered typecheck/full normal tests pass with 1918 CLJS tests / 9921 assertions and 75 Node pass, zero compiler warnings. Original record, constructor, three callbacks, five tests, 12 assertions and prior 14 qualified files preserved. Full lint removes exactly one diagnostic and remains 7 errors / 265 unchanged warnings across 126 unchanged owner files; no missing-protocol diagnostic in captured run. Existing real Mongo DNS failure retained without live database credit. All guards checked with NUL UTF8 Git paths; no repair, repeated passing gate, public/provider/production effect or spore.
+- ts: 2026-10-15T04:02:16.784503216Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: Record approved one-file run-steps six-warning cleanup under existing active Knoxx test-boundaries owner
+  p-efficiency: 0.93
+  p-friction: 0.09
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: /home/err/.local/share/openhax-codex/20261010/review-state/Knoxx-K1c70-run-steps-actual-GREEN-v1/canonical-plan-receipt-event.edn
+  note: Fresh actual K1c70/source/runtime/prior15 guards and exactly one canonical scoped comment preserve in_progress and five points. Earlier canonical/raw content/events and ledger prefixes verified. Exact approved patch remains unapplied before original owning lint RED. Preserve11tests/10async/37assertions/15callbacks and Promise/order/memoryTTL60. Private aggregate-section assertion corrected by read-only comparison; no command retry or source repair. Full owner/epic/release incomplete; no spore.
+- ts: 2026-10-15T04:05:12.031180266Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: Qualify exact one-file run-steps warning cleanup and retain full lint/database limits
+  p-efficiency: 0.93
+  p-friction: 0.09
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: /home/err/.local/share/openhax-codex/20261010/review-state/Knoxx-K1c70-run-steps-actual-GREEN-v1/canonical-result-receipt-event.edn
+  note: Actual original RED0errors6warnings, exact approved one-file GREEN0/0, registered typecheck0warnings and full75Node/1918CLJS/9921assertions/0failures0errors0compilerwarnings. Complete full primary lint delta removes only6warnings:7errors259warnings remain with125ownerbytes unchanged. Preserve11tests/10async/37rawassertions/15callbacks and all15priorqualified files. Actual Mongo DNS failure retains availability limit; no probe. One-source-path commit separate from result provenance; full owner/epic/CMSrelease incomplete. No public/provider/production effect, no repeated gate, candidate0 and no spore.
+- ts: 2026-10-14T21:31:00.878158539Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: private-native-WebSocket-migration-browser-proof
+  p-efficiency: 0.88
+  p-friction: 0.48
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: root-private-frontend-native-browser-canonical-receipt.edn
+  note: Actual native460/2101 andoptimized8controlgroups support thefrontendmigration, notproduction. Keep controlledfixture/seededmetrics andoriginalAVA failure separate. Correctsource-lineattribution beforecausalclaims: bothpredecessor/candidate reachAudit sessions butmiss fork-run-active, causedbyignoredkeywordPromise.then callback introducedJune13. Preserveunchangedassertions/timeouts andrequireactualboundaryregressionbeforeminimalrepair. No spore/promotion.
+- ts: 2026-10-14T21:24:23.939773598Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: private-durable-CMS-receipt-causal-RED
+  p-efficiency: 0.87
+  p-friction: 0.46
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: root-private-causal-RED-and-ack-canonical-receipt.edn
+  note: Actual two-route RED shows receipt loss after cache reset and205samepublicationnoops; compilerexit0 is not suitepass when seven assertions fail. CanonicalClioexact-replay does not fsync after ambiguouswrite; public lockedemptyappend safely syncs sameinode and separateOScanonicalreader verifiesunchangedfacts. Keep actualCMSrestart and namespacepowerloss proof separate. Full lint baseline13errors/284warnings is retained and unchangedsource independentlyverified; do not call fullqualificationpass. No spore/promotion.
+- ts: 2026-10-14T22:27:15.987903533Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: Qualified private durable publication receipts and explicit native-fsync retry
+  p-efficiency: 0.76
+  p-friction: 0.65
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: /home/err/.local/share/openhax-codex/20261010/review-state/afac-private-configured-sink-explicit-retry-GREEN-v1/root-canonical-receipt-event.edn
+  note: Append-only scopedClioexactpayload/identity retained; genuineequals-bodyobservationsdistinct; failedattemptkeepscause+envelope/internalretry; no publication/reconciliation repeat. 233actualcompiledimportsboundseparatelyfromstableShadowloader. Privatebehaviorqualification only; source/nativehosted/image/config/Services admissionandfullappchecksremain; AFACnotcomplete; realSpanishprovideranddeploymentunqualified.
+- ts: 2026-10-14T23:00:43.728008476Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: Native error-property static causal RED
+  p-efficiency: 0.78
+  p-friction: 0.32
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: /home/err/.local/share/openhax-codex/20261010/review-state/Knoxx-93eb-native-error-property-boundary-causal-RED-v1/root-provenance-canonical-receipt-event.edn
+  note: Characterize original successful runtime behavior while proving actual static object-boundary rejection. Preserve genuine exceptions and unchanged rules; separate corrected setup/runtime routing failures from causal evidence. Full release lint remains pending. No new spore.
+- ts: 2026-10-14T23:41:48.426717227Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: Commit named native-error-property contract without weakening constructor behavior
+  p-efficiency: 0.82
+  p-friction: 0.64
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: b7394f3917093492962621883bc6bf18b3c535a60667603b3a9470b353a918be,3384bab8f6bfd3828c415e5dd12a74b0ce667ea0
+  note: Use a named portable field-map contract before native mutation and preserve original primitive/null property reads. Distinguish local full tests and clean owning lint from unqualified CI2025 negative and inherited full-lint gate. Preserve exact receipt source closure, independent review and original failing evidence. No spore or promotion.
+- ts: 2026-10-15T00:18:45.333267349Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: Commit explicit auxiliary evaluator without replacing primary lint policy
+  p-efficiency: 0.88
+  p-friction: 0.52
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: add837a367bac006b5a79ae63a1cfe344ce8e81826ec1b9b523d1158d2743843,d06cfc0ecff4741e0a5349b46863f0cd6c3b9870
+  note: Treat evaluator identity as an explicit pinned contract input. Preserve genuine negative predicates and both positive neighbors, primary tooling and offline restore ownership. Missing/wrong auxiliary fails visibly; incompatible historical analyzer gets no credit. Local tool provisioning does not clear inherited runtime lint or supply hosted admission. No spore/promotion.
+- ts: 2026-10-14T22:43:12.596214649Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: Knoxx model-safe runtime causal RED custody
+  p-efficiency: 0.8
+  p-friction: 0.35
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: /home/err/.local/share/openhax-codex/20261010/review-state/Knoxx-EC101-runtime-contract-private-RED-2ba-v1/root-provenance-canonical-receipt-event.edn
+  note: Commit actual public-API causal regression evidence before repair; preserve existing assertions and distinguish successful compiler completion from failed tests. Keep actual model/provider/database and production qualification separate. No new spore or promotion.
+- ts: 2026-10-14T23:50:40.870060951Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: Preserve genuine SDK fallback lost-row-refusal causal RED
+  p-efficiency: 0.83
+  p-friction: 0.62
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: c97d13dbbe077da346e581457e61b957555ca65734c025ae4062f259267631d8,0f0d551625200ab1cf8ee3c96649aba041db5dca
+  note: Exercise the actual pinned SDK catch/fallback rather than copy its policy into an alias. Preserve valid native and transport fallback neighbors while retaining row rejection independently. Distinguish complete tested dirty candidate from test-only parent commits and keep initial fixture mismatches as historical evidence. No spore/promotion.
+- ts: 2026-10-15T00:14:25.832648062Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: Commit checked shared runtime and genuine query refusal retention
+  p-efficiency: 0.85
+  p-friction: 0.65
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: c583d8b24928d3d55b9f82cb88e583474c783bad32bf4587d92799372b2bc2e8,784aef02dbab55ab6c5571ad9e41aedd300f3837
+  note: A lower SDK catch can turn validated malformed rows into successful fallback. Retain the original refusal per invocation while preserving true transport fallback. Bind full actual source, original RED predicates, fixture relocation, current compiled HTTP closure and explicit EOF-only corrections; local source qualification does not grant live integration or release admission. No spore or promotion.
+- ts: 2026-10-15T04:20:41.709549587Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: Freeze exact private K plus websocket durable embedding source composition before build
+  p-efficiency: 0.97
+  p-friction: 0.03
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: /home/err/.local/share/openhax-codex/20261010/review-state/Knoxx-b637-KW-KD-KE-private-source-composition-v1/canonical-pre-build-composition-receipt-event.edn
+  note: Three ordinary detached-worktree merges in KW then KD then KE order preserve all2642 non-ledger tree entries and sole owned deletion. Only two ledger conflicts resolved by exact target prefix plus incoming post-base suffix; all histories/events retained without dedup/reorder/normalization. Independent audit agrees source union and ledger hashes. Original four source worktrees unchanged. Pre-build preparation only: no gates/dependencies/build/readiness/admission/board/provider/production effects; KWaccepted8 and other incoming scopes remain unadmitted. Candidate0/no spore.
+
+- ts: 2026-10-15T09:49:57.015Z
+  session: deployment-20261015-Sandbox-SDK-bootstrap-planning
+  task: prepare-the-pinned-openplanner-sdk-in-knoxx-sandbox-bundles
+  p-efficiency: 0.92
+  p-friction: 0.22
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#1c45612e-c583-4527-8275-a9868337dab3
+  note: A genuine dependency test can expose a latent workflow preparation gap without invalidating the test. Keep the real SDK import and fatal guard, then plan immutable source, filtered upstream build, complete retained closure and failure aggregation as a separate bounded bootstrap owner. A three-point planning card at breakdown is neither implementation readiness nor a waiver for the known base CI failure. Preserve tracked credential exclusions and distinguish declared source custody, actual cold execution and native review evidence.
+  canonical-event: |
+    #:event{:id "403156fb-d7d8-4e41-a02b-844a53c4df43", :type :session-mycology/reflection-recorded, :recorded-at "2026-10-15T09:49:57.015Z", :schema {:id :eta-mu.session-mycology/reflection-recorded, :version 1}, :producer {:eta-mu/version "0.1.0", :package/name "@eta-mu/session-mycology", :package/version "0.1.0", :command "Session Mycology package API / Knoxx Sandbox SDK bootstrap planning", :actor "codex/pr354_terminal_rerun_verify", :source/commit "619f0ba3ce0e3d1d47c94db7f2971eb43a81b8b7"}, :subject {:repo "open-hax/knoxx"}, :payload {:repo "open-hax/knoxx", :lesson "A genuine dependency test can expose a latent workflow preparation gap without invalidating the test. Keep the real SDK import and fatal guard, then plan immutable source, filtered upstream build, complete retained closure and failure aggregation as a separate bounded bootstrap owner. A three-point planning card at breakdown is neither implementation readiness nor a waiver for the known base CI failure. Preserve tracked credential exclusions and distinguish declared source custody, actual cold execution and native review evidence.", :session/id "deployment-20261015-Sandbox-SDK-bootstrap-planning", :task/id "prepare-the-pinned-openplanner-sdk-in-knoxx-sandbox-bundles", :receipt/refs [".ημ/receipts.edn#1c45612e-c583-4527-8275-a9868337dab3"]}}
+
+- ts: 2026-10-15T10:09:34.524Z
+  session: deployment-20261015-Sandbox-SDK-task-label-triage
+  task: prepare-the-pinned-openplanner-sdk-in-knoxx-sandbox-bundles
+  p-efficiency: 0.92
+  p-friction: 0.22
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#8a402090-1283-4bc0-8e5f-63e791af4451
+  note: A mixed review finding can contain one real metadata gap and one unsupported format request. Native filtered reads proved the omitted tasks category, while explicit user instructions and actual Rheos normalization proved comma-separated scalar support. Correct the single category through Rheos, preserve body/status/estimate and original native root, and leave the mixed finding unresolved rather than claiming a partial Fixed reply settles the whole thread. No spore; no application implementation or deployment credit.
+  canonical-event: |
+    #:event{:id "db960bba-9acb-49e8-93ea-5cad6e203c2f", :type :session-mycology/reflection-recorded, :recorded-at "2026-10-15T10:09:34.524Z", :schema {:id :eta-mu.session-mycology/reflection-recorded, :version 1}, :producer {:eta-mu/version "0.1.0", :package/name "@eta-mu/session-mycology", :package/version "0.1.0", :command "Session Mycology package API / Knoxx Sandbox SDK bootstrap planning", :actor "codex/pr354_terminal_rerun_verify", :source/commit "71896b991140fd718070e33d81d83dca798b8f9c"}, :subject {:repo "open-hax/knoxx"}, :payload {:repo "open-hax/knoxx", :lesson "A mixed review finding can contain one real metadata gap and one unsupported format request. Native filtered reads proved the omitted tasks category, while explicit user instructions and actual Rheos normalization proved comma-separated scalar support. Correct the single category through Rheos, preserve body/status/estimate and original native root, and leave the mixed finding unresolved rather than claiming a partial Fixed reply settles the whole thread. No spore; no application implementation or deployment credit.", :session/id "deployment-20261015-Sandbox-SDK-task-label-triage", :task/id "prepare-the-pinned-openplanner-sdk-in-knoxx-sandbox-bundles", :receipt/refs [".ημ/receipts.edn#8a402090-1283-4bc0-8e5f-63e791af4451"]}}
+
+- ts: 2026-10-15T15:20:23.254Z
+  session: deployment-20261015-Knoxx17-fivepoint-planning-refinement
+  task: prepare-the-pinned-openplanner-sdk-in-knoxx-sandbox-bundles
+  p-efficiency: 0.92
+  p-friction: 0.22
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#3588a4d6-c0ae-492e-b751-de4bc93300c9
+  note: A bootstrap planning repair must bind its first executable build to the same filtered immutable source/config boundary promised for cold restore. Re-estimate the existing bounded owner after discovering that security/control/shared-action work; name zero-error zero-warning completion gates, preserve the real source RED, use native single-key metadata plus append-only scope evidence, and keep review settlement distinct from implementation/deployment. Candidate0, no spore.
+  canonical-event: |
+    #:event{:id "2d051036-a4d8-4e0e-a452-81ccce1d0bf0", :type :session-mycology/reflection-recorded, :recorded-at "2026-10-15T15:20:23.254Z", :schema {:id :eta-mu.session-mycology/reflection-recorded, :version 1}, :producer {:eta-mu/version "0.1.0", :package/name "@eta-mu/session-mycology", :package/version "0.1.0", :command "Session Mycology package API / Knoxx Sandbox SDK bootstrap planning", :actor "codex/pr354_terminal_rerun_verify", :source/commit "4aad9da388f0eb0ba3151b03488fca9740fa0cb9"}, :subject {:repo "open-hax/knoxx"}, :payload {:repo "open-hax/knoxx", :lesson "A bootstrap planning repair must bind its first executable build to the same filtered immutable source/config boundary promised for cold restore. Re-estimate the existing bounded owner after discovering that security/control/shared-action work; name zero-error zero-warning completion gates, preserve the real source RED, use native single-key metadata plus append-only scope evidence, and keep review settlement distinct from implementation/deployment. Candidate0, no spore.", :session/id "deployment-20261015-Knoxx17-fivepoint-planning-refinement", :task/id "prepare-the-pinned-openplanner-sdk-in-knoxx-sandbox-bundles", :receipt/refs [".ημ/receipts.edn#3588a4d6-c0ae-492e-b751-de4bc93300c9"]}}
+- ts: 2026-10-15T16:04:45.496402120Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: Knoxx17 strict lint dependency planning correction
+  p-efficiency: 0.87
+  p-friction: 0.3
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#b1166d1f-2e56-44f1-8878-a54249ebe770
+  note: Knoxx17 current-f52 native CodexP2 root4284964819/review5535643111 exposed a planning dependency gap: SDK5 requires a strict full backend lint pass while inherited registered lint remains historically13errors283warnings. Sourcec0cb2b7ff3c044e1746bf00561fa6e3a2dad8df5 adds only the existing todo3 zero-warning owner as dependency plus one Scope bullet through native Rheos comment/frontmatter and authored Markdown. Keep all strict full-lint/typecheck/coverage/genuine-source RED-GREEN gates; do not import remediation, invent missing lint-owner AC, change scalar CSVlabels, claim automatic dependency enforcement or mark readiness. Native f52 MiMo38759885344 independently failed: HOSTread91 used a nonexistent double-knoxx path, corrected94 cannot erase it; page7 read but unassessed caused stage121 refusal; single process0/missing submission/acceptednull supplies no retry or approval. Freeze first-cause artifact before future push can repeat it. Retain one incorrect comment-section custody guard and own added EOF-LF repair; neither successful native effect was replayed. Local source and provenance only; mixedroot4281571531 stays open. No application tests, lint pass, new model, credential/account/App change, public effect, source adoption, runtime or deployment claim. Candidate0/no spore. Native reflectionb2c48ef1-1b0d-4505-b3fa-2d07e2901c0f.
+- ts: 2026-10-15T17:23:16.148128607Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: Knoxx17 four planning review corrections
+  p-efficiency: 0.82
+  p-friction: 0.35
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#3b1497f9-9186-4dc9-8e9c-4953fb141fb7
+  note: Knoxx17 source7f5f5e51 closes four planning findings: cite historical lint receipt, share filtering/inventory with install/build, isolate real cold integration from default tests, require actionlint. Preserve SDK5 metadata/history. Native comment legitimately generated a write-id; an overstrict guard failed and driver still applied the admitted body. Exact bytes were revalidated without replay; only own added EOF-LF removed. Future guards stop dependents. No product tests or public effects; candidate0. Native reflectioncf6e3402-8cde-4d43-9df1-087d504f8fb6.
+- ts: 2026-10-15T20:48:14.386596285Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-sandbox-sdk-bootstrap-plan-over-19f-v1
+  task: SDK17 full bootstrap implementation with retained cold-integration failure
+  p-efficiency: 0.45
+  p-friction: 0.9
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#8c5a07e6-9dda-41e1-b2e4-c17411f7e9f2
+  note: Source a22 remains partial: standalone isolated SDK build and actionlint pass; full integration 3/4 passes then fixture900000ms SIGTERM while Maven TLS resolution waits. Typecheck/coverage/lint unrun; registry WARNs retained. Isolate actual JVM user.home before lifecycle and allow outer cleanup grace to exceed inner grace; meaningful causal RED controls are committed. Preserve failed capture/build bytes, exact source/deadlines and in_progress5/lint3 completion dependency. No retry/public/deploy effect; native SM known unsupported route not retried, this is portable candidate0/no spore.
+- ts: 2026-10-15T22:35:48.410226795Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-sandbox-sdk-bootstrap-plan-over-19f-v1
+  task: SDK17 prerequisite: causal OAuth fixture aging recovery and remaining full lint blockers
+  p-efficiency: 0.65
+  p-friction: 0.8
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#53856d37-93ec-4db0-80c7-fba47a1c232b
+  note: Mint TTL fixtures per test invocation through the existing named clock boundary. Preserve original30tests102assertions; deterministicRED5new failures then explicit/normal/coverage1945/10749/0/0, Node84/84 and boundary pass. Full lint remains7errors258warnings; no fullGREEN, owner completion or deployment. Original failure clocks unobserved; no model/nativeSM retry, no spore.
+- ts: 2026-10-16T00:02:44.125742438Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-memory-route-finite-extraction-over-5fa-v1
+  task: Memory-session pending ownership repair and boundary-preserving extraction
+  p-efficiency: 0.6
+  p-friction: 0.8
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#8948502f-e271-4ebf-9b68-41f780e37f21
+  note: Install a pending slot before its publisher owns cleanup; remove only the identical promise, preserving replacement generations. Match compiled multi-arity CLJS doubles and assert real invocation before trusting error fallback tests. Preserve exact key bytes, paging/authorization and safe warning fields; validate on actual current source. Local owning/behavior gates pass; unrelated full lint6errors257warnings and36 unchanged error-boundary sites remain. Initial failures/history retained; no owner completion, public/runtime effect, nativeSM retry or spore.
+- ts: 2026-10-16T01:04:50.814630836Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-discord-tools-finite-extraction-over-c754-v1
+  task: Discord tool portable decisions and runtime boundary extraction
+  p-efficiency: 0.7
+  p-friction: 0.4
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#65342f58-5cfb-4acc-a9d0-859301031b54
+  note: Characterize public tool wiring before moving effects; retain all13IDs/schemas/permissions/callbacks and existing reply sentinel/repeated attachment semantics. Function asyncmetadata belongs on fn symbol, with real compile/test counts before claiming qualification. Portable decisions receive quality/time observations; native effects remain outeradapters. Owninglint/typecheck/explicit/normal/coverage1988/10951/0/0/0warnings and JSboundary pass. Full lint5errors256warnings and36exact unchanged errorboundary sites remain real releaseblockers. Existingowner staysin_progress; candidate0/no spore, nativeSMnotretried, no public/runtime/model/deploy effect.
+- ts: 2026-10-16T02:24:34.715919380Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-bluesky-finite-extraction-over-789-v1
+  task: Bluesky tool portable decisions and runtime boundary extraction
+  p-efficiency: 0.7
+  p-friction: 0.5
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#ce4ca920-1646-4ff0-8e95-310293f76b75
+  note: Characterize public wiring on original source before moving effects. Preserve19tool IDs/order,13schemas/auth/callbacks and observed looseURI, reply root, facet order/UTF8, concurrent image/alt and clipped-vector behavior. Match compiled multi-arity ABI and preserve synchronous original constructor dispatch in test doubles; first fixture failure had no full counters/productREDcredit. Corrected baseline and extracted explicit/normal/coverage2013/11258/0/0/0warnings pass, Node84pass, owninglint/typecheck/JSboundary pass. Full lint4errors255warnings and36unchanged errorboundary sites remain blockers. Existingowner staysin_progress; candidate0/noSpore, nativeSMnotretried, no public/model/app-serving/deploy effect.
+- ts: 2026-10-15T09:40:59.394703833Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: Plan resource-backed translation locale filter repair under existing UI owner
+  p-efficiency: 0.62
+  p-friction: 0.74
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#15044096-b98b-462f-925c-a9517eccc97a
+  note: Actual normal UI browser read exposed All-only target choices despite a real Spanish work item. Plan unfiltered project/generation-bound inventory locales and preserve legacy choices; test selection retention, legacy failure and stale responses before implementation. Canonical composed views omit parent, so a zero unsupported parent query cannot prove absence; complete read-task census and whole-document custody closed dedup before commit. Canonical writer emits dependency[] with no omission surface; retain the upstream gap without a custom setter or invented relation. This commit is planning only: no ready/source/build/runtime/review/publication credit. Candidate zero, no spore.
+- ts: 2026-10-15T10:12:47.427960820Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: PR16 source-backed planning findings: explicit fixture, ordering and project-boundary verification
+  p-efficiency: 0.71
+  p-friction: 0.56
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#006da400-04de-409f-8860-85a7276f5af7
+  note: Accepted all six real Codex planning findings. Make fixture ownership, exact order, immediate installed-state hiding/All reset, existing request deltas and nl-outside-fallback causality executable in the bounded 3-point plan. Keep planning review and implementation proof separate; preserve original browser failures and SDK source-family CI limitation. Candidate0; no spore or runtime/model/content action.
+- ts: 2026-10-15T10:27:20.273091404Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: PR16 planning refinement: run-owned causal manifest and installed detail boundary
+  p-efficiency: 0.73
+  p-friction: 0.59
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#9c06a569-fd27-425c-9fac-0adb0c2a2fb0
+  note: Accept three source-backed current-head findings: control and disclose exact project manifest response in private opt-in browser scenario with teardown, await empty-map render/nl witness before RED, and clear installed selected work/detail with generation invalidation at project change. Keep causal UI fixture evidence separate from genuine backend/provider health. MiMo model submit completed but invocation trace guard failed; retain native failure without credential fallback. No app/runtime effect, candidate0.
+- ts: 2026-10-15T10:46:29.022132541Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: PR16 two-P1 plan: immediate inventory boundary and pending mutation UI guard
+  p-efficiency: 0.81
+  p-friction: 0.44
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#4a394adb-7844-4d4a-88a8-04128a9bd7ce
+  note: Keep first-render row exclusion separate from passive loader side effects, and distinguish zero-new-mutation passive tests from an already pending one-call API-stub case. Guard stale UI completion/reload while preserving already-authorized server operation semantics. Qualified source18f4647 committed separately from this provenance. No app/runtime/live model/content effect; preserve current actual MiMo run and historical trace rejection. Candidate0/no spore.
+- ts: 2026-10-15T11:15:24.737530104Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: PR16 reviewed split: locale3 plus current-view lifecycle5, three genuine P1s
+  p-efficiency: 0.79
+  p-friction: 0.62
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#1fa5beaf-9c49-4017-877c-a34359f4caf5
+  note: Source-backed planning scope grew beyond3points; root reviewed the full21,384B proposal before an explicit+5 split. Native fresh265-card parent census/261 shared-byte equivalents+3 reads found no duplicate. Native incoming→accepted→breakdown P0/5 sibling and locale3 dependency preserve full view closure, operation-owned saving, original six server sequences, pending current load and controlled human race proof. Parentaccepted8 unchanged/open; no app/runtime effect, no silent model/provider or release pass. Keep old MiMo failures/approvals and all eleven native settlements. Candidate0/no spore; source commit c36d0f314596c10c4fee4a09fa001a654064707f separate from provenance.
+- ts: 2026-10-15T11:33:50.340967482Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: PR16 body review5532308090: installed context state and explicit read-only export feedback
+  p-efficiency: 0.87
+  p-friction: 0.38
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#9e006db8-050c-4cd4-bbd0-9e465b471370
+  note: Root reviewed precise6018B boundary addition before adding read-only SFT shared feedback to existing5point lifecycle. Keep original read/download bytes+filename, no retarget/reissue/saving ownership; six mutations remain6. Distinguish project/filter/work synchronous retained/excluded state, already-installed feedback and causal pre-passive unit/controlled browser evidence. Native body findings remain obligations even when status omits them. Preserve3point locale dependency/accepted8 parent and14 native Fixed roots. No app/runtime or provider/content effect; source d63ebe4c628a6b3c487f9453da8479cc73dc2488 separate from RR/SM. Candidate0, no spore.
+- ts: 2026-10-15T12:05:07.869318400Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: PR16 six source-backed locale/current-view planning findings
+  p-efficiency: 0.43
+  p-friction: 0.77
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#752f1cdf-2949-46fe-892b-842fa21fceee
+  note: Source ac32871f qualifies six native P1 planning corrections within existing3+5. Pending segment/draft context, pre-passive load invalidation, held legacy options, option selection validity, genuine anonymous SFT auth boundary, and required coalesced post-snapshot refresh have causal unit and visibly synthetic browser obligations. Preserve native comments/event history and parent. Repeated process error: failed guard did not stop next mutation; exact terminal separator was canonical Rheos serialization, all comment content preserved, explicit POST-commit custody qualified. Every subsequent dependent effect must require actual exit/metadata guard before invocation. No app tests/runtime/readiness/merge claim; candidate0/no spore.
+- ts: 2026-10-15T13:01:14.270890945Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: PR16 reviewed thirteen-point lifecycle draft-refresh decomposition
+  p-efficiency: 0.68
+  p-friction: 0.62
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#e8226f6e-8c31-4723-a9b1-caa1576d6eba
+  note: Qualified LOCAL source a73ab71848f9ee849a9ecf0cbc75f874502928c3: exact root-read core5/newdraft5/locale3 split, actual UUIDv4 ae9a3cb7-a630-4d8d-8d60-c69b825d008d, native admission and single-key dependency. Preserve dirty D2 through all three submit/controller/form-sync paths while pristine external review rehydrates; explicit causal six-runner unmount/browser and bounded catch-up. New body scope only, no app execution. Fresh full native catalogs plus canonical bound unchanged source avoid a second board parser. Guard failures stopped before next effects; inspect real native result (create is text, read-task JSON) rather than repeat creation. Source/native-event and canonical provenance remain separate. Public push/body/replies/review requests held for root proof; no readiness/merge/runtime effects. Candidate0/no spore.
+- ts: 2026-10-15T14:58:13.419962026Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: CMS16 P1 all-reload-runner planning coverage
+  p-efficiency: 0.91
+  p-friction: 0.20
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#385f8746-ef8f-4fcf-ae46-e289481ca253
+  note: CMS16 P1 planning coverage correction closes all six reload-producing runners and seven normal-UI entries inside one existing draft5 mechanism. Trace every actual inventory/direct-detail/form-sync consumer; require actual Dispatch/Retry editable legacy-bridge eligibility, keep dirty/pristine synchronization and true candidate-authority reset, original approval->reconcile, payloads/follow-ups/counts/auth and bounded freshness. Root read exact proposal/patch before native owner comment and BODY-only repair. Qualified source64b94c8e0e17bdb927efe7c6d6e2af0f853da160 changes only owner card/native comment event; all2647 physical inputs checked. Keep current Rheos read-board rather than unsupported legacy count; retain actual failure. Candidate0/no spore. Native reflection84cbf3b5-767f-4deb-a418-9bd4d3c3651f is actual, one invocation; no product/test/browser/model/runtime/deployment success. Personal advance and native public settlement remain separate pending effects.
+- ts: 2026-10-15T15:25:35.205842680Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: CMS16 legacy anonymous route planning coverage
+  p-efficiency: 0.9
+  p-friction: 0.24
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#bf5324e7-2a60-4b5c-bac3-920b247d4ca5
+  note: CMS16 native body-only P1 review5535316442 is repaired in planning source0afa8141a68dd582649732686ee648cb7018b3ee: name and cover the exact legacy segment-label and document-review anonymous POST routes, not a resource-bulk request mislabeled document review. Preserve auth-enabled/legacy-route-ready preconditions, independent empty-cookie/no-auth/API/identity headers, source-built scope/query/payload,401/no_session plus authenticated unchanged-state/no-effective-write evidence; false non200/400/404/503/unready responses cannot qualify and unexpected content is not logged. Real anonymous probes precede synthetic interceptors and have explicit counts, while controlled races retain zero forwarded writes. Existing SFT/default18/locale20/13points/parent8/sixrunner-sevenentry and all other cards remain unchanged. Root admitted scope, native owner/inventory and all2648 original tracked inputs qualified; exact card/event source commit is separate from provenance. Retain the supervised read-only cleanup error and warning-carrier guard failure; never replay known successful comment/body effects. Candidate0/no spore; no application test/probe/browser/model/runtime/deployment/auth-result claim. Native reflection9a609682-ee6f-4de1-8b70-f9e5e809925b.
+- ts: 2026-10-15T17:00:30.247785569Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: CMS16 two-owner legacy fixture and locale-read planning correction
+  p-efficiency: 0.88
+  p-friction: 0.21
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#5d1029b9-f8b7-400e-9317-220e4538d450
+  note: Source19180ed14c53dc38a8dbf77ed2f18eb8b70cfee1; Codex5535724920 inline4285031557/body-only P1; exact approved patch e40ce45100723de196647e1b629455dd8f009fe9908bdaa90825ce22853010d2. Core5 fixture lifecycle and locale3 real anonymous GET preflight, draft5/13points/parent8 preserved. Native reflection80f6b6a1-9f4a-4f13-a5d4-5096bd9f9978. Planning-source custody only; no app/auth probe/fixture/build/browser/public/runtime effect. Preserve failed private read-only reader invocation and no-replay recovery. Candidate0/no spore.
+- ts: 2026-10-15T18:46:19.941520678Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: CMS16 separate five-point legacy fixture auth prerequisite
+  p-efficiency: 0.90
+  p-friction: 0.19
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#cddbfbe6-5ace-42cf-8229-4fdfb37e8265
+  note: Source70495d6fa5531cf05afe1cc8fd74bcf8e930772f; Codex5537788801/root4286589102. Newfixture/auth5->core5->draft5->locale3 total18/new+5; accepted8parent/history unchanged. Native7events, exact4BODYs/canonicalparser,2644otherinputs retained. Native reflection24171718-e3ee-4711-980a-a835715e3b00. Plan only/no fixture/auth/test/build/browser/model/public/runtime effects. Preserve refused772 HOSTtrace and Gitlink baseline-reader refusal/correction. Candidate0/no spore.
+- ts: 2026-10-15T19:32:58.440462290Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: CMS16 complete Mongo fixture lifecycle and export unmount planning
+  p-efficiency: 0.91
+  p-friction: 0.17
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#510fcf8e-ae13-4855-b44a-4dd87c2c1ce4
+  note: Source9a62cde06ac2fc0d3dc8777fb8a186f0c5ca12bd; Codex5538651862 roots4287284040/4069 and body-only export-unmount. Two native scope comments + exact two BODYs; all2649physical/Git inputs/modes and2646otherinputs preserved; metadata/history/dependencies/18total unchanged. Full system-named Mongo lifecycle and exact TERM mid-cleanup recovery; separate export-unmount callbacks/browser with captured download kept. Native reflectionc4a72401-74a3-4bbd-963b-3de723220f1f. Planning only/no implementation/app/fixture/auth/test/build/browser/model/runtime/public effects. Originalb19 UnknownError remains failed; conditional retry neverexecuted. Candidate0/no spore.
+- ts: 2026-10-15T20:23:01.716259650Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-native-resource-locale-filter-plan-19f-v1
+  task: CMS16 fixture contracts and async readiness planning
+  p-efficiency: 0.87
+  p-friction: 0.23
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#e97124e7-d61c-4155-aa1a-198062371b20
+  note: Source47316dde30e504d622e5dfc1185e9db27d40b185; Codex5539062909 four roots. Two BODYs/currentfilename+2nativecomments, uniqueUUID/currentpath, originalcreation/ledger/comment prefixes and2646otherinputs preserved. Fixture assertions/exact detailGET and changed-runner async/await planned;18total/metadata/deps unchanged. NativeSM919b6746-1de8-4550-ae09-58c970228f0a. No app/test/public/runtime effects. Read-only wrapper failures retained; candidate0/no spore.
+- ts: 2026-10-15T20:55:00.037621972Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-native-resource-locale-filter-plan-19f-v1
+  task: CMS16 dispatch auth and backend lint planning
+  p-efficiency: 0.92
+  p-friction: 0.14
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#cf89fbe5-2c12-4f94-a814-a20df5cc4eb1
+  note: Sourcee92fd17c099a9220f1406c113b990cf6443b8076; native2P1s5539622567. One separately counted dispatchPOST401 preflight/live hiddenstate vs registered writercall proof, exact scoped safe typedread, full warning-level backendlint planned. TwoBODYs+nativecomments,2646otherinputs/metadata/deps/history/18total preserved. NativeSM90b578da-b163-49c7-ac95-53845f9b5544. No app/auth/lint/test/server/model/public/runtime effect. Candidate0/no spore.
+- ts: 2026-10-15T21:22:16.760805519Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-native-resource-locale-filter-plan-19f-v1
+  task: CMS16 refresh authority and full touched-entry extern planning
+  p-efficiency: 0.91
+  p-friction: 0.18
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#298db334-b449-4a50-a7ea-df27045ea256
+  note: Source48296e06ed5d25c6a131744848a7462968022676; nativeCodex5539948033 four roots. First-render omission/candidate safety, filter-ABA export fence, complete Node/Mongo extern scope; same18points/history. Three BODYs/nativecomments and2645otherinputs preserved. NativeSMaed9cde5-e3a4-42a4-8e85-148d4c36b743. Canonical parser/custody only; no app/auth/browser/model/runtime/public effects. Candidate0/no spore.
+- ts: 2026-10-15T21:53:23.773497876Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-native-resource-locale-filter-plan-19f-v1
+  task: CMS16 strict fixture-entry boundary verification planning
+  p-efficiency: 0.92
+  p-friction: 0.15
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#6b4466cc-e247-43a5-b9c1-11183d3c6576
+  note: Source7adf11002889e11abb036627063b870dba73a6dd; nativeCodex5540235261/root4288525597. Exact fixture-entry strict assertion with each forbidden-category actual-checker controls, missing/unreadable refusal, unchanged legacy allowlist. Samefixture5/18points/history; oneBODY/nativeevent,2647otherinputs preserved. NativeSMefefc438-582a-4058-9553-7bda02916712. Canonical parser/custody only; tests/implementation/public/runtime remain unexecuted. Candidate0/no spore.
+- ts: 2026-10-16T03:05:31.450810414Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-native-resource-locale-filter-plan-19f-v1
+  task: Persist independently qualified CMS16 four native readiness transitions
+  p-efficiency: 0.88
+  p-friction: 0.18
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#94772b87-7175-4342-a289-24af0ac49d89
+  note: Source e7d9336d072277e74370b5b4006538d3582124db records only four completed official Rheos breakdown-to-ready transitions. Independent native read-task sections and metadata custody, all2649physical/Git/modes,2644unownedinputs, exact154651B nativeledgerprefix,12normal phases48files and full diff hygiene passed. Planning03fc review remains dated and does not prove implementation or deployment. Known nativeSM null-cwd unsupported route not retried; this is the portable fallback, candidate0/noSpore. One readonly sections-list inspection AttributeError recovered without replaying any effect.
+
+## 2026-10-16T04:37:46.430892+00:00 — CMS16 fixture/auth source and local qualification
+
+- Context: owned implementation checkout over qualified26e4; source 626f0125ed8fe0e7ac4f98b74660a5cec93e93b4; tracked receipt .ημ/receipts.edn#d2cf94be-6ee3-4d16-b509-a02951048629.
+- Scores: efficiency 0.58; friction 0.78; skill-candidate 0; spore none.
+- Observed: keep portable fixture shapes separate from named Mongo/Node adapters; retain all schema, assertion and NBB runtime failures. Persist native child raw streams/exit and partial store/ownership before parsing, including failure paths.
+- Latest exact terminal outcomes: Exact v8 source: six local gates normal0/outer0, complete cleanup and untruncated. Python14PASS incl actual adapter malformed-store refusal, TERM(-15), fresh-process cleanup reentry and foreign-row conservation; owning12path lint0errors/0warnings; normal and coverage Node123/123PASS and CLJS2042tests/11497assertions/0failures/0errors/compiler0warnings; server typecheck560files/526compiled/0warnings; strict JS boundary PASS. Coverage elapsed560.212s. Last measured full backend lint(v6)4errors/255warnings FAIL and36 error-boundary sites remain release blockers; no live auth/Mongo/browser/provider/deployment proof or story completion..
+- Limits: last measured full backend lint(v6)4errors/255warnings remains failed and36 error-boundary sites remain release blockers; no genuine auth/database/browser/provider/publication/deployment proof. Prior green runs do not qualify changed source. Source and provenance remain separate commits.
+- Better path: freeze the20paths once, verify each owned boundary in its supported runtime, keep primary/cleanup evidence independently durable, then qualify genuine run-owned auth and exact cleanup before story completion.
+- Evidence: /home/err/.local/share/openhax-codex/20261010/review-state/CMS16-fixture-auth-implementation-over-qualified26e4-v1/ACTUAL-v8-final-local-gates-and-retained-release-blockers.json; ACTUAL-v8b-all20-source-whitespace-clean-custody.json. Native Session Mycology unsupported path not retried; portable candidate0 only; no skill/spore creation or promotion.
+- ts: 2026-10-16T05:09:43.236830913Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-cms16-fixture-auth-implementation-over-26e4-v1
+  task: CMS16 e5 canonical auth-wire repair and root-qualified real local HTTP-Mongo attempt3 PASS
+  p-efficiency: 0.86
+  p-friction: 0.24
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: receipts.edn#a988d9a4-e746-45b8-884f-c940817b732b
+  note: Bind verifier expectations to actual canonical error_code:no_session wire, retain causal RED30797 and GREENe5d69882038d59e8d54b94581997aee41a5e55a5, and keep genuine HTTP-Mongo behavior distinct from synthetic process controls. Root attempt3 completed60PASS/1knownboundary with exact fixture teardown, reaped groups and absent42580 port; no database dropped. Direct-seeded candidate supplies no model/worker-dispatch/browser/production proof. Retain attempts1/2 and tool/descriptor failures, full lint4errors255warnings/36boundarysites and remaining product/release/trusted-adoption/staging obligations. This append reuses evidence, not runtime effects. Candidate0/no spore; portable file reflection only, no native SM retry.
+- ts: 2026-10-16T05:27:27.649617817Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-gateway-async5-over-a298-v1
+  task: Gateway portable decisions and native lifecycle observation extraction
+  p-efficiency: 0.72
+  p-friction: 0.37
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#85ba29e6-007f-46ce-b53a-b55b36ca4f0f
+  note: Characterize real public APIs on original source before moving effects; keep expectedPASS separate from genuine missing-observationRED. Preserve29APIarities/receivers/callbacks/Promiseorder,15safeobservations and true Error/nil fallback semantics. Nativeaudio fixture must distinguish primary error from terminal child close and await bounded owned streams/pipeline/child cleanup. Actualbaseline2058/11603/0/0 then observationRED2060/11708/30/0 and extracted explicit/normal/coverage2060/11708/0/0/0warnings; owninglint/server/JSboundary pass. Preserve first zero-test guard and lint1/2 failures. Full lint3/254 and fresh38boundaries (2inherited626f) remain blockers; no fullGREEN/readiness/ownercompletion/public/model/DB/deploy. Candidate0/noSpore; nativeSM not retried.
+
+## 2026-10-16T05:44:39.235976+00:00 — CMS16 current-view local product repair
+
+- Context: source 2bd3ebdd0d56ef2d362c231cf7c4596818036045; base e5d69882038d59e8d54b94581997aee41a5e55a5; Receipt River .ημ/receipts.edn#0e8fcc87-b5a2-406f-b6e2-d51020048697.
+- Scores: efficiency 0.57; friction 0.72; skill-candidate 0; spore none.
+- Observed: synchronously change view generations before React effects, keep state updaters pure, and bind saving/finally to a unique operation. Preserve already-authorized payloads and approval followups while fencing stale UI completions.
+- Verification: 474 frontend tests/2240 assertions/zero failures/errors/compiler warnings; eight owning source paths lint0/0; real registered frontend build passed. Original protected interaction file stays byte-e5; moved causal tests on original production still fail six assertions.
+- Limits: whole frontend lint remains failed7errors/790warnings (original-tracked7/835), same seven untouched error locations. No browser/human race tour, hosted review, story completion or deployment. Tests/build preceded only two blank EOF-line removals, explicitly byte-bound.
+- Better path: freeze causal UI schedules before extraction, distinguish component prop-map syntax from children, and run full staged hygiene before commit. Preserve all failed captures and recover known successful effects without replay.
+- Evidence: /home/err/.local/share/openhax-codex/20261010/review-state/CMS16-current-view-RED-and-frontend-prerequisite-independent-review-v1/e5d-isolated-install-and-baseline-v1/current-view-RED-GREEN-implementation-v1/ACTUAL-current-view-qualified-local-source-commit.json; ACTUAL-source-built-frontend-dist-artifact-manifest.json. Native Session Mycology known null-cwd route not retried; portable candidate0 only, no spore creation/promotion.
+- ts: 2026-10-16T06:06:10.913533007Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-cms16-fixture-auth-implementation-over-26e4-v1
+  task: Repair two inherited CMS fixture error boundaries with actual causal controls
+  p-efficiency: 0.63
+  p-friction: 0.62
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#0f4c5167-fe25-44b4-85f4-b9ed0dea9263
+  note: Preserve compiled reader arities and awaited fault lifetime; assert actual invocation and Error/null primary identity with secondary close; refuse malformed receipts before destructive cleanup. Owning gates pass; inherited lint and 36 boundary sites plus combined-source and real runtime qualification remain. No spore.
+- ts: 2026-10-16T08:05:16.732658400Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-resource-route-characterization-over-64c-PREP-v1
+  task: Qualify finite resource route extraction and safe watcher cleanup observations
+  p-efficiency: 0.84
+  p-friction: 0.24
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#58c9a118-550c-4bc8-9768-09802e394f9e
+  note: Characterize original string-key wire-value output before product changes; retain fixture mismatch separately. Require actual missing safe-observation RED while Error/null cleanup fallback and all closes already pass. Preserve exact route/arity/write semantics through bounded extraction and place portable files on the real classpath. Owning gates pass; global backend2/249, inherited36boundaries and root60/56 size still fail. No spore.
+- ts: 2026-10-16T08:09:07.094578148Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-router-future-flag-tests-over64c-v1
+  task: Align existing router fixtures with application future options
+  p-efficiency: 0.9
+  p-friction: 0.2
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#c340d28c-0b1a-4f52-a6a8-fd7ee49ad401
+  note: Four existing test wrappers omitted flags already used by the app. Correct fixture configuration without suppression or assertion changes; the complete registered TypeScript suite now passes267tests/44files with41existingtodo and zero warnings. Preserve actual baseline and source/closure/lease custody. Native board ownership gap remains visible; no false lifecycle or full release claim. Source local only; no model/browser/deployment effect. Portable candidate0/no spore.
+- ts: 2026-10-16T09:02:15.258620590Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-cms16-core-browser-instrumentation-over-64c-v1
+  task: Qualify core browser instrumentation and real-route unauthorized writer refusal controls
+  p-efficiency: 0.6
+  p-friction: 0.5
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#2f6d8930-9c72-47d8-ab6c-a5b4cb30ac9c
+  note: Source2315d697 has final Node24, registered backend2064/11795, Python15 and explicit inherited lint/timing limits. Distinguish controlled-prop observer evidence from React scheduler proof; no CMS browser/readiness/deployment credit.
+- ts: 2026-10-16T10:55:09.249316613Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-cms16-b21-policy-facade-composition-v1
+  task: Compose the policy consumer correction and preserve facade credential compatibility
+  p-efficiency: 0.82
+  p-friction: 0.32
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#248646fa-0aae-4c23-86ca-316d79d28b2b
+  note: Compile existing private-var consumers after facade extraction before claiming compatibility. Retain missing-binding compile failure and unused-private lint warning. Restore genuine production use through a fixed internal response-codec callback while preserving private one-arity metadata, public five-arity API, original assertions and target scope. Current owning lint, full normal and server build pass; backend1/248,36boundary violations and root59/56 plus missing-root-node_modules warning remain release blockers. No spore.
+- ts: 2026-10-16T13:23:53.524446906Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-app-route-facade-over17381-PREP-v1
+  task: Qualify app facade extraction and preserve fallback when boundary observers fail
+  p-efficiency: 0.78
+  p-friction: 0.49
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#22d4052e-c9ae-4646-b8a9-3a7da8dae49b
+  note: Run the actual new-source boundary inventory after extraction: path-bound baseline catches may become new failures. Preserve explicitfalse and foreign primarythrow identity when observing degraded reads; an observerError ornull must not replace fallback. Reuse the existing named compilednull fixture, retain genuine3assertionRED and all withdrawn static judgments. Owning checks pass; backend237warnings,36silentcatchsites and root58errors56warnings remain release blockers. Coverage runPASS measures78.64percent overall lines/statements with no configuredpercentageproof. One private latestfailure diagnostic is bounded/process-local and maystale. No spore.
+- ts: 2026-10-16T13:37:29.072113Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-app-route-facade-over17381-PREP-v1
+  task: Reuse the existing five-line test-import repair in the current CMS candidate
+  p-efficiency: 0.80
+  p-friction: 0.20
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn@2026-10-16T13:37:28.892943371Z
+  note: Inspect existing qualified source before writing another fix. Five complete current preimages matched the earlier source, so ordinary composition plus fresh owning, typecheck, normal and full-lint checks removed exactly five warnings. Treat reporter-format assertions separately from actual test failures; qualify the same complete capture and do not repeat a passing suite. The remaining 232 warnings and other release failures stay visible. No skill spore or production claim.
+- ts: 2026-10-16T14:05:51.376748279Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-app-route-facade-over17381-PREP-v1
+  task: Observe malformed receipt-bound content without replacing absence
+  p-efficiency: 0.88
+  p-friction: 0.24
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#7b9e0a16-b635-40a0-a4e1-6595b6283d53
+  note: Keep decode fallback and non-ENOENT read-error identity distinct. Exercise actual malformed EDN plus primary/observer Error/native-null through existing named ports before product; exact missing-observation RED must preserve all admission controls. Log only fixed sanitized context; observer failure cannot replace nil. One private latest diagnostic is bounded and may stale. Owning gates pass; global231warnings35ignoredcatches/root58errors56warnings remain blockers. Coverage measurements are not percentage-threshold proof. Retain private descriptor mistakes without replaying successful QA. No spore.
+- ts: 2026-10-16T15:42:31.709421568Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-app-route-facade-over17381-PREP-v1
+  task: Preserve ordered promise failure semantics during translation review extraction
+  p-efficiency: 0.68
+  p-friction: 0.55
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#46f0fc7f-90c9-4287-8ff2-fd3f21d403c0
+  note: Inspect the pinned promise implementation before assuming Promise.all semantics. Eager task start, ordered consumption and immediate native rejection observation are distinct obligations. A terminal-aware fixture must also avoid holding an earlier branch while awaiting a later ordered failure. Keep two-error identity controls and first-cause evidence; observe native tasks through the existing public constructor outside async helpers. Two cancellations provide no final test PASS; actual introduced unhandled-rejection failure stays retained. Final owning gates pass, while backend222warnings35ignoredcatches and root57errors56warnings remain release blockers. No spore.
+- ts: 2026-10-16T16:06:57.028476384Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-app-route-facade-over17381-PREP-v1
+  task: Remove six unused registry-test callback names with unchanged behavior
+  p-efficiency: 0.92
+  p-friction: 0.15
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#fe38150f-fa31-4085-8198-bcd1641c0dce
+  note: Small argument-name hygiene can remove real policy warnings without changing arity, callback order, positive parameter reads or assertions. Use the actual native test EOF and exit, not an arbitrary FATAL substring ban: unchanged negative-path logging can contain that word. Preserve inherited diagnostics and recover read-only rather than replaying a passing suite. Existing namespace registration loads require a separate source audit before removing apparently unused imports. No spore.
+- ts: 2026-10-16T17:03:39.723559802Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-app-route-facade-over17381-PREP-v1
+  task: Split translation dispatch and observe its two degraded nil fallbacks
+  p-efficiency: 0.92
+  p-friction: 0.15
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#657832f5-5a36-4b79-9663-7c9855cf89d0
+  note: Keep the public fallback and observation-failure contract separate: a warning sink must never replace a deliberately preserved nil fallback. Trigger actual original catch sites through public APIs and assert bounded worker calls plus exact safe context. Preserve original ordered async and identity laws; source-only extraction review is followed by real causal RED and full source-bound GREEN. Retain all inherited release failures. Read Rheos actual same-section append representation; restore only known owned physical modes after live gates close. No spore.
+- ts: 2026-10-16T18:20:24.456972151Z
+  session: codex:cms16-native-url-dto-local-repair
+  task: Preserve native CLI DTO shape at the exact owned-page URL guard
+  p-efficiency: 0.88
+  p-friction: 0.22
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#705fce80-a5d8-4b4d-bbee-50f8cc24db57
+  note: Generic native CLI data unwrapping may correctly return an object: use the exact installed wire contract and preserve its object/type/own-field invariants before comparing the owned URL. Start with behavior-identical extraction and genuine positive/adverse causal tests. A missing required test evaluator selector is a harness prerequisite failure, preserve it and restore only the proven original setting; do not reinterpret it as product RED. Retain global failures and dated runtime limits; no browser replay or spore.
+- ts: 2026-10-16T18:36:19.877899208Z
+  session: codex:cms16-exact-background-fixtures
+  task: Bind synthetic CMS backgrounds to exact owned public chat identity
+  p-efficiency: 0.94
+  p-friction: 0.10
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#2487cb26-77f5-48af-9d35-18a432a53e7e
+  note: Trace actual mounted callers before adding exact synthetic background fixtures; pathname aggregates do not prove query values. Initialize only a fresh owned public chat identity before navigation rather than accepting arbitrary runtime IDs or overriding randomness. Native status GET can recover workers, so never forward it in a closed proof. Assert actual native and window no-forward behavior, adverse method/body/fragment/query/identity refusal and preservation of later app-updated public snapshots. Keep historical runtime evidence separate from new source and retain full quality failures. No spore.
+- ts: 2026-10-16T19:17:57.049341204Z
+  session: codex:cms16-stage-case-diagnostics
+  task: Retain closed CMS stage/case diagnostics and preserve primary on restore failure
+  p-efficiency: 0.93
+  p-friction: 0.16
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#e20b374c-3e8d-4f8a-8aac-8c9851e4eefa
+  note: Capture a bounded stage/current-case/partial-completed snapshot before sanitizing browser failures, while keeping raw messages/stacks/assertion/auth values private. A finally restore failure must preserve original Error/null identity and separately retain one fixed cleanup name; diagnostic observer failure cannot replace primary either. Use explicit verified auxiliary evaluator from first smoke. Original generic browser cause remains UNKNOWN until a separately admitted fresh run; preserve prior failures, inherited global gates and exact app/dist/shared closures. Portable candidate0, no spore.
+- ts: 2026-10-16T19:44:44.731133650Z
+  session: codex:cms16-project-case-order-contract
+  task: Distinguish committed DOM from MutationObserver delivery in a controlled CMS project race
+  p-efficiency: 0.93
+  p-friction: 0.16
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#18b50cc1-8b38-48c7-b34b-dac976f52312
+  note: A browser callback marker is evidence of observer delivery, not the instant of DOM commit. Actual request-time B checkpoint and later observer both passed while the extra callback-before-fetch order failed. Preserve real B-at-request and stale-A-after-B safety; test clean request-before-observer, stale request despite later clean observer, and A completion before committed B through the actual emitted project configuration. Keep genuine first-observer/pre-first-B checks unchanged. Capture original native bytes privately before error normalization; no inferred full57 or release success. Portable candidate0/no spore.
+- ts: 2026-10-16T20:20:05.906271496Z
+  session: codex:cms16-owned-CDP-download-repair
+  task: Keep one owned download path across original Playwright owner and second CDP client
+  p-efficiency: 0.94
+  p-friction: 0.15
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#96f67cc7-1ef5-4b82-a8d6-46626269794d
+  note: Second CDP attachment can reset default-context download routing while the original owner Artifact still uses its own path. Bind explicit launch downloadsPath and reclaim that exact path after attachment, before downloads; register detach before send. Exercise public owner with inert context and finite CLI plus real copyFile for genuine RED. Preserve original thrown identity by source rethrow and record only closed stage/name/code/cause data; do not overclaim identity test coverage or captured historical ENOENT. Synthetic GREEN is not real57/browser/release proof. Portable candidate0/no spore.
+- ts: 2026-10-16T20:58:26.659459722Z
+  session: codex:cms16-settled-feedback-request-observer
+  task: Check settled-feedback clean B state at request and strict first observer before held response release
+  p-efficiency: 0.93
+  p-friction: 0.18
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#4e75abc3-cbf9-4cea-a815-a0c923bac789
+  note: MutationObserver delivery is not the DOM commit instant. Use an actual committed-B request checkpoint and keep strict firstobserver before releasing held B responses. Capture actual emitted runner configuration and watch arguments through one explicit existing-function export seam; baseline export before tests prevents missing-export fixture errors being called RED. Preserve clean-request-before-observer positive and sticky stale request, missing/stale observer, early response release negatives. Historical marker order stays UNKNOWN when assertComplete throws before report. Synthetic GREEN is not real57 or release proof. Portable candidate0/no spore.
+- ts: 2026-10-16T22:46:44.535442588Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-app-route-facade-over17381-PREP-v1
+  task: CMS57 preserve safe completion cause without changing assertion or success schedule
+  p-efficiency: 0.72
+  p-friction: 0.70
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: sha256:06af50ba2a7c778bbcba98ed8b9d0d38b6b635d57dfdd666c6b2327bd25fa2ca,3c2d923441db8389279cd467ce3c64b044be8bb8,098c9409c55cfbba9e3740c46a4b65e67a4ce7dd
+  note: Actual full browser stopped at56of57 with original core-incomplete but no saved scheduler completion report, leaving failed/pending/unconsumed UNKNOWN. Snapshot four scalars atomically at the existing check; read them only after rejection and retain identical original Error/null even if diagnostics fail. Two causal assertions RED then focused2/registered173 GREEN; registered first invocation omitted mandatory held clj-kondo env and is retained separately169PASS4FAIL, corrected exact prior invocation171PASS2causalFAIL. Reuse canonical prior argv before sanitizing away required tool selection. Original all57 schedules/predicates/success awaits and application source unchanged. Portable reflection only, candidate0/no spore/no promotion; no runtime/browser/model/production credit.
+- ts: 2026-10-16T23:18:44.257288707Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-app-route-facade-over17381-PREP-v1
+  task: CMS57 keep diagnostic provenance sufficient and bounded while preserving failed-run truth
+  p-efficiency: 0.76
+  p-friction: 0.64
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: sha256:60c07cd9bf889730de8c91a22bf8305e3d1fbd725f957a0fcfa308e4ea627c54,196b9a63431db45907b9345411ae5b76112f620e,650dae99b3a79bc978e4c11a12dfce305d0598eb
+  note: Four completion counters establish synchronous refusal but cannot identify first rejected request or failed observer conjunct. Preserve earliest allowlisted category at existing writes and freeze owned pending/record/checkpoint tokens at assertComplete; keep Boolean short-circuit and DOM reads unchanged. Lexical token grammar alone did not prove private-token omission, so peer review narrowed owner projection to finite case57 IDs, with counters-only fallback elsewhere and token-shaped secret adverses. Genuine focused4 RED1PASS3assertions/registered175 RED172PASS3same; exact source GREEN4/175PASS, original Error/null identity coverage retained. Reuse exact qualified Node/pnpm environment including mandatory kondo; retain raw native outcomes. Earlier v8 FAIL56 stays failed and first cause UNKNOWN. Portable reflection only, candidate0/no spore/no promotion; no browser/model/production credit.
+
+- ts: 2026-10-10T23:07:22.927005+00:00
+  session: knoxx-qualification-repair
+  task: canonical-production-mutation-runner-repair
+  p-efficiency: 0.78
+  p-friction: 0.62
+  p-skill-candidate: 0.55
+  spore: none
+  receipt-refs: 5ea538ff-0cbb-4330-af6e-5740a9b4f5f8, ea2ea1c1eef132d23408dc94de5166e659d8dae367884e4f02d73392df895614, 0942dbf59387a51b078c7677288e0dd838c8d2abb30dad409527a2459a1fdfe6, d17c2623848c034207e09fc7f5efe12c875f1702d6087ba6e42af7d848d65fce
+  note: A printed green summary does not prove completed test execution. Qualify the existing fatal guard, normal exit and owned descendant cleanup together before spending campaign time. Preserve compiler/test raw evidence and source identity; keep active portable branches without rewriting reader conditionals into runtime forms. Focused RED/GREEN source controls do not earn production baseline or mutation credit. Equivalent exclusions need actual external review and exact committed provenance; none adopted. Fresh production-config dependency preparation is separate from execution, and the four batches of 250 completed assertion kills remain required. One failed alias discovery and conditional-promotion control drove narrow canonical repairs; all predecessor failures retained. No extra spore or promotion.
+
+- ts: 2026-10-10T23:20:00.254571+00:00
+  session: knoxx-qualification-repair
+  task: exact-production-config-baseline-and-observed-survivor-pilot
+  p-efficiency: 0.88
+  p-friction: 0.28
+  p-skill-candidate: 0.42
+  spore: none
+  receipt-refs: c5f71c0c-263c-428f-b273-9ec5f6a313b5, 9b345550d08831e6520780e7faf233ac608c7267d01f2d79989310bb996f2768, b4816a450fb9671378b518f0153ad8ffd74ea6ef98a3a756993a63a272033f5d
+  note: Measure the actual canonical guarded baseline before campaign spending. Exact source78843174 passed1914tests9844assertions; three measured mutations yielded two assertion kills and one real survivor, no invalid executions. Preserve wholepilot exit1 and restored source. A private terminal return ignored after unchanged notification effects has no discovered supported boolean contract; a direct literal assertion would manufacture one. Green tests alone do not adjudicate equivalence: present exact source rationale for independent external review and keep zero exclusions until then. Targeted one-file ordinal lookup places this observed survivor first in batch1; no selection reorder hides it. Local median75.41seconds is a throughput measurement, not a hosted qualification guarantee. Preserve initial selector and metadata-capture adapter failures; those changed no canonical source and earned no credit. The nonbundled entrypoint hash is distinct from full compiled payload identity. Metadata successor records tested788 honestly and supplies no successor baseline or four-batch credit. No extra spore or promotion.
+- ts: 2026-10-11T23:52:33.808449403Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-qualification-repair
+  task: Fix owned child signalling and isolate default versus caller contracts fixtures
+  p-efficiency: 0.76
+  p-friction: 0.58
+  p-skill-candidate: 0.64
+  spore: none
+  receipt-refs: N/prod-goal-knoxx388-five-path-source-receipt-v1.stdout
+  note: Native review led to explicit stable pidfd cleanup and actual missed-group control RED1 to supervisor14GREEN. Preserve ordinary escape predecessor local1/1 pass discrepancy. Native bundle failure reproducedNode24 with explicitcallercontracts RED1; testonlydefaults controlled separately; new callerpreservation check and wholeJS79 pass. Supervisorcontrols now reached by CI/reviewgate. Actual fiveinputbeforeafter stable, checkout1 and independent source assessment no findings. No currentbaseline/four250campaign, no sourceequivalence adjudication, no spore or promotion.
+- ts: 2026-10-12T01:09:03.084817225Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-qualification-repair
+  task: Preserve late mutation custody and qualify native SDK setup without borrowing campaign credit
+  p-efficiency: 0.78
+  p-friction: 0.69
+  p-skill-candidate: 0.35
+  spore: none
+  receipt-refs: fb530e92423dbf73e2db2ea53661888668ff27f047d933670cea32a183baf0f3,632944a45d671d08fc9a3e4cff4d0185326fcadc92c7affbb4378b3b7eb8ee53
+  note: Preserve completed child evidence when cleanup or preflight fails, and distinguish a missing invocation from a failed child. Strengthened adverse controls must reach their intended guard with consistent hashes. Actual YAML fixtures establish Git isolation and physical sibling refusal while packages remain inert. Raw-index metadata refused the b01 outer pilot despite inner green tests: keep INVALID, do not rewrite it as successful qualification. Source-specific focused green does not replace the unchanged four disjoint250 campaign. No new spore or promotion.
+- ts: 2026-10-12T02:38:09.436980184Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-qualification-repair
+  task: Bind production mutation admission to canonical source inventory
+  p-efficiency: 0.72
+  p-friction: 0.62
+  p-skill-candidate: 0.45
+  spore: none
+  receipt-refs: 42aaad33be065200cfdbd37101d3f653bbdc09f1466dfdc40a553d4b22f194b9
+  note: Use the existing canonical JVM discovery/fingerprint/rewrite and validate exact source-S membership at both ends. Real source fixture transport tests are not production campaigns. Keep old cleanup/artifact disputes separate; green unchanged supervisor controls do not manufacture a fix or rejection. No new spore, promotion, deployment or native approval.
+- ts: 2026-10-12T04:35:28.818100644Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-qualification-repair
+  task: Authenticate production mutation executor and enforce canonical partition prefix
+  p-efficiency: 0.88
+  p-friction: 0.35
+  p-skill-candidate: 0.50
+  spore: none
+  receipt-refs: d8ce9e4c49a2d85d1d515d7dbacda995a0e428cedc7a27a0b81441d3671bb154
+  note: Official authenticated executor admission replaces unsigned production credit; canonical prefix and exclusion custody use the existing JVM inventory. Actual source qualification44PASS and old unsigned acceptance versus new refusal are bounded local proof. Public official crypto controls and reader oracle are separate from real Knoxx campaigns/native review/hosted CMS readiness. Four exact source files applied with outside source/index/inodes preserved. No new spore.
+- ts: 2026-10-12T05:09:15.524328887Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-qualification-repair
+  task: Restore reusable qualifier checkout topology assertion
+  p-efficiency: 0.94
+  p-friction: 0.18
+  p-skill-candidate: 0.35
+  spore: none
+  receipt-refs: 55faac34-6a14-44cc-9e31-d445c6f71a89,d223c7075f230c2dc247ceb9d2725ce0f41d1a690386e83be36068ee986c30b6
+  note: When intentional workflow topology adds signer/controller checkout steps, preserve all original per-checkout repository and persistence checks and update the exact expected multiset. Actual predecessor assertion failure and unchanged existing-test pass bound the repair. Keep production campaign and native review separate. No new spore or promotion.
+- ts: 2026-10-12T07:22:36.361407909Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-qualification-repair
+  task: Qualify portable macro source inventory and terminal JVM CLI finalization
+  p-efficiency: 0.82
+  p-friction: 0.52
+  p-skill-candidate: 0.45
+  spore: none
+  receipt-refs: 788b226f-e283-470c-9d74-8442ba0289a8,18e29fea41dc3f4ae4c7dab93554007050915245e6d95daf1a6ace654a879eef
+  note: Current4c0 predecessor genuine Python four-method failure and JVM four-test ten-failure controls turned green with exactly four source edits. Actual completed-future CLI timeout45.071s became normal2.781s. Full48Python and32JVM335 assertions plus lint passed. Include portable .cljc macro sources and preserve flush plus shutdown in terminal finally. Public pinned JVM dependencies were fetched; no offline claim. Existing cleanup disputes and real production campaigns remain separate. No new spore or promotion.
+- ts: 2026-10-12T09:13:17.671474429Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-qualification-repair
+  task: Keep configured macro executor scope and relative report custody exact
+  p-efficiency: 0.68
+  p-friction: 0.75
+  p-skill-candidate: 0.70
+  spore: none
+  receipt-refs: 3d774a732c052aaa2844d980eb4e543b7cad2b1e3209c56f595a6a0958bca04c
+  note: Preserve real RED and forecast/refusal evidence; exact owned source application qualified locally; native review and production qualification remain separate.
+- ts: 2026-10-12T12:02:07.499635203Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-qualification-repair
+  task: Stabilize anonymous mutation identities and reviewed partition selection
+  p-efficiency: 0.74
+  p-friction: 0.73
+  p-skill-candidate: 0.55
+  spore: none
+  receipt-refs: af7b301a-e4a0-4faa-aa72-fbf57a6fa6af,96cfd109d232f0268adb118211004c9ef537616e3a2fa4a8750dcbdf23c49861
+  note: Bind compound mutation identity to exact anonymous syntax rather than process-local expanded gensyms. Preserve complete map/fingerprint comparisons and stable c533 identity. Separate actual regression failures from setup/prediction errors. All qualified selection exclusions remain planned/evaluated0/killed0; native review and real production campaigns remain separate. No spore or promotion.
+- ts: 2026-10-12T13:37:38.206580245Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-qualification-repair
+  task: Qualified and applied two confirmed Knoxx deployment gaps
+  p-efficiency: 0.75
+  p-friction: 0.6
+  p-skill-candidate: 0.55
+  spore: none
+  receipt-refs: 7472788750ba529aeb896782e80953bdffc07e4576d49dede32ec4bcb7091186
+  note: Bind required Clojure/JDK tools before verifier fixtures; retain setup failures and separate supervisor19 from verifier50. Apply only exact privately qualified source bytes, with no synthetic campaign credit.
+- ts: 2026-10-16T23:33:42.034044942Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-CMS-controller-integration-over8cd5-v1
+  task: Private application/controller composition with causal helper inventory controls
+  p-efficiency: 0.70
+  p-friction: 0.50
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: sha256:531c03c38d8554fee55ebf007cc6efab156deaf745487ccf78c771aa924b4b9f,4984c771a6c1165a43b797d6af5e5ae5b8963077,2758e25b1baa61375f2523b41721164f8e81802e,1524edabad9d4908a5468e9115e100202cc6109c
+  note: Keep source-bound verifier configuration and equivalent metadata explicit when composing application and controller lineages. Fixture inputs for newly required helper paths must be independent of the selector under test; otherwise a baseline KeyError hides missing boundary enforcement. Actual selected2tests expose four assertions, then GREEN2; checkout4 and syntax/actionlint pass. Two private evidence/application-reader escaping mistakes are retained separately, corrected without source semantics changes or QA credit. Use literal byte separators and standard git apply in a private six-file copy rather than nested escaped custom diff parsing. Full canonical verifier/JVM and SDK transports remain HELD for browserv9 owned closure, so this is a partial checkpoint with no whole-candidate or production completion. Portable reflection only; candidate0/no spore/no promotion.
+- ts: 2026-10-16T23:36:37.925685290Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-CMS-controller-integration-over8cd5-v1
+  task: Private composition completed full verifier and bounded SDK transports serially
+  p-efficiency: 0.80
+  p-friction: 0.30
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: sha256:f11bf5c68db1647e88974e417c47a81e73375ffe581a72fb2b2ddce1855f59f6,4984c771a6c1165a43b797d6af5e5ae5b8963077,fe8ac0db06243970189c986ca9093d978b33796d
+  note: After root-confirmed browser9 terminal/owned closure, run one existing full verifier then one selected SDK helper transport, serially. Actual54Python controls PASS with canonical1004-source identities but zero real campaign credit; actualshared-helper1PASS includes existing sibling symlink preservation and bounded process teardown. Reuse exact qualified SDK environment and source with fresh own fixture parent; exclude cold semantic build/install. Both normal native0/0/cleanuptrue/untruncated and clean source/index/empty fixture parent. Preserve earlier partial checkpoint and tooling failures rather than rewriting them. These checks qualify this scoped controller/input composition only; owning review, whole application QA, real mutation campaign and production deployment remain outstanding. Candidate0/no spore/no promotion.
+- ts: 2026-10-17T00:07:48.046276514Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-CMS-controller-integration-over8cd5-v1
+  task: CMS draft5 current draft ownership and conserved-snapshot freshness with actual causal RED and corrected GREEN
+  p-efficiency: 0.82
+  p-friction: 0.55
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: sha256:bc01d84421e9dbc036bfe3b24b6ce0f44a05b30ef065cb0f50e2e880b27994e9,19b0a2345d2fc30c7d3405c6b77b5c766b6e49be,a0a130b3818071048a2ee7c7c5db1db5611e3d72,sha256:f4f1be45ac8e2ba66bded0647153be7135ab5ea1f3106801ca472ff4cbfd6a17
+  note: Fresh frontend-own install and unchanged474 baseline preceded test-only477 RED with15 assertion failures across three controls. Preserve draft revision/segment/authority separately from operation saving, and scope queued list freshness to project/filter/mounted-lifetime inputs so an omitted old selected row cannot erase the necessary read. Retain initial shadowed-key lint warning and FIRST487 GREEN1failure1error. Actual compiled reader isolated Invalid token ::authority without running tests; explicit namespace keywords preserve identity. Existing controller test must observe distinct second held read and real completion rather than first completion before a queued read settles; no sleeps or weakened freshness. Reviewed narrow corrections then distinct owning lint0 and registered487tests2674assert0fail0error0compilerwarnings. All native consumers closed and own leases released. Private WIP source only; original57 browser remains failed, no readiness/protectedadoption/deployment or public action. Portable reflection candidate0/no spore/no promotion.
+- ts: 2026-10-17T00:24:22.940437090Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-CMS-controller-integration-over8cd5-v1
+  task: CMS core5 actual view manifest invalidation with real wiring omission RED and restored GREEN
+  p-efficiency: 0.88
+  p-friction: 0.30
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: sha256:921a51ad4a87a956716b9ee543c6d84f85415cdd78b5a51a5310b70d15a1274a,f02c99f59e3e067d6547f2c4ec36c0065a692218
+  note: An invalidation primitive test cannot prove its actual page caller invokes it. Exercise the actual private boundary factory via supported Var access, keep B loaders/passive cleanup absent, and await the exact native promise already awaited by the real loader. Actual manifest-wire omission produced4 assertion failures across success/error; exact reverse restoration gave488tests2688assert0fail0error0compilerwarnings. Preserve source and324production artifacts; original browser case57 remains failed, with no scheduler/product/public changes or acceptance substitution. Portable candidate0, no spore or promotion.
+- ts: 2026-10-17T00:44:17.582413597Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-CMS-controller-integration-over8cd5-v1
+  task: CMS core5 actual inventory factory wire negative-control RED and native-task GREEN
+  p-efficiency: 0.82
+  p-friction: 0.35
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: sha256:888ec80a55de22aa930fe7f72ca82cc2378ec26d8f778ea40488ad72831e2938,cc98929c668aba6c483ce91665428d6df9090511
+  note: Actual caller wiring needs a real omission kill: retain complete native inventory task through the actual page boundary, settle success/error with B absent, and await legacy/catch/finally. First unqualified run exposed async higher-order argument lifting: prebind pure arguments before retaining a native Promise. Pinned source and compiled shape confirmed the causal correction, then four scoped assertion failures and489/2698 restored GREEN. Preserve first failure and old browser57FAIL. Candidate0; no spore or promotion.
+- ts: 2026-10-17T01:25:24.434234178Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-CMS-controller-integration-over8cd5-v1
+  task: CMS backend source queue two degraded boundary observations with public native-task TDD
+  p-efficiency: 0.92
+  p-friction: 0.15
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: sha256:75c0917a0275d25ba33c132c4e00b0e2de78637334be20bc893ac8b447844930,1f533d5343bcf56fda038c2180aa095ff9ed1549
+  note: Real public queue controls preserve original Error and nil rejection, eagerly queued successor and identity-fenced tail ownership when observer records, is absent, throws Error or nil. Unchanged-source baseline passes; missing-observation RED gives six exact record-only failures, then GREEN2175/12470/0/0 and one servercompile0warnings.210 inherited lint warnings and31 remaining boundary failures stay actual failed global gates. Keep deliberate refusal fixture output and tiny read-only artifact count-selector mistake honest; no QA replay or product/artifact restoration. Candidate0, no new spore or promotion.
+- ts: 2026-10-17T02:07:41.341007183Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-CMS-controller-integration-over8cd5-v1
+  task: CMS sandbox cleanup degraded observations with native Error/nil and observer-restoration controls
+  p-efficiency: 0.85
+  p-friction: 0.24
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: sha256:9c3e0e770ff3f99f31722ad3c5ea687e7e899bce8a0110a7f2cdec150bf29bf2,2626e09d9a9c7866b4338424a452e2c8ad15d79b
+  note: Two actual native cleanup catches gain only fixed scalar warning attempts while success/options/idempotent absence/nil fallback and following cleanup remain unchanged even observer Error/nil/absent. Quiet metadata read remains intentional. Genuine RED26missing-record/0error preceded product; full source-bound GREEN2179/12656/0/0 and179NodePASS/compiler0warnings. First registered full lint caught deliberate literal nil-throw fixture type error; exact existing parameterized native fault helper preserves true nil throw, then one corrected GREEN/full lint clears touched error. Preserve failed lint and wrong-cwd hook failure, no assertion/policy weakening. Existing210 lint warnings and29 remaining boundary occurrence rows are literal global findings, not invented current CI steps; shared snippetID stays for quiet read. Scope canonical existing async5, no next family. Candidate0/no spore or promotion; no public/model/service/deploy effect.
+- ts: 2026-10-17T02:17:10.993673906Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-CMS-controller-integration-over8cd5-v1
+  task: CMS one-file native async audit fallback and canonical protected-main frontend CI hygiene
+  p-efficiency: 0.96
+  p-friction: 0.08
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: sha256:eec5c0d2949d5a2521a5a48abc2f0fd674e9c757cf83ea7f39800d8e8df99158,0773588a18b963abdae52116e4922ea26c7d9302
+  note: Exact existing api.cljs preimage is now native async try/await with unchanged admin-to-caller fallback, fixed limit and vector/error behavior; session request gets intent doc only. Existing four real HTTP tests and all489tests/2698assertions pass with0fail0errors/0compilerwarnings. Registered changed frontend lint against true protectedmain3409977 selects20paths including uncommitted working api bytes and reports0E0W. Reused qualified owned frontend dependencies/runtime, fresh exclusiveconsumer, no install/newtest/artificialRED/baseline or production build; source inode/mode/owner and all324productionartifacts/sixclosedsets preserved. Single source commit then separate canonical append-only provenance, candidate0/no spore. Historical global findings and original browser57FAIL remain; no browser/fullrelease/model/staging/protected promotion/public/owner-completion credit. Optional migration product ratchet remains separately unexecuted PREP only.
+- ts: 2026-10-17T02:45:41.094120503Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-CMS-controller-integration-over8cd5-v1
+  task: Knoxx frontend migration actual compiled-entry source-map normal dependency closure
+  p-efficiency: 0.86
+  p-friction: 0.28
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: sha256:710e0d23882abd7ef07864984f7e9460d4a12574438a3035636f4c95b2be0ee0,c3f9938ee85c7d3cfbdb13d78660271d7e7c9a76
+  note: Actual registered migration compiler0/native0 emitted missing-source-map runtime advisory before change. Exact2path directfrontend0.5.21 devDependency/importer fixes normal visibility of existing privately locked package; all package/snapshot/version/integrity tail unchanged. Official offline scratch generation1missingexistingjestdommetadata preserved, then explicitnormalmetadata successor0byteexact candidate. Its2deprecationWARNrows/6oldversions and normal frozen install oldesbuildignoredscriptsbox remain literal history, without warning-freeinstallationclaim or approve/ignore/upgrades. Root independently corrected overbroad operator any-manager-warning prerequisite under actual CI zero-warning/ratchet law; all stops retained and introduced/touched/compiler/runtime diagnostics still block. Exact normal frozen materialization0 and actualcompiled-entry createRequire0 resolve owned0.5.21 without alternate lookup; one unchanged productmigration main340/infrafalse0/compiler0/runtimeadvisory0 proves real correction. No mirroredtest/newbaseline/489suite/build/browser/modelreplay. Source/artifact/dependency/store consumers preserved, exactownleaseclosed after all terminal. Candidate0/no new spore or promotion; no public/review/ownercompletion/deploy credit.
+- ts: 2026-10-17T04:18:31.332615716Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-CMS-controller-integration-over8cd5-v1
+  task: CMS current-view and real Docker e2e result versus cleanup custody
+  p-efficiency: 0.69
+  p-friction: 0.78
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: 66282ece7c74238b20be9174ab1b91617694029a,d695688ef81c358111a089a0c8ed3a19f1c6fe50,sha256:beedae4923cb1505c18d78e8a482d96f2231af2c5c2ffbfe0378b603da57f638,sha256:50da4190472a97d4cc1c38647e1b88305c51c72cca52e88fec1c76fd3a6677ec,sha256:093b73525419e85ed7cb1101b3f661ca1aadd64c862781ecf9cc76fe6f173fd7,sha256:d454dbaac06d3f1730fdedae6f13c1d0a714302d2acca596365161958857e41e,sha256:ebc87fb3c3673c04f11bdc37af812bd139a2cb66b2abff568117e8b328c6233a
+  note: Use actual registered outputs and original custody results as separate facts. Browser driver57 and required realDocker23tests118assertions passed, while browser immediate transientzombie and planned read-only Docker eventCLI TERM143 kept both original wrapper1 results. Complete exact resource/port/source/artifact cleanup only after native reaping; never replay a successful test or rewrite frozen predicates to manufacture overall0. Generated project .cpcache is an allowed mutable compiler output: preserve sealed priorbytes/currentclasspath correspondence and unknown creator, then narrow current snapshot, not attribution. Docker Go format templates support json/index/range; optional mount fields need index and selected projected fields avoid exec-command/rawattribute exposure. Append truthful evidence and update only same draftPR; candidate0/no spore or promotion and no deployment/review approval credit.
+- ts: 2026-10-17T08:15:35.310621801Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-caller-accepted-Services-M0-48c9-over733-v1
+  task: Bind both Knoxx environment callers to the actual adopted optional-secret Services interface
+  p-efficiency: 0.9
+  p-friction: 0.2
+  p-skill-candidate: 0.2
+  spore: none
+  receipt-refs: 619985a60e8766495c69b194d0c8385e3ac861ee97026853644a87cd82a438fd
+  note: Reused the reviewed exact two-mapping/four-pin delta, replaced the future candidate with actual protected48c9, verified full caller/callee schema and immutable other bytes, and bound actual integration-base/labels/queue nonactivation. No new deployment gate or capability claim. Native mycology connector remains unconfirmed from earliernullcwd and was not retried.
+- ts: 2026-10-17T09:44:37.232468370Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-full-CI-workflow-repair-over933-v1
+  task: Repair actual CMS CI prerequisites and manual full-source qualification inputs
+  p-efficiency: 0.87
+  p-friction: 0.28
+  p-skill-candidate: 0.30
+  spore: none
+  receipt-refs: e9983e13-6045-40a1-a1ff-7f80c4ae7f58
+  note: Use actual complete failed job logs before changing runner setup. Real NBB/FFmpeg fixtures require installed dependencies; provision those dependencies and preserve assertions. Keep explicit browser source guards and bind the checkout selected by each caller. Manual full-source QA needs an immutable ancestor baseline and explicit product mode, rather than last-commit or automatic infrastructure defaults. Source peer review caught evidence finalization aborting on an absent tool: retain manifest/checksums then report failure. All local checks here are narrow; genuine hosted app/model qualification and reviews remain separate. No spore or native connector retry.
+- ts: 2026-10-17T10:30:28.929806392Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-full-CI-workflow-repair-over933-v1
+  task: Five scoped backend warnings, existing native owners and retained global failure
+  p-efficiency: 0.87
+  p-friction: 0.27
+  p-skill-candidate: 0.24
+  spore: none
+  receipt-refs: e3286da1-7f8d-4b94-8d2b-28f15fe2762f
+  note: For finite lint slices, preserve full public and ordering contracts, reproduce exact owning diagnostics, then prove exact warning-removal multiplicities in full registered lint. Use existing Rheos owner comments and native ledger only. Small static GREEN is distinct from registered runtime/typecheck/coverage and global lint completion. No new mirrored test or spore.
+- ts: 2026-10-17T10:36:07.197031582Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-full-CI-workflow-repair-over933-v1
+  task: Actual causal split feedback regression and minimal editor-authority repair
+  p-efficiency: 0.87
+  p-friction: 0.31
+  p-skill-candidate: 0.28
+  spore: none
+  receipt-refs: fd090bba-422d-4ac3-ae83-12488c568001
+  note: Bind editor identity to immutable source and raw candidate identity while allowing derived review-output receipt revisions to advance. Retain exact pure negative controls and genuine browser notice failure before repair. A GitHub continue-on-error step conclusion can say success despite native test exit1; logs/outcome and final failure control truth. Keep legacy test lint outside scope by moving the equivalent new interaction into the existing modern fixture while preserving every old assertion and the same unchanged lint selection. RuntimeGREEN remains separate. No spore.
+- ts: 2026-10-17T11:39:34.331014677Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-full-CI-workflow-repair-over933-v1
+  task: Twenty scoped backend warnings removed while preserving loader behavior
+  p-efficiency: 0.88
+  p-friction: 0.28
+  p-skill-candidate: 0.21
+  spore: none
+  receipt-refs: bbfe3b76-34ee-4134-b4e2-03b9f5399125
+  note: Preserve explicit namespace loads when removing unused aliases. For dead-code cleanup, compare full registered warning classes after exact source peers and owning lint; do not relabel retained size warnings or historical CI as current success. Inverse checks for deleted regions must retain their original position, because replacing an empty string inserts at byte0. Retain early guard refusals without candidate/test credit. No spore.
+- ts: 2026-10-17T12:57:01.794007644Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-full-CI-workflow-repair-over933-v1
+  task: Portable sub-agent projections remove two measured warnings; global183 remains failed
+  p-efficiency: 0.91
+  p-friction: 0.12
+  p-skill-candidate: 0.1
+  spore: none
+  receipt-refs: a423f231-9cd8-47dc-809a-33fff4f29fd1
+  note: Extract portable disjoint field/lineage projections while leaving compaction, selections and effects at their existing adapter. Exact inverse/field source review plus original owning lint and complete global diagnostic multiplicities distinguish a two-warning improvement from whole-candidate readiness. Retain all183 other warnings and hold runtime/typecheck/test/coverage/build claims for actual new-source hosted QA. No spore.
+- ts: 2026-10-17T13:19:27.914046046Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-full-CI-workflow-repair-over933-v1
+  task: Isolate pure model catalog data; clear3warnings while retaining180globalFAIL
+  p-efficiency: 0.9
+  p-friction: 0.16
+  p-skill-candidate: 0.12
+  spore: none
+  receipt-refs: e3e7b75b-6639-4259-83be-102e64103a6c
+  note: Separate immutable model/provider map normalization from contract-loader and environment effects. Preserve configured-provider evaluation before defaults, nil/false/key/header precedence and all existing public APIs/tests; actual original/postimage/full diagnostic multiplicities distinguish three removals from retained enrich/global failures. Keep candidate runtime qualification and immutable modelQA612 evidence separate. No spore.
+- ts: 2026-10-17T16:11:57.117806234Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-full-CI-workflow-repair-over933-v1
+  task: Keep translation agent API docs accurate while preserving complete design rationale
+  p-efficiency: 0.92
+  p-friction: 0.12
+  p-skill-candidate: 0.08
+  spore: none
+  receipt-refs: b84abadd-d548-4e02-9cc9-aaaa01514469
+  note: Distinguish executable forms from doc metadata before refactoring for length. Four concise accurate API docstrings plus a verbatim dated rationale note clear five actual size warnings while preserving all bodies, arities, validation and assertions. Actual owning0/0 and global175/native2FAIL are distinct. No behavioral RED or runtime PASS transfer; no spore.
+- ts: 2026-10-17T16:30:00.448064591Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-full-CI-workflow-repair-over933-v1
+  task: Keep translation dispatch API docs concise and preserve complete boundary rationale
+  p-efficiency: 0.92
+  p-friction: 0.12
+  p-skill-candidate: 0.08
+  spore: none
+  receipt-refs: df1154cf-d647-4038-ab51-278f458efcaf
+  note: Separate doc metadata from executable forms. Three precise API docstrings plus verbatim dated rationale remove three measured span warnings while preserving all bodies/arities/validation/assertions. Owning6→3 and global175→172 both retain native2FAIL. Body-driven remaining warnings require real later refactoring. No behavioral/runtime PASS transfer; no spore.
+- ts: 2026-10-17T16:34:12.683147857Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-full-CI-workflow-repair-over933-v1
+  task: Name approval request and dependency fixture boundaries while preserving all test behavior
+  p-efficiency: 0.92
+  p-friction: 0.12
+  p-skill-candidate: 0.08
+  spore: none
+  receipt-refs: 4e37c54e-8f18-4f4e-ad81-fa23a0ee4e77
+  note: Extract actual cohesive test setup boundaries without changing test/assertion bytes or effect ordering. Measure owning1→0 and full172→171/native2FAIL; correct unobserved predicted file-length warning rather than manufacture retained evidence. Source-only static result; coherent runtime qualification remains pending. No spore.
+- ts: 2026-10-17T16:39:05.086762037Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-full-CI-workflow-repair-over933-v1
+  task: Integrate independently qualified preview lineage while keeping final candidate evidence exact
+  p-efficiency: 0.92
+  p-friction: 0.12
+  p-skill-candidate: 0.08
+  spore: none
+  receipt-refs: 16248fa6-6287-4529-a910-8b89f3990bbd
+  note: Preserve real T/P commits with ordinary merge and exact3path index/blob guards. Measure integrated169/globalFAIL instead of adding separate branch warning deltas arithmetically; retain all historical immutable QA scope. Compose HMR/canonical harness lineage before one final candidate qualification. No spore.
+- ts: 2026-10-17T14:17:43.987459498Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-mutation-source-reader-over-fde4-v1
+  task: Source-declared mutation reader identity and strict admission
+  p-efficiency: 0.82
+  p-friction: 0.36
+  p-skill-candidate: 0.0
+  spore: none
+  receipt-refs: bd60c03d-f9f5-4498-b8ce-770730a72012
+  note: Qualify source reader grammar before a genuine mutation campaign. Bind declared CLJS namespace/aliases consistently across both readers, reject unresolved active qualifiers before permissive sexpr handling, preserve raw operator/source identity, and retain valid explicit nil-alias semantics. Actual owning RED/GREEN and source-bound discovery remain distinct from compiled baseline, real mutation kills, adjudication and release. No spore.
+- ts: 2026-10-17T14:59:20.458805086Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-mutation-source-reader-over-fde4-v1
+  task: Preserve real reader syntax before mutation campaign admission
+  p-efficiency: 0.88
+  p-friction: 0.25
+  p-skill-candidate: 0.0
+  spore: none
+  receipt-refs: de3c052e-0552-4a51-b7d4-38e11d3c7309
+  note: Use actual reader-node identity and source-preserving edits for compound mutation operators. Real hosted pilot third compile was invalid from generated read-string; causal owning unit44/507 changed16FAIL to0 with all prior controls held. Keep source-unit qualification separate from genuine baseline/kills, current equivalent acceptance and four250 campaign evidence. Preserve old failures and fresh source bindings. No spore.
+- ts: 2026-10-17T15:45:21.342613445Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-mutation-source-reader-over-fde4-v1
+  task: Measure canonical child elapsed through cleanup without changing qualification
+  p-efficiency: 0.94
+  p-friction: 0.12
+  p-skill-candidate: 0.0
+  spore: none
+  receipt-refs: e26c60f6-f312-425b-9253-bbaa310d2efe
+  note: Add monotonic adapter elapsed as evidence, preserving all command/custody/classifier semantics. Private inert three-controls RED3 to GREEN0 is causal field evidence; real process-custody and owning Clojure gates remain pending hosted execution. Keep genuine pilot two kills plus one SURVIVOR and full source/payload restoration explicit. Never substitute compiler seconds or log windows for full child duration; no campaign-fit or spore promotion claim.
+- ts: 2026-10-17T16:59:18.440134878Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-full-CI-workflow-repair-over933-v1
+  task: Preserve reviewed G13c source and historical append-only provenance through ordinary merge
+  p-efficiency: 0.92
+  p-friction: 0.12
+  p-skill-candidate: 0.08
+  spore: none
+  receipt-refs: d048f94b-3d5e-4e21-9db0-30815d2f8ced
+  note: Bind all three index stages before resolving only known independent provenance append conflicts as current full prefix plus exact committed suffix; no semantic parser or historical field edits. Preserve all six code/test postimages and prior P/doc/fixture source. Global169FAIL remains and final coherent runtime waits source freeze/performance decision; no pilot-to-campaign transfer. No spore.
+- ts: 2026-10-17T17:25:27.758386034Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-full-CI-workflow-repair-over933-v1
+  task: Preserve registered publication dispatch contracts while splitting the sole new filelength cause
+  p-efficiency: 0.92
+  p-friction: 0.12
+  p-skill-candidate: 0.08
+  spore: none
+  receipt-refs: 31893d94-042a-4f06-a1de-9ee3264f2af7
+  note: Keep cohesive registered facade tests in their own namespace and expand opaque auto-resolved fixture keywords to the original runtime identities before moving. Preserve all16 names/52 assertions/6async/14awaits; final owning0E0W and global169→168/native2FAIL, all168 other rows exact. Retain the single EOF separator refusal and native board comment. Actual combined backend typecheck/corpus/discovery remains pending; no spore or globalPASS claim.
+- ts: 2026-10-17T17:47:45.520209680Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-full-CI-workflow-repair-over933-v1
+  task: Preserve status async evaluation while removing one redundant let
+  p-efficiency: 0.86
+  p-friction: 0.16
+  p-skill-candidate: 0.04
+  spore: none
+  receipt-refs: 2104c246-d839-4fae-be0e-6a38dd9aa136
+  note: Exact finite one-function nested-let collapse; independent source/inverse/order peer, actual owning9 to8 and registered168 to167 warnings. Native2FAIL retained; existing status length37 to36 stillwarns and other messages held. Raw stdout qualifier and writer template parse refusals preserved; canonical writer v2 restores literal HEAD, original receipt bytes exact before the sole successful append. Source-bound hosted qualification pending; no new spore or globalPASS.
+- ts: 2026-10-17T18:05:13.807685377Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-full-CI-workflow-repair-over933-v1
+  task: Preserve lazy migration guards while extracting pure candidate assembly
+  p-efficiency: 0.90
+  p-friction: 0.14
+  p-skill-candidate: 0.0
+  spore: none
+  receipt-refs: 950673af-1e1f-47b3-bfa2-637b8da86402
+  note: Pure map assembly boundary removes actual owning1W and registered167 to166W, native2FAIL retained. Preserve complete inline rationale, mutable public Var lookup/effect order and existing tests. Original private syntax refusal retained before any source effect. Full defn span includes docs, so comment relocation was withdrawn without application. Coherent successor full-product CI planned; no runtime credit from older51bda, no spore/promotion.
+- ts: 2026-10-17T18:43:30.885655593Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-full-CI-workflow-repair-over933-v1
+  task: Preserve public preview behavior while separating normalization and fallback
+  p-efficiency: 0.89
+  p-friction: 0.12
+  p-skill-candidate: 0.0
+  spore: none
+  receipt-refs: ec6f4a98-2d97-4032-b67e-e3bb9d361f70
+  note: Actual one-source public preview responsibility split removes one owning/globalspan warning; global166to165W/0E/native2FAIL retained, filelength/graph52 remain. Expanded lexical tokens/sourceoutsideform/existing public tests held. Native existing source-owner scope precedes effect and in_progress/P1/5 held. Coherent successor runtime pending; isolated templateT/current6e48CI source-specific. No new behavior, mirror tests, suppression/config/interop expansion, spore/promotion or rollout.
+- ts: 2026-10-17T19:02:20.780943518Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-full-CI-workflow-repair-over933-v1
+  task: Preserve publication, dispatch and split refusal behavior while separating pure responsibilities
+  p-efficiency: 0.89
+  p-friction: 0.12
+  p-skill-candidate: 0.0
+  spore: none
+  receipt-refs: 2b80180b-23ac-4e5c-aa4c-e1379e2ef87b
+  note: Actual three-source pure responsibility split removes three selected function warnings; full165to162W/0E/native2FAIL remains, dispatch filelength425 retained. Exact original forms, order, public tests and all outside-target diagnostic rows/locations held. Official native owner scope precedes effect, in_progress/P1/5 held. Coherent successor runtime pending; isolated templateT/full6e48CI source-specific. No new behavior, mirror tests, suppression/config/interop expansion, spore/promotion or rollout.
+- ts: 2026-10-17T18:36:49.235412864Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-template-public-controls-QA-over6e48-v1
+  task: Preserve public template lookup and trusted auth behavior before pure extraction
+  p-efficiency: 0.82
+  p-friction: 0.28
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: sha256:584797e76928f83c03384b5547d42914c2b7d4e138020dcdf864c9535ad17aff,d5a46839d3255bbfdefc3011d6c912434a5d6cf0
+  note: Independent source peer caught a caller Reduced default being consumed by reduce before application. Keep the caller default outside the reduction protocol; public missing-default, later-alias, false-key and found-Reduced controls document existing behavior. Actual static test0E0W and all166global warning rows unchanged/native2FAIL; genuine hosted runtime preservation still PENDING. Native board readback representation corrected without replay; no spore, model, service or production effect.
+- ts: 2026-10-17T19:10:20.829385409Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-full-CI-workflow-repair-over933-v1
+  task: Qualified original public controls before pure template-context extraction; retain ordinary source and append-only native provenance
+  p-efficiency: 0.82
+  p-friction: 0.31
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: 9d2ab78e6fc4bc5b7401bcc9bbb5b5491d235614dc3a1b0d4e02087bee18df25
+  note: A caller Reduced default must stay outside alias-search reduction; source peer caught the private reducer defect before effects. Actual public old-product T tests and full source/artifact custody preceded the exact two-path V3 extraction. Preserve live Var lookup, false/nil/default identity and native effect order; partial static160 warnings stays FAIL. P hosted runtime remains pending. No spore or global/readiness/deployment promotion.
+- ts: 2026-10-17T20:34:08.763254142Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-full-CI-workflow-repair-over933-v1
+  task: Isolate reviewed ready-output projection; retain exact public behavior and159warningFAIL
+  p-efficiency: 0.85
+  p-friction: 0.2
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: b880fe64-f0f4-438e-a078-980dab0135cb
+  note: Small pure same-namespace extraction keeps original ready/not-ready data, eager order and unchanged public tests. Native owner scope before source; owning0E0W and global160to159/native2FAIL are exact static evidence, not runtime verification. Preserve the env-isolation commit failure and correct actual native ABI rather than replaying effects. Hosted backend compilation/tests/server remain pending. No spore or promotion.
+- ts: 2026-10-17T20:51:27.902642896Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-full-CI-workflow-repair-over933-v1
+  task: Separate four pure SVG and decoded request-field responsibilities; preserve owning and global FAIL
+  p-efficiency: 0.9
+  p-friction: 0.15
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: b863c05e-b5f1-4914-8f1c-6e7343be8e8b
+  note: Keep raw adapters and long security rationale untouched when a pure finite extraction cannot clear their warning honestly. Exact inverse and public-boundary tests preserve order, errors, aliases and nil/false/zero. Native complete-file owning1 and global159to155/native2FAIL are actual static evidence; selected4to0 is not a full-file PASS. Current24e hosted runtime and QAref remain isolated; new-source runtime pending. No spore.
+- ts: 2026-10-17T21:03:14.997252771Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-full-CI-workflow-repair-over933-v1
+  task: Separate marker and policy decisions; retain exact27arm semantics and global152FAIL
+  p-efficiency: 0.9
+  p-friction: 0.1
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: 37a76ef5-1137-4e1a-a343-15c0cd6a6f11
+  note: Named pure responsibilities preserve marker content evaluation order, evaluator short-circuit/default behavior and fulfillment missing/nil semantics. Complete source inverses and27arm coverage support conservation; actual global155to152/native2FAIL keeps all other diagnostic rows exact. A missing direct evaluator runtime test reference stays an explicit coverage limit, not repaired by unrelated tests or a private export. Coherent successor runtime pending; stop further source proposals. No spore.
+- ts: 2026-10-17T22:28:55.519491737Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-full-CI-workflow-repair-over933-v1
+  task: Separate agent context, contract identity and memory event data; retain global142FAIL
+  p-efficiency: 0.9
+  p-friction: 0.1
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: 3cd91256-9697-4628-b054-7c5459feb9d0
+  note: Exact ordered data descriptors and complete source inverses preserve ten projection responsibilities. Source/static conservation is not direct private-auth or enabled-legacy behavioral coverage; coherent normal runtime remains pending. All original tests/config/checker policy held; no spore.
+- ts: 2026-10-17T22:35:56.873847601Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-full-CI-workflow-repair-over933-v1
+  task: Separate decoded media result projections; retain global139FAIL
+  p-efficiency: 0.9
+  p-friction: 0.1
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: a9ba3e4e-cb17-4d72-96a5-7e99937a3a49
+  note: Exact raw inverse and finite source expansion preserve decoded content/trace/reply assembly. Original p/let names/count and direct formatter lookup held; source/static is not direct attachment/audio or runtime evidence. Ordinary decoded data scope; all original tests/config/checker policy held; no spore.
+- ts: 2026-10-17T22:39:07.921343689Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-full-CI-workflow-repair-over933-v1
+  task: Separate action and tool input/output data; retain actual global136 static warnings
+  p-efficiency: 0.9
+  p-friction: 0.1
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: baba53ac-43ef-46b9-8de8-153e4257252e
+  note: Exact expression tokens and complete source inverses preserve three input/output data assembly responsibilities. Existing run-steps tests cover the missing-action path; direct actor-target and validation-tool coverage was not recovered. Coherent normal runtime remains pending. All original tests/config/checker policy held; no spore.
+- ts: 2026-10-17T23:33:45.051375692Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-full-CI-workflow-repair-over933-v1
+  task: Record exact legacy cleanup failure diagnostic after hosted causal RED; GREEN pending
+  p-efficiency: 0.9
+  p-friction: 0.1
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: 60cfd6d4-3a38-4b9b-867c-e447b2eb28bc
+  note: Full19 causalRED isolates six missing-diagnostic assertions to3new controls with original16PASS. Exact helper implementation and shell syntax are source evidence; unchanged normal hosted fullGREEN and original cleanup cause diagnosis remain pending. No spore.
+- ts: 2026-10-17T23:40:38.456341774Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-full-CI-workflow-repair-over933-v1
+  task: Separate message and text data; retain actual global132 static warnings
+  p-efficiency: 0.9
+  p-friction: 0.1
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: 87648b51-f451-444c-bbbc-5a9e29303494
+  note: Exact expression tokens and complete source inverses preserve message decoding and result-presentation responsibilities. Existing transcript/stored-message controls retained; direct selected multimodal/text-renderer coverage was not recovered. Coherent normal runtime remains pending. All original tests/config/checker policy held; no spore.
+- ts: 2026-10-17T23:45:07.933513447Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-full-CI-workflow-repair-over933-v1
+  task: Separate source line and Markdown block spans; retain actual global130 static warnings
+  p-efficiency: 0.9
+  p-friction: 0.1
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: ad47d0b2-134e-4ecf-a5c2-102566a835d3
+  note: Exact moved-source and whole-source inverses preserve line/block parsing and original public partition admission. Classification, sequence advance and selected state lookup order are retained. Existing24 public source-split tests and unchanged agent/resource consumers remain the coherent runtime gate; static checks provide no runtime/JVM portability credit. All original tests/config/checker policy held; no spore.
+- ts: 2026-10-18T00:29:56.506843397Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-full-CI-workflow-repair-over933-v1
+  task: Separate evidence state and native event metadata; retain actual global126 static warnings
+  p-efficiency: 0.9
+  p-friction: 0.1
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: 2a0bb9ee-c2c5-494f-9da2-30b3111d2b3a
+  note: Exact source inverses preserve public store protocol, single swap/Promise owner/order, claim/completion decisions, deferred MCP execution and model defaults/caller override precedence. Existing four public store controls and seven runtime-model tests remain source-bound; direct MCP/getter-order and reaction ingestion/clock gaps explicit; reaction metadata stays at its original :extra phase. Static checks provide no compiler/runtime/JVM credit. All tests/config/checker policy held; no spore.
+- ts: 2026-10-18T00:40:10.242867461Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-full-CI-workflow-repair-over933-v1
+  task: Separate native mailbox query and media candidate assembly; retain actual global123 static warnings
+  p-efficiency: 0.9
+  p-friction: 0.1
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: 71581866-2983-4720-9b84-1c3e6a87c90f
+  note: Exact SQL literals/21parameter expressions/native JSON positions remain inside original enabled query phase. Media complete original candidate cond stays at original absolute binding, with native getters/shim calls before unchanged containment/error guards. UUID/native parsing/DB clocks/locking and media conditional workspace lookups stay native-owned; no purity claim or new callbacks/exports. Existing7mailbox public controls and Blaze path consumers held; enabled-DB and direct containment/native-order gaps remain. Coherent successor runtime pending; all tests/config/checker policy held, no spore.
+- ts: 2026-10-18T01:14:18.728351996Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-full-CI-workflow-repair-over933-v1
+  task: Separate material mailbox and evidence-store responsibilities; retain actual global121 static warnings
+  p-efficiency: 0.9
+  p-friction: 0.1
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: 5e83094c-827c-4a55-a4c6-027ec4ad53bb
+  note: Whole-source inverses preserve exact mailbox SQL/21parameter/native phases, root private SQL lookup, store protocol/factory/public defns and live public policy calls. One root scope destructure, native Promise/swap/validation/claim/complete sequence and leaf laws remain source-bound. New internal SQL data/adapter/leaf/state exports and private alias loadtime/metadata limits explicit. Unchanged seven mailbox/four store controls leave enabled DB/private metadata/reload/newmodule/exotic-data runtime gaps; static results provide no compiler/runtime credit. All tests/config/checker policy held; no spore.
+- ts: 2026-10-18T01:48:19.006156324Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-full-CI-workflow-repair-over933-v1
+  task: Retain sanitized legacy authenticated readiness refusal facts; runtime cause UNKNOWN
+  p-efficiency: 0.9
+  p-friction: 0.1
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: 99ee6c61-7cd9-438c-8aba-363a3a150e68
+  note: Original requests/auth/guard/refusal/cleanup and19 test methods held. Same3 focused methods oldhelper8diagnostic-only FAIL to proposed3/0/0, with six actual-wrapper projections and actual-verifier2/fault/cleanup/redaction/silent-success controls. Full installed22-method and hosted runtime pending; no causal repair/deployment claim. Initial wrong-class discovery refusal retained. No spore.

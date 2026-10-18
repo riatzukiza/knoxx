@@ -18,6 +18,27 @@
                 (= v actual-val))))
           expected))
 
+(defn- fulfillment-field-matches?
+  "Match one declared field with the original key and value semantics."
+  [tool-result k v]
+  (cond
+    (= k :tool/name)
+    (= v (:tool/name tool-result))
+
+    (= k :tool/params)
+    (match-params? v (:tool/params tool-result {}))
+
+    (= k :tool/output)
+    (if (fn? v)
+      (v (:tool/output tool-result))
+      (= v (:tool/output tool-result)))
+
+    (= k :tool/error?)
+    (= v (boolean (:tool/error tool-result)))
+
+    :else
+    false))
+
 (defn fulfillment-matches?
   "Does a fulfillment contract match a given tool-result map?
 
@@ -37,23 +58,7 @@
   [fulfill tool-result]
   (let [match (:fulfillment/match fulfill {})]
     (every? (fn [[k v]]
-              (cond
-                (= k :tool/name)
-                (= v (:tool/name tool-result))
-
-                (= k :tool/params)
-                (match-params? v (:tool/params tool-result {}))
-
-                (= k :tool/output)
-                (if (fn? v)
-                  (v (:tool/output tool-result))
-                  (= v (:tool/output tool-result)))
-
-                (= k :tool/error?)
-                (= v (boolean (:tool/error tool-result)))
-
-                :else
-                false))
+              (fulfillment-field-matches? tool-result k v))
             match)))
 
 ;; ── Message interpolation ─────────────────────────────────────────────────────

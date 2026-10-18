@@ -184,6 +184,14 @@
    :main knoxx.backend.extern.cms-history-tour/main,
    :compiler-options {:output-feature-set :es-next :infer-externs false}}
 
+  :checked-embedding-tour
+  {:target :node-script,
+   :output-to "target/checked-embedding-tour.cjs",
+   :main knoxx.backend.extern.checked-embedding-verifier/main,
+   :js-options {:resolve {"@open-hax/openplanner-sdk" {:target :file :file "test/js/openplanner_sdk_test_stub.mjs"}
+                          "@open-hax/openplanner-sdk/mongo-vectors" {:target :file :file "test/js/openplanner_sdk_test_stub.mjs"}}},
+   :compiler-options {:output-feature-set :es-next :infer-externs false}}
+
   :cms-history
   {:target :node-test,
    :output-to "target/test/cms-history.cjs",

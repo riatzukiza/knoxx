@@ -7,7 +7,7 @@
    - persist any still-running sessions into a resumable Mongo state
    - release timers/sockets so PM2 can restart cleanly"
   (:require [knoxx.backend.infra.agent.resume :as agent-resume]
-            [knoxx.backend.domain.discord.gateway :as discord-gateway]
+            [knoxx.backend.infra.discord.gateway :as discord-gateway]
             [knoxx.backend.infra.event-runtime :as event-runtime]
             [knoxx.backend.domain.realtime :as realtime]
             [knoxx.backend.infra.db.policy :as policy-db]

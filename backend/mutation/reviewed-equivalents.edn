@@ -1,0 +1,15 @@
+;; Exact source-bound independent semantic agreement; owning source review
+;; and a committed successor are still required before this selector can run.
+;; Exclusions receive zero evaluated or killed mutation credit.
+;; Source correspondence only: the a63a9ead successor changes an unrelated
+;; Discord require; notify-ready!, its sole caller and exports are unchanged.
+;; Original rationale/reference are retained. This new source basis still
+;; requires owning native review before qualification; no fresh approval is claimed.
+{:schema-version 1
+ :basis-source-sha "a63a9eadf5a7a5bc10380e345a1bb0ab8dab63af"
+ :entries
+ [{:fingerprint "c5331e130ef389a0c7c8f22f68ef799fcea6c121f355c70c564643050a068081"
+   :relative-path "knoxx/backend/bootstrap.cljs"
+   :source-sha256 "2bc68c69515badabe91558961538c038f8f064782f7ff64a5c4c7bd41aeaffee"
+   :rationale "At the reviewed basis, notify-ready! is private. Its successful branch sends the identical ready IPC message with the same process receiver and writes the same success log before this terminal boolean. Its sole production caller discards that return, logs listening and returns app. Normal startup, policy bootstrap, hot reload and declared exports do not consume the boolean; existing callback contracts allow nonboolean returns. The exact true-to-false mutation therefore leaves the supported IPC/log/startup/error/app-return behavior unchanged. This exclusion receives no evaluated or killed credit."
+   :review-reference "https://github.com/open-hax/knoxx/pull/388#issuecomment-6235479927"}]}

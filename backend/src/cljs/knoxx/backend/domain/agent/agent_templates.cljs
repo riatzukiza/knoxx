@@ -6,14 +6,13 @@
    deterministic ClojureScript-like data DSL against a runtime context and keeps
    the old legacy runtime job helper surface only as compatibility plumbing."
   (:require [clojure.string :as str]
+            [knoxx.backend.domain.agent.template-context :as template-data]
             [knoxx.backend.infra.config :as runtime-config]
             [knoxx.backend.infra.defaults :as defaults]))
 
 ;; =============================================================================
 ;; Contract template evaluation
 ;; =============================================================================
-
-(def ^:private lookup-missing #js {})
 
 (defn- symbol-name
   [value]
@@ -29,21 +28,6 @@
   (and (sequential? value)
        (= "template" (symbol-name (first value)))))
 
-(defn- key-candidates
-  [k]
-  (let [raw (cond
-              (keyword? k) (name k)
-              (symbol? k) (name k)
-              (string? k) k
-              :else (str k))]
-    (distinct
-     (remove nil?
-             [k
-              (when raw (keyword raw))
-              (when raw raw)
-              (when (and (keyword? k) (namespace k))
-                (str (namespace k) "/" (name k)))]))))
-
 (defn- lookup-one
   ([m k]
    (lookup-one m k nil))
@@ -52,13 +36,7 @@
      (nil? m) not-found
 
      (map? m)
-     (let [found (reduce (fn [_ candidate]
-                           (if (contains? m candidate)
-                             (reduced (get m candidate))
-                             lookup-missing))
-                         lookup-missing
-                         (key-candidates k))]
-       (if (identical? lookup-missing found) not-found found))
+     (template-data/lookup-map m k not-found)
 
      (and (vector? m) (number? k))
      (get m k not-found)
@@ -362,35 +340,7 @@
 
 (defn- auth-context-template-values
   [auth-context]
-  (let [user (:user auth-context)
-        org (:org auth-context)
-        membership (:membership auth-context)
-        email (or (:email auth-context)
-                  (:user-email auth-context)
-                  (:userEmail auth-context)
-                  (:email user)
-                  (:user-email user)
-                  (:userEmail user))
-        display-name (or (:name auth-context)
-                         (:display-name auth-context)
-                         (:displayName auth-context)
-                         (:name user)
-                         (:display-name user)
-                         (:displayName user)
-                         email)
-        org-slug (or (:org-slug auth-context)
-                     (:orgSlug auth-context)
-                     (:slug org)
-                     (:org-slug org)
-                     (:orgSlug org))]
-    {"name" display-name
-     "email" email
-     "user.email" email
-     "user.name" display-name
-     "org.slug" org-slug
-     "membership.id" (or (:membership-id auth-context)
-                          (:membershipId auth-context)
-                          (:id membership))}))
+  (template-data/auth-context-values auth-context))
 
 (defn contract-template-context
   "Build the ctx map visible to contract forms."

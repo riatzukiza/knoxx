@@ -215,6 +215,18 @@
              (:review/id receipt)]))
         (:split-manifest/splits manifest)))
 
+(defn- ready-reviewed-output
+  "Project the ready effective candidate into its current output record."
+  [effective order]
+  {:translation-reviewed-output/status :ready
+   :translation-reviewed-output/revision
+   (:effective-candidate-set/revision effective)
+   :translation-reviewed-output/lineage-digest
+   (:effective-candidate-set/digest effective)
+   :translation-reviewed-output/review-order order
+   :translation-reviewed-output/text (:effective-candidate-set/text effective)
+   :translation-reviewed-output/effective-candidate-set effective})
+
 (defn reviewed-output
   "Return the output revision that must be current after any split review.
 
@@ -234,15 +246,7 @@
                                           review-histories)
         order (review-order digest-hex checked-manifest checked-set review-histories)]
     (if (= :ready (:effective-candidate-set/status result))
-      (let [effective (:effective-candidate-set/value result)]
-        {:translation-reviewed-output/status :ready
-         :translation-reviewed-output/revision
-         (:effective-candidate-set/revision effective)
-         :translation-reviewed-output/lineage-digest
-         (:effective-candidate-set/digest effective)
-         :translation-reviewed-output/review-order order
-         :translation-reviewed-output/text (:effective-candidate-set/text effective)
-         :translation-reviewed-output/effective-candidate-set effective})
+      (ready-reviewed-output (:effective-candidate-set/value result) order)
       {:translation-reviewed-output/status :not-ready
        :translation-reviewed-output/revision
        (str review-state-revision-prefix state-digest)

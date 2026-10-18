@@ -11,7 +11,7 @@
             [knoxx.backend.domain.text :refer [value->preview-text]]
             [knoxx.backend.domain.tools :as shared]
             [knoxx.backend.infra.openplanner.semantic :as semantic]
-            [knoxx.backend.domain.discord.tools :as discord]
+            [knoxx.backend.infra.discord.tools :as discord]
             [knoxx.backend.domain.discord.voice-tools :as discord-voice]
             [knoxx.backend.domain.event.tools :as events]
             [knoxx.backend.domain.actor.tools :as actors]
@@ -20,7 +20,7 @@
             [knoxx.backend.domain.music :as music]
             [knoxx.backend.domain.voice.tools :as voice]
             [knoxx.backend.domain.media.blaze :as blaze]
-            [knoxx.backend.domain.bluesky.bluesky :as bluesky]
+            [knoxx.backend.infra.bluesky.tools :as bluesky]
             [knoxx.backend.domain.media.multimodal :as multimodal]
             [knoxx.backend.domain.media.workspace :as workspace-media]
             [knoxx.backend.domain.sandbox-container :as sandbox]
@@ -165,6 +165,29 @@
                 (passive-memory-hydration-text memory) (conj (passive-memory-hydration-text memory)))]
     (str/join "\n\n" parts)))
 
+(defn- multimodal-content-part
+  "Decode one existing content part into the agent SDK multimodal shape."
+  [part]
+  (let [p        (if (map? part) part (js->clj part :keywordize-keys true))
+        raw      (or (:data p) (:url p))
+        strip-fn (fn [s]
+                   (if (and (string? s) (str/starts-with? s "data:"))
+                     (let [i (.indexOf s ",")]
+                       (if (>= i 0) (.slice s (inc i)) s))
+                     s))
+        data     (strip-fn raw)
+        mime     (or (:mimeType p)
+                    (when (and (string? raw) (str/starts-with? raw "data:"))
+                      (second (re-find #"data:([^;,]+)" raw))))
+        ptype    (some-> (or (:type p) (aget p "type")) name)]
+    (case ptype
+      "text"     {:type "text"     :text (str (:text p))}
+      "image"    {:type "image"    :data data :mimeType mime}
+      "audio"    {:type "audio"    :data data :mimeType mime}
+      "video"    {:type "video"    :data data :mimeType mime}
+      "document" {:type "document" :data data :mimeType mime :filename (:filename p)}
+      {:type "text" :text (str "[Unknown: " ptype "]")})))
+
 (defn build-agent-multimodal-message
   "Build a multimodal message for models that support images, audio, video, and documents.
    Returns a JavaScript array of content parts suitable for the agent SDK."
@@ -176,26 +199,7 @@
         base-parts [{:type "text" :text text-content}]]
     (if (seq content-parts)
       (clj->js (into base-parts
-                     (mapv (fn [part]
-                             (let [p        (if (map? part) part (js->clj part :keywordize-keys true))
-                                   raw      (or (:data p) (:url p))
-                                   strip-fn (fn [s]
-                                              (if (and (string? s) (str/starts-with? s "data:"))
-                                                (let [i (.indexOf s ",")]
-                                                  (if (>= i 0) (.slice s (inc i)) s))
-                                                s))
-                                   data     (strip-fn raw)
-                                   mime     (or (:mimeType p)
-                                               (when (and (string? raw) (str/starts-with? raw "data:"))
-                                                 (second (re-find #"data:([^;,]+)" raw))))
-                                   ptype    (some-> (or (:type p) (aget p "type")) name)]
-                               (case ptype
-                                 "text"     {:type "text"     :text (str (:text p))}
-                                 "image"    {:type "image"    :data data :mimeType mime}
-                                 "audio"    {:type "audio"    :data data :mimeType mime}
-                                 "video"    {:type "video"    :data data :mimeType mime}
-                                 "document" {:type "document" :data data :mimeType mime :filename (:filename p)}
-                                 {:type "text" :text (str "[Unknown: " ptype "]")})))
+                     (mapv (fn [part] (multimodal-content-part part))
                            content-parts)))
       (clj->js base-parts))))
 

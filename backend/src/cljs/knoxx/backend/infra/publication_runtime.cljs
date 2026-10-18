@@ -14,6 +14,7 @@
             [knoxx.backend.infra.clients.openplanner :as openplanner-client]
             [knoxx.backend.infra.publication-contract-content :as contract-content]
             [knoxx.backend.infra.publication-reconciler :as reconciler]
+            [knoxx.backend.infra.publication-receipt-store :as receipt-store]
             [knoxx.backend.infra.publication-source-revision :as source-revision]
             [knoxx.backend.infra.publication-target-registry :as registry]
             [knoxx.backend.infra.publication-target-static-site :as static-site]
@@ -183,7 +184,7 @@
        :artifact-source (artifact-source (openplanner-client/client config)
                                          scope index roots evidence root)
        :locale-admissible? (locale-admissible? index)
-       :emit-receipt! (:emit! journal)})
+       :emit-receipt! (receipt-store/receipt-sink config scope (:emit! journal))})
      :journal journal}))
 
 (defn ^:async make-runtime!

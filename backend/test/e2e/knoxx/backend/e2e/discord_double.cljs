@@ -6,7 +6,7 @@
    drive the gateway correctly, or as whom. This double can be installed as an
    actor-owned manager or as the legacy default, so identity selection itself
    is observable rather than assumed."
-  (:require [knoxx.backend.domain.discord.gateway :as gateway]))
+  (:require [knoxx.backend.infra.discord.gateway :as gateway]))
 
 (defn- record!
   [calls* method args]

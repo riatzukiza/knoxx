@@ -7,8 +7,10 @@
   inside it, so an authorization denial is caught here rather than escaping to
   Fastify."
   (:require ["fastify" :default fastify-app]
+            [clio.extern.js.fs :as clio-fs]
             [cljs.test :refer [deftest is testing]]
             [clojure.string :as str]
+            [knoxx.backend.extern.clio-store-fixture :as clio-fixture]
             [knoxx.backend.extern.fastify :as fastify]
             [knoxx.backend.extern.fastify.cms-publication :as adapter]
             [knoxx.backend.infra.auth.authz :as authz]
@@ -231,7 +233,8 @@
   "Run actual CMS/reconcile callbacks with fixture identity and desired input.
    Registry, planner, receipt emission, scope caches and wire projection are
    real. Every app and runtime cache is released even when an assertion fails."
-  [exercise!]
+  ([exercise!] (with-publication-routes! identity exercise!))
+  ([configure exercise!]
   (let [apps* (atom [])
         context* (atom fixture-principal)
         index* (atom (fixture-index))
@@ -242,7 +245,7 @@
         target (memory/memory-target {:id fixture-target})
         load-index! (fn [] (swap! index-loads* inc) @index*)
         make-journal reconciler/make-receipt-journal
-        config (fixture-config target load-index! artifact-calls*)
+        config (configure (fixture-config target load-index! artifact-calls*))
         new-app! (partial fixture-app! apps* context*)]
     (reconcile/reset-cached-runtimes!)
     (try
@@ -255,7 +258,7 @@
                            :artifact-calls* artifact-calls* :target target})))
       (finally
         (doseq [app @apps*] (await (.close app)))
-        (reconcile/reset-cached-runtimes!)))))
+        (reconcile/reset-cached-runtimes!))))))
 
 (defn- ^:async materialize-through-route!
   [app]
@@ -367,3 +370,106 @@
             (is (nil? (get-in response (into [:body] (conj row-path :observed)))))))
         (is (= 0 @artifact-calls*))
         (is (= 0 (memory/materialization-count target))))))))
+
+
+;; PRIVATE PROPOSED RED ONLY: the server-owned configuration keyword below is
+;; prospective, not an existing adopted Knoxx API. Root must approve this exact
+;; owner configuration seam after afac planning readiness before application.
+;; No custom sink or fake persistent journal supplies the expected evidence.
+
+(deftest ^:async registered-cms-gets-recover-the-original-receipt-after-runtime-reset
+  (let [directory (clio-fixture/temp-directory!)]
+    (try
+      (await
+       (with-publication-routes!
+        #(assoc % :publication-receipt-ledger-directory directory)
+        (^:async fn [{:keys [app new-app! config context* index* artifact-calls* target]}]
+          (let [emitted (:body (await (materialize-through-route! app)))
+                desired-before @index*
+                public-before (memory/public-routes target)
+                artifact-before (memory/served-artifact target "/cms-route-probe")]
+            (is (= [emitted] (get-in (await (inject! app "GET" "/api/publications/receipts" nil))
+                                    [:body :receipts])))
+            ;; A fresh registered app and route runtime cannot rely on the
+            ;; predecessor atom. This is not an actual OS-process restart.
+            (reconcile/reset-cached-runtimes!)
+            (let [fresh-app (new-app! config)
+                  receipts (await (inject! fresh-app "GET" "/api/publications/receipts" nil))]
+              (is (= 200 (:status receipts)))
+              (is (= [emitted] (get-in receipts [:body :receipts]))
+                  "fresh runtime must recover the original immutable observation")
+              (doseq [[url row-path] (cms-get-paths)]
+                (let [response (await (inject! fresh-app "GET" url nil))]
+                  (is (= 200 (:status response)))
+                  (is (= fixture-revision
+                         (get-in response (into [:body] (conj row-path :observed))))
+                      (str url " must recover the concrete revision after runtime reset"))))
+              (testing "same publication/revision strings cannot supply foreign evidence"
+                (doseq [[scoped-app principal]
+                        [[fresh-app (assoc fixture-principal :org-id "another-org")]
+                         [(new-app! (assoc config :session-project-name "another-project"))
+                          fixture-principal]]]
+                  (reset! context* principal)
+                  (let [foreign (await (inject! scoped-app "GET" "/api/publications/receipts" nil))]
+                    (is (= 200 (:status foreign)))
+                    (is (= [] (get-in foreign [:body :receipts]))))
+                  (doseq [[url row-path] (cms-get-paths)]
+                    (let [response (await (inject! scoped-app "GET" url nil))]
+                      (is (= 200 (:status response)))
+                      (is (nil? (get-in response (into [:body] (conj row-path :observed)))))))))
+              (reset! context* fixture-principal))
+            (is (= desired-before @index*) "receipt recovery never edits desired publication")
+            (is (= public-before (memory/public-routes target)) "receipt recovery never changes public routes")
+            (is (= artifact-before (memory/served-artifact target "/cms-route-probe"))
+                "receipt recovery preserves the actually served artifact")
+            (is (= 1 @artifact-calls*))
+            (is (= 1 (memory/materialization-count target)))))))
+      (finally (clio-fs/remove-tree! directory)))))
+
+(deftest ^:async same-publication-noop-rollover-retains-the-original-cms-observation
+  (let [directory (clio-fixture/temp-directory!)]
+    (try
+      (await
+       (with-publication-routes!
+        #(assoc % :publication-receipt-ledger-directory directory)
+        (^:async fn [{:keys [app index* artifact-calls* target]}]
+          (let [emitted (:body (await (materialize-through-route! app)))
+                desired-before @index*
+                public-before (memory/public-routes target)
+                artifact-before (memory/served-artifact target "/cms-route-probe")
+                noop! (^:async fn []
+                        (let [response (await (inject! app "POST" "/api/publications/reconcile"
+                                                      {:publicationId "cms-route-test/probe-es"
+                                                       :triggerId "cms-route-test/materialize"}))]
+                          (is (= 200 (:status response)))
+                          (is (= "publication/noop" (get-in response [:body :type])))
+                          response))]
+            (await (noop!))
+            ;; The genuine one-noop neighbor is preserved: metadata-only noop
+            ;; emission shares correlation, but does not supersede materialization.
+            (doseq [[url row-path] (cms-get-paths)]
+              (let [response (await (inject! app "GET" url nil))]
+                (is (= 200 (:status response)))
+                (is (= fixture-revision
+                       (get-in response (into [:body] (conj row-path :observed)))))))
+            ;; Exactly 205 lawful same-publication noops in total; no new
+            ;; publication, outcome, revision, trigger or fake emission fixture.
+            (dotimes [_ 204] (await (noop!)))
+            (let [receipts (await (inject! app "GET" "/api/publications/receipts" nil))
+                  records (get-in receipts [:body :receipts])]
+              (is (= 200 (:status receipts)))
+              (is (= 206 (count records)) "each lawful emitted observation remains retained")
+              (is (some #(= emitted %) records)
+                  "bounded-journal rollover cannot discard the original materialization"))
+            (doseq [[url row-path] (cms-get-paths)]
+              (let [response (await (inject! app "GET" url nil))]
+                (is (= 200 (:status response)))
+                (is (= fixture-revision
+                       (get-in response (into [:body] (conj row-path :observed))))
+                    (str url " retains the original revision without a superseding outcome"))))
+            (is (= desired-before @index*))
+            (is (= public-before (memory/public-routes target)))
+            (is (= artifact-before (memory/served-artifact target "/cms-route-probe")))
+            (is (= 1 @artifact-calls*) "noops never regenerate the public artifact")
+            (is (= 1 (memory/materialization-count target)) "noops never repeat publication")))))
+      (finally (clio-fs/remove-tree! directory)))))

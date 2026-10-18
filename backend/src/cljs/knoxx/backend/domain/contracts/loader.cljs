@@ -170,44 +170,60 @@
   [v]
   (if (keyword? v) (subs (str v) 1) (str v)))
 
-(defn- extract-contract-identity
+(defn- actor-model-contract-kind
+  [raw]
+  (or (when (:actor/id raw) "actors")
+      (when (:role/id raw) "roles")
+      (when (:cap/id raw) "capabilities")
+      (when (:model/id raw) "models")
+      (when (:generator/id raw) "generators")
+      (when (:schedule/id raw) "schedules")))
+
+(defn- source-content-contract-kind
+  [raw]
+  (or (when (= :generator (:contract/kind raw)) "generators")
+      (when (= :schedule (:contract/kind raw)) "schedules")
+      (when (:source-mode/id raw) "source_modes")
+      (when (= :source-mode (:contract/kind raw)) "source_modes")
+      (when (= :source (:contract/kind raw)) "sources")
+      (when (:runtime-feature/id raw) "runtime_features")
+      (when (= :runtime-feature (:contract/kind raw)) "runtime_features")
+      (when (:model-family/id raw) "model_families")
+      (when (:document/id raw) "documents")
+      (when (:garden/id raw) "gardens")
+      (when (:publication/id raw) "publications")
+      (:contract/kind raw)
+      (:kind raw)))
+
+(defn- contract-identity-kind
   [raw]
   ;; IMPORTANT: prefer structural/canonical class inference before the raw
   ;; :contract/kind value. Otherwise namespaced/dashed kinds like :source-mode
   ;; can be handed to normalize-contract-class before older aliases know them.
   ;; Also prefer :model/id over :model-family/id: many model contracts include
   ;; both keys, but they must be classified as "models".
-  (let [kind (some-> (or (when (:actor/id raw) "actors")
-                          (when (:role/id raw) "roles")
-                          (when (:cap/id raw) "capabilities")
-                          (when (:model/id raw) "models")
-                          (when (:generator/id raw) "generators")
-                          (when (:schedule/id raw) "schedules")
-                          (when (= :generator (:contract/kind raw)) "generators")
-                          (when (= :schedule (:contract/kind raw)) "schedules")
-                          (when (:source-mode/id raw) "source_modes")
-                          (when (= :source-mode (:contract/kind raw)) "source_modes")
-                          (when (= :source (:contract/kind raw)) "sources")
-                          (when (:runtime-feature/id raw) "runtime_features")
-                          (when (= :runtime-feature (:contract/kind raw)) "runtime_features")
-                          (when (:model-family/id raw) "model_families")
-                          (when (:document/id raw) "documents")
-                          (when (:garden/id raw) "gardens")
-                          (when (:publication/id raw) "publications")
-                          (:contract/kind raw)
-                          (:kind raw))
-                      keyword->str str/trim not-empty)
-        qualified-id (some-> (or (:document/id raw) (:garden/id raw) (:publication/id raw))
-                              qualified-keyword->str str/trim not-empty)
-        id   (or qualified-id
-                 (some-> (or (:contract/id raw) (:id raw)
-                             (:actor/id raw) (:role/id raw) (:cap/id raw)
-                             (:model/id raw) (:model-family/id raw)
-                             (:generator/id raw) (:schedule/id raw)
-                             (:source-mode/id raw)
-                             (:source/id raw)
-                             (:runtime-feature/id raw))
-                         keyword->str str/trim not-empty))]
+  (some-> (or (actor-model-contract-kind raw)
+               (source-content-contract-kind raw))
+           keyword->str str/trim not-empty))
+
+(defn- contract-identity-id
+  [raw]
+  (let [qualified-id (some-> (or (:document/id raw) (:garden/id raw) (:publication/id raw))
+                              qualified-keyword->str str/trim not-empty)]
+    (or qualified-id
+      (some-> (or (:contract/id raw) (:id raw)
+                  (:actor/id raw) (:role/id raw) (:cap/id raw)
+                  (:model/id raw) (:model-family/id raw)
+                  (:generator/id raw) (:schedule/id raw)
+                  (:source-mode/id raw)
+                  (:source/id raw)
+                  (:runtime-feature/id raw))
+              keyword->str str/trim not-empty))))
+
+(defn- extract-contract-identity
+  [raw]
+  (let [kind (contract-identity-kind raw)
+        id (contract-identity-id raw)]
     (when (and kind id) [kind id])))
 
 (defn- validate-and-build

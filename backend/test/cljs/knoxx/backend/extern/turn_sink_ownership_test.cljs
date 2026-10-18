@@ -4,6 +4,7 @@
             [knoxx.backend.domain.action.run-state :as state]
             [knoxx.backend.domain.agent.agent-context :as context]
             [knoxx.backend.domain.voice.turn-control :as controls]
+            [knoxx.backend.extern.agent-session-fixture :as session-fixture]
             [knoxx.backend.extern.agent-turn-fixture :as fixture]
             [knoxx.backend.extern.provider-recovery-fixture :as disk]
             [knoxx.backend.infra.agent.session :as sessions]
@@ -12,7 +13,6 @@
             [knoxx.backend.infra.run-events :as events]
             [knoxx.backend.infra.stores.mongo-session-store :as threads]
             [knoxx.backend.infra.stores.session-store-registry :as registry]
-            [knoxx.backend.shape.agent :as agent]
             [knoxx.backend.shape.session-persistence :as persistence]))
 
 (defn- deferred []
@@ -64,13 +64,13 @@
       (finally (reset! state/event-stream-sink* previous)))))
 
 (defn- session [gate mode]
-  (reify agent/IAgentSession
-    (messages [_] [#js {:role "assistant" :content (if (= mode :refused) "" "owned answer")}])
-    (subscribe! [_ _handler] (fn []))
-    (send-user-message! [_ _content]
+  (session-fixture/session
+    {:messages (fn [_] [#js {:role "assistant" :content (if (= mode :refused) "" "owned answer")}])
+     :subscribe! (fn [_ _handler] (fn []))
+     :send-user-message! (fn [_ _content]
       ((^:async fn []
          (await (:promise gate))
-         (when (= mode :failed) (throw (ex-info "provider refused" {}))))))))
+         (when (= mode :failed) (throw (ex-info "provider refused" {}))))))}))
 
 (defn- ^:async seed! [id]
   (let [at (disk/instant (disk/now-ms))

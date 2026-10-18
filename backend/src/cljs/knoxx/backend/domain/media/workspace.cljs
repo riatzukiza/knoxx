@@ -1,6 +1,7 @@
 (ns knoxx.backend.domain.media.workspace
   "Workspace media attachment tools."
   (:require [knoxx.backend.infra.auth.authz :refer [ctx-tool-allowed?]]
+            [knoxx.backend.domain.media.result :as media-result]
             [knoxx.backend.domain.media :as media]
             [knoxx.backend.domain.tools :refer [maybe-tool-update! create-tool-obj]]
             ["node:fs/promises" :as fs]
@@ -29,17 +30,9 @@
           buffer (await (media/fs-read-file! fs absolute))
           size (.-length buffer)
           data-url (str "data:" mime-type ";base64," (.toString buffer "base64"))
-          part {:type (media/workspace-media-type mime-type)
-                :data data-url
-                :mimeType mime-type
-                :filename (or title filename)
-                :size size}
-          label (case (:type part)
-                  "image" "image"
-                  "audio" "audio file"
-                  "video" "video"
-                  "document" "document"
-                  "file")]
+          part (media-result/content-part (media/workspace-media-type mime-type)
+                                          data-url mime-type (or title filename) size)
+          label (media-result/attachment-label (:type part))]
       #js {:content #js [#js {:type "text"
                               :text (str "Attached workspace " label " " relative " for the final reply.")}]
            :details #js {:path relative

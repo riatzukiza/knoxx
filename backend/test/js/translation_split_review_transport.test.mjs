@@ -93,7 +93,7 @@ test("HTTP verifier pins the revision-bound review blocker wire contract", () =>
 
 test("HTTP verifier fail-closes its publication content cleanup root", () => {
   assert.match(httpVerifier,
-    /for tool in curl jq clojure unzip node realpath; do/);
+    /for tool in [^;\n]*\brealpath\b[^;\n]*; do\s+command -v "\$tool" >\/dev\/null 2>&1 \|\| die/);
 
   const rootPreflight = sectionBetween(
     httpVerifier,

@@ -264,6 +264,24 @@
     (nil? publication-id)
     (conflict :unrepresentable-publication-identity :publication/id nil row)))
 
+(defn- publication-candidate
+  "Assemble a decoded candidate with canonical document and garden references."
+  [policy document row publication-id {:keys [locale revision state review]}]
+  {:migration/status :candidate
+   :resource {:publication/id publication-id
+              ;; The same rule the document phase writes under. Copying
+              ;; the raw legacy value here left the reference
+              ;; unqualified while the document itself was written
+              ;; qualified, so PublicationIntentResource rejected it
+              ;; and the batch aborted instead of migrating.
+              :publication/document (ident/canonical-document-id policy document)
+              :publication/garden (ident/canonical-garden-id policy row)
+              :publication/locale (:ok locale)
+              :publication/revision (:ok revision)
+              :publication/state (:ok state)
+              :publication/path (:path row)
+              :translation/review (:ok review)}})
+
 (defn publication->decision
   "Short-circuits on the shape decode before any shape-dependent decoder runs,
    so an unrecognized shape yields exactly one conflict naming the shape rather
@@ -283,20 +301,9 @@
             (identity-conflict document row publication-id)
             (when-not (law/valid-publication-path? (:path row))
               (conflict :invalid-publication-path :path (:path row) row))
-            {:migration/status :candidate
-             :resource {:publication/id publication-id
-                        ;; The same rule the document phase writes under. Copying
-                        ;; the raw legacy value here left the reference
-                        ;; unqualified while the document itself was written
-                        ;; qualified, so PublicationIntentResource rejected it
-                        ;; and the batch aborted instead of migrating.
-                        :publication/document (ident/canonical-document-id policy document)
-                        :publication/garden (ident/canonical-garden-id policy row)
-                        :publication/locale (:ok locale)
-                        :publication/revision (:ok revision)
-                        :publication/state (:ok state)
-                        :publication/path (:path row)
-                        :translation/review (:ok review)}})))))
+            (publication-candidate policy document row publication-id
+                                   {:locale locale :revision revision
+                                    :state state :review review}))))))
 
 ;; ── In-run migration index ─────────────────────────────────────────────────
 

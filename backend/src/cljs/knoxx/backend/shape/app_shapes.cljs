@@ -1,8 +1,6 @@
 (ns knoxx.backend.shape.app-shapes
   (:require [clojure.string :as str]))
 
-(def ^:private media-extension-pattern #".*\.(?:png|jpg|jpeg|gif|webp|mp4|webm|mp3|wav|ogg|m4a|flac|pdf)(?:\?.*)?$")
-
 (defn- body-value
   [body & names]
   (some (fn [field-name]
@@ -24,25 +22,6 @@
   [value]
   (when-let [value (maybe-cljs value)]
     (when (map? value) value)))
-
-(defn- extract-media-urls
-  "Extract media URLs from text content."
-  [text]
-  (when (string? text)
-    (->> (str/split text #"\s+")
-         (keep (fn [token]
-                 (let [lower (str/lower-case token)]
-                   (when (or (re-matches media-extension-pattern lower)
-                             (some #(str/includes? lower %) [".png" ".jpg" ".jpeg" ".gif" ".webp" ".mp4" ".webm" ".mp3" ".wav" ".ogg" ".m4a" ".flac" ".pdf"])
-                             (str/includes? token "cdn.discordapp.com"))
-                     {:url token
-                      :type (cond
-                              (some #(str/includes? lower %) [".png" ".jpg" ".jpeg" ".gif" ".webp"]) "image"
-                              (some #(str/includes? lower %) [".mp4" ".webm" ".mov"]) "video"
-                              (some #(str/includes? lower %) [".mp3" ".wav" ".ogg" ".m4a" ".flac"]) "audio"
-                              (some #(str/includes? lower %) [".pdf"]) "document"
-                              :else "image")}))))
-         vec)))
 
 (defn- normalize-tool-policy
   [policy]
@@ -97,6 +76,23 @@
           str
           not-empty))
 
+(defn- agent-context-fields
+  "Collect resource and context fields without changing their alias precedence."
+  [spec]
+  (let [resource-policies (or (:resource_policies spec)
+                             (:resource-policies spec)
+                             (:resourcePolicies spec))
+        sources (or (:sources spec)
+                    (:runtime_sources spec)
+                    (:runtime-sources spec)
+                    (:runtimeSources spec))
+        memory-hydration (memory-hydration-spec spec)
+        context-policy (context-policy-spec spec)]
+    {:resource-policies resource-policies
+     :sources sources
+     :memory-hydration memory-hydration
+     :context-policy context-policy}))
+
 (defn- normalize-agent-spec
   [value]
   (let [spec (maybe-cljs-map value)
@@ -110,15 +106,8 @@
         tool-policies (normalize-tool-policies (or (:tool_policies spec)
                                                    (:tool-policies spec)
                                                    (:toolPolicies spec)))
-        resource-policies (or (:resource_policies spec)
-                              (:resource-policies spec)
-                              (:resourcePolicies spec))
-        sources (or (:sources spec)
-                    (:runtime_sources spec)
-                    (:runtime-sources spec)
-                    (:runtimeSources spec))
-        memory-hydration (memory-hydration-spec spec)
-        context-policy (context-policy-spec spec)]
+        {:keys [resource-policies sources memory-hydration context-policy]}
+        (agent-context-fields spec)]
     (when (or contract-id actor-id role system-prompt task-prompt model thinking-level (seq tool-policies) resource-policies (seq sources) memory-hydration context-policy)
       {:contract-id contract-id
        :actor-id actor-id
@@ -143,6 +132,35 @@
     ("document" "file" "input_file" "output_file") :document
     nil))
 
+(defn- content-part-resource-fields
+  "Normalize the existing resource fields after content type and text."
+  [part]
+  (let [url (some-> (or (:url part)
+                       (:file_url part)
+                       (:file-url part)
+                       (:fileUrl part))
+                   str)
+        data (some-> (:data part) str)
+        mime-type (some-> (or (:mimeType part)
+                             (:mime_type part)
+                             (:mime-type part)
+                             (:mediaType part)
+                             (:media_type part)
+                             (:media-type part))
+                         str)
+        filename (some-> (:filename part) str)
+        size (let [value (or (:size part)
+                            (:bytes part)
+                            (:byteSize part)
+                            (:byte_size part)
+                            (:byte-size part))]
+               (when (number? value) value))]
+    {:url url
+     :data data
+     :mime-type mime-type
+     :filename filename
+     :size size}))
+
 (defn- normalize-content-part
   [part]
   (cond
@@ -158,26 +176,8 @@
           text (some-> (or (:text part)
                            (:refusal part))
                        str)
-          url (some-> (or (:url part)
-                          (:file_url part)
-                          (:file-url part)
-                          (:fileUrl part))
-                      str)
-          data (some-> (:data part) str)
-          mime-type (some-> (or (:mimeType part)
-                                (:mime_type part)
-                                (:mime-type part)
-                                (:mediaType part)
-                                (:media_type part)
-                                (:media-type part))
-                          str)
-          filename (some-> (:filename part) str)
-          size (let [value (or (:size part)
-                               (:bytes part)
-                               (:byteSize part)
-                               (:byte_size part)
-                               (:byte-size part))]
-                 (when (number? value) value))]
+          {:keys [url data mime-type filename size]}
+          (content-part-resource-fields part)]
       (when (or type text url data filename)
         (cond-> {:type (or type :text)}
           (and (= (or type :text) :text) (some? text)) (assoc :text text)

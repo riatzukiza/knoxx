@@ -91,6 +91,28 @@
             " for " klass "/" contract-id " (HTTP " status "):\n" text)
        {:contract_id contract-id :contract_class klass :ok ok :status status :result text}))))
 
+(defn- contract-validation-message
+  [r klass ok? errors warnings]
+  (str
+   (if ok?
+     (str "✓ Contract valid"
+          (when-let [cid (get-in r [:contract :contract/id])]
+            (str " — :contract/id " cid))
+          "\nClass: " (or (:contractClass r) (:contract-class r) klass))
+     (str "✗ Validation failed:\n"
+          (str/join "\n" (map (fn [err]
+                                 (let [path (or (:path err) "root")
+                                       msg (or (:message err) "Unknown error")]
+                                   (str "  • [" (str/join " > " path) "]: " msg)))
+                               errors))))
+   (when (seq warnings)
+     (str "\nWarnings:\n"
+          (str/join "\n" (map (fn [warning]
+                                 (let [path (or (:path warning) "root")
+                                       msg (or (:message warning) "Warning")]
+                                   (str "  • [" (str/join " > " path) "]: " msg)))
+                               warnings))))))
+
 (defn ^:async contract-validate-execute [_runtime config _tool-call-id params a b c]
   (let [on-update (or (when (fn? a) a) (when (fn? b) b) (when (fn? c) c))
         edn-text (param-text params "edn_text" "ednText" "")
@@ -104,25 +126,7 @@
           errors (or (:errors r) [])
           warnings (or (:warnings r) [])]
       (tool-text-result
-       (str
-        (if ok?
-          (str "✓ Contract valid"
-               (when-let [cid (get-in r [:contract :contract/id])]
-                 (str " — :contract/id " cid))
-               "\nClass: " (or (:contractClass r) (:contract-class r) klass))
-          (str "✗ Validation failed:\n"
-               (str/join "\n" (map (fn [err]
-                                      (let [path (or (:path err) "root")
-                                            msg (or (:message err) "Unknown error")]
-                                        (str "  • [" (str/join " > " path) "]: " msg)))
-                                    errors))))
-        (when (seq warnings)
-          (str "\nWarnings:\n"
-               (str/join "\n" (map (fn [warning]
-                                      (let [path (or (:path warning) "root")
-                                            msg (or (:message warning) "Warning")]
-                                        (str "  • [" (str/join " > " path) "]: " msg)))
-                                    warnings)))))
+       (contract-validation-message r klass ok? errors warnings)
        r))))
 
 (def contract-list-tool

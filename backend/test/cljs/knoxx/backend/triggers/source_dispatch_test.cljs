@@ -2,7 +2,7 @@
   (:require [cljs.test :refer [deftest is testing]]
             [cljs.reader :as reader]
             [knoxx.backend.domain.driver.builtin :as driver-builtin]
-            [knoxx.backend.domain.driver.registry :as driver-registry]
+            [knoxx.backend.domain.driver.registry]
             [knoxx.backend.domain.source.runtime :as source-runtime]
             [knoxx.backend.domain.event.dispatch :as event-dispatch]
             [knoxx.backend.domain.resources.loader :as resources]))

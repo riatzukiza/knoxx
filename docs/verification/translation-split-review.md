@@ -73,6 +73,99 @@ meaningful evidence.
    well as access to the translation review routes. Reconciliation is a real
    public-content mutation, although every fixture path and resource id is
    unique to the run and the cleanup removes it.
+7. Export `VERIFY_SOURCE_COMMIT` as the full 40-character commit actually built
+   and served by the owned backend. Both scripts compare it with this checkout;
+   the live stack's build/launch custody must separately bind that same source.
+   A source string alone does not prove which backend image is serving requests.
+   The real resource topology and exact legacy detail/segment readbacks must
+   also succeed. Legacy compatibility must use the same Mongo database and a
+   real nonblank project returned by the authenticated resource inventory.
+   An absent project, REST-only storage, wrong database, missing live readback,
+   or disabled compatibility route refuses the phase; no project is invented.
+
+## Legacy auth prerequisite before the resource walkthrough
+
+The shared helper first seeds one separate pending Spanish legacy segment with
+fixed synthetic source/translation text and no labels. Its document ID is
+`${TRANSLATION_FIXTURE_NS}/legacy-auth`, distinct from all eighteen resource
+documents. The legacy garden defaults to the real nil coordinate
+(`VERIFY_LEGACY_GARDEN_ID=__NONE__`); an explicitly selected garden remains part
+of the exact scope. No source event or resource row is inserted for this legacy
+fixture. The ordinary resource count remains eighteen, and the dependent locale
+scenario retains its own `20/18/1/1` assertions.
+
+Before the possibly partial insert, the backend helper creates an exclusive
+`0600` ownership record with the actual Mongo ObjectId, run, source commit,
+nonsecret URI digest/database, org, project, document, garden, and locale.
+Existing ownership files and colliding rows refuse rather than being adopted.
+Set `VERIFY_LEGACY_OWNERSHIP_FILE` to an absolute durable path outside the
+checkout, the contract fixture and `VERIFY_TMP_DIR`. Its default is
+`$HOME/.local/state/knoxx-verification/legacy-${RUN_ID}.json`. Keep this record
+until both exact stored absence and authenticated scoped-list absence pass.
+
+The phase runs after the backend can see the run's resource topology and before
+resource candidate seeding, translation navigation, interception, or manual
+filter counters. The browser tour establishes its ordinary app session first;
+its authenticated readbacks use that real browser session, while every anonymous
+probe uses a separate curl process with an empty cookie jar and cleared
+Authorization/API/identity headers. Curl ignores curlrc and does not follow
+redirects. Both modes use the same encoded document/locale URL and project/garden
+query as `frontend/.../translations/api.cljs`.
+
+The independently counted probes are:
+
+1. One anonymous GET to the exact owned document detail URL, after authenticated
+   detail and segment readiness recover the recorded identity.
+2. One anonymous POST to `/api/translations/segments/:id/labels`, with the normal
+   evaluation fields, the live project/garden scope, `overall:"reject"`, and no
+   corrected text.
+3. One anonymous POST to the encoded document's `/review` route, with the same
+   scope and `overall:"reject"`.
+
+Each must return exactly `401` with `{detail:"Not authenticated",error_code:"no_session"}`; the verifier requires `error_code:"no_session"`. A redirect, `200`,
+`400`, `404`, `503`, missing error code, or transport/readback failure refuses.
+Before and after every probe, authenticated detail/segment JSON and the helper's
+actual stored `label_version_counter` must match. The API does not expose that
+counter; the direct exact owned read is mandatory. Logs contain only named
+checks, status/error categories and equality outcomes, never response content,
+credentials, or connection settings. The existing resource bulk anonymous check
+remains a separate accurately named assertion.
+
+Checked cleanup removes only labels for the recorded segment/org/project, then
+the segment under its complete recorded identity. It verifies zero remaining
+owned rows and absence from the authenticated project/Spanish document list
+before retiring the ownership record and continuing the resource workflow.
+EXIT/INT/TERM also attempt this exact cleanup. A failed cleanup makes a successful
+run nonzero and retains ownership; it does not replace an earlier failure. The
+first safe failure, each actual helper exit status with known safe CLI flags,
+and each successful stored cleanup result remain in separate files beside
+ownership, including after a later recovery succeeds. Unknown stderr and error
+messages are redacted; these files contain no connection URI or translation text.
+
+Explicit recovery uses a **fresh process**, the same Mongo connection, original
+checkout/source and actual identity; it never sweeps a namespace or adopts a
+record:
+
+```bash
+VERIFY_SOURCE_COMMIT=<original-full-commit> \
+VERIFY_ORG_ID=<same-org> KNOXX_API_KEY=<same-authorized-key> \
+scripts/verify-translation-split-review.sh \
+  --cleanup-legacy /absolute/retained-ownership.json
+```
+
+Preserve the original terminal outcome and its adjacent failure/cleanup evidence
+even when recovery proves absence. A missing already-removed owned label is
+idempotent; changed source, database or scope must refuse before further deletion.
+
+`python3 scripts/test-cms-verifier-preconditions.py` is the registered process
+gate. Its shell HTTP/CLI controls are explicitly synthetic and prove ordering,
+cookie isolation, wrong-status/error refusal, hidden-counter comparison,
+cleanup aggregation and fresh-shell recovery. They supply **no live auth or
+database evidence**. The separate actual-adapter TERM schedule must synchronize
+after its owned-label deletion while its segment still exists, retain the
+terminated state/ownership, and reenter in a fresh process while preserving
+foreign controls. A source-built owned live run is still required for the real
+detail GET, both POSTs, and checked cleanup; no synthetic response qualifies it.
 
 Credential transport fails closed. `KNOXX_BASE_URL` and
 `KNOXX_FRONTEND_URL` may use plain HTTP only for the exact hosts `localhost`,
@@ -231,3 +324,97 @@ Run [`scripts/verify-translation-dispatch.sh`](../../scripts/verify-translation-
 separately to inspect live agent dispatch/provider availability. Together the
 two artifacts distinguish “could the producer create work?” from “can a human
 review, correct, reject, approve, and reuse the produced work?”
+
+## Controlled current-view proof (core5)
+
+The optional controlled phase uses the production page, six mutation runners and
+seven normal UI entries: legacy Submit review, resource Approve split, resource
+Approve All, legacy document Approve All, whole-output approval, Dispatch and
+Retry. It verifies presentation lifetime, first-frame exclusion and pending
+ownership. Its response fixtures and downloads are visibly synthetic. It makes
+no translation-quality, live mutation, publication durability or deployment claim.
+Same-view dirtyD2 and trailing catch-up belong to the dependent draft5 story.
+
+Run only after the current fixture/auth prerequisite and the exact combined
+source have qualified. Preserve the ordinary eighteen-row tour; the opt-in phase
+runs afterward, before its existing checked cleanup. It separately requires real
+SFT GET and publication-only dispatch POST401/no_session and unchanged typed,
+run-scoped dispatch-state snapshots. Digest equality does not prove zero queue,
+agent or event-turn calls; a separate actual-route unit-spy artifact is mandatory.
+No authenticated dispatch/provider call is used to establish readiness.
+
+```bash
+VERIFY_RUN_ID=<fresh-reviewed-run-id> \
+VERIFY_SOURCE_COMMIT=<exact-current-40hex-head> \
+VERIFY_CURRENT_VIEW_RACES=1 \
+VERIFY_CORE_BROWSER_CONFIG=/absolute/private/reviewed-core-runtime.json \
+KNOXX_FRONTEND_URL=http://127.0.0.1:<owned-frontend-port> \
+./scripts/verify-translation-split-review-tour.sh
+```
+
+Use the existing private environment handoff for API key, database, organization,
+contracts and content root; do not place credentials in this command or logs.
+The opt-in phase requires an explicit API key and verifies a **new browser
+context's** real `/api/auth/context`200, exact organization and expected user.
+It never assumes that the original tour's headers/password session authenticated
+a later CDP connection. The default password tour is unchanged; password-only
+mode cannot silently pass this optional phase.
+
+The reviewed JSON runtime file pins `sourceRoot`, `sourceCommit`, `runId`,
+`origin`, `orgId`, `project`, `email`, `orgSlug`, fresh absent `evidenceDir` and
+`profileDir`, and a fresh loopback `cdpPort`. It names existing
+`playwrightEntry`, `chromiumExecutable`, `agentBrowserExecutable`, exact frozen
+asset URL paths, navigation paths `/`, `/cms`, `/translations`, and complete
+`frozenFiles` absolute path/SHA256 descriptors for tools and both compiled dist
+trees. Runtime dist symlink directories/leaves and a non-regular server entry
+are refused. The source HEAD must match and tracked source must be clean.
+`writerProof` supplies a pinned artifact with exact sourceCommit, normalExit0,
+actualRouteGuards true and actual queue/agent/eventTurn spy counts0. It must be
+backed by retained registered test output, not hand-written to waive a failure.
+The tour supplies its fresh preflight descriptor and private key-file path in a
+0600 handoff; their run/source/identity must match the reviewed runtime file.
+No browser installation or dependency changes occur in this phase.
+
+The browser owner uses public Playwright APIs to retain a method-aware
+context-wide abort backstop; the existing agent-browser CLI attaches through its
+public `--cdp` option. Every non-read or unknown origin/API request is aborted.
+Only exact frozen application assets/navigation can be forwarded; explicitly
+classified CMS background reads and WebSocket are inert controlled responses.
+The window-local deferred adapter holds expected public fetch promises, checks
+exact method/query/payload/owned IDs, and never forwards them. A lost adapter,
+unknown request or missing guard fails the proof. No generic POST exception exists.
+
+First-B inventory/detail checkpoints run **synchronously inside the intercepted
+fetch**, before its held promise returns. Project schedules additionally arm a
+one-shot public DOM observer before the input event and require its first
+delivery to precede the first B request. An absent, stale or later observer
+delivery fails; a later polling assertion cannot give first-frame credit.
+MutationObserver alone does not guarantee React passive-effect ordering. The
+inventory-omission case records its first observer delivery and zero stale submit
+requests separately; it must not be relabeled as independent pre-passive proof.
+The experimental pre-first-B schedule releases both held A responses only from
+the first observer callback after its B DOM rule passes and before a B request
+has been recorded. It requires `commit:B` -> both A releases -> first B request;
+an absent/late callback or missing A handle refuses release and fails explicitly.
+B project checks require both input.defaultValue and its `value` attribute to
+match B as well as the live value; the native DOM action changes only live.value.
+The observer includes only `value` attribute changes alongside child/text changes.
+This binds the observed control to the pinned React controlled-prop source.
+Here `commit:B` names that observer record. It does **not** independently prove a
+generic React commit or pre-passive semantic boundary.
+Neither this label nor a successful pure callback control supplies that core
+timing acceptance criterion; the actual browser observations retain this limit.
+Unmount uses the normal `/cms` link and returns via Translations, retaining held
+promises. Original whole approval still completes approve -> reconcile once.
+SFT success retains the original filename/bytes; rejection produces no download.
+Separate project, locale, es→fr→es and unmount schedules hold the original export;
+none permits a retarget, extra export or completion-triggered translation reload.
+
+The helper preserves safe request-kind/count/order/checkpoint metadata and dark
+screenshots under the fresh evidence directory. Unknown raw errors, headers,
+credentials and live content are not logged. Cleanup attempts all owned actions,
+retains primary failure alongside cleanup failures, closes its private CLI/CDP
+connection and browser context, and settles only owned fixture promises. No
+unknown operation is replayed. The existing tour still owns resource/legacy data
+and content cleanup. Any setup, checkpoint, count, screenshot or cleanup failure
+returns nonzero. Passing pure/inert controls alone does not complete core5.

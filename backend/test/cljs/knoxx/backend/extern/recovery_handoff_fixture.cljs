@@ -3,6 +3,7 @@
   (:require [cljs.test :as test]
             [knoxx.backend.domain.action.run-state :as state]
             [knoxx.backend.domain.voice.turn-control :as control]
+            [knoxx.backend.extern.agent-session-fixture :as session-fixture]
             [knoxx.backend.extern.agent-turn-fixture :as fixture]
             [knoxx.backend.infra.agent.hydration :as hydration]
             [knoxx.backend.infra.agent.policy :as policy]
@@ -15,7 +16,6 @@
             [knoxx.backend.infra.stores.session-store-registry :as registry]
             [knoxx.backend.infra.stores.session-titles :as titles]
             [knoxx.backend.infra.system-instance :as instance]
-            [knoxx.backend.shape.agent :as agent]
             [knoxx.backend.shape.session-persistence :as runs]
             [knoxx.backend.shape.thread-store :as threads]))
 
@@ -34,8 +34,11 @@
 (defn- passive! ([_ _ _ _] (passive! nil nil nil nil nil)) ([_ _ _ _ _] nil))
 (defn- memory! ([_ _ _] nil) ([_ _ _ _] nil) ([_ _ _ _ _] nil))
 (defn- model-session []
-  (reify agent/IAgentSession (set-thinking-level! [_ _] nil) (messages [_] [])
-    (streaming? [_] false) (current-turn [_] nil)))
+  (session-fixture/session
+    {:set-thinking-level! (fn [_ _] nil)
+     :messages (fn [_] [])
+     :streaming? (fn [_] false)
+     :current-turn (fn [_] nil)}))
 
 (defn ^:async with-runtime!
   "Preserve all installed providers/runtime heaps and replace only the external model boundary."

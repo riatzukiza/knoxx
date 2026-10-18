@@ -1,6 +1,8 @@
 (ns knoxx.backend.domain.text
   (:require [clojure.string :as str]
-            [knoxx.backend.infra.http :as backend-http]))
+            [knoxx.backend.infra.http :as backend-http]
+            [knoxx.backend.shape.text-preview :as preview]
+            [knoxx.backend.domain.text.result :as result-text]))
 
 (declare value->preview-text)
 
@@ -107,105 +109,15 @@
 (def preview-collection-keys
   [:rows :hits :results :sources :items :documents])
 
-(defn- safe-get
-  [m k]
-  (when (map? m)
-    (or (get m k)
-        (when (keyword? k)
-          (get m (name k)))
-        (when (string? k)
-          (get m (keyword k))))))
-
-(defn- format-preview-scalar
-  [value]
-  (cond
-    (nil? value) "null"
-    (string? value) (let [trimmed (str/trim value)]
-                      (if (str/blank? trimmed) "" trimmed))
-    (number? value) (str value)
-    (boolean? value) (str value)
-    :else (str value)))
-
 (defn- summarize-structured
   ([value] (summarize-structured value 0))
   ([value depth]
-   (when (< depth 4)
-     (cond
-       (or (string? value) (number? value) (boolean? value) (nil? value))
-       (let [s (format-preview-scalar value)]
-         (when-not (str/blank? s) s))
-
-       (map? value)
-       (or (some (fn [k]
-                   (when-let [hit (summarize-structured (safe-get value k) (inc depth))]
-                     hit))
-                 preview-preferred-keys)
-           (some (fn [k]
-                   (when-let [hit (summarize-structured (safe-get value k) (inc depth))]
-                     hit))
-                 preview-collection-keys)
-           nil)
-
-       (sequential? value)
-       (let [items (vec (take 8 value))
-             looks-like-content-parts? (and (seq items)
-                                           (every? map? items)
-                                           (every? (fn [m]
-                                                     (let [t (or (safe-get m :text) (safe-get m "text"))
-                                                           ty (or (safe-get m :type) (safe-get m "type"))]
-                                                       (and (string? t)
-                                                            (or (nil? ty) (= ty "text") (= ty "output_text")))))
-                                                   items))]
-         (if looks-like-content-parts?
-           (let [joined (->> items
-                             (map (fn [m] (or (safe-get m :text) (safe-get m "text"))))
-                             (map #(str/trim (str %)))
-                             (remove str/blank?)
-                             (str/join "\n\n"))]
-             (when-not (str/blank? joined) joined))
-           (let [summaries (->> items
-                                (map #(summarize-structured % (inc depth)))
-                                (remove #(or (nil? %) (str/blank? %))))]
-             (when (seq summaries)
-               (str/join "\n" (map (fn [item] (str "- " item)) summaries))))))
-
-       :else nil))))
+   (preview/summarize-structured value depth preview-preferred-keys preview-collection-keys)))
 
 (defn- markdown-bullets
   ([value] (markdown-bullets value 0))
   ([value depth]
-   (when (< depth 4)
-     (cond
-       (or (string? value) (number? value) (boolean? value) (nil? value))
-       (let [s (format-preview-scalar value)]
-         (when-not (str/blank? s) (str "- " s)))
-
-       (map? value)
-       (let [keys (take 20 (keys value))]
-         (when (seq keys)
-           (str/join
-            "\n"
-            (map (fn [k]
-                   (let [child (get value k)
-                         label (cond
-                                 (keyword? k) (name k)
-                                 (string? k) k
-                                 :else (str k))
-                         nested (markdown-bullets child (inc depth))]
-                     (if (and nested (or (map? child) (sequential? child)))
-                       (str "- " label ":\n" (str/replace nested #"(?m)^-" "  -"))
-                       (str "- " label ": " (or (summarize-structured child (inc depth)) (format-preview-scalar child))))))
-                 keys))))
-
-       (sequential? value)
-       (let [items (take 20 value)
-             rendered (->> items
-                           (map #(markdown-bullets % (inc depth)))
-                           (remove #(or (nil? %) (str/blank? %))))]
-         (when (seq rendered)
-           (str/join "\n" rendered)))
-
-       :else nil))))
+   (preview/markdown-bullets value depth preview-preferred-keys preview-collection-keys)))
 
 (defn- extract-json-keys
   [text]
@@ -406,56 +318,64 @@
 
 (defn semantic-read-result-text
   [{:keys [database path content truncated]}]
-  (str "Active corpus: " (:name database) "\n"
-       "Path: " path
-       (when truncated "\nNote: content truncated for tool safety.")
-       "\n\n"
-       content))
+  (result-text/semantic-read-text database path content truncated))
+
+(defn- string-preview-text
+  [value]
+  (let [trimmed (str/trim (str value))
+        lowered (str/lower-case trimmed)]
+    (cond
+      (str/blank? trimmed) ""
+      (or (= lowered "null") (= lowered "undefined")) ""
+      :else (or (summarize-json-string value)
+                trimmed))))
+
+(defn- runtime-preview-text
+  [value]
+  (try
+    (let [clj-value (js->clj value :keywordize-keys true)]
+      (or (summarize-structured clj-value)
+          (markdown-bullets clj-value)
+          (let [json (.stringify js/JSON value nil 2)]
+            (if (string? json) json (str value)))))
+    (catch :default _
+      (str value))))
+
+(defn- unclipped-preview-text
+  [value]
+  (cond
+    (backend-http/no-content? value) ""
+    (string? value) (string-preview-text value)
+    (or (map? value) (vector? value) (seq? value))
+    (or (summarize-structured value)
+        (markdown-bullets value)
+        (pr-str value))
+    :else (runtime-preview-text value)))
+
+(defn- empty-preview-fallback
+  [value max-chars]
+  ;; Guaranteed fallback: for non-nil, non-scalar objects, always produce
+  ;; a JSON preview so callers (e.g. tool input_preview) never get nil
+  ;; for a real value that simply didn't match preferred keys.
+  (when (and (not (nil? value))
+             (not= value js/undefined)
+             (not (string? value))
+             (not (number? value))
+             (not (boolean? value)))
+    (try
+      (let [json (.stringify js/JSON value)]
+        (when (and (string? json) (not (str/blank? json)))
+          (let [[jt jtrunc] (clip-text json max-chars)]
+            (if jtrunc (str jt "…") jt))))
+      (catch :default _ nil))))
 
 (defn value->preview-text
   ([value] (value->preview-text value 800))
   ([value max-chars]
-   (let [raw (cond
-               (backend-http/no-content? value) ""
-               (string? value)
-               (let [trimmed (str/trim (str value))
-                     lowered (str/lower-case trimmed)]
-                 (cond
-                   (str/blank? trimmed) ""
-                   (or (= lowered "null") (= lowered "undefined")) ""
-                   :else (or (summarize-json-string value)
-                             trimmed)))
-
-               (or (map? value) (vector? value) (seq? value))
-               (or (summarize-structured value)
-                   (markdown-bullets value)
-                   (pr-str value))
-
-               :else
-               (try
-                 (let [clj-value (js->clj value :keywordize-keys true)]
-                   (or (summarize-structured clj-value)
-                       (markdown-bullets clj-value)
-                       (let [json (.stringify js/JSON value nil 2)]
-                         (if (string? json) json (str value)))))
-                 (catch :default _
-                   (str value))))
+   (let [raw (unclipped-preview-text value)
          [text truncated] (clip-text raw max-chars)]
      (if (str/blank? text)
-       ;; Guaranteed fallback: for non-nil, non-scalar objects, always produce
-       ;; a JSON preview so callers (e.g. tool input_preview) never get nil
-       ;; for a real value that simply didn't match preferred keys.
-       (when (and (not (nil? value))
-                  (not= value js/undefined)
-                  (not (string? value))
-                  (not (number? value))
-                  (not (boolean? value)))
-         (try
-           (let [json (.stringify js/JSON value)]
-             (when (and (string? json) (not (str/blank? json)))
-               (let [[jt jtrunc] (clip-text json max-chars)]
-                 (if jtrunc (str jt "…") jt))))
-           (catch :default _ nil)))
+       (empty-preview-fallback value max-chars)
        (if truncated
          (str text "…")
          text)))))
@@ -490,17 +410,7 @@
 
 (defn websearch-result-text
   [{:keys [output sources model]}]
-  (str "Web search"
-       (when model (str " via " model))
-       "\n\n"
-       (or output "")
-       (when (seq sources)
-         (str "\n\nSources:\n"
-              (str/join "\n"
-                        (map (fn [source]
-                               (str "- " (or (:title source) (:url source))
-                                    " — " (:url source)))
-                             sources))))))
+  (result-text/websearch-text output sources model))
 
 (defn openplanner-session-text
   [session-id rows]
@@ -516,56 +426,43 @@
            rows)))
     (str "OpenPlanner session " session-id " is empty or missing.")))
 
+(defn- graph-node-result-text
+  "Keep native formatting and live public preview lookups at each map visit."
+  [idx node]
+  (let [data (or (:data node) {})
+        label (or (:label node) (:id node))
+        text (or (:text node) (:preview (:data node)))]
+    (str (inc idx) ". [" (:lake node) "/" (:nodeType node) "] " label
+         (when-let [s (:score node)]
+           (str " (score=" (float-format s) ")"))
+         "\n   id=" (:id node)
+         (when-let [path (or (:path data) (some-> (:id node) (str/replace #"^[^:]+:" "")))]
+           (str "\n   path=" path))
+         (when-let [url (:url data)]
+           (str "\n   url=" url))
+         (when text
+           (str "\n   text=" (or (value->preview-text text 280) ""))))))
+
+(defn- graph-edge-result-text
+  "Keep the native numeric fallback at the original lazy edge visit."
+  [edge]
+  (let [etype (or (:edgeType edge) (when-let [sim (:similarity edge)]
+                                      (str "sim=" (float-format sim))))]
+    (str "- [" (or etype "link") "] " (:source edge) " -> " (:target edge))))
+
 (defn graph-query-result-text
   [result]
   (let [nodes (vec (or (:nodes result) []))
         edges (vec (or (:edges result) []))
         stats (:stats result)]
     (if (seq nodes)
-      (let [node-text (str/join
-                       "\n\n"
-                       (map-indexed
-                        (fn [idx node]
-                          (let [data (or (:data node) {})
-                                label (or (:label node) (:id node))
-                                text (or (:text node) (:preview (:data node)))]
-                            (str (inc idx) ". [" (:lake node) "/" (:nodeType node) "] " label
-                                 (when-let [s (:score node)]
-                                   (str " (score=" (float-format s) ")"))
-                                 "\n   id=" (:id node)
-                                 (when-let [path (or (:path data) (some-> (:id node) (str/replace #"^[^:]+:" "")))]
-                                   (str "\n   path=" path))
-                                 (when-let [url (:url data)]
-                                   (str "\n   url=" url))
-                                 (when text
-                                   (str "\n   text=" (or (value->preview-text text 280) ""))))))
-                        nodes))
+      (let [node-text (str/join "\n\n"
+                                (map-indexed (fn [idx node]
+                                               (graph-node-result-text idx node)) nodes))
             edge-text (when (seq edges)
-                        (str/join
-                         "\n"
-                         (map (fn [edge]
-                                (let [etype (or (:edgeType edge) (when-let [sim (:similarity edge)]
-                                                                    (str "sim=" (float-format sim))))]
-                                  (str "- [" (or etype "link") "] " (:source edge) " -> " (:target edge))))
-                              edges)))
+                        (str/join "\n"
+                                  (map (fn [edge] (graph-edge-result-text edge)) edges)))
             clusters-text (when-let [clusters (seq (:clusters result))]
-                            (str "\n\nClusters:\n"
-                                 (str/join "\n"
-                                           (map (fn [c]
-                                                  (str "  " (:lake c) ": " (:count c) " nodes"
-                                                       (when-let [top (seq (:topNodes c))]
-                                                         (str "\n    top: " (str/join ", " (map :id top))))))
-                                                clusters))))]
-        (str "Knowledge graph query"
-             (when-let [q (:query result)]
-               (str "\nQuery: " q))
-             (when-let [projects (seq (:projects result))]
-               (str "\nProjects: " (str/join ", " projects)))
-             (when stats
-               (str "\nStats: " (pr-str stats)))
-             "\n\nNodes:\n"
-             node-text
-             edge-text
-             clusters-text))
-      (str "Knowledge graph query returned no matching nodes."
-           (when stats (str " " (pr-str stats)))))))
+                            (result-text/graph-clusters-text clusters))]
+        (result-text/graph-query-text result stats node-text edge-text clusters-text))
+      (result-text/empty-graph-text stats))))

@@ -2,22 +2,48 @@
 // Mirrors the SDK surface used by knoxx.backend.extern.openplanner-sdk with
 // canned data so extern conversion tests never touch MongoDB. ESM with named
 // exports, matching the real package's module shape.
+import { vectorSearchWithQuality as nativeVectorSearchWithQuality } from "@open-hax/openplanner-sdk/search-core";
 export const __calls = [];
 const calls = __calls;
 const ingestedEvents = [];
 const hotVectorRows = [];
+const partitions = [];
 let eventVectorMode = "valid";
+let useCheckedRuntime = false;
+let useNativeQueryCore = false;
 
 // Production requires this setting for fail-closed read-your-writes checks.
-// Give the hermetic SDK stub a deliberately tiny vector contract unless the
+// Give the hermetic SDK stub a the admitted Qwen/1024 vector contract unless the
 // test process supplied its own dimensions.
 if (process.env.EMBED_PROVIDER_DIMENSIONS === undefined) {
-  process.env.EMBED_PROVIDER_DIMENSIONS = "3";
+  process.env.EMBED_PROVIDER_DIMENSIONS = "1024";
 }
 
 function record(name, args) {
   calls.push({ name, args });
 }
+
+// This module is exclusively the registered test-build SDK alias. Consumers
+// outside the extern test namespace also exercise real checked repair. Keep
+// that provider edge hermetic for the entire test process, while preserving
+// unrelated fetch fixtures and genuine ephemeral HTTP tests.
+const inheritedFetch = globalThis.fetch;
+globalThis.fetch = async (...args) => {
+  const url = new URL(typeof args[0] === "string" ? args[0] : args[0].url);
+  if (url.pathname !== "/v1/embeddings") return inheritedFetch(...args);
+  if (url.origin !== "http://127.0.0.1:11434" || args[1]?.method !== "POST") {
+    throw new Error("Owned SDK alias refuses external embedding transport");
+  }
+  const request = JSON.parse(args[1].body);
+  if (request.model !== "qwen3-embedding:8b" || request.dimensions !== 1024
+      || !Array.isArray(request.input) || request.input.some((text) => typeof text !== "string")) {
+    throw new Error("Owned SDK alias refuses an unbound embedding request");
+  }
+  record("checkedEmbeddingTransport", { url: url.href, request });
+  return new Response(JSON.stringify({ model: request.model,
+    data: request.input.map((_text, index) => ({ index,
+      embedding: Array.from({ length: 1024 }, () => 0.25) })) }), { status: 200 });
+};
 
 function persistedEvent(ev) {
   const sourceRef = ev.source_ref ?? {};
@@ -51,7 +77,8 @@ function replaceHotVector(eventId, text, embedding, metadata = {}) {
     text,
     embedding,
     embedding_dimensions: embedding.length,
-    embedding_model: metadata.embedding_model ?? null,
+    embedding_model: metadata.embedding_model ?? process.env.EMBED_PROVIDER_MODEL ?? "qwen3-embedding:8b",
+    chunk_id: eventId, chunk_index: 0, chunk_count: 1,
   });
 }
 
@@ -129,7 +156,16 @@ export async function indexTextInMongoVectors(params) {
 
 const stubSdk = {
   mongo: {
+    vectorPartitions: {
+      find(filter) {
+        const rows = partitions.filter((row) => row.tier === filter.tier);
+        return { sort() { return this; }, toArray: async () => rows };
+      },
+    },
     db: {
+      collection() {
+        return { find() { return { sort() { return this; }, limit() { return this; }, toArray: async () => [] }; } };
+      },
       admin() {
         return { command: async () => ({ ok: 1 }) };
       },
@@ -165,7 +201,7 @@ const stubSdk = {
   embeddingRuntime: {
     hot: {
       getModel() {
-        return "stub-embedding-model";
+        return process.env.EMBED_PROVIDER_MODEL ?? "qwen3-embedding:8b";
       },
       getBackgroundEmbeddingFunction() {
         return {
@@ -179,6 +215,7 @@ const stubSdk = {
         };
       },
     },
+    compact: { getModel() { return process.env.EMBED_PROVIDER_COMPACT_MODEL ?? process.env.EMBED_PROVIDER_MODEL ?? "qwen3-embedding:8b"; } },
   },
   async ingestEvents(events) {
     record("ingestEvents", events);
@@ -242,4 +279,46 @@ export async function queryCollectionResponse(_ctx, body) {
     limit,
     rows: rows.slice(0, limit),
   };
+}
+
+// Explicit public cores mirror the immutable SDK07085 signatures. The default
+// fixture keeps inherited canned behavior; opt-in controls exercise the supplied
+// checked runtime and swallowed-background-error contract, never real Mongo.
+export function __setCheckedRuntimeMode(value) { useCheckedRuntime = value; }
+// Opt in only for owned native-cursor tests. This executes the genuine SDK
+// catch/fallback branch, with no database or provider connection.
+export function __setNativeQueryCore(value) { useNativeQueryCore = value; }
+export function __setPartitions(rows) { partitions.splice(0, partitions.length, ...rows); }
+export async function ingestEvents(ctx, events) {
+  record("ingestContext", ctx);
+  if (!useCheckedRuntime) return stubSdk.ingestEvents(events);
+  record("ingestEvents", events);
+  ingestedEvents.push(...events.map(persistedEvent));
+  const tasks = events.filter(shouldIndexEventHotVectors).map(async (event) => {
+    try {
+      const scope = { source: event.source, kind: event.kind, project: event.source_ref?.project };
+      await indexTextInMongoVectors({ mongo: ctx.mongo, tier: "hot", parentId: event.id,
+        text: event.text, extra: event.extra,
+        metadata: { embedding_model: ctx.embeddingRuntime.hot.getModel(scope) },
+        embeddingFunction: ctx.embeddingRuntime.hot.getBackgroundEmbeddingFunction(scope) });
+    } catch (error) { ctx.log?.warn({ err: error, eventId: event.id }, "Owned swallowed generation failure"); }
+  });
+  return { ok: true, count: events.length, ids: events.map((event) => event.id),
+    projectedGraphEdges: 0, storageBackend: "mongodb", indexed: true,
+    acceptedEvents: events, backgroundIndexing: Promise.all(tasks) };
+}
+export async function vectorSearchWithQuality(ctx, payload) {
+  record("vectorSearchContext", ctx);
+  if (useNativeQueryCore) return nativeVectorSearchWithQuality(ctx, payload);
+  if (useCheckedRuntime) {
+    for (const tier of payload.tier === "hot" ? ["hot"] : payload.tier === "compact" ? ["compact"] : ["hot", "compact"]) {
+      const rows = await ctx.mongo.vectorPartitions.find({ tier }).sort({ updatedAt: -1 }).toArray();
+      for (const row of rows) {
+        const provider = ctx.embeddingRuntime[tier].getEmbeddingFunctionForModel(row.model);
+        await provider.generate([payload.q]);
+        await ctx.mongo.db.collection(row.collectionName).find({}).sort({ ts: -1 }).limit(1000).toArray();
+      }
+    }
+  }
+  return stubSdk.searchVector(payload);
 }

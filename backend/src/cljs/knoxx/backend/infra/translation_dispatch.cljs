@@ -29,9 +29,9 @@
   send that provably did not land becomes retriable. Where nothing can be
   observed, the claim is left in flight: a stuck claim is visible and fixable, a
   duplicate translation is neither."
-  (:require [knoxx.backend.domain.node.crypto :as crypto]
-            [knoxx.backend.domain.publication-gate :as gate]
-            [knoxx.backend.infra.clients.openplanner :as openplanner-client]
+  (:require [knoxx.backend.domain.publication-gate :as gate]
+            [knoxx.backend.infra.translation-dispatch.completion :as completion]
+            [knoxx.backend.infra.translation-dispatch.worker :as worker]
             [knoxx.backend.infra.translation-evidence-store :as store]
             [knoxx.backend.law.translation-dispatch :as law]
             [knoxx.backend.shape.resource-identity :as resource-identity]))
@@ -63,21 +63,6 @@
      (some? project) (assoc :dispatch/project project)
      (some? source-digest) (assoc :dispatch/source-digest source-digest))))
 
-;; ── Dispatch ───────────────────────────────────────────────────────────────
-
-(defn- ^:async request-batch!
-  "Ask the worker boundary for a batch and return its id.
-
-   The response is untrusted input: `BatchCreated` is asserted before the id is
-   read, so a client that answered `{:ok false}` cannot yield a nil batch id
-   that later makes an output revision unattributable."
-  [client work context]
-  (let [request (law/worker-request work context)
-        response (await (openplanner-client/create-translation-batch! client request))]
-    (:batch_id (law/assert-valid! :translation-dispatch/batch-created
-                                  law/BatchCreated
-                                  response))))
-
 (def batch-listing-cap
   "The row limit the batch listing applies, mirrored from
    `extern.openplanner-translation-mongo.batches`.
@@ -87,322 +72,6 @@
    proof the batch does not exist. Mirrored rather than imported because the
    store boundary does not expose it, and a test pins the two together."
   50)
-
-(defn- ^:async observe-batch!
-  "Ask the worker whether a batch already exists for *this* dispatch.
-
-   Matched first on the exact dispatch key persisted by the worker, then checked
-   against garden, target locale, document and creation time as defense in depth.
-
-   `record` supplies the claim's own instant, so a batch created before the claim
-   is excluded outright. See `law/batch-matches-dispatch?` for the rest.
-
-   Returns `{:candidates [...] :conclusive? bool}`. Empty candidates with
-   `:conclusive?` true is the only combination that licenses treating the send as
-   failed; anything else leaves the claim in flight."
-  [client work context record]
-  (let [response (await (openplanner-client/translation-batches!
-                         client
-                         {:org_id (:dispatch/org-id context)
-                          :garden_id (:dispatch/garden context)
-                          :dispatch_key (:dispatch/key record)
-                          :target_lang (name (:locale work))}))
-        batches (vec (:batches response))
-        candidates (filterv #(and (= (:dispatch/key record) (:dispatch_key %))
-                                  (law/batch-matches-dispatch? % context work
-                                                               (:dispatch/at record)))
-                            batches)]
-    ;; The dispatch key is persisted in the worker queue under a tenant-scoped
-    ;; unique index. Unlike the old field-and-timestamp heuristic, one matching
-    ;; row therefore identifies the exact request and is safe to adopt.
-    {:candidates candidates
-     ;; Absence in a capped list is not absence. The direct Mongo listing sorts
-     ;; newest-first and stops at `batch-listing-cap`, so a busy garden can push
-     ;; our batch off the end — and reading that as "the send did not land" is
-     ;; exactly how a duplicate translation happens.
-     :conclusive? (and (< (count batches) batch-listing-cap)
-                       ;; A legacy REST server can ignore the new query field and
-                       ;; return unrelated rows. That is evidence the lookup was
-                       ;; not correlation-aware, never evidence of absence.
-                       (every? #(= (:dispatch/key record) (:dispatch_key %)) batches))}))
-
-(defn- attempt-lost-refusal
-  [record]
-  {:refusal/type :dispatch-already-resolved
-   :refusal/expected {:dispatch/key (:dispatch/key record)
-                      :dispatch/attempt-id (:dispatch/attempt-id record)
-                      :dispatch/outcome :dispatch/accepted}
-   :refusal/actual :dispatch-attempt-moved})
-
-(defn- ^:async settle-failure!
-  "Fail `record` only if it is still the exact active attempt."
-  [evidence-store record detail]
-  (if-let [settled (await (store/resolve-dispatch!
-                           evidence-store record :dispatch/failed detail))]
-    {:dispatch/outcome :dispatch/failed
-     :dispatch/record settled}
-    {:dispatch/outcome :dispatch/duplicate
-     :dispatch/record (or (await (store/dispatch-for-key!
-                                  evidence-store (:dispatch/key record)))
-                          record)
-     :translation/refusal (attempt-lost-refusal record)}))
-
-(declare bind-created-batch!)
-
-(defn- ^:async recover-ambiguous-send!
-  "Decide what an ambiguous batch creation left behind.
-
-   Only one conclusion is drawn: a *conclusive absence* means the create did not
-   land, and only then does the claim become retriable. Anything else — matching
-   batches found, or a truncated listing — leaves the claim in flight.
-
-   A sole matching batch is safe to bind because the queue persists the claim's
-   dispatch key under a tenant-scoped unique index. This is the correlation the
-   earlier implementation lacked; it makes both an ambiguous send and a failed
-   local binding write automatically recoverable."
-  [evidence-store client work context record detail]
-  (try
-    (let [{:keys [candidates conclusive?]}
-          (await (observe-batch! client work context record))]
-      (cond
-          ;; A conclusive absence — nothing matching, from a listing that was not
-          ;; truncated — is the only evidence that licenses a retry.
-          (and conclusive? (empty? candidates))
-          (assoc (await (settle-failure! evidence-store record detail))
-                 :dispatch/detail detail)
-
-          (= 1 (count candidates))
-          (let [batch-id (:batch_id (first candidates))
-                rebound (await (bind-created-batch! evidence-store record batch-id))]
-            (assoc rebound
-                   :dispatch/detail (str detail
-                                         "; recovered the exact worker batch from"
-                                         " its durable dispatch key")))
-
-          (seq candidates)
-          {:dispatch/outcome :dispatch/accepted
-           :dispatch/record record
-           :dispatch/detail (str detail
-                                 "; multiple batches carry one dispatch key;"
-                                 " the queue uniqueness invariant is broken")}
-
-        :else
-        {:dispatch/outcome :dispatch/accepted
-         :dispatch/record record
-         :dispatch/detail (str detail
-                               "; batch listing was truncated, so absence is"
-                               " not proof the send failed")}))
-    (catch :default observe-error
-      {:dispatch/outcome :dispatch/accepted
-       :dispatch/record record
-       :dispatch/detail (str detail
-                             "; observation also failed: "
-                             (ex-message observe-error))})))
-
-(defn- ^:async try-bind!
-  "Bind the batch id, answering nil rather than throwing."
-  [evidence-store record batch-id]
-  (try
-    (await (store/bind-dispatch-batch! evidence-store record batch-id))
-    (catch :default _ nil)))
-
-(defn- ^:async bind-created-batch!
-  "Record the batch id the worker returned, retrying the write once.
-
-   Separated from the create on purpose. A failure *after* the batch id is known
-   is not an ambiguous send: the batch exists and we can name it, so routing it
-   through observation would be strictly worse — observation never adopts a
-   candidate, so the claim would stay unbound, the worker would finish, and its
-   callback could never join. The receipt would be unrecoverable for a write that
-   merely blipped.
-
-   One retry, then the batch remains recoverable through the dispatch key that
-   was persisted atomically with it in the worker queue. A later pass can look
-   up that exact batch and repair the claim without guessing or creating a
-   duplicate. Bounded rather than looped: a store that cannot accept two writes
-   is not going to accept a hundred."
-  [evidence-store record batch-id]
-  (let [bound (or (await (try-bind! evidence-store record batch-id))
-                  (await (try-bind! evidence-store record batch-id)))]
-    (if bound
-      {:dispatch/outcome :dispatch/accepted :dispatch/record bound}
-      {:dispatch/outcome :dispatch/accepted
-       :dispatch/record record
-       :dispatch/detail (str "the worker accepted batch " batch-id
-                             " but the binding could not be recorded;"
-                             " it remains recoverable by dispatch key")})))
-
-(defn- ^:async accept-dispatch!
-  "Call the worker for a freshly reserved claim, and record what happened.
-
-   A failure is not automatically a retriable failure. An exception after the
-   request went out leaves the outcome genuinely unknown; the durable dispatch
-   key lets `recover-ambiguous-send!` identify a landed request exactly, while
-   compatibility with an older server stays conservative."
-  [evidence-store client work context record]
-  (let [created (try
-                  {:batch-id (await (request-batch! client work context))}
-                  (catch :default err
-                    {:error (or (not-empty (str (ex-message err)))
-                                "unknown worker failure")}))]
-    (if (:error created)
-      ;; The create itself failed, so whether it landed is genuinely unknown.
-      (await (recover-ambiguous-send! evidence-store client work context record
-                                      (:error created)))
-      (await (bind-created-batch! evidence-store record (:batch-id created))))))
-
-(defn- ^:async record-completion!
-  "Claim completion, persist the receipt, then close the exact attempt.
-
-   The store-private completion claim is the bridge between two facts that live
-   in separate records. It is acquired before the receipt is exposed, so a
-   success-vs-failure race and a delayed attempt both lose before writing. It is
-   finished only after the receipt is durable, so a crash can never leave a
-   completed dispatch with no receipt. A crash in either gap is resumable: the
-   same exact attempt may reclaim its owner and receipt persistence is idempotent.
-
-   `detail` distinguishes how the completion was learned: nil for the worker's
-   own report, a reason string when it was recovered from the batch's state.
-
-   The *settled* record travels back alongside the receipt. A lost completion
-   claim returns a typed refusal and never returns the receipt as successful."
-  [evidence-store clock record detail content-digest split-evidence]
-  (if-let [claimed (await (store/claim-dispatch-completion! evidence-store record))]
-    (let [receipt (law/translation-receipt claimed (law/output-revision claimed)
-                                           (clock) content-digest split-evidence)
-          stored-receipt (await (store/record-translation! evidence-store receipt))
-          settled (await (store/finish-dispatch-completion!
-                          evidence-store claimed detail))]
-      (when-not settled
-        (throw (ex-info "translation completion ownership was lost after receipt persistence"
-                        {:dispatch/key (:dispatch/key claimed)
-                         :dispatch/attempt-id (:dispatch/attempt-id claimed)})))
-      {:translation/receipt stored-receipt
-       :dispatch/record settled})
-    {:translation/refusal (attempt-lost-refusal record)}))
-
-(defn- ^:async refuse-drifted-completion!
-  "Refuse a completion whose source has moved, and settle the claim for good.
-
-   Terminal rather than retriable, which is the opposite of what an earlier
-   version did. Retrying *this* claim can never work: the worker fetches current
-   bytes, and the dispatch key contains the revision that is no longer current,
-   so every attempt would be refused on completion and re-enqueued. That is an
-   endless queue, not a recovery.
-
-   Nothing is lost. An intent tracking `:source/current` resolves to the new
-   digest next pass, which is a different key and a fresh claim. An intent that
-   pinned the old revision genuinely cannot be satisfied, and its gate staying
-   blocked is the honest outcome. See `law/unreachable-outcome`."
-  [evidence-store record drift]
-  (let [settled (await (store/resolve-dispatch!
-                        evidence-store record
-                        law/unreachable-outcome
-                        "source moved between dispatch and completion"))]
-    (cond-> {:translation/refusal drift}
-      (some? settled) (assoc :dispatch/record settled))))
-
-(defn- ^:async complete-if-source-agrees!
-  "Mint the receipt only if the source still hashes to the dispatched revision.
-
-   Shared by the worker's own completion report and by recovery from batch
-   state. Recovery used to mint directly, which meant the one path that exists
-   *because* evidence was lost was also the one path that skipped verifying it —
-   the weaker check exactly where it matters most."
-  [evidence-store clock observe-source-revision record content-digest split-evidence]
-  (if-let [drift (law/source-drift-refusal
-                  record
-                  (await (observe-source-revision record)))]
-    (await (refuse-drifted-completion! evidence-store record drift))
-    (await (record-completion! evidence-store clock record nil content-digest
-                               split-evidence))))
-
-(defn- ^:async recovered-completion-result!
-  "Classify a completion recovery without calling a moved attempt unreachable."
-  [evidence-store record result]
-  (let [attempt-moved? (= :dispatch-already-resolved
-                          (get-in result [:translation/refusal :refusal/type]))
-        current (when attempt-moved?
-                  (await (store/dispatch-for-key!
-                          evidence-store (:dispatch/key record))))]
-    (assoc result
-           :dispatch/outcome (cond
-                               (:translation/receipt result) :dispatch/completed
-                               attempt-moved? :dispatch/duplicate
-                               :else law/unreachable-outcome)
-           :dispatch/record (or (:dispatch/record result) current record))))
-
-(defn- ^:async recover-settled-batch!
-  "Re-read the batch behind an in-flight claim, and settle the claim if this
-   document finished.
-
-   The recovery for evidence that was *earned* but never recorded. The worker
-   reports a completion once and does not retry after a successful POST, so if
-   the bookkeeping that turns that report into a receipt failed transiently, the
-   report is gone and the claim would read in flight forever.
-
-   Nothing extra has to be persisted, because the batch still knows. The status
-   route accumulates `completed_documents` and `failed_documents` on the batch
-   with `$push`, so the batch names which documents finished — read directly
-   rather than inferred from the batch-wide status. `partial` means *some*
-   document failed and does not say which; recovering from status alone only
-   worked because a Knoxx-created batch happens to carry exactly one document,
-   and that is an assumption this no longer needs.
-
-   Anything else — still running, or an unreadable batch — leaves the claim alone
-   and reports a duplicate, the honest answer for work still in progress."
-  [{:keys [evidence-store client clock observe-source-revision]} record]
-  (when-not (fn? observe-source-revision)
-    (throw (ex-info "recovering a settled batch requires a source-revision observer"
-                    {:dispatch/key (:dispatch/key record)})))
-  (let [batch (try
-                (await (openplanner-client/translation-batch!
-                        client
-                        (:dispatch/batch-id record)
-                        {:org_id (:dispatch/org-id record)}))
-                (catch :default _ nil))
-        outcome (when batch
-                  (law/batch-document-outcome batch
-                                              (:dispatch/document-wire-id record)))]
-    (case outcome
-      :completed
-      ;; Through the same drift guard as the worker's own report. This branch
-      ;; exists because evidence was lost, which is no reason to trust it more.
-      (await (recovered-completion-result!
-              evidence-store record
-              (await (complete-if-source-agrees!
-                      evidence-store clock observe-source-revision record nil nil))))
-
-      :failed
-      (await (settle-failure! evidence-store record
-                              "the batch reports this document failed"))
-
-      {:dispatch/outcome :dispatch/duplicate :dispatch/record record})))
-
-(defn- ^:async reserve-and-send!
-  "Claim the key, then send or report what the existing claim says."
-  [{:keys [evidence-store client] :as deps} checked-work context record]
-  (let [reservation (await (store/reserve-dispatch! evidence-store record))]
-    (case (:reservation/status reservation)
-      :reserved (await (accept-dispatch! evidence-store client checked-work context
-                                         (:record reservation)))
-
-      ;; In flight is not necessarily still running. Two recoverable cases hide
-      ;; here, and reporting duplicate for both is what leaves a claim stuck
-      ;; forever: with no batch id an earlier send was ambiguous, and with one
-      ;; the batch may have finished while the bookkeeping that should have
-      ;; recorded it failed.
-      :in-flight
-      (if (:dispatch/batch-id (:record reservation))
-        (await (recover-settled-batch! deps (:record reservation)))
-        (await (recover-ambiguous-send!
-                evidence-store client checked-work context (:record reservation)
-                "recovering an earlier ambiguous send")))
-
-      ;; Already settled. Nothing to re-enqueue.
-      :done
-      {:dispatch/outcome :dispatch/duplicate
-       :dispatch/record (:record reservation)})))
 
 (defn ^:async dispatch-work!
   "Dispatch one derived translation work item, exactly once.
@@ -416,29 +85,7 @@
    Returns the outcome and the record it applies to. A duplicate is not an
    error: it is the correct answer to asking twice."
   [{:keys [clock] :as deps} work context]
-  (let [checked-work (law/assert-valid! :translation-dispatch/work law/DerivedWork work)
-        pin-refusal (law/pin-refusal checked-work context)
-        record (law/dispatch-record checked-work
-                                    context
-                                    (if pin-refusal
-                                      law/unreachable-outcome
-                                      :dispatch/accepted)
-                                    (clock)
-                                    :attempt-id (crypto/random-uuid)
-                                    :recovery-reason
-                                    (:dispatch/recovery-reason context))]
-    (if pin-refusal
-      ;; Refused before any batch is created, and deliberately NOT persisted. A
-      ;; pin refusal is a decision about *current* state, not an observed fact:
-      ;; restore the checkout to the pinned bytes and it simply stops applying.
-      ;; Recorded as a terminal claim it would outlive its own reason — the
-      ;; reservation would keep finding it, answer duplicate, and block a pin
-      ;; that had become perfectly valid. Nothing is written, so the next pass
-      ;; re-decides from scratch.
-      {:dispatch/outcome law/unreachable-outcome
-       :dispatch/record record
-       :translation/refusal pin-refusal}
-      (await (reserve-and-send! deps checked-work context record)))))
+  (await (worker/dispatch-work! deps work context batch-listing-cap clock)))
 
 (defn ^:async candidate-recovery-context!
   "Mark a fresh attempt when the evidence snapshot found no usable candidate.
@@ -462,8 +109,6 @@
       (contains? #{:dispatch/completed :dispatch/duplicate}
                  (:dispatch/outcome existing))
       (assoc :dispatch/recovery-reason :candidate-unavailable))))
-
-;; ── Deriving work from desired state ───────────────────────────────────────
 
 (defn derived-work
   "The translation work one hydrated intent derives, or nil.
@@ -503,26 +148,6 @@
                                      :publication/id (:publication/id intent))))))
     @results))
 
-;; ── Resolving the worker's answer ──────────────────────────────────────────
-
-(defn- exact-split-completion?
-  "Whether one receipt is the idempotent completion requested by an agent set."
-  [record content-digest split-evidence receipt]
-  (and (= (:dispatch/key record) (:translation/dispatch-key receipt))
-       (= (law/output-revision record) (:translation/revision receipt))
-       (= content-digest (:translation/content-digest receipt))
-       (every? (fn [[key value]] (= value (get receipt key))) split-evidence)))
-
-(defn- ^:async existing-split-completion!
-  "Read the first stored receipt for an equal terminal agent retry, or nil."
-  [evidence-store record content-digest split-evidence]
-  (when (and record split-evidence)
-    (some #(when (exact-split-completion? record content-digest split-evidence %) %)
-          (await (store/completed-translations!
-                  evidence-store
-                  {:org-id (:dispatch/org-id record)
-                   :project (:dispatch/project record)})))))
-
 (defn ^:async resolve-batch-report!
   "Turn one worker status report into translation evidence, or refuse it.
 
@@ -539,39 +164,12 @@
    Returns `{:translation/receipt r}` on success, or `{:translation/refusal f}`."
   [{:keys [evidence-store clock observe-source-revision
            translation-content-digest translation-split-evidence]} report]
-  ;; Required, not optional, and for the same reason
-  ;; `publication-target-registry` requires its locale guard: a caller that
-  ;; forgot to supply the check must fail, not quietly get a version with the
-  ;; check missing. Defaulting to "assume unchanged" would delete the only
-  ;; evidence that the worker translated the revision this receipt names.
-  (when-not (fn? observe-source-revision)
-    (throw (ex-info "resolving a completion requires a source-revision observer"
-                    {:batch_id (:batch_id report)})))
-  (let [checked (law/assert-valid! :translation-dispatch/status-report
-                                   law/BatchStatusReport
-                                   report)
-        record (await (store/dispatch-for-batch-document!
-                       evidence-store
-                       (:batch_id checked)
-                       (:completed_document checked)))]
-    (if-let [refusal (law/completion-refusal record checked)]
-      ;; Split tools retry at-least-once. Once the raw set and its receipt are
-      ;; durable, an equal replay is the same fact, not a new completion. This
-      ;; path is intentionally gated by full lineage so legacy worker callbacks
-      ;; retain their existing already-resolved refusal semantics.
-      (if-let [receipt (await (existing-split-completion!
-                               evidence-store record translation-content-digest
-                               translation-split-evidence))]
-        {:translation/receipt receipt}
-        {:translation/refusal refusal})
-      ;; The worker was handed a document id and fetched the content when it ran,
-      ;; so the bytes it translated are only knowably the dispatched revision if
-      ;; the source has not moved since. Verified rather than assumed — see
-      ;; `law/source-drift-refusal`.
-      (await (complete-if-source-agrees! evidence-store clock
-                                         observe-source-revision record
-                                         translation-content-digest
-                                         translation-split-evidence)))))
+  (await (completion/resolve-batch-report!
+          {:evidence-store evidence-store :clock clock
+           :observe-source-revision observe-source-revision
+           :translation-content-digest translation-content-digest
+           :translation-split-evidence translation-split-evidence}
+          report)))
 
 (defn ^:async fail-batch-document!
   "Record that the worker could not translate one document of a batch.
@@ -584,7 +182,7 @@
   (if-let [record (await (store/dispatch-for-batch-document! evidence-store
                                                              batch-id
                                                              document-wire-id))]
-    (await (settle-failure! evidence-store record detail))
+    (await (completion/settle-failure! evidence-store record detail))
     {:translation/refusal {:refusal/type :dispatch-record-missing
                            :refusal/actual {:batch_id batch-id
                                             :document document-wire-id}}}))
@@ -602,6 +200,6 @@
    asking for a translation that already failed."
   [{:keys [evidence-store]} batch-id detail]
   (if-let [record (await (store/dispatch-for-batch! evidence-store batch-id))]
-    (await (settle-failure! evidence-store record detail))
+    (await (completion/settle-failure! evidence-store record detail))
     {:translation/refusal {:refusal/type :dispatch-record-missing
                            :refusal/actual {:batch_id batch-id}}}))

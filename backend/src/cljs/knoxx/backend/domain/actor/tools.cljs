@@ -83,6 +83,35 @@
                  (nonblank (:parent-run-id agent-spec))
                  (nonblank (:parent_run_id agent-spec)))}))
 
+(defn- resolved-target-address
+  [ctx parent target target-type target-id explicit-conversation-id explicit-session-id explicit-run-id]
+  (cond-> {:target target
+           :target-type target-type
+           :conversation-id explicit-conversation-id
+           :session-id explicit-session-id
+           :run-id (or explicit-run-id (:run-id ctx))}
+    (= target "self")
+    (merge {:conversation-id (or explicit-conversation-id (:conversation-id ctx))
+            :session-id (or explicit-session-id (:session-id ctx))
+            :run-id (or explicit-run-id (:run-id ctx))})
+
+    (= target "parent")
+    (merge {:conversation-id (or explicit-conversation-id (:conversation-id parent))
+            :session-id (or explicit-session-id (:session-id parent))
+            :run-id (or explicit-run-id (:run-id parent))})
+
+    (#{"conversation" "conversation-id" "conversationid"} target-type)
+    (merge {:conversation-id (or explicit-conversation-id target-id)})
+
+    (#{"session" "session-id" "sessionid"} target-type)
+    (merge {:session-id (or explicit-session-id target-id)})
+
+    (#{"actor" "actor-id" "actorid"} target-type)
+    (merge {:actor-id target-id})
+
+    (= "event" target-type)
+    (merge {:event-target target-id})))
+
 (defn- resolve-target-sync
   [params metadata]
   (let [ctx (current-context)
@@ -98,32 +127,8 @@
         explicit-run-id (nonblank (or (aget params "run_id")
                                       (aget params "runId")))
         parent (parent-context ctx metadata)]
-    (cond-> {:target target
-             :target-type target-type
-             :conversation-id explicit-conversation-id
-             :session-id explicit-session-id
-             :run-id (or explicit-run-id (:run-id ctx))}
-      (= target "self")
-      (merge {:conversation-id (or explicit-conversation-id (:conversation-id ctx))
-              :session-id (or explicit-session-id (:session-id ctx))
-              :run-id (or explicit-run-id (:run-id ctx))})
-
-      (= target "parent")
-      (merge {:conversation-id (or explicit-conversation-id (:conversation-id parent))
-              :session-id (or explicit-session-id (:session-id parent))
-              :run-id (or explicit-run-id (:run-id parent))})
-
-      (#{"conversation" "conversation-id" "conversationid"} target-type)
-      (merge {:conversation-id (or explicit-conversation-id target-id)})
-
-      (#{"session" "session-id" "sessionid"} target-type)
-      (merge {:session-id (or explicit-session-id target-id)})
-
-      (#{"actor" "actor-id" "actorid"} target-type)
-      (merge {:actor-id target-id})
-
-      (= "event" target-type)
-      (merge {:event-target target-id}))))
+    (resolved-target-address ctx parent target target-type target-id
+                             explicit-conversation-id explicit-session-id explicit-run-id)))
 
 (defn- ^:async resolve-session-conversation!
   [target]

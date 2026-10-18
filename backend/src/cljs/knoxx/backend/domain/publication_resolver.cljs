@@ -203,6 +203,15 @@
     (:publication/id resource)
     (update :publications conj (canonicalize-intent resource))))
 
+(defn- publication-identity-conflict
+  "Describe one id only when its distinct payloads disagree."
+  [[id intents]]
+  (let [payloads (distinct intents)]
+    (when (> (count payloads) 1)
+      {:resource/kind :publications
+       :resource/id id
+       :conflicting-payloads (vec (sort-by stable-payload-key payloads))})))
+
 (defn publication-identity-conflicts
   "Intents that share one canonical `:publication/id` while disagreeing on what
    it stands for.
@@ -229,12 +238,7 @@
   [publications]
   (->> publications
        (group-by :publication/id)
-       (keep (fn [[id intents]]
-               (let [payloads (distinct intents)]
-                 (when (> (count payloads) 1)
-                   {:resource/kind :publications
-                    :resource/id id
-                    :conflicting-payloads (vec (sort-by stable-payload-key payloads))}))))
+       (keep publication-identity-conflict)
        (sort-by #(pr-str (:resource/id %)))
        vec))
 

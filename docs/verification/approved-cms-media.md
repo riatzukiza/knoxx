@@ -27,10 +27,12 @@ and publications stay outside its ownership.
 The fixture's native CMS and publication route handlers are production code.
 The auth-context seam supplies a disposable session principal. Translation
 evidence and split stores are explicitly process-local empty verification
-stores. The receipt journal is also process-local, with the runtime's existing
-retention bound; none of these stores is a production persistence fallback.
-CMS readbacks in this run prove receipt wiring within that owned process, not
-survival across restart or a configured durable receipt adapter. The public
+stores. The default `--check`, `--serve` and browser modes use the process-local receipt
+journal with its existing retention bound. Their CMS readbacks prove wiring
+within that process. `--durable-check` explicitly selects the canonical Clio
+receipt adapter in a separate directory inside this owned fixture; it must
+complete the fresh-process checks below to establish restart recovery. None of
+these fixtures supplies a production persistence fallback. The public
 reader validates the native manifest and serves only a committed route's artifact and
 the exact supplied selected image. Its HTML wrapper is a disposable reader,
 not a claim that the Website deployment has been qualified.
@@ -85,6 +87,52 @@ receipts and both CMS responses after each operation, alongside artifact and
 manifest digests. Its successful assertions require native HTTP readbacks;
 syntax checks or source-only precondition tests do not establish these live
 results. Shell teardown removes this file with the rest of the fixture.
+
+For durable receipt and actual publisher process restart verification:
+
+```bash
+KNOXX_VERIFY_ART_FILE=/absolute/path/to/Sutured_Signal.svg \
+  scripts/verify-approved-cms-media.sh --durable-check
+```
+
+This mode runs the same native save, state edits, real English reconciliation,
+Spanish refusal and metadata-only noop. It then makes 205 additional real
+reconcile POSTs for that English publication. Every returned noop must equal
+its actual predecessor receipt. The fresh receipt GET must contain all 208
+emissions in order: one materialization, one blocked Spanish receipt and 206
+noops. Both CMS GETs must retain the original observed revision with desired
+still published, and the public artifact and manifest must remain byte-identical.
+
+The shell terminates and reaps its original owned publisher PID, then starts a
+new OS process with the exact same source proof and compiled artifact. That
+process reopens the existing owned canonical CMS document history, publication
+resources, content and Clio receipt namespace. It does not seed desired state,
+inject receipts, reconcile or translate. Independent receipt, CMS list and CMS
+document HTTP GETs must recover the exact prior vector and materialized
+revision. A fresh anonymous public reader must serve the original artifact,
+manifest and artwork digests. The reads must append no fact. Private proof and
+`restart-verification.json` bind the different PIDs and both sets of readbacks;
+shell teardown removes the entire fixture and its second process.
+
+The deployment configuration seam is explicit:
+`KNOXX_PUBLICATION_RECEIPT_LEDGER_DIRECTORY` selects an existing absolute receipt
+root. Organization is taken from admitted request context; project is taken
+from server configuration. Scoped partition identity is exact, not inferred
+from publication title. Every emitted receipt receives a distinct canonical
+Clio envelope, even when its receipt payload equals an earlier noop. Missing
+or malformed selected roots, incomplete known partitions, replaced ledger
+inodes and invalid receipt provenance refuse; they do not fall back to the
+volatile journal. Without selection, existing journal/custom-sink behavior
+continues. A selected custom sink is called only after canonical persistence;
+its own failure still refuses operation success. Exact prepared-envelope
+retries use unchanged Clio admission and require a same-inode locked empty
+append/fsync acknowledgment before returning success.
+
+This finite fixture proves same-volume process restart recovery. It does not
+prove directory-entry fsync, power-loss behavior, deployed storage mounts,
+production namespace provisioning, Mongo durability or provider/review output.
+Translation evidence and split stores remain process-local. It does not admit
+an image for deployment or approve downstream Services rollout.
 
 Each passing check explains the fact it establishes. Any failure prints its
 reason and exits nonzero; teardown still runs. There is no successful retained

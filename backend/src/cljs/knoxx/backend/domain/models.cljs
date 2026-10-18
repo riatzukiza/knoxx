@@ -1,15 +1,13 @@
 (ns knoxx.backend.domain.models
   (:require [clojure.string :as str]
-            [knoxx.backend.domain.contracts.loader :as contract-loader]))
+            [knoxx.backend.domain.contracts.loader :as contract-loader]
+            [knoxx.backend.domain.models.config :as model-config]))
 
 (def ^:private default-model-prefix-allowlist
   ["glm-5" "gpt-5" "qwen3" "gemma4:" "gemma3:" "deepseek" "kimi-k2" "nemotron" "cogito" "devstral" "minimax" "ministral" "mistral-large"])
 
 (def ^:private thinking-levels
-  #{"off" "minimal" "low" "medium" "high" "xhigh"})
-
-(def ^:private input-kinds
-  #{"text" "image" "audio" "video" "document"})
+  model-config/thinking-levels)
 
 (def ^:private eta-mu-registry-input-kinds
   #{"text" "image" "audio"})
@@ -24,93 +22,25 @@
 
 (defn normalize-thinking-level
   [value]
-  (let [normalized (some-> value str str/trim str/lower-case not-empty)]
-    (when (contains? thinking-levels normalized)
-      normalized)))
+  (model-config/normalize-thinking-level value))
 
 (defn normalize-input-kind
   [value]
-  (let [normalized (cond
-                     (keyword? value) (some-> value name str/trim str/lower-case not-empty)
-                     :else (some-> value str str/trim str/lower-case not-empty))]
-    (when (contains? input-kinds normalized)
-      normalized)))
-
-(defn- normalize-boolean
-  [value]
-  (cond
-    (true? value) true
-    (false? value) false
-    :else nil))
-
-(defn- normalize-string-seq
-  [values]
-  (->> (or values [])
-       (map (fn [value]
-              (cond
-                (keyword? value) (some-> value name str/trim not-empty)
-                :else (some-> value str str/trim not-empty))))
-       (remove nil?)
-       distinct
-       vec))
-
-(defn- normalize-thinking-level-seq
-  [values]
-  (->> (or values [])
-       (map normalize-thinking-level)
-       (remove nil?)
-       distinct
-       vec))
-
-(defn- normalize-input-kind-seq
-  [values]
-  (->> (or values [])
-       (map normalize-input-kind)
-       (remove nil?)
-       distinct
-       vec))
+  (model-config/normalize-input-kind value))
 
 (defn- normalize-provider-id
   [value]
-  (cond
-    (keyword? value) (some-> value name str/trim not-empty)
-    :else (some-> value str str/trim not-empty)))
+  (model-config/normalize-provider-id value))
 
 (declare normalize-model-api)
 
 (defn- normalize-model-family-contract
   [contract]
-  (when-let [family-id (some-> (:model-family/id contract) str str/trim not-empty)]
-    {:id family-id
-     :provider (normalize-provider-id (:model-family/provider contract))
-     :api (normalize-model-api (:model-family/api contract))
-     :compat (when (map? (:model-family/compat contract)) (:model-family/compat contract))
-     :prefixes (normalize-string-seq (:model-family/prefixes contract))
-     :allowlisted (normalize-boolean (:model-family/allowlisted contract))
-     :reasoning (normalize-boolean (:model-family/reasoning contract))
-     :default-thinking (normalize-thinking-level (:model-family/default-thinking contract))
-     :thinking-levels (normalize-thinking-level-seq (:model-family/thinking-levels contract))
-     :context-window (when (number? (:model-family/context-window contract)) (:model-family/context-window contract))
-     :max-tokens (when (number? (:model-family/max-tokens contract)) (:model-family/max-tokens contract))
-     :input (normalize-input-kind-seq (:model-family/input contract))}))
+  (model-config/normalize-model-family-contract contract))
 
 (defn- normalize-model-contract
   [contract]
-  (when-let [model-id (some-> (:model/id contract) str str/trim not-empty)]
-    {:id model-id
-     :family-id (some-> (:model-family/id contract) str str/trim not-empty)
-     :provider (normalize-provider-id (:model/provider contract))
-     :api (normalize-model-api (:model/api contract))
-     :compat (when (map? (:model/compat contract)) (:model/compat contract))
-     :default (normalize-boolean (:model/default contract))
-     :allowlisted (normalize-boolean (:model/allowlisted contract))
-     :reasoning (normalize-boolean (:model/reasoning contract))
-     :default-thinking (normalize-thinking-level (:model/default-thinking contract))
-     :thinking-levels (normalize-thinking-level-seq (:model/thinking-levels contract))
-     :context-window (when (number? (:model/context-window contract)) (:model/context-window contract))
-     :max-tokens (when (number? (:model/max-tokens contract)) (:model/max-tokens contract))
-     :input (normalize-input-kind-seq (:model/input contract))
-     :label (some-> (:model/label contract) str str/trim not-empty)}))
+  (model-config/normalize-model-contract contract))
 
 (defn model-family-contracts
   [config]
@@ -199,12 +129,7 @@
 
 (defn- normalize-model-api
   [value]
-  (let [normalized (some-> value name str/trim str/lower-case not-empty)]
-    (case normalized
-      "openai-responses" "openai-responses"
-      "openai/completions" "openai-completions"
-      "openai-completions" "openai-completions"
-      nil)))
+  (model-config/normalize-model-api value))
 
 (defn model-prefers-responses?
   [config model-id]
@@ -298,62 +223,11 @@
 
 (defn provider-openai-base-url
   [base-url]
-  (let [base (or base-url "")]
-    (cond
-      (str/blank? base) nil
-      (str/ends-with? base "/v1") base
-      (str/ends-with? base "/") (str base "v1")
-      :else (str base "/v1"))))
-
-(def ^:private proxx-affinity-compat
-  {:sendSessionAffinityHeaders true
-   :supportsLongCacheRetention true})
+  (model-config/provider-openai-base-url base-url))
 
 (defn- provider-settings-map
   [config]
-  (let [configured-base-urls (or (:provider-base-urls config) {})
-        configured-auth-tokens (or (:provider-auth-tokens config) {})
-        configured-auth-headers (or (:provider-auth-headers config) {})
-        configured-provider-ids (->> (concat (keys configured-base-urls)
-                                             (keys configured-auth-tokens)
-                                             (keys configured-auth-headers))
-                                     (map normalize-provider-id)
-                                     (remove nil?)
-                                     distinct)
-        configured-providers (reduce (fn [acc provider-id]
-                                       (let [base-url (provider-openai-base-url (get configured-base-urls provider-id))
-                                             configured-api-key (get configured-auth-tokens provider-id)
-                                             api-key (or configured-api-key
-                                                         (when (= "ollama" provider-id)
-                                                           "ollama"))
-                                             auth-header-raw (some-> (get configured-auth-headers provider-id) str str/trim str/lower-case)
-                                             auth-header? (if (some? auth-header-raw)
-                                                            (not (#{"false" "0" "no" "off"} auth-header-raw))
-                                                            (or (not= "ollama" provider-id)
-                                                                (some? configured-api-key)))]
-                                         (if base-url
-                                           (assoc acc provider-id
-                                                  (cond-> {:baseUrl base-url
-                                                           :authHeader auth-header?}
-                                                    (some? api-key)
-                                                    (assoc :apiKey api-key)))
-                                           acc)))
-                                     {}
-                                     configured-provider-ids)]
-    (merge-with merge
-     (cond->
-      {"proxx" {:baseUrl (provider-openai-base-url (:proxx-base-url config))
-                 :apiKey "PROXX_AUTH_TOKEN"
-                 :authHeader true
-                 :compat proxx-affinity-compat}}
-       (not (str/blank? (:ollama-base-url config)))
-       (assoc "ollama" {:baseUrl (provider-openai-base-url (:ollama-base-url config))
-                         ;; Eta-mu requires an apiKey value for custom providers.
-                         ;; Its OpenAI client sends this harmless dummy bearer;
-                         ;; local Ollama ignores authentication headers.
-                         :apiKey "ollama"
-                         :authHeader false}))
-     configured-providers)))
+  (model-config/provider-settings-map config))
 
 (defn per-model-compat
   "Compute per-model compat so reasoning/thinking settings aren't
@@ -384,6 +258,15 @@
        distinct
        vec))
 
+(defn- group-models-by-provider
+  [config models]
+  (reduce (fn [acc model-id]
+            (let [provider-id (or (some-> (resolve-model-contract config model-id) :provider normalize-provider-id)
+                                  "proxx")]
+              (update acc provider-id (fnil conj []) model-id)))
+          {}
+          models))
+
 (defn models-config
   ([config]
    (models-config config nil))
@@ -398,12 +281,7 @@
                   ["glm-5"])
          base-compat {:supportsDeveloperRole false}
          provider-settings (provider-settings-map config)
-         models-by-provider (reduce (fn [acc model-id]
-                                      (let [provider-id (or (some-> (resolve-model-contract config model-id) :provider normalize-provider-id)
-                                                            "proxx")]
-                                        (update acc provider-id (fnil conj []) model-id)))
-                                    {}
-                                    models)
+         models-by-provider (group-models-by-provider config models)
          providers (reduce-kv (fn [acc provider-id provider-model-ids]
                                 (if-let [settings (get provider-settings provider-id)]
                                   (let [provider-compat (merge base-compat (:compat settings))]
@@ -427,6 +305,27 @@
                          (:id contract)))))
       (some-> (model-contracts config) first :id)))
 
+(defn- model-execution-defaults
+  "Assemble model selection and thinking defaults in their existing order."
+  [config]
+  {:model-prefix-allowlist
+   (parse-prefix-allowlist
+    (or (:model-prefix-allowlist config)
+        (aget js/process.env "KNOXX_MODEL_PREFIX_ALLOWLIST")
+        "glm-5,gpt-5,qwen3,gemma4:,gemma3:,deepseek,kimi-k2,nemotron,cogito,devstral,minimax,ministral,mistral-large"))
+
+   :proxx-default-model
+   (or (:proxx-default-model config)
+       (default-model-from-contracts config)
+       "glm-5")
+
+   :agent-thinking-level
+   (or (normalize-thinking-level
+        (or (:agent-thinking-level config)
+            (aget js/process.env "KNOXX_THINKING_LEVEL")
+            "off"))
+       "off")})
+
 (defn enrich-config
   "Augment an env-only config map with derived model config fields.
 
@@ -434,25 +333,8 @@
    call sites continue to find these keys."
   [config]
   (merge
-   {:model-prefix-allowlist
-    (parse-prefix-allowlist
-     (or (:model-prefix-allowlist config)
-         (aget js/process.env "KNOXX_MODEL_PREFIX_ALLOWLIST")
-         "glm-5,gpt-5,qwen3,gemma4:,gemma3:,deepseek,kimi-k2,nemotron,cogito,devstral,minimax,ministral,mistral-large"))
-
-    :proxx-default-model
-    (or (:proxx-default-model config)
-        (default-model-from-contracts config)
-        "glm-5")
-
-    :agent-thinking-level
-    (or (normalize-thinking-level
-         (or (:agent-thinking-level config)
-             (aget js/process.env "KNOXX_THINKING_LEVEL")
-             "off"))
-        "off")
-
-    :reasoning-model-prefixes
+   (model-execution-defaults config)
+   {:reasoning-model-prefixes
     (or (:reasoning-model-prefixes config)
         (aget js/process.env "KNOXX_REASONING_MODEL_PREFIXES")
         "glm-")

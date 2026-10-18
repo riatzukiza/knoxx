@@ -3,7 +3,7 @@
    injection system. This is the single integration point between Knoxx's
    deployment logic and the reusable katamorph contract runtime."
   (:require [knoxx.backend.domain.action.registry :as action-registry]
-            [knoxx.backend.domain.contracts.loader :as contract-loader]
+            [knoxx.backend.domain.contracts.loader]
             [knoxx.backend.domain.filter.registry :as filter-registry]
             [knoxx.backend.domain.resources.loader :as resources]
             [knoxx.backend.infra.store.registry :as store-registry]))

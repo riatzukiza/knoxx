@@ -443,42 +443,41 @@
 
 (defn ^:async get-eta-mu-ingest-status
   []
-  (let [[state all-files] (await (promise/all-vec [(load-ingest-state) (discover-session-files 0)]))]
-    (let [^js state state
-          ingested-ids (js/Set. (js/Object.keys (.-sessions state)))
-               pending (.filter all-files
-                                (fn [^js f] (not (.has ingested-ids (.-sessionId f)))))
-               stale (.filter all-files
-                              (fn [^js f]
-                                (let [^js existing (aget (.-sessions state) (.-sessionId f))]
-                                  (and existing (< (or (.-mtime existing) 0) (.-mtime f))))))
-               total-ingested (reduce
-                               (fn [sum s] (+ sum (or (aget s "eventCount") 0)))
-                               0
-                               (js/Object.values (.-sessions state)))
-               last-ingested (reduce
-                              (fn [max-val s]
-                                (let [at (aget s "ingestedAt")]
-                                  (if (and at (> (.length at) (.length max-val))) at max-val)))
-                              ""
-                              (js/Object.values (.-sessions state)))
-               recent (->> (js/Object.entries (.-sessions state))
-                           (sort-by (fn [[_ s]] (aget s "ingestedAt")) #(> %1 %2))
-                           (take 10)
-                           (mapv (fn [[id s]]
-                                   #js {:sessionId id
-                                        :eventCount (aget s "eventCount")
-                                        :ingestedAt (aget s "ingestedAt")
-                                        :dir (aget s "dir")})))]
-           #js {:ok true
-                :etaMuSessionsRoot ETA-MU-SESSIONS-ROOT
-                :totalSessionFiles (.-length all-files)
-                :ingestedSessions (.-size ingested-ids)
-                :pendingSessions (.-length pending)
-                :staleSessions (.-length stale)
-                :totalIngestedEvents total-ingested
-                :lastIngestedAt last-ingested
-                :recentIngested (clj->js recent)})))
+  (let [[^js state all-files] (await (promise/all-vec [(load-ingest-state) (discover-session-files 0)]))
+        ingested-ids (js/Set. (js/Object.keys (.-sessions state)))
+        pending (.filter all-files
+                         (fn [^js f] (not (.has ingested-ids (.-sessionId f)))))
+        stale (.filter all-files
+                       (fn [^js f]
+                         (let [^js existing (aget (.-sessions state) (.-sessionId f))]
+                           (and existing (< (or (.-mtime existing) 0) (.-mtime f))))))
+        total-ingested (reduce
+                        (fn [sum s] (+ sum (or (aget s "eventCount") 0)))
+                        0
+                        (js/Object.values (.-sessions state)))
+        last-ingested (reduce
+                       (fn [max-val s]
+                         (let [at (aget s "ingestedAt")]
+                           (if (and at (> (.length at) (.length max-val))) at max-val)))
+                       ""
+                       (js/Object.values (.-sessions state)))
+        recent (->> (js/Object.entries (.-sessions state))
+                    (sort-by (fn [[_ s]] (aget s "ingestedAt")) #(> %1 %2))
+                    (take 10)
+                    (mapv (fn [[id s]]
+                            #js {:sessionId id
+                                 :eventCount (aget s "eventCount")
+                                 :ingestedAt (aget s "ingestedAt")
+                                 :dir (aget s "dir")})))]
+    #js {:ok true
+         :etaMuSessionsRoot ETA-MU-SESSIONS-ROOT
+         :totalSessionFiles (.-length all-files)
+         :ingestedSessions (.-size ingested-ids)
+         :pendingSessions (.-length pending)
+         :staleSessions (.-length stale)
+         :totalIngestedEvents total-ingested
+         :lastIngestedAt last-ingested
+         :recentIngested (clj->js recent)}))
 
 
 (defn ^:async list-eta-mu-sessions

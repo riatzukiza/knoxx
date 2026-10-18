@@ -1,8 +1,6 @@
 (ns knoxx.backend.infra.routes.mcp
   "Serve Knoxx tools over MCP (Model Context Protocol) Streamable HTTP."
   (:require [clojure.string :as str]
-            [malli.core :as m]
-            [malli.error :as me]
             [knoxx.backend.shape.app-shapes :refer [route!]]
             [knoxx.backend.infra.actor.acting :as actor-acting]
             [knoxx.backend.infra.auth.authz :as authz]

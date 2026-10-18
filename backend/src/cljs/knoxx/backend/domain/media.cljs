@@ -2,6 +2,7 @@
   "Shared media infrastructure: workspace path resolution, temp files,
    mime-type detection, data-URL decoding, and source loading."
   (:require [clojure.string :as str]
+            [knoxx.backend.domain.media.result :as media-result]
             [knoxx.backend.infra.document-state :refer [normalize-relative-path]]
             [knoxx.backend.domain.text :refer [tool-text-result]]
             [knoxx.backend.infra.actor.credentials :as actor-credentials]
@@ -165,6 +166,23 @@
                   (path-is-absolute? node-path rel))
       rel)))
 
+(defn- candidate-media-absolute-path
+  "Select the native candidate path before the existing allowed-root checks."
+  [node-path config normalized safe-path music-root]
+  (cond
+    (path-is-absolute? node-path safe-path)
+    (path-resolve node-path safe-path)
+
+    (and normalized
+         music-root
+         (or (= normalized "Music")
+             (str/starts-with? normalized "Music/")))
+    (let [suffix (subs normalized (min (count normalized) (count "Music/")))]
+      (path-resolve node-path (:root music-root) suffix))
+
+    :else
+    (path-resolve node-path (:workspace-root config) safe-path)))
+
 (defn resolve-workspace-media-path
   [_runtime config raw-path]
   (let [node-path path
@@ -172,19 +190,7 @@
         safe-path (or normalized "")
         roots (allowed-media-root-records node-path config)
         music-root (some #(when (= "Music" (:alias %)) %) roots)
-        absolute (cond
-                   (path-is-absolute? node-path safe-path)
-                   (path-resolve node-path safe-path)
-
-                   (and normalized
-                        music-root
-                        (or (= normalized "Music")
-                            (str/starts-with? normalized "Music/")))
-                   (let [suffix (subs normalized (min (count normalized) (count "Music/")))]
-                     (path-resolve node-path (:root music-root) suffix))
-
-                   :else
-                   (path-resolve node-path (:workspace-root config) safe-path))
+        absolute (candidate-media-absolute-path node-path config normalized safe-path music-root)
         matched-root (some (fn [root-record]
                              (when-let [rel (media-root-relative-path node-path (:root root-record) absolute)]
                                {:root-record root-record
@@ -377,11 +383,8 @@
         _ (await (exec-file-async "ffmpeg" args #js {:timeout 120000 :maxBuffer 1048576}))
         buffer (await (fs-read-file! fs output-path))
         filename (str base-name "-" label ".png")
-        part {:type "image"
-              :data (buffer->data-url buffer "image/png")
-              :mimeType "image/png"
-              :filename filename
-              :size (.-length buffer)}]
+        part (media-result/content-part "image" (buffer->data-url buffer "image/png")
+                                         "image/png" filename (.-length buffer))]
     (tool-text-result
      (str "Rendered " label " for " (or (:filename source) (:relative source) raw-source) ".")
      {:source raw-source

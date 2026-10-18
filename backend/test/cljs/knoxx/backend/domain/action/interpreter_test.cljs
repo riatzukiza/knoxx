@@ -4,7 +4,7 @@
   (:require [cljs.test :refer [deftest is testing]]
             [knoxx.backend.domain.action.interpreter :as interpreter]
             [knoxx.backend.domain.action.registry :as registry]
-            [knoxx.backend.domain.contracts.loader :as contract-loader]
+            [knoxx.backend.domain.contracts.loader]
             [knoxx.backend.domain.filter.registry :as filter-registry]
             [knoxx.backend.domain.resources.loader :as resources]
             [knoxx.backend.infra.store.protocol :as store]

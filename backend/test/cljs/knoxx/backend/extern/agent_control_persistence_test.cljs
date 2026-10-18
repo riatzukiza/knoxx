@@ -2,13 +2,13 @@
   "Actual live-control responses wait for their real ordered durable event writer."
   (:require [cljs.test :as test]
             [knoxx.backend.domain.realtime :as realtime]
+            [knoxx.backend.extern.agent-session-fixture :as session-fixture]
             [knoxx.backend.extern.agent-turn-fixture :as fixture]
             [knoxx.backend.extern.event-queue-fixture :as queue-fixture]
             [knoxx.backend.infra.agent.runtime :as runtime]
             [knoxx.backend.infra.agent.session :as sessions]
             [knoxx.backend.infra.run-events :as events]
             [knoxx.backend.infra.stores.session-store-registry :as registry]
-            [knoxx.backend.shape.agent :as agent]
             [knoxx.backend.shape.session-persistence :as runs]))
 
 (def ^:private coordinates
@@ -21,10 +21,10 @@
 
 (defn- session [failure]
   (let [invoke (^:async fn [] (when failure (throw failure)))]
-    (reify agent/IAgentSession
-      (streaming? [_] true)
-      (follow-up! [_ _] (invoke))
-      (steer! [_ _] (invoke)))))
+    (session-fixture/session
+      {:streaming? (fn [_] true)
+       :follow-up! (fn [_ _] (invoke))
+       :steer! (fn [_ _] (invoke))})))
 
 (defn- ^:async control-outcome! [kind settled*]
   (try
