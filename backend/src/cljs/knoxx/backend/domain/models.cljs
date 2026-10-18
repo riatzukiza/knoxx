@@ -305,6 +305,27 @@
                          (:id contract)))))
       (some-> (model-contracts config) first :id)))
 
+(defn- model-execution-defaults
+  "Assemble model selection and thinking defaults in their existing order."
+  [config]
+  {:model-prefix-allowlist
+   (parse-prefix-allowlist
+    (or (:model-prefix-allowlist config)
+        (aget js/process.env "KNOXX_MODEL_PREFIX_ALLOWLIST")
+        "glm-5,gpt-5,qwen3,gemma4:,gemma3:,deepseek,kimi-k2,nemotron,cogito,devstral,minimax,ministral,mistral-large"))
+
+   :proxx-default-model
+   (or (:proxx-default-model config)
+       (default-model-from-contracts config)
+       "glm-5")
+
+   :agent-thinking-level
+   (or (normalize-thinking-level
+        (or (:agent-thinking-level config)
+            (aget js/process.env "KNOXX_THINKING_LEVEL")
+            "off"))
+       "off")})
+
 (defn enrich-config
   "Augment an env-only config map with derived model config fields.
 
@@ -312,25 +333,8 @@
    call sites continue to find these keys."
   [config]
   (merge
-   {:model-prefix-allowlist
-    (parse-prefix-allowlist
-     (or (:model-prefix-allowlist config)
-         (aget js/process.env "KNOXX_MODEL_PREFIX_ALLOWLIST")
-         "glm-5,gpt-5,qwen3,gemma4:,gemma3:,deepseek,kimi-k2,nemotron,cogito,devstral,minimax,ministral,mistral-large"))
-
-    :proxx-default-model
-    (or (:proxx-default-model config)
-        (default-model-from-contracts config)
-        "glm-5")
-
-    :agent-thinking-level
-    (or (normalize-thinking-level
-         (or (:agent-thinking-level config)
-             (aget js/process.env "KNOXX_THINKING_LEVEL")
-             "off"))
-        "off")
-
-    :reasoning-model-prefixes
+   (model-execution-defaults config)
+   {:reasoning-model-prefixes
     (or (:reasoning-model-prefixes config)
         (aget js/process.env "KNOXX_REASONING_MODEL_PREFIXES")
         "glm-")

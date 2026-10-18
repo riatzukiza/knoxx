@@ -1,7 +1,7 @@
 ---
 category: "tasks"
 labels: ["tasks", "5sp"]
-write-id: "1792280695579-0.2qgde2pogos17a5khtq"
+write-id: "1792283383150-0.lg9p2dg9e9r9ljlzxz7"
 points: "5"
 source: "specs/tasks/knoxx-backend-lint-async-workflows-src.md"
 title: "Knoxx Backend Lint — Async Workflow Refactor for Source Namespaces"
@@ -262,5 +262,19 @@ For indented code, retain original blank/code classification, branch short circu
 Before effects, freeze actual clean source/preimages/new-path absence, owner/write-id, all local refs, empty index and four prefixes. The law parent directory already exists: create only the new regular0644 file, the sole allowed untracked path before explicit staging. Run unchanged two-full-file owning lint and full registered backend lint once. Require both original target causes removed, no added causes, owning zero warnings/errors, and outside-target rows/locations exact. Retain failed global status and record actual counts; historical709a136 or prospective post-B132 is not the executable baseline.
 
 Commit exactly two product files plus the official owner card/event. Append one canonical Receipt River record and one portable Session Mycology entry, then commit only those two provenance paths. Use command-local no-auto-GC Git options on both supervised commits. Preserve historical prefixes and foreign refs/dirt. Uncertain effects stop for read-only reconciliation without comment/source/lint/commit replay. No tests/JVM/compiler/runtime/hosted QA, public ref/PR, provider/model, DB, PM2 or deployment effect is included. Coherent unchanged backend qualification remains required.
+
+Continue the existing backend source-lint owner with five precise source paths: infra/translation_evidence_store.cljs, new portable domain/translation_evidence_state.cljc, domain/mcp/mcp_bridge.cljs, domain/models.cljs, and domain/discord/discord_reaction_labels.cljs. This is decoded claim/completion state plus existing-owner SDK descriptor/model-default/weak-reaction metadata assembly; no new feature or board lifecycle scope.
+
+Move only the six reviewed private evidence-state definitions into the portable module, with four explicit internal exports and one shared admitted reservation-state assembly. Preserve the public store protocol/Vars/arities, unchanged memory-store constructor, single swap/validation/Promise placement, exact attempt/completion-owner guards, idempotent completed fast paths, and all receipt/approval identity and replay policy. The callback-bearing update-in-flight-state stays with its existing infrastructure owner.
+
+MCP separates only descriptor data assembly: the original async execute closure remains byte exact and deferred in its original eager mapv callback, with live call-tool!, native getter/encoding/update/error order unchanged. Model defaults preserve first-three then last-two field evaluation and every fallback; the caller config still overrides last. Native operations remain at their current owners, with no new raw interop, callback protocol, public wrapper, schema/config/checker policy or model identity.
+
+Use the unchanged complete five-file owning and registered full backend static commands. Expected baseline130 to126 is a prediction until actually measured; require exactly the four approved function-span causes removed, no added cause, and outside-five rows/coordinates exact. Retain both owning warnings: evidence-store file length and unchanged memory-store46. Preserve failed static status and all historical source/event/receipt bytes. After explicit NUL-framed staging, check the staged diff for whitespace before each ordinary source or provenance commit; command-local auto-GC controls stay in force.
+
+Reaction metadata keeps the complete original native cond-> body at the same :extra value position, with opaque raw message restricted to its existing owner. Author getter/label conversion and both timestamp phases remain ordered; no portable projection, new raw operation, callback or public facade is introduced. Direct reaction-family ingestion/getter/clock coverage is absent.
+
+The existing four public evidence-store and seven runtime-model test controls remain unchanged. Direct MCP-constructor and native getter-order gaps remain explicit. Full coherent typecheck/compile-test/server and ordinary review/adoption still apply to the eventual exact successor; this local source/static continuation supplies no compiler/runtime/QA/rollout credit. No new mirrored tests or portability-equivalence claim.
+
+Keep this owner in_progress/P1/5; no status, priority, estimate, dependency or readiness change. No public source/PR/ref publication, hosted workflow, model, database, PM2, account, spending or deployment effect is authorized by this scope note.
 
 ---

@@ -32,6 +32,25 @@
     "❎" "bad"
     nil))
 
+(defn- reaction-extra
+  "Assemble reaction metadata at its original native getter and clock phase."
+  [message channel-id message-id author-id emoji user-id quality]
+  (cond-> {:channel_id channel-id
+           :message_id message-id
+           :author_id author-id
+           :author_username (str (or (js-get message "authorUsername") "unknown"))
+           :author_is_bot (boolean (js-get message "authorIsBot"))
+           :reaction_ingested true
+           :reaction_emoji emoji
+           :reaction_user_id user-id
+           :openplanner_labels {:claim_system "weak-reaction-v1"
+                                :reaction_emojis [emoji]
+                                :labels [(if quality (str "quality:" quality) (str "reaction:" emoji))]
+                                :updated_at (time/now-iso)}}
+    quality (assoc-in [:openplanner_labels :quality] quality)
+    (= quality "good") (assoc-in [:openplanner_labels :explicit_meaning] "good output")
+    (= quality "bad") (assoc-in [:openplanner_labels :explicit_meaning] "bad output")))
+
 (defn- message->openplanner-event
   [config message emoji user-id]
   (let [channel-id (str (or (js-get message "channelId") ""))
@@ -53,21 +72,7 @@
      :meta {:role "user"
             :author author-id
             :tags ["discord" "message" "reaction-corpus"]}
-     :extra (cond-> {:channel_id channel-id
-                     :message_id message-id
-                     :author_id author-id
-                     :author_username (str (or (js-get message "authorUsername") "unknown"))
-                     :author_is_bot (boolean (js-get message "authorIsBot"))
-                     :reaction_ingested true
-                     :reaction_emoji emoji
-                     :reaction_user_id user-id
-                     :openplanner_labels {:claim_system "weak-reaction-v1"
-                                          :reaction_emojis [emoji]
-                                          :labels [(if quality (str "quality:" quality) (str "reaction:" emoji))]
-                                          :updated_at (time/now-iso)}}
-              quality (assoc-in [:openplanner_labels :quality] quality)
-              (= quality "good") (assoc-in [:openplanner_labels :explicit_meaning] "good output")
-              (= quality "bad") (assoc-in [:openplanner_labels :explicit_meaning] "bad output"))}))
+     :extra (reaction-extra message channel-id message-id author-id emoji user-id quality)}))
 
 (defn- ^:async ingest-reaction-events!
   [client record-id event emoji user-id]
