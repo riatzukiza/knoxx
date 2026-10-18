@@ -1,7 +1,7 @@
 ---
 category: "tasks"
 labels: ["tasks", "5sp"]
-write-id: "1792283997553-0.leii7kqudagbvk2rdk6"
+write-id: "1792286045851-0.xy49myewitilecilt3l"
 points: "5"
 source: "specs/tasks/knoxx-backend-lint-async-workflows-src.md"
 title: "Knoxx Backend Lint — Async Workflow Refactor for Source Namespaces"
@@ -286,5 +286,15 @@ Media adds one private candidate-media-absolute-path helper at the existing abso
 Target exactly create-entry!44, retry-eligible!33 and resolve-workspace-media-path39 spans. Current closed B5 evidence is126warnings/0errors/native2FAIL;123 is only the successor expectation, not an execution result. Run unchanged owning two complete-file lint and registered full backend lint once; require exact three removals/no additions and outside-two complete rows/coordinates held. Retain mailbox file-length>=400 and unchanged media loader41 warnings, owning2/native2 and globalFAIL. Existing7mailbox public controls/18assertionforms and Blaze path consumers remain unchanged. Enabled-database INSERT/retry/locking/parameter-order and direct media containment/native-order coverage gaps remain; inverse/source evidence is not runtime qualification.
 
 Before effects separately bind actual clean H/tree/index/all refs, both source preimages/modes, actual complete baseline, tools/configs, fresh canonical owner/write-id and card/event/RR/SM bytes. Use exact no-final-LF ACK, native sections/history and ordered physical-card preservation. Reject all untracked dirt. Apply exactly two tracked postimages; stage exactly products+card+event, require NUL exactset then cached-whitespace check before source commit. Append one canonical RR and portable9lineSM, stage only those two and require NUL exactset then cached-whitespace check before separate provenance commit. Both commits use command-local no-auto-GC. Preserve all historical bytes/foreign state; uncertain effects stop without replay. No compiler/test/JVM/runtime/QA/publicref/PR/provider/model/DB/PM2/deploy effect is included.
+
+Continue the existing in-progress/P1/5 backend source owner with one material persistence responsibility batch; no lifecycle or readiness change.
+
+Scope: backend/src/cljs/knoxx/backend/domain/actor/mailbox.cljs; new backend/src/cljs/knoxx/backend/infra/db/mailbox_queries.cljc; backend/src/cljs/knoxx/backend/infra/translation_evidence_store.cljs; backend/src/cljs/knoxx/backend/domain/translation_evidence_state.cljc; new backend/src/cljs/knoxx/backend/infra/translation_evidence_memory_dispatch.cljs; new backend/src/cljs/knoxx/backend/law/translation_evidence_store_rules.cljc.
+
+Move exact static PostgreSQL query data while retaining mailbox root private SQL Vars, metadata and original call-site lookups. All21 parameter expressions, JSON positions, enabled guard, UUID, native parsing, DB clocks/locking/query/await order remain unchanged. Separate store native dispatch implementation from root protocol/public policy/factory, append the exact pure approval reducer, and delegate seven decoded leaf laws with original root public Vars/docs/arities and one original scope destructure. All higher-order/root-public callsites remain in their owners. Explicit internal exports: two SQL data Vars, nine dispatch-adapter functions, seven leaf-law functions and one existing-state approval reducer. Private store aliases capture ordinary function values at load; their private metadata/reload/redefinition behavior is not claimed identical.
+
+Validation after fresh exact source/owner/ref/four-prefix binding and root admission: once unchanged six-full-file owning lint, once full registered backend lint; require exactly the two touched mailbox/store file-length causes removed, no new causes and complete outside-six rows/locations held. Retain unchanged memory-store46 owning warning and all other global FAIL causes. Current123 to121 and owning1 are predictions until those actual commands close. Explicit six product paths plus this canonical card/event form one source commit; separate canonical RR and portable SM appends form one provenance commit, with exact NUL path guards, cached whitespace checks and command-local noautoGC.
+
+All existing tests/configs/thresholds stay unchanged. Seven mailbox/four store source controls leave enabled SQL/locking/21parameter, private Var/reload, namespace compile/load and exotic data/lookup/callback-schedule gaps; no compiler, test, runtime, mutation, model, database, host, QA, public source, production, policy or deployment effects are part of this local source/static continuation. No spore.
 
 ---

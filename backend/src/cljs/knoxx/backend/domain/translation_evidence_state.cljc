@@ -110,3 +110,13 @@
 
       :else
       (assoc current :answer nil))))
+
+(defn record-approval-in-state
+  "Store `approval` under `identity` unless one is already there, answering
+   which happened."
+  [current identity approval]
+  (if-let [existing (get-in current [:approvals identity])]
+    (assoc current :answer {:approval/status :existing :approval existing})
+    (-> current
+        (assoc-in [:approvals identity] approval)
+        (assoc :answer {:approval/status :recorded :approval approval}))))
