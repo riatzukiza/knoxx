@@ -1448,3 +1448,12 @@
   spore: none
   receipt-refs: 5e83094c-827c-4a55-a4c6-027ec4ad53bb
   note: Whole-source inverses preserve exact mailbox SQL/21parameter/native phases, root private SQL lookup, store protocol/factory/public defns and live public policy calls. One root scope destructure, native Promise/swap/validation/claim/complete sequence and leaf laws remain source-bound. New internal SQL data/adapter/leaf/state exports and private alias loadtime/metadata limits explicit. Unchanged seven mailbox/four store controls leave enabled DB/private metadata/reload/newmodule/exotic-data runtime gaps; static results provide no compiler/runtime credit. All tests/config/checker policy held; no spore.
+- ts: 2026-10-18T01:48:19.006156324Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-full-CI-workflow-repair-over933-v1
+  task: Retain sanitized legacy authenticated readiness refusal facts; runtime cause UNKNOWN
+  p-efficiency: 0.9
+  p-friction: 0.1
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: 99ee6c61-7cd9-438c-8aba-363a3a150e68
+  note: Original requests/auth/guard/refusal/cleanup and19 test methods held. Same3 focused methods oldhelper8diagnostic-only FAIL to proposed3/0/0, with six actual-wrapper projections and actual-verifier2/fault/cleanup/redaction/silent-success controls. Full installed22-method and hosted runtime pending; no causal repair/deployment claim. Initial wrong-class discovery refusal retained. No spore.
