@@ -1,7 +1,7 @@
 ---
 category: "tasks"
 labels: ["tasks", "5sp"]
-write-id: "1792283383150-0.lg9p2dg9e9r9ljlzxz7"
+write-id: "1792283997553-0.leii7kqudagbvk2rdk6"
 points: "5"
 source: "specs/tasks/knoxx-backend-lint-async-workflows-src.md"
 title: "Knoxx Backend Lint — Async Workflow Refactor for Source Namespaces"
@@ -276,5 +276,15 @@ Reaction metadata keeps the complete original native cond-> body at the same :ex
 The existing four public evidence-store and seven runtime-model test controls remain unchanged. Direct MCP-constructor and native getter-order gaps remain explicit. Full coherent typecheck/compile-test/server and ordinary review/adoption still apply to the eventual exact successor; this local source/static continuation supplies no compiler/runtime/QA/rollout credit. No new mirrored tests or portability-equivalence claim.
 
 Keep this owner in_progress/P1/5; no status, priority, estimate, dependency or readiness change. No public source/PR/ref publication, hosted workflow, model, database, PM2, account, spending or deployment effect is authorized by this scope note.
+
+Continue the existing in-progress backend source owner with the separately reviewed native mailbox query and media candidate-path responsibility boundaries after an admitted clean input freeze. This scope changes no status, priority, points, dependencies or readiness. The portable-mailbox HOLD and unchanged media loader remain explicit.
+
+Change only existing domain/actor/mailbox.cljs and domain/media.cljs. Mailbox adds two private static SQL definitions with complete literal bytes unchanged and one private21parameter helper in the same CLJS namespace. Keep initial entry/conditional UUID generation and target/source/delivery reads before the database capability guard. Every original parameter expression, including JSON serialization positions8/14/19/20, remains inside the enabled branch and original query-argument phase. Preserve native parse/default/await/query/return/disabled order and database-side NOW(), expiry, locking, update and backoff semantics.
+
+Media adds one private candidate-media-absolute-path helper at the existing absolute-value binding. Move the complete original cond with node-path/config/normalized/safe-path/music-root inputs; retain conditional workspace lookup, original native shim live calls, relative/escape/root matching and unchanged error/containment guards afterwards. Keep opaque handles in the original CLJS owner. Existing public names/arities/live Vars and other source stay unchanged; no new native expression, callback, public facade/export, contract, clock/cache capture or purity claim.
+
+Target exactly create-entry!44, retry-eligible!33 and resolve-workspace-media-path39 spans. Current closed B5 evidence is126warnings/0errors/native2FAIL;123 is only the successor expectation, not an execution result. Run unchanged owning two complete-file lint and registered full backend lint once; require exact three removals/no additions and outside-two complete rows/coordinates held. Retain mailbox file-length>=400 and unchanged media loader41 warnings, owning2/native2 and globalFAIL. Existing7mailbox public controls/18assertionforms and Blaze path consumers remain unchanged. Enabled-database INSERT/retry/locking/parameter-order and direct media containment/native-order coverage gaps remain; inverse/source evidence is not runtime qualification.
+
+Before effects separately bind actual clean H/tree/index/all refs, both source preimages/modes, actual complete baseline, tools/configs, fresh canonical owner/write-id and card/event/RR/SM bytes. Use exact no-final-LF ACK, native sections/history and ordered physical-card preservation. Reject all untracked dirt. Apply exactly two tracked postimages; stage exactly products+card+event, require NUL exactset then cached-whitespace check before source commit. Append one canonical RR and portable9lineSM, stage only those two and require NUL exactset then cached-whitespace check before separate provenance commit. Both commits use command-local no-auto-GC. Preserve all historical bytes/foreign state; uncertain effects stop without replay. No compiler/test/JVM/runtime/QA/publicref/PR/provider/model/DB/PM2/deploy effect is included.
 
 ---

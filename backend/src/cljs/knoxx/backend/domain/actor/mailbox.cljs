@@ -184,17 +184,9 @@
       (some-> (first (rows result)) row->route))
     nil))
 
-(defn ^:async create-entry!
-  [runtime raw-entry]
-  (let [entry (mailbox-entry raw-entry)
-        target (:mailbox/target entry)
-        source (:mailbox/source entry)
-        delivery (:mailbox/delivery entry)]
-    (if-not (database-enabled? runtime)
-      (assoc entry :mailbox/durable? false)
-      (do
-        (await (query! runtime
-                  "INSERT INTO actor_mailbox_entries
+(def ^:private create-entry-sql
+  "Static INSERT text; execution and database-clock semantics stay in query!."
+  "INSERT INTO actor_mailbox_entries
                    (id, kind, status,
                     source_actor_id, source_session_id, source_conversation_id, source_run_id, source_json,
                     target_kind, target_actor_id, target_session_id, target_conversation_id, target_run_id, target_json,
@@ -206,28 +198,46 @@
                     $9, $10, $11, $12, $13, $14::jsonb,
                     $15, $16, $17::timestamptz, $18::timestamptz,
                     $19::jsonb, $20::jsonb, $21)
-                   RETURNING *"
-                  [(:mailbox/id entry)
-                   (:mailbox/kind entry)
-                   (:mailbox/status entry)
-                   (:actor-id source)
-                   (:session-id source)
-                   (:conversation-id source)
-                   (:run-id source)
-                   (json-param source)
-                   (:kind target)
-                   (:actor-id target)
-                   (:session-id target)
-                   (:conversation-id target)
-                   (:run-id target)
-                   (json-param target)
-                   (:mode delivery)
-                   (:attempts delivery)
-                   (:next-at delivery)
-                   (:mailbox/expires-at entry)
-                   (json-param (:mailbox/content-ref entry))
-                   (json-param (:mailbox/metadata entry))
-                   (:mailbox/preview entry)]))
+                   RETURNING *")
+
+(defn- create-entry-params
+  "Prepare parameters inside the enabled database branch, retaining native
+   JSON serialization at its original field-read positions."
+  [entry target source delivery]
+  [(:mailbox/id entry)
+   (:mailbox/kind entry)
+   (:mailbox/status entry)
+   (:actor-id source)
+   (:session-id source)
+   (:conversation-id source)
+   (:run-id source)
+   (json-param source)
+   (:kind target)
+   (:actor-id target)
+   (:session-id target)
+   (:conversation-id target)
+   (:run-id target)
+   (json-param target)
+   (:mode delivery)
+   (:attempts delivery)
+   (:next-at delivery)
+   (:mailbox/expires-at entry)
+   (json-param (:mailbox/content-ref entry))
+   (json-param (:mailbox/metadata entry))
+   (:mailbox/preview entry)])
+
+(defn ^:async create-entry!
+  [runtime raw-entry]
+  (let [entry (mailbox-entry raw-entry)
+        target (:mailbox/target entry)
+        source (:mailbox/source entry)
+        delivery (:mailbox/delivery entry)]
+    (if-not (database-enabled? runtime)
+      (assoc entry :mailbox/durable? false)
+      (do
+        (await (query! runtime
+                  create-entry-sql
+                  (create-entry-params entry target source delivery)))
         (assoc entry :mailbox/durable? true)))))
 
 (defn mark-delivery!
@@ -374,17 +384,9 @@
              :metadata (:mailbox/metadata entry)
              :preview (:mailbox/preview entry)}})
 
-(defn ^:async retry-eligible!
-  [runtime {:keys [mailbox-id statuses max-attempts limit delay-seconds]}]
-  (if-not (database-enabled? runtime)
-    {:entries [] :durable? false}
-    (let [statuses* (or (seq statuses) ["pending" "failed"])
-          max-attempts* (positive-int max-attempts 5 100)
-          limit* (positive-int limit 25 200)
-          delay-seconds* (let [parsed (js/parseInt (str (or delay-seconds 0)) 10)]
-                           (if (js/isNaN parsed) 0 (max 0 parsed)))
-          result (await (query! runtime
-                  "WITH candidates AS (
+(def ^:private retry-eligible-sql
+  "Static locked retry UPDATE; its NOW() expressions run only in the database."
+  "WITH candidates AS (
                      SELECT id
                      FROM actor_mailbox_entries
                      WHERE status = ANY($1::text[])
@@ -404,7 +406,19 @@
                        updated_at = NOW()
                    FROM candidates
                    WHERE m.id = candidates.id
-                   RETURNING m.*"
+                   RETURNING m.*")
+
+(defn ^:async retry-eligible!
+  [runtime {:keys [mailbox-id statuses max-attempts limit delay-seconds]}]
+  (if-not (database-enabled? runtime)
+    {:entries [] :durable? false}
+    (let [statuses* (or (seq statuses) ["pending" "failed"])
+          max-attempts* (positive-int max-attempts 5 100)
+          limit* (positive-int limit 25 200)
+          delay-seconds* (let [parsed (js/parseInt (str (or delay-seconds 0)) 10)]
+                           (if (js/isNaN parsed) 0 (max 0 parsed)))
+          result (await (query! runtime
+                  retry-eligible-sql
                   [statuses* max-attempts* limit* delay-seconds* (nonblank mailbox-id)]))]
       {:entries (mapv row->entry (rows result))
        :durable? true})))

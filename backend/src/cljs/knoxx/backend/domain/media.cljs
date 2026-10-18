@@ -166,6 +166,23 @@
                   (path-is-absolute? node-path rel))
       rel)))
 
+(defn- candidate-media-absolute-path
+  "Select the native candidate path before the existing allowed-root checks."
+  [node-path config normalized safe-path music-root]
+  (cond
+    (path-is-absolute? node-path safe-path)
+    (path-resolve node-path safe-path)
+
+    (and normalized
+         music-root
+         (or (= normalized "Music")
+             (str/starts-with? normalized "Music/")))
+    (let [suffix (subs normalized (min (count normalized) (count "Music/")))]
+      (path-resolve node-path (:root music-root) suffix))
+
+    :else
+    (path-resolve node-path (:workspace-root config) safe-path)))
+
 (defn resolve-workspace-media-path
   [_runtime config raw-path]
   (let [node-path path
@@ -173,19 +190,7 @@
         safe-path (or normalized "")
         roots (allowed-media-root-records node-path config)
         music-root (some #(when (= "Music" (:alias %)) %) roots)
-        absolute (cond
-                   (path-is-absolute? node-path safe-path)
-                   (path-resolve node-path safe-path)
-
-                   (and normalized
-                        music-root
-                        (or (= normalized "Music")
-                            (str/starts-with? normalized "Music/")))
-                   (let [suffix (subs normalized (min (count normalized) (count "Music/")))]
-                     (path-resolve node-path (:root music-root) suffix))
-
-                   :else
-                   (path-resolve node-path (:workspace-root config) safe-path))
+        absolute (candidate-media-absolute-path node-path config normalized safe-path music-root)
         matched-root (some (fn [root-record]
                              (when-let [rel (media-root-relative-path node-path (:root root-record) absolute)]
                                {:root-record root-record
