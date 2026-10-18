@@ -1430,3 +1430,12 @@
   spore: none
   receipt-refs: 2a0bb9ee-c2c5-494f-9da2-30b3111d2b3a
   note: Exact source inverses preserve public store protocol, single swap/Promise owner/order, claim/completion decisions, deferred MCP execution and model defaults/caller override precedence. Existing four public store controls and seven runtime-model tests remain source-bound; direct MCP/getter-order and reaction ingestion/clock gaps explicit; reaction metadata stays at its original :extra phase. Static checks provide no compiler/runtime/JVM credit. All tests/config/checker policy held; no spore.
+- ts: 2026-10-18T00:40:10.242867461Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-full-CI-workflow-repair-over933-v1
+  task: Separate native mailbox query and media candidate assembly; retain actual global123 static warnings
+  p-efficiency: 0.9
+  p-friction: 0.1
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: 71581866-2983-4720-9b84-1c3e6a87c90f
+  note: Exact SQL literals/21parameter expressions/native JSON positions remain inside original enabled query phase. Media complete original candidate cond stays at original absolute binding, with native getters/shim calls before unchanged containment/error guards. UUID/native parsing/DB clocks/locking and media conditional workspace lookups stay native-owned; no purity claim or new callbacks/exports. Existing7mailbox public controls and Blaze path consumers held; enabled-DB and direct containment/native-order gaps remain. Coherent successor runtime pending; all tests/config/checker policy held, no spore.
