@@ -1421,3 +1421,12 @@
   spore: none
   receipt-refs: ad47d0b2-134e-4ecf-a5c2-102566a835d3
   note: Exact moved-source and whole-source inverses preserve line/block parsing and original public partition admission. Classification, sequence advance and selected state lookup order are retained. Existing24 public source-split tests and unchanged agent/resource consumers remain the coherent runtime gate; static checks provide no runtime/JVM portability credit. All original tests/config/checker policy held; no spore.
+- ts: 2026-10-18T00:29:56.506843397Z
+  session: /home/err/.local/share/openhax-codex/20261010/knoxx-full-CI-workflow-repair-over933-v1
+  task: Separate evidence state and native event metadata; retain actual global126 static warnings
+  p-efficiency: 0.9
+  p-friction: 0.1
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: 2a0bb9ee-c2c5-494f-9da2-30b3111d2b3a
+  note: Exact source inverses preserve public store protocol, single swap/Promise owner/order, claim/completion decisions, deferred MCP execution and model defaults/caller override precedence. Existing four public store controls and seven runtime-model tests remain source-bound; direct MCP/getter-order and reaction ingestion/clock gaps explicit; reaction metadata stays at its original :extra phase. Static checks provide no compiler/runtime/JVM credit. All tests/config/checker policy held; no spore.
