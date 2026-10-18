@@ -258,6 +258,34 @@ translation_fixture_legacy_result() {
      ($segment == "" or .segment_id == $segment)' >/dev/null 2>&1
 }
 
+translation_fixture_legacy_readiness_diagnostic() {
+  # Inspect only the two responses already held by the original failed guard.
+  local guard_exit="$1" pipeline_statuses="$2" detail="$3" segment="$4" label response diagnostic
+  printf 'DIAGNOSTIC legacy readiness guard: {"guard_exit":%s,"pipeline_statuses":[%s]}\n' \
+    "$guard_exit" "${pipeline_statuses// /,}" >&2 || :
+  for label in detail segment; do
+    if [ "$label" = detail ]; then response="$detail"; else response="$segment"; fi
+    diagnostic="$(printf '%s' "$response" | jq -Rsc '
+      index("\n") as $newline |
+      (if $newline == null then . else .[:$newline] end) as $status |
+      (if $newline == null then . else .[$newline + 1:] end) |
+      (try {valid:true,value:fromjson} catch {valid:false}) as $parsed |
+      $parsed.value as $value |
+      {status_class:(if $status == "" then "missing"
+                     elif ($status | test("^[0-9]{3}$")) then "numeric" else "malformed" end),
+       http_status:(if ($status | test("^[0-9]{3}$")) then ($status | tonumber) else null end),
+       json_valid:$parsed.valid,
+       root_type:(if $parsed.valid then ($value | type) else null end),
+       error_code:(if $parsed.valid and ($value | type) == "object" then
+         ([$value.error_code,$value.code,$value.error] |
+          map(select(type == "string" and IN("no_session","unauthorized","forbidden","permission_denied","not_found"))) | .[0])
+         else null end)}' 2>/dev/null)" \
+      || diagnostic='{"diagnostic_error":"unavailable"}'
+    [ "${#diagnostic}" -le 1024 ] || diagnostic='{"diagnostic_error":"oversized"}'
+    printf 'DIAGNOSTIC legacy readiness %s: %s\n' "$label" "$diagnostic" >&2 || :
+  done
+}
+
 translation_fixture_legacy_snapshot() {
   local detail segment stored detail_body segment_body
   detail="$(translation_fixture_legacy_auth_http GET "$LEGACY_DETAIL_URL")" \
@@ -265,7 +293,10 @@ translation_fixture_legacy_snapshot() {
   segment="$(translation_fixture_legacy_auth_http GET "$LEGACY_SEGMENT_URL")" \
     || { translation_fixture_legacy_fail "legacy authenticated segment readiness unavailable"; return 1; }
   [ "${detail%%$'\n'*}" = 200 ] && [ "${segment%%$'\n'*}" = 200 ] \
-    || { translation_fixture_legacy_fail "legacy authenticated detail/segment readiness refused"; return 1; }
+    || {
+      translation_fixture_legacy_readiness_diagnostic "$?" "${PIPESTATUS[*]}" "$detail" "$segment" || :
+      translation_fixture_legacy_fail "legacy authenticated detail/segment readiness refused"; return 1;
+    }
   detail_body="${detail#*$'\n'}"; segment_body="${segment#*$'\n'}"
   if ! printf '%s' "$detail_body" | jq -e --arg doc "$VERIFY_LEGACY_DOCUMENT_ID" \
        --arg segment "$LEGACY_SEGMENT_ID" \

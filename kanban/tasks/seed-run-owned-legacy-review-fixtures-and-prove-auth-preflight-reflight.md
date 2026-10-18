@@ -4,7 +4,7 @@ labels: "tasks, 5sp, has-parent, verification, translations, cms"
 dependency: []
 parent: "knoxx-translation-review-chat-panel"
 type: "task"
-write-id: "1792279090483-0.3s2b5i0n4ahs5awa4v9"
+write-id: "1792288051196-0.azjos0cmkcbvl53yzi6"
 points: "5"
 title: "Seed run-owned legacy review fixtures and prove auth preflight"
 priority: "P0"
@@ -387,5 +387,7 @@ Keep original predicate byteexact and executed once; no new HTTP/Mongo action, r
 Extend only the existing explicitly synthetic legacy_phase data/fault inputs and three public cleanup tests. Preserve all16 original test method bodies; cover silent empty200 success, owned-present200, wrong-shape200,401/no_session, invalidJSON, a deterministic original guard7 and broken/missing diagnostic jq (7/127), secret sentinels and retained ownership/primary failure. Execute meaningful test-only RED before helper implementation, then the unchanged full registered Python precondition suite and shell syntax GREEN; no backend application test selection changes.
 
 Existing UUID knoxx-translation-review-legacy-fixture-auth-preflight remains in_progress/P0/5 with parent/dependencies/history unchanged. Global0E136W/native2FAIL and all skipped fullCI/runtime/review/adoption/migration/staging/publication obligations remain. No readiness/state/points/dependency/public/ref/QA/model/production DB/PM2/account/deployment change; any next source-bound fullCI needs separate admission.
+
+Exact-source diagnostic follow-up after18d1 fullCI39086023709. The failed check rejected at least one extracted browser detail/segment status; actual HTTP code, route and cause remain unknown. Add failure-only sanitized diagnostics for the already-held responses. Original requests, authentication, guard, refusal and checked cleanup are preserved. Existing19 methods remain exact; three added controls cover six actual-browser-wrapper projections, real verifier refusal with diagnostic faults, redaction and silent success. Old helper RED3methods/8diagnostic-only failures; proposed helper GREEN3/0/0. Full installed-SDK22-method and hosted runtime qualification remain pending. No causal application repair or deployment is claimed.
 
 ---

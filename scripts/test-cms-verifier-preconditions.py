@@ -179,7 +179,8 @@ class LegacyReviewPreflightProcessTest(unittest.TestCase):
 
     @contextmanager
     def legacy_phase(self, mode="closed", cleanup_failure=False, project="real-synthetic-project",
-                     actual_verifier=False, recover=False, list_response=None, jq_failure=None):
+                     actual_verifier=False, recover=False, list_response=None, jq_failure=None,
+                     readiness_responses=None, browser_auth=False):
         with tempfile.TemporaryDirectory(prefix="knoxx-legacy-phase-synthetic-") as temporary:
             root = Path(temporary)
             checkout = root / "checkout"
@@ -224,6 +225,12 @@ if Path(sys.argv[0]).name=='nbb':
   s['present']=False;save(); print(json.dumps(dict(i,action='legacy-cleaned',removed_segment_count=1,removed_label_count=0,remaining_segment_count=0,remaining_label_count=0)));sys.exit(0)
  else: sys.exit(11)
  print(json.dumps(dict(result,segment_count=1,label_count=0,label_version_counter=s['counter'],status='pending',source_text_matches=True,translated_text_matches=True)));sys.exit(0)
+if Path(sys.argv[0]).name=='ab':
+ expression=sys.argv[-1]
+ label='segment' if '/api/translations/segments/' in expression else 'list' if '/api/translations/documents?' in expression else 'detail'
+ event(dict(kind='browser-auth',label=label))
+ result={'status':200,'body':{'documents':[]}} if label=='list' else s['readiness_responses'].get(label,{'status':200,'body':{}})
+ print(result if isinstance(result,str) else json.dumps(result));sys.exit(0)
 args=sys.argv[1:]; method=args[args.index('-X')+1] if '-X' in args else 'GET';url=args[-1]; path=urlsplit(url).path
 headers=[args[n+1] for n,x in enumerate(args[:-1]) if x in ['-H','--header']]
 auth=any(x.lower().startswith('x-api-key: synthetic-key') for x in headers)
@@ -244,6 +251,10 @@ elif path=='/api/translations/documents':
  if s.get('list_response') is not None:
   print(s['list_response']['body']);print(s['list_response']['status']);sys.exit(0)
  status=200;body={'documents':[] if not s['present'] else [{'document_id':os.environ['VERIFY_LEGACY_DOCUMENT_ID']}]}
+elif s.get('readiness_responses') is not None:
+ label='segment' if '/segments/' in path else 'detail'
+ result=s['readiness_responses'].get(label,{'status':200,'body':{}})
+ print(json.dumps(result['body']));print(result['status']);sys.exit(0)
 else:
  i=identity();segment=dict(id=i['segment_id'],document_id=i['document_id'],org_id=i['org_id'],project=i['project'],garden_id=None,target_lang='es',status='pending',labels=[],source_text='synthetic source',translated_text='synthetic translation')
  if s['mode']=='wrong-live-database':segment['id']='64b000000000000000000099'
@@ -252,6 +263,8 @@ print(json.dumps(body));print(status)
 ''')
             stub.chmod(0o755)
             (checkout / "bin/curl").symlink_to(stub)
+            if browser_auth:
+                (checkout / "bin/ab").symlink_to(stub)
             (checkout / "backend/node_modules/.bin/nbb").symlink_to(stub)
             if jq_failure:
                 jq = checkout / "bin/jq"
@@ -274,7 +287,7 @@ os.execv(os.environ['SYNTHETIC_REAL_JQ'],[os.environ['SYNTHETIC_REAL_JQ'],*args]
             clojure.chmod(0o755)
             state = root / "synthetic-store.json"
             state.write_text(json.dumps(dict(mode=mode, cleanup_failure=cleanup_failure, present=False, counter=0,
-                                            list_response=list_response)))
+                                            list_response=list_response, readiness_responses=readiness_responses)))
             events = root / "synthetic-events.jsonl"
             events.touch()
             ownership = root / "durable/ownership.json"
@@ -291,6 +304,15 @@ trap cleanup EXIT
 translation_fixture_legacy_preflight || exit 1
 printf 'RESOURCE_NAVIGATION_ALLOWED\\n'
 ''')
+            if browser_auth:
+                tour = (ROOT / "scripts/verify-translation-split-review-tour.sh").read_text()
+                start = tour.index("translation_fixture_legacy_auth_http() {\n")
+                end = tour.index('BASE_URL="$FRONTEND_URL"', start)
+                browser_function = tour[start:end].rstrip("\n")
+                original_function = 'translation_fixture_legacy_auth_http() { translation_fixture_legacy_http "$1" "$2" auth; }'
+                self.assertEqual(1, wrapper.read_text().count(original_function))
+                wrapper.write_text(wrapper.read_text().replace(original_function, browser_function))
+                wrapper.write_text(wrapper.read_text().replace("FAIL_COUNT=0\n", "FAIL_COUNT=0\nab() { command ab \"$@\"; }\n"))
             env = os.environ.copy()
             env.update(dict(PATH=str(checkout / "bin")+os.pathsep+env.get("PATH",os.defpath),
                             REPO_ROOT=str(checkout), CONTRACTS_DIR=str(checkout/"contracts"),
@@ -315,6 +337,76 @@ printf 'RESOURCE_NAVIGATION_ALLOWED\\n'
                 result.recovery = subprocess.run(["bash",str(recovery)],env=env,cwd=checkout,capture_output=True,text=True,timeout=15)
                 result.first_failure_after_recovery = first_failure.read_bytes()
             yield result, [json.loads(line) for line in events.read_text().splitlines()], json.loads(state.read_text()), ownership
+
+    def test_readiness_diagnostic_classifies_actual_browser_projection_without_repeating_requests(self):
+        secret = "DO_NOT_LOG_SYNTHETIC_READINESS_SECRET"
+        cases = [
+            ("detail", {"status": 500, "body": {"error_code": "forbidden", "secret": secret}},
+             dict(status_class="numeric", http_status=500, json_valid=True, root_type="object", error_code="forbidden")),
+            ("segment", {"status": 503, "body": [secret]},
+             dict(status_class="numeric", http_status=503, json_valid=True, root_type="array", error_code=None)),
+            ("detail", {"body": {"error": secret}},
+             dict(status_class="malformed", http_status=None, json_valid=True, root_type="object", error_code=None)),
+            ("segment", {"status": secret, "body": None},
+             dict(status_class="malformed", http_status=None, json_valid=True, root_type="null", error_code=None)),
+            ("detail", {"status": "", "body": {"secret": secret}},
+             dict(status_class="missing", http_status=None, json_valid=True, root_type="object", error_code=None)),
+            ("segment", secret + "{not-json",
+             dict(status_class="missing", http_status=None, json_valid=False, root_type=None, error_code=None)),
+        ]
+        for label, response, expected in cases:
+            with self.subTest(label=label, expected=expected), self.legacy_phase(
+                    readiness_responses={label: response}, browser_auth=True) as (result, events, state, ownership):
+                self.assertEqual(1, result.returncode, result.stdout+result.stderr)
+                self.assertIn("legacy authenticated detail/segment readiness refused", result.stdout)
+                self.assertNotIn("RESOURCE_NAVIGATION_ALLOWED", result.stdout)
+                self.assertFalse(state['present']); self.assertFalse(ownership.exists())
+                self.assertEqual(['detail','segment','list'], [e['label'] for e in events if e['kind']=='browser-auth'])
+                self.assertFalse(any(e['kind']=='http' and not e['auth'] for e in events))
+                self.assertEqual(1, sum(e['kind']=='helper' and e['action']=='legacy-cleanup' for e in events))
+                first=json.loads(Path(str(ownership)+'.failure.json').read_text())
+                self.assertEqual('legacy authenticated detail/segment readiness refused', first['first_failure'])
+                guards=[json.loads(line.split(': ',1)[1]) for line in result.stderr.splitlines()
+                        if line.startswith('DIAGNOSTIC legacy readiness guard: ')]
+                self.assertEqual([dict(guard_exit=1,pipeline_statuses=[1])], guards)
+                for route in ['detail','segment']:
+                    rows=[json.loads(line.split(': ',1)[1]) for line in result.stderr.splitlines()
+                          if line.startswith('DIAGNOSTIC legacy readiness '+route+': ')]
+                    self.assertEqual(1,len(rows))
+                    self.assertEqual({'status_class','http_status','json_valid','root_type','error_code'},set(rows[0]))
+                    if route==label: self.assertEqual(expected,rows[0])
+                    self.assertLessEqual(len(json.dumps(rows[0])),1024)
+                for forbidden in [secret,'synthetic-key','synthetic source','synthetic translation',
+                                  'knoxx.verifysplit.rcausal-owned-run/legacy-auth','/api/translations/']:
+                    self.assertNotIn(forbidden,result.stdout+result.stderr)
+
+    def test_readiness_diagnostic_fault_preserves_actual_verifier_exit_and_checked_cleanup(self):
+        for fault in [None,'diagnostic','diagnostic-missing']:
+            with self.subTest(fault=fault), self.legacy_phase(actual_verifier=True,
+                    readiness_responses={'detail':dict(status=500,body={'error':'no_session',
+                        'secret':'DO_NOT_LOG_SYNTHETIC_READINESS_SECRET'})}, jq_failure=fault) as (result,events,state,ownership):
+                self.assertEqual(2,result.returncode,result.stdout+result.stderr)
+                self.assertIn('legacy authenticated detail/segment readiness refused',result.stdout)
+                self.assertIn('legacy auth preflight failed',result.stderr)
+                self.assertFalse(state['present']);self.assertFalse(ownership.exists())
+                actions=[e['action'] for e in events if e['kind']=='helper']
+                self.assertEqual(1,actions.count('legacy-cleanup'));self.assertNotIn('seed',actions)
+                requests=[e for e in events if e['kind']=='http' and '/api/translations/' in urlsplit(e['url']).path]
+                self.assertEqual(3,len(requests));self.assertTrue(all(e['auth'] for e in requests))
+                if fault:
+                    self.assertEqual(2,sum(e['kind']=='jq-failure' and e['mode']==fault for e in events))
+                    self.assertIn('DIAGNOSTIC legacy readiness detail: {"diagnostic_error":"unavailable"}',result.stderr)
+                    self.assertIn('DIAGNOSTIC legacy readiness segment: {"diagnostic_error":"unavailable"}',result.stderr)
+                self.assertNotIn('DO_NOT_LOG_SYNTHETIC_READINESS_SECRET',result.stdout+result.stderr)
+                self.assertNotIn('DO_NOT_LOG_SYNTHETIC_JQ_SECRET',result.stdout+result.stderr)
+
+    def test_readiness_diagnostic_is_silent_for_existing_successful_preflight(self):
+        with self.legacy_phase() as (result,events,state,ownership):
+            self.assertEqual(0,result.returncode,result.stdout+result.stderr)
+            self.assertIn('RESOURCE_NAVIGATION_ALLOWED',result.stdout)
+            self.assertNotIn('DIAGNOSTIC legacy readiness',result.stdout+result.stderr)
+            self.assertEqual(['GET','POST','POST'],[e['method'] for e in events if e['kind']=='http' and not e['auth']])
+            self.assertFalse(state['present']);self.assertFalse(ownership.exists())
 
     def test_cleanup_list_diagnostic_preserves_public_success_and_refusal(self):
         owned = "knoxx.verifysplit.rcausal-owned-run/legacy-auth"
