@@ -61,11 +61,42 @@ export ENV="$HOME/.config/knoxx/knoxx.env"
 ```
 
 Use a dedicated Mongo database and local directories; the example database and
-paths are shared names, not per-run isolation.
+paths are shared names, not per-run isolation. Stop any other MongoDB instance
+on port 27017 first. The data directory persists across runs; do not remove it
+without checking its contents.
+
+Start MongoDB and initiate the replica set once. The subshell stops before
+initiation if the process exits or does not respond within the bounded wait:
 
 ```bash
-mongod --replSet rs0 --bind_ip 127.0.0.1 --dbpath /var/lib/knoxx-mongo &
-mongosh --eval 'rs.initiate({_id:"rs0",members:[{_id:0,host:"127.0.0.1:27017"}]})'
+(
+  mkdir -p "$HOME/.local/share/knoxx/mongo" || exit 1
+  mongod --replSet rs0 --bind_ip 127.0.0.1 --dbpath "$HOME/.local/share/knoxx/mongo" &
+  mongo_pid=$!
+  ready=0
+  for attempt in {1..30}; do
+    if ! kill -0 "$mongo_pid" 2>/dev/null; then
+      echo "mongod exited before it was ready" >&2
+      exit 1
+    fi
+    if timeout 2s mongosh "mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=1000" --quiet --eval 'db.adminCommand({ping: 1}).ok' | grep -qx 1; then
+      ready=1
+      break
+    fi
+    sleep 1
+  done
+  if [ "$ready" -ne 1 ] || ! kill -0 "$mongo_pid" 2>/dev/null; then
+    echo "mongod did not become ready; inspect its output" >&2
+    exit 1
+  fi
+  mongosh "mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=1000" --eval 'rs.initiate({_id:"rs0",members:[{_id:0,host:"127.0.0.1:27017"}]})'
+)
+```
+
+Continue only if the command succeeds. On later starts with the same data
+directory, start `mongod` without repeating `rs.initiate`.
+
+```bash
 (cd backend && pnpm install && npx shadow-cljs release server)
 (cd backend && node --env-file="$ENV" dist/server.js)
 ```
