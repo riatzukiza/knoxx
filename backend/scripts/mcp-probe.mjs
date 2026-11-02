@@ -48,7 +48,7 @@ async function main() {
   }
 }
 
-if (process.argv[1] && import.meta.url === new URL(process.argv[1], 'file://').href) {
+if (import.meta.main) {
   main().catch(error => {
     console.error(error.message);
     process.exitCode = 1;

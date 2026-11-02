@@ -53,17 +53,24 @@ never point a 0.6b instance at a database indexed by 8b.
 
 ## Run
 
+Copy `scripts/local-native.env.example` to a private env file and fill in the
+secrets. Set `ENV` to its absolute path, for example:
+
+```bash
+export ENV="$HOME/.config/knoxx/knoxx.env"
+```
+
+Use a dedicated Mongo database and local directories; the example database and
+paths are shared names, not per-run isolation.
+
 ```bash
 mongod --replSet rs0 --bind_ip 127.0.0.1 --dbpath /var/lib/knoxx-mongo &
 mongosh --eval 'rs.initiate({_id:"rs0",members:[{_id:0,host:"127.0.0.1:27017"}]})'
 (cd backend && pnpm install && npx shadow-cljs release server)
-(cd backend && node --env-file=$HOME/.config/knoxx/knoxx.env dist/server.js)
+(cd backend && node --env-file="$ENV" dist/server.js)
 ```
 
-Copy `scripts/local-native.env.example` to a private env file, fill in the
-secrets, and set `ENV` to its absolute path before running these commands. Use
-a dedicated Mongo database and local directories; the example database and
-paths are shared names, not per-run isolation. The log line
+The log line
 `surface :mcp accepts :trusted-loopback` confirms the loopback MCP method is
 live (see `docs/mcp-local-testing.md`).
 
@@ -75,10 +82,10 @@ its vectors. Tool counts and ranking scores are observations, not assertions.
 
 ```bash
 cd backend
-node --env-file=$ENV scripts/mcp-probe.mjs list            # 83 tools
-node --env-file=$ENV scripts/mcp-probe.mjs call push_claim \
+node --env-file="$ENV" scripts/mcp-probe.mjs list            # 83 tools
+node --env-file="$ENV" scripts/mcp-probe.mjs call push_claim \
   '{"claim":"A team shared memory is what survives translation between its members"}'
-node --env-file=$ENV scripts/mcp-probe.mjs call semantic_query \
+node --env-file="$ENV" scripts/mcp-probe.mjs call semantic_query \
   '{"query":"identity lifting into a shared team space","topK":3}'
 ```
 
