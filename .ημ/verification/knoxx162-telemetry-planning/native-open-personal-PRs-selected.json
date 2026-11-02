@@ -1,0 +1,63 @@
+{
+  "repo": "riatzukiza/knoxx",
+  "captured_snapshot": true,
+  "count": 7,
+  "pulls": [
+    {
+      "number": 7,
+      "title": "Plan generator lifecycle, owned cleanup and truthful HTTP status",
+      "head": "10626687f5053286c7dd867959cc911903b1998a",
+      "base": "5670338fcf1db7d51a2690f388e4e4c5c409c48a",
+      "draft": true,
+      "writer": "riatzukiza"
+    },
+    {
+      "number": 6,
+      "title": "Inject trusted spawn capability across event and Discord ingress",
+      "head": "c46f571ba70d155fcd62080a9eec0831f5101f96",
+      "base": "51adea734380b20b7273dcfea5d9cad284845424",
+      "draft": true,
+      "writer": "riatzukiza"
+    },
+    {
+      "number": 5,
+      "title": "Retain native spawn-boundary completion-hold evidence",
+      "head": "51adea734380b20b7273dcfea5d9cad284845424",
+      "base": "95eed680e1ababc7a5b62bb91ce437d282de8dc7",
+      "draft": true,
+      "writer": "riatzukiza"
+    },
+    {
+      "number": 4,
+      "title": "Retain spawn-boundary verification evidence within included review scope",
+      "head": "95eed680e1ababc7a5b62bb91ce437d282de8dc7",
+      "base": "5670338fcf1db7d51a2690f388e4e4c5c409c48a",
+      "draft": true,
+      "writer": "riatzukiza"
+    },
+    {
+      "number": 3,
+      "title": "fix(music): decode native stdout and package the synthesis engine",
+      "head": "366e72ab68c8afae708d3f6d5546faee808ebc07",
+      "base": "5670338fcf1db7d51a2690f388e4e4c5c409c48a",
+      "draft": false,
+      "writer": "riatzukiza"
+    },
+    {
+      "number": 2,
+      "title": "chore: preserve local Axxium identity feature for personal development review",
+      "head": "6a943a6c312d14427937550774514f6c0d106e53",
+      "base": "5670338fcf1db7d51a2690f388e4e4c5c409c48a",
+      "draft": true,
+      "writer": "riatzukiza"
+    },
+    {
+      "number": 1,
+      "title": "chore: synchronize accepted Knoxx origin main at 3409977b",
+      "head": "5670338fcf1db7d51a2690f388e4e4c5c409c48a",
+      "base": "b3903dfc4c9e9dd5e32ae658cf5d8abb88b8e792",
+      "draft": true,
+      "writer": "riatzukiza"
+    }
+  ]
+}

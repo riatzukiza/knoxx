@@ -192,3 +192,12 @@
   p-skill-candidate: 0.2
   receipt-refs: 2026-10-06T14:28:52.198143Z
   note: Keep accepted source synchronization separate from unmerged feature migration. An inherited ready-triggered merge job makes draft preparation necessary until reviewed base enforcement. No spore warranted.
+- ts: 2026-10-07T04:06:16.336634700Z
+  session: /home/err/.codex/parallel-goal/issues-20261006/Knoxx162-telemetry-planning-2427278dfe/worktree
+  task: Knoxx162 full telemetry planning refinement
+  p-efficiency: 0.86
+  p-friction: 0.28
+  p-skill-candidate: 0.20
+  spore: none
+  receipt-refs: 5f163c171c992646645f0ac0cf1925d261742548b126e36ff270a00d49263012
+  note: Inspect actual emitter/admission and resolved policy identity before accepting a stale single-file telemetry plan. Preserve original Ready history and five-field/three-outcome scope; no implementation, live event or spore promotion.

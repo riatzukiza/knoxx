@@ -1,0 +1,89 @@
+{
+  "accepted": "3409977bca4ba35e09967f9a99d50867a679a73c",
+  "files": [
+    {
+      "path": "AGENTS.md",
+      "git_blob": "f7a0e2edcc4714f9780cdd8625acc52cf818fecb",
+      "bytes": 13198,
+      "sha256": "a9aae6e9cc829df7319b267c8b93fa188abcc52a2c7e6e87c56846173f29701e"
+    },
+    {
+      "path": "kanban/README.md",
+      "git_blob": "a93555d53f85acfcf0f29b713ba2112baaba3415",
+      "bytes": 2773,
+      "sha256": "983a3d2a36f93103bd1cfe1f6916254a0c905e6be3274116dcb39f71a15d4353"
+    },
+    {
+      "path": "kanban/tasks/knowledge-ops-adaptive-expand-policy-telemetry.md",
+      "git_blob": "2179f934fab7c2df85638e398cbb8a59030facad",
+      "bytes": 3269,
+      "sha256": "39acb6a5daed27008877c635efad9f9898ba6b6ba2a2ecf2dd4a41ed7b3c586f"
+    },
+    {
+      "path": "kanban/tasks/knowledge-ops-adaptive-expand-policy-seam.md",
+      "git_blob": "ed1ab3af7543d6750b1a4adbe98db6a9eba72cd9",
+      "bytes": 3357,
+      "sha256": "c5c072a39eba7c3ae59f4c7b8250bc5eeb880a06edc008a3e4e7b20a58f1ee4b"
+    },
+    {
+      "path": "backend/package.json",
+      "git_blob": "a388577d6f5fa82af932f18bf9c0d4d4b4a00480",
+      "bytes": 3461,
+      "sha256": "37812f05dcb69774ab780d326f27d0c948a513a8e7406e954db67d2f318c62fa"
+    },
+    {
+      "path": "backend/src/cljs/knoxx/backend/domain/graph/expansion_policy.cljs",
+      "git_blob": "deebbadba94e5b164c43576479cedd51f04bfeaf",
+      "bytes": 3494,
+      "sha256": "b2fd706223a8939cfe34be7b6ba10076cd58d065aebba78aad2f08f37e179519"
+    },
+    {
+      "path": "backend/src/cljs/knoxx/backend/domain/graph/policy_registry.cljs",
+      "git_blob": "1e226b051a23b71a38091a3d07ed663e8fe022fd",
+      "bytes": 2333,
+      "sha256": "e4cb87379da79e59790aa56ab90a1f05d3a420977ee55964204b63de9df6254c"
+    },
+    {
+      "path": "backend/src/cljs/knoxx/backend/infra/openplanner/memory.cljs",
+      "git_blob": "0839418b16d8db3b906f74127421ff765b5b1885",
+      "bytes": 39413,
+      "sha256": "a3978c0088182c1f5cf9555e9ed1317e4eabff60c4fa4d0f7b9b61658e635de5"
+    },
+    {
+      "path": "backend/src/cljs/knoxx/backend/infra/routes/memory.cljs",
+      "git_blob": "f2e82f102806bde9596ab3a0d57ad68f3db951ac",
+      "bytes": 39309,
+      "sha256": "d3f36bb72fd091005c1f19f24468bb75da1b41e16c11b25737a49de29980c6c4"
+    },
+    {
+      "path": "backend/src/cljs/knoxx/backend/infra/run_events.cljs",
+      "git_blob": "073a81ae4443fc645707e9ab70cac62192631abc",
+      "bytes": 1750,
+      "sha256": "791148210c2157ae006d9e7aa2d849487f449ace8e9d68d70c9b25668049a077"
+    },
+    {
+      "path": "backend/src/cljs/knoxx/backend/domain/action/run_state.cljs",
+      "git_blob": "569ca27581dc10fab356b07f6c98fc3b6d99a7f4",
+      "bytes": 9622,
+      "sha256": "8501b39d14215dcda32af3e0c9ccf1cbc4dded41a29d91b15246040bfff64e1e"
+    },
+    {
+      "path": "backend/src/cljs/knoxx/backend/extern/clock.cljs",
+      "git_blob": "a8983dcbff397360914ae056e588902341447015",
+      "bytes": 205,
+      "sha256": "038c7f0a1356625db532cf3268fe5e4ed8756f0c6be3457820e572ba265ac61a"
+    },
+    {
+      "path": "backend/src/cljs/knoxx/backend/domain/error_observatory.cljs",
+      "git_blob": "123472cebae948a0076cdbe59fb597500666a3d5",
+      "bytes": 3531,
+      "sha256": "846a68fbfb817a2c94e623e947d280149a9858eac47f8f9e9a5d14f10fe06409"
+    },
+    {
+      "path": "backend/src/cljs/knoxx/backend/infra/core.cljs",
+      "git_blob": "d33d6bcb9cf9a4acc064f9441a2472c46118e24d",
+      "bytes": 12414,
+      "sha256": "f788c933dd62a97f6aef39e3c3e8c180d1910f3d425b9e5f2e08b28fa78094e8"
+    }
+  ]
+}

@@ -1,0 +1,207 @@
+{
+  "repo": "open-hax/knoxx",
+  "captured_snapshot": true,
+  "count": 25,
+  "pulls": [
+    {
+      "number": 381,
+      "title": "Delegate local Knoxx login to Axxium",
+      "head": "40221a69f7fff675b46614d9ab318b4ef52f3786",
+      "base": "b3903dfc4c9e9dd5e32ae658cf5d8abb88b8e792",
+      "draft": false,
+      "writer": "riatzukiza"
+    },
+    {
+      "number": 376,
+      "title": "[305/03b] Mongo policy modules and legacy authentication compatibility",
+      "head": "33724ee74e16eb06e13e8679865045b3650d6f62",
+      "base": "424d47d1509680f20c048cccf1aa3808fe28d2c1",
+      "draft": false,
+      "writer": "riatzukiza"
+    },
+    {
+      "number": 375,
+      "title": "[305/03a] Additive identity laws and Clio policy stores",
+      "head": "424d47d1509680f20c048cccf1aa3808fe28d2c1",
+      "base": "300960176f66e5b49bc24379d606385ec6a99991",
+      "draft": false,
+      "writer": "riatzukiza"
+    },
+    {
+      "number": 371,
+      "title": "[305/23] Executable browser tours and application handoff",
+      "head": "068781219908dba0f1c66a654c7568f3cc6e4d56",
+      "base": "e641add588ef059a06fe6d4c593041991545aa91",
+      "draft": false,
+      "writer": "riatzukiza"
+    },
+    {
+      "number": 369,
+      "title": "[305/22] Frontend build, migration inventory and surface verification",
+      "head": "e641add588ef059a06fe6d4c593041991545aa91",
+      "base": "0c0a8a9f1d133b3551e53e83f5d6dcddf0158f5c",
+      "draft": false,
+      "writer": "riatzukiza"
+    },
+    {
+      "number": 367,
+      "title": "[305/21] Application navigation, events and mailbox UI",
+      "head": "0c0a8a9f1d133b3551e53e83f5d6dcddf0158f5c",
+      "base": "2b325dd98a4011af9b8d783200a449936bbc4d3b",
+      "draft": false,
+      "writer": "riatzukiza"
+    },
+    {
+      "number": 365,
+      "title": "[305/20] Translation review workspace and interaction coverage",
+      "head": "2b325dd98a4011af9b8d783200a449936bbc4d3b",
+      "base": "c4534cbc0c6d56f7a7354cdae655587b850bb0c1",
+      "draft": false,
+      "writer": "riatzukiza"
+    },
+    {
+      "number": 363,
+      "title": "[305/19] CMS, documents and source discussion UI",
+      "head": "c4534cbc0c6d56f7a7354cdae655587b850bb0c1",
+      "base": "68895c8d7d6e2d365dd130bee5b2763f92e4eb3b",
+      "draft": false,
+      "writer": "riatzukiza"
+    },
+    {
+      "number": 361,
+      "title": "[305/18] Chat workspace, composition and voice boundaries",
+      "head": "68895c8d7d6e2d365dd130bee5b2763f92e4eb3b",
+      "base": "53ab67040d8f3a612bbdddeb20dcf49d954a2511",
+      "draft": false,
+      "writer": "riatzukiza"
+    },
+    {
+      "number": 359,
+      "title": "[305/17] Agent workbench and native Contracts UI",
+      "head": "53ab67040d8f3a612bbdddeb20dcf49d954a2511",
+      "base": "54f189e14325badc6378da6cc842cdcefa95fbd6",
+      "draft": false,
+      "writer": "riatzukiza"
+    },
+    {
+      "number": 357,
+      "title": "[305/16] Account, credential and administration UI",
+      "head": "54f189e14325badc6378da6cc842cdcefa95fbd6",
+      "base": "364e2a24ce792ad29518e87ab834cc15d446a136",
+      "draft": false,
+      "writer": "riatzukiza"
+    },
+    {
+      "number": 355,
+      "title": "[305/15] Frontend API, storage and shared data boundaries",
+      "head": "364e2a24ce792ad29518e87ab834cc15d446a136",
+      "base": "5bf0831bb394be42f1303936fb8627e9bd3e5ce7",
+      "draft": false,
+      "writer": "riatzukiza"
+    },
+    {
+      "number": 353,
+      "title": "[305/14] Explicit persistence composition, HTTP startup and end-to-end proof",
+      "head": "5bf0831bb394be42f1303936fb8627e9bd3e5ce7",
+      "base": "d2ac37a2d9294f8727abec9c5dc20119a5e70620",
+      "draft": false,
+      "writer": "riatzukiza"
+    },
+    {
+      "number": 351,
+      "title": "[305/13] Application route and session lifecycle decomposition",
+      "head": "d2ac37a2d9294f8727abec9c5dc20119a5e70620",
+      "base": "09eff5eded1d0fff0d081b0659ecadfc70880fd5",
+      "draft": false,
+      "writer": "riatzukiza"
+    },
+    {
+      "number": 349,
+      "title": "[305/12] Memory and resource HTTP boundary decomposition",
+      "head": "09eff5eded1d0fff0d081b0659ecadfc70880fd5",
+      "base": "93794f692b14015a5009fb7c2722025990ce5a46",
+      "draft": false,
+      "writer": "riatzukiza"
+    },
+    {
+      "number": 347,
+      "title": "[305/11] Discord gateway and voice boundary decomposition",
+      "head": "93794f692b14015a5009fb7c2722025990ce5a46",
+      "base": "b5d9007d54001545f284e0a7e0b89549cc5aa7b9",
+      "draft": false,
+      "writer": "riatzukiza"
+    },
+    {
+      "number": 345,
+      "title": "[305/10] Bluesky and Discord tool boundary decomposition",
+      "head": "b5d9007d54001545f284e0a7e0b89549cc5aa7b9",
+      "base": "1826e7f6ad0d9502b75f04ba0e91ee30dedcc93a",
+      "draft": false,
+      "writer": "riatzukiza"
+    },
+    {
+      "number": 343,
+      "title": "[305/09] Translation admission, publication guards and regression coverage",
+      "head": "1826e7f6ad0d9502b75f04ba0e91ee30dedcc93a",
+      "base": "d30c9c5aca75e5904ec061d7a3c87e3d72d9aaf0",
+      "draft": false,
+      "writer": "riatzukiza"
+    },
+    {
+      "number": 341,
+      "title": "[305/08] Durable agent admission, queued runs and failed-start recording",
+      "head": "d30c9c5aca75e5904ec061d7a3c87e3d72d9aaf0",
+      "base": "ac6ece1ca001075a7f9b19cf79751a4d30e023db",
+      "draft": false,
+      "writer": "riatzukiza"
+    },
+    {
+      "number": 339,
+      "title": "[305/07] Local OpenPlanner, generation and embedding providers",
+      "head": "ac6ece1ca001075a7f9b19cf79751a4d30e023db",
+      "base": "1d2122c14224674b505110ae281d3325ea518269",
+      "draft": false,
+      "writer": "riatzukiza"
+    },
+    {
+      "number": 337,
+      "title": "[305/06] MCP OAuth providers, native token revocation and HTTP boundary",
+      "head": "1d2122c14224674b505110ae281d3325ea518269",
+      "base": "98f2398cd014bc9d90feee10396d91ac44c68f5a",
+      "draft": false,
+      "writer": "riatzukiza"
+    },
+    {
+      "number": 335,
+      "title": "[305/05] Verified identity, local policy and principal-bound administration",
+      "head": "98f2398cd014bc9d90feee10396d91ac44c68f5a",
+      "base": "30e43bf26e64869e2e76cc568d3031968f6c6784",
+      "draft": false,
+      "writer": "riatzukiza"
+    },
+    {
+      "number": 333,
+      "title": "[305/04] Durable mailbox commands, retry identity and SSE delivery",
+      "head": "30e43bf26e64869e2e76cc568d3031968f6c6784",
+      "base": "87122de9ab406ac1ec5df0285e363f0ea6738456",
+      "draft": false,
+      "writer": "riatzukiza"
+    },
+    {
+      "number": 305,
+      "title": "Clio persistence and local Wiki stack: implementation handoff",
+      "head": "1d3b207ab2e5bfc6b2fa149836b855d458a9c997",
+      "base": "d49242b22cd8b303a2ac9807c70a3acb42a47a1a",
+      "draft": false,
+      "writer": "riatzukiza"
+    },
+    {
+      "number": 286,
+      "title": "board: reconcile Knoxx issue projection state",
+      "head": "1de1aeb54463a0f8062f6b73a3479ea4722feb4e",
+      "base": "060b1898e921d1c253968476753cac10c4ed0765",
+      "draft": false,
+      "writer": "riatzukiza"
+    }
+  ]
+}
