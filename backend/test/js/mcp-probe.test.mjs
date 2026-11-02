@@ -4,7 +4,8 @@ import { spawnSync } from 'node:child_process';
 import { mkdtempSync, copyFileSync, symlinkSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
-import { parseCommand } from '../../scripts/mcp-probe.mjs';
+import { pathToFileURL } from 'node:url';
+import { isEntrypoint, parseCommand } from '../../scripts/mcp-probe.mjs';
 
 test('rejects malformed commands before attempting a connection', () => {
   for (const args of [[], ['bogus'], ['list', 'extra'], ['schema'], ['schema', 'x', '{}'], ['call']]) {
@@ -39,6 +40,25 @@ test('direct invocation works through hash paths and symlinks', () => {
       assert.equal(result.status, 1);
       assert.match(result.stderr, /KNOXX_MCP_LOOPBACK_TOKEN is required/);
     }
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+
+test('fallback entrypoint detection handles missing import.meta.main', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'mcp-probe-fallback-'));
+  try {
+    const script = join(dir, 'probe#test.mjs');
+    const link = join(dir, 'link.mjs');
+    copyFileSync(resolve('scripts/mcp-probe.mjs'), script);
+    symlinkSync(script, link);
+    const url = pathToFileURL(script).href;
+    assert.equal(isEntrypoint(undefined, link, url), true);
+    assert.equal(isEntrypoint(undefined, script, url), true);
+    assert.equal(isEntrypoint(undefined, undefined, url), false);
+    assert.equal(isEntrypoint(undefined, join(dir, 'absent'), url), false);
+    assert.equal(isEntrypoint(false, script, url), false);
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }

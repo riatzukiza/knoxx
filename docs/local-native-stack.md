@@ -73,6 +73,14 @@ initiation if the process exits or does not respond within the bounded wait:
   mkdir -p "$HOME/.local/share/knoxx/mongo" || exit 1
   mongod --replSet rs0 --bind_ip 127.0.0.1 --dbpath "$HOME/.local/share/knoxx/mongo" &
   mongo_pid=$!
+  cleanup_on_failure() {
+    status=$?
+    if [ "$status" -ne 0 ]; then
+      kill "$mongo_pid" 2>/dev/null || :
+      wait "$mongo_pid" 2>/dev/null || :
+    fi
+  }
+  trap cleanup_on_failure EXIT
   ready=0
   for attempt in {1..30}; do
     if ! kill -0 "$mongo_pid" 2>/dev/null; then

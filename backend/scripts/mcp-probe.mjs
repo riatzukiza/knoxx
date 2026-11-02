@@ -1,4 +1,7 @@
 // Run from backend/: node --env-file=<env> scripts/mcp-probe.mjs list|schema <tool>|call <tool> '<json>'
+import { realpathSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+
 const usage = 'Usage: mcp-probe.mjs list | schema <tool> | call <tool> [json-object]';
 export function parseCommand(argv) {
   const [cmd, name, args, ...extra] = argv;
@@ -48,7 +51,17 @@ async function main() {
   }
 }
 
-if (import.meta.main) {
+export function isEntrypoint(main, argvPath, moduleUrl) {
+  if (typeof main === 'boolean') return main;
+  if (!argvPath) return false;
+  try {
+    return realpathSync(argvPath) === fileURLToPath(moduleUrl);
+  } catch {
+    return false;
+  }
+}
+
+if (isEntrypoint(import.meta.main, process.argv[1], import.meta.url)) {
   main().catch(error => {
     console.error(error.message);
     process.exitCode = 1;
