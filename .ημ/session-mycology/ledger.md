@@ -535,3 +535,21 @@
   spore: none
   receipt-refs: .ημ/receipts.edn#3b1497f9-9186-4dc9-8e9c-4953fb141fb7
   note: Knoxx17 source7f5f5e51 closes four planning findings: cite historical lint receipt, share filtering/inventory with install/build, isolate real cold integration from default tests, require actionlint. Preserve SDK5 metadata/history. Native comment legitimately generated a write-id; an overstrict guard failed and driver still applied the admitted body. Exact bytes were revalidated without replay; only own added EOF-LF removed. Future guards stop dependents. No product tests or public effects; candidate0. Native reflectioncf6e3402-8cde-4d43-9df1-087d504f8fb6.
+- ts: 2026-10-15T18:56:29.789199248Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: Existing Knoxx lint3 final-verification planning refinement
+  p-efficiency: 0.90
+  p-friction: 0.20
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#3d8d7ade-f121-43a6-9571-33624a12265d
+  note: Keep a final verification owner distinct from existing remediation owners. Exact SDK17 source642 and its registered pinned clj-kondo2025.07.28 returned 7 file-length errors and 258 warnings once; historical EC101 13/283 and bd29 8/282 remain dated evidence, not current diagnostics. Refine existing lint3 through native todo to in_progress to breakdown, retain 3/P1 and SDK dependency, and record only final zero-error/zero-warning handoff scope. No code repair, install, suppression, rerun or public effect; candidate0. Native reflection 4ccc8e70-b772-4883-be8d-7fad7c857e1f.
+- ts: 2026-10-15T21:40:59.761535999Z
+  session: 01a12257-fc69-7720-888c-dd2595ff7dc7
+  task: Existing lint3 five-root planning refinement
+  p-efficiency: 0.92
+  p-friction: 0.14
+  p-skill-candidate: 0
+  spore: none
+  receipt-refs: .ημ/receipts.edn#3322b1bb-30ec-422a-b5dc-63dfde5282e3
+  note: A final verification story must require effective policy enforcement, exact registered test builds with zero actual warnings, the extern boundary gate and blocking full-backend CI lint. Keep linter enablement and resulting diagnostic remediation separately owned and reviewed; unsupported or unowned enforcement blocks completion. Three-point lint3 remains integration qualification, one existing-command CI step and SDK handoff. Preserve historical diagnostics and native comments, and do not claim planning as implementation or readiness. Five Codex roots verified at62 and addressed only in local source339; public HOLD, candidate0, no spore. Native reflection c891b291-f485-4a15-b557-1dbc9f026af0.
