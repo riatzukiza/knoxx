@@ -78,9 +78,10 @@ provider URLs, config dumps, arbitrary map keys or tenant-sensitive identifiers.
 Safe correlation belongs to the call context, not a process-global mutable sink
 or policy override. Telemetry cannot change tenant/project scopes or permissions.
 
-Applied bounds are what actually reach the operation: search `k` and `fetch-k`,
-graph `limit`/`edge-limit` and derived `max-cost` when present, optional preview
-`limit`. Distinguish requested and applied values if both are included; only
+Record the effective bounds at each stage: search `k` and `fetch-k`, graph
+`limit` and derived `max-cost` when present, and optional preview `limit`.
+Graph `edge-limit` is a policy input used to derive `max-cost`; it is not sent
+as an SDK field. Distinguish requested and applied values if both are included; only
 allowlisted numeric requests may be retained. Preserve the SDK request body,
 source/project/session scoping, default clamps, mode, hit order and result
 values. Search’s route bound and adapter bound are distinct stages of one call;
