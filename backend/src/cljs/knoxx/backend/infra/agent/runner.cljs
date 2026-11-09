@@ -4,32 +4,29 @@
    Event-triggered and chat-triggered work should converge on the same Knoxx
    turn runtime. This namespace provides a queue-style direct-start helper so
    non-HTTP callers can use the same semantics as /api/knoxx/direct/start."
-  (:require [knoxx.backend.infra.run-event-payload :as run-payload]
-            [clojure.string :as str]
+  (:require [clojure.string :as str]
             [knoxx.backend.domain.action.run-state :as run-state]
             [knoxx.backend.domain.time :as time]
             [knoxx.backend.domain.voice.turn-control :as turn-control]
             [knoxx.backend.infra.agent.policy :as agent-policy]
-            [knoxx.backend.infra.agent.queued-run :as queued-run]
-            [knoxx.backend.infra.agent.startup-settlement :as startup]
-            [knoxx.backend.infra.run-events :as run-events]
-            [knoxx.backend.extern.event-turn-admission :as admission]
-            [knoxx.backend.shape.event-turn-queue :as queue-shape]
             [knoxx.backend.infra.agent.session :refer [active-agent-session]]
             [knoxx.backend.infra.agent.turn :as agent-turns]
             [knoxx.backend.infra.stores.mongo-session-store :as session-store]
             [knoxx.backend.infra.system-instance :as system-instance]
             [knoxx.backend.extern.agent-runner :as xrunner]
             [knoxx.backend.extern.agent-turn-node :as xturn-node]
-            [knoxx.backend.law.spawn-diagnostic :as spawn-diagnostic]
             [knoxx.backend.runtime.state :as runtime-state]
             [knoxx.backend.shape.agent :refer [streaming?]]))
 
 (def ^:private default-event-agent-concurrency 1)
 (def ^:private default-event-agent-queue-limit 256)
 
-(defn- initial-event-turn-queue-state []
-  (queue-shape/initial-state default-event-agent-concurrency default-event-agent-queue-limit))
+(defn- initial-event-turn-queue-state
+  []
+  {:active []
+   :pending []
+   :concurrency default-event-agent-concurrency
+   :queue-limit default-event-agent-queue-limit})
 
 (defonce ^:private event-turn-queue*
   (atom (initial-event-turn-queue-state)))
@@ -179,17 +176,28 @@
       (:llmModel config)
       (:proxx-default-model config)))
 
+(defn- queue-snapshot-from-state
+  [{:keys [active pending concurrency queue-limit]}]
+  {:active (count active)
+   :queued (count pending)
+   :concurrency concurrency
+   :queue-limit queue-limit
+   :active-run-ids (mapv #(get-in % [:body :run-id]) active)
+   :queued-run-ids (mapv #(get-in % [:body :run-id]) pending)
+   ;; This limiter protects the local provider but is intentionally honest
+   ;; about its process boundary. Event replay remains the restart recovery.
+   :restart-aware false})
+
 (defn event-turn-queue-snapshot
   "Return observable, serialization-safe state for the event-agent FIFO."
   []
-  (queue-shape/snapshot @event-turn-queue*))
+  (queue-snapshot-from-state @event-turn-queue*))
 
 (defn reset-event-turn-queue!
   "Reset limiter bookkeeping for tests or a stopped runtime.
-   Executing turns retain ownership and are not cancelled."
+
+   This does not cancel a turn that is already executing."
   []
-  (doseq [entry (:pending @event-turn-queue*)]
-    (run-state/release-owned-run! (:queue-id entry)))
   (reset! event-turn-queue* (initial-event-turn-queue-state))
   (event-turn-queue-snapshot))
 
@@ -292,8 +300,28 @@
    :queue-limit (max 1 (or (:event-agent-queue-limit config)
                            default-event-agent-queue-limit))})
 
-(defn- event-turn-reservation [state entry concurrency queue-limit]
-  (queue-shape/reservation state entry concurrency queue-limit))
+(defn- event-turn-reservation
+  [state entry concurrency queue-limit]
+  (let [configured (assoc state
+                          :concurrency concurrency
+                          :queue-limit queue-limit)
+        start-now? (and (empty? (:pending configured))
+                        (< (count (:active configured)) concurrency))
+        queue-full? (and (not start-now?)
+                         (>= (count (:pending configured)) queue-limit))
+        after (cond
+                start-now? (update configured :active conj entry)
+                queue-full? configured
+                :else (update configured :pending conj entry))
+        status (cond
+                 start-now? :running
+                 queue-full? :full
+                 :else :queued)]
+    {:after after
+     :queue-full? queue-full?
+     :result {:status status
+              :position (if (= :queued status) (count (:pending after)) 0)
+              :snapshot (queue-snapshot-from-state after)}}))
 
 (defn- reserve-event-turn!
   [entry concurrency queue-limit]
@@ -303,18 +331,39 @@
           (event-turn-reservation before entry concurrency queue-limit)]
       (cond
         queue-full? result
-        (compare-and-set! event-turn-queue* before after)
-        (do (run-state/retain-owned-run! (:queue-id entry) (get-in entry [:body :run-id]))
-          result)
+        (compare-and-set! event-turn-queue* before after) result
         :else (recur)))))
 
-(defn- release-event-turn! [queue-id]
+(defn- release-event-turn!
+  [queue-id]
   (loop []
-    (let [before @event-turn-queue*]
-      (when-let [{:keys [after next-entry]} (queue-shape/release-entry before queue-id)]
-        (if (compare-and-set! event-turn-queue* before after)
-          (do (run-state/release-owned-run! queue-id) next-entry)
-          (recur))))))
+    (let [before @event-turn-queue*
+          owned? (some #(= queue-id (:queue-id %)) (:active before))]
+      (when owned?
+        (let [remaining-active (->> (:active before)
+                                    (remove #(= queue-id (:queue-id %)))
+                                    vec)
+              next-entry (first (:pending before))
+              remaining-pending (if next-entry
+                                  (subvec (:pending before) 1)
+                                  [])
+              after (cond-> (assoc before
+                                   :active remaining-active
+                                   :pending remaining-pending)
+                      next-entry (update :active conj next-entry))]
+          (if (compare-and-set! event-turn-queue* before after)
+            next-entry
+            (recur)))))))
+
+(defn- response-queue-metadata
+  [{:keys [status position snapshot]}]
+  {:status (name status)
+   :position position
+   :active (:active snapshot)
+   :queued (:queued snapshot)
+   :concurrency (:concurrency snapshot)
+   :queue_limit (:queue-limit snapshot)
+   :restart_aware (:restart-aware snapshot)})
 
 (defn- accepted-response
   ([body]
@@ -327,7 +376,74 @@
             :session_id (:session-id body)
             :model (or (:model body)
                        (get-in body [:agent-spec :model]))}
-     queue-result (assoc :event_queue (queue-shape/response-queue-metadata queue-result)))))
+     queue-result (assoc :event_queue (response-queue-metadata queue-result)))))
+
+(defn- queued-agent-spec-summary
+  [agent-spec]
+  (when agent-spec
+    (cond-> {}
+      (:contract-id agent-spec) (assoc :contractId (:contract-id agent-spec))
+      (:actor-id agent-spec) (assoc :actorId (:actor-id agent-spec))
+      (:model agent-spec) (assoc :model (:model agent-spec))
+      (:thinking-level agent-spec) (assoc :thinkingLevel (:thinking-level agent-spec))
+      (:tools-choice agent-spec) (assoc :toolsChoice (:tools-choice agent-spec))
+      (:trigger-id agent-spec) (assoc :triggerId (:trigger-id agent-spec))
+      (:event-type agent-spec) (assoc :eventType (:event-type agent-spec))
+      (seq (:event-types agent-spec)) (assoc :eventTypes (vec (:event-types agent-spec)))
+      (:event-id agent-spec) (assoc :eventId (:event-id agent-spec))
+      (:event-scope-id agent-spec) (assoc :eventScopeId (:event-scope-id agent-spec))
+      (:schedule-id agent-spec) (assoc :scheduleId (:schedule-id agent-spec)))))
+
+(defn- event-queue-run-context
+  [config body queue-result]
+  (let [agent-spec (:agent-spec body)]
+    {:settings (cond-> {:sessionId (:session-id body)
+                        :conversationId (:conversation-id body)
+                        :mode "direct"
+                        :workspaceRoot (:workspace-root config)
+                        :eventQueue (response-queue-metadata queue-result)}
+                 agent-spec (assoc :agentSpec (queued-agent-spec-summary agent-spec)))
+     :resources (cond-> {:provider "proxx"
+                         :collection (:collection-name config)}
+                  (:resource-policies agent-spec)
+                  (assoc :agentResourcePolicies (:resource-policies agent-spec)))}))
+
+(defn- event-queue-event
+  [body queue-result status event-type error]
+  (run-state/tool-event-payload
+   (:run-id body) (:conversation-id body) (:session-id body) event-type
+   (cond-> {:status status
+            :queue_position (:position queue-result)
+            :queue_concurrency (get-in queue-result [:snapshot :concurrency])
+            :queue_limit (get-in queue-result [:snapshot :queue-limit])
+            :restart_aware false}
+     error (assoc :error error))))
+
+(defn- event-queue-run
+  [config body queue-result status event-type error]
+  (let [created-at (time/now-iso)]
+    (merge {:run_id (:run-id body)
+            :session_id (:session-id body)
+            :conversation_id (:conversation-id body)
+            :created_at created-at
+            :updated_at created-at
+            :status status
+            :model (policy-model config body)
+            :error error
+            :answer nil
+            :content_parts []
+            :events [(event-queue-event body queue-result status event-type error)]
+            :trace_blocks []
+            :tool_receipts []
+            :request_messages [{:role "user" :content (:message body)}]}
+           (event-queue-run-context config body queue-result))))
+
+(defn- record-event-turn!
+  [config body queue-result status event-type error]
+  (when-let [run-id (:run-id body)]
+    (run-state/store-run!
+     run-id
+     (event-queue-run config body queue-result status event-type error))))
 
 (defn- mark-event-turn-started!
   [body]
@@ -344,34 +460,30 @@
            (assoc-in [:settings :eventQueue :position] 0))))
     (run-state/append-run-event!
      run-id
-     (run-payload/tool-event-payload
+     (run-state/tool-event-payload
       run-id conversation-id session-id "event_turn_started"
       {:status "running"
        :restart_aware false}))))
 
 (defn log-and-record-async-spawn-error!
-  "Log and return private diagnostics without claiming this invocation was admitted.
-   This compatibility entrypoint must never mutate a run found only by request ID."
   [body err]
-  (xrunner/log-async-spawn-error! body err)
-  (xrunner/error-diagnostic body err))
-
-(defn- record-admitted-event-turn-failure!
-  "Record a queue invocation whose own initial run/event admission already succeeded.
-   Only the two queue paths below may call this after their awaited admission gate."
-  [body err]
-  (let [diagnostic (log-and-record-async-spawn-error! body err)
-        run-id (:run-id body)]
-    ;; Admission evidence is the caller's completed queue gate, not this lookup.
-    ;; The lookup only avoids recreating an already evicted diagnostic record.
-    (when (get @run-state/runs* run-id)
-      (let [public (spawn-diagnostic/public-diagnostic diagnostic)
-            event (run-payload/tool-event-payload run-id (:conversation-id body) (:session-id body)
-                                                "async_spawn_failed"
-                                                {:status "failed" :error (:message public)
-                                                 :diagnostic public})]
-        (run-state/update-run! run-id #(assoc % :status "failed" :error (:message public)))
-        (run-state/append-run-event! run-id event)))
+  (let [diagnostic (xrunner/error-diagnostic body err)
+        run-id (:run-id body)
+        conversation-id (:conversation-id body)
+        session-id (:session-id body)
+        event (run-state/tool-event-payload run-id conversation-id session-id
+                                            "async_spawn_failed"
+                                            {:status "failed"
+                                             :error (:message diagnostic)
+                                             :diagnostic diagnostic})]
+    (xrunner/log-async-spawn-error! body err)
+    (when run-id
+      (run-state/update-run! run-id
+                             (fn [run]
+                               (cond-> run
+                                 run (assoc :status "failed"
+                                            :error (:message diagnostic)))))
+      (run-state/append-run-event! run-id event))
     diagnostic))
 
 (defn- ^:async send-turn-and-record!
@@ -389,31 +501,22 @@
          :agent-turn-timeout-ms
          (or (:event-agent-turn-timeout-ms config) 0)))
 
-(defn- event-turn-deadline-ms
-  [timeout-ms]
-  (when (and (number? timeout-ms) (pos? timeout-ms))
-    (+ (xrunner/now-ms) timeout-ms)))
-
 (defn- busy-error
   [message]
   (js/Promise.reject (js/Error. message)))
 
 (defn- event-turn-settlement
-  [result deadline-ms]
-  (cond->
-   (if-let [detail (some-> (:error result) str str/trim not-empty)]
-     {:event-turn/status :failed
-      :event-turn/detail detail}
-     {:event-turn/status :completed})
-    deadline-ms (assoc :event-turn/deadline-ms deadline-ms)))
+  [result]
+  (if-let [detail (some-> (:error result) str str/trim not-empty)]
+    {:event-turn/status :failed
+     :event-turn/detail detail}
+    {:event-turn/status :completed}))
 
 (defn- event-turn-failure
-  [err deadline-ms]
-  (cond->
-   {:event-turn/status :failed
-    :event-turn/detail (or (some-> (ex-message err) str str/trim not-empty)
-                           "event-triggered agent turn failed")}
-    deadline-ms (assoc :event-turn/deadline-ms deadline-ms)))
+  [err]
+  {:event-turn/status :failed
+   :event-turn/detail (or (some-> (ex-message err) str str/trim not-empty)
+                          "event-triggered agent turn failed")})
 
 (defn- event-id-from-body
   [body]
@@ -441,74 +544,54 @@
       (await (deliver-event-turn-settlement!
               event-id settle! settlement)))))
 
-(defn- ^:async execute-admitted-turn! [body start-turn! deadline-ms]
+(defn- ^:async execute-event-turn!
+  [{:keys [queue-id body start-turn!]}]
   (try
     (mark-event-turn-started! body)
-    (await (run-events/flush! (:run-id body)))
     (let [result (await (start-turn!))]
-      (await (notify-event-turn-settler! body (event-turn-settlement result deadline-ms))))
+      (await (notify-event-turn-settler! body (event-turn-settlement result))))
     (catch :default err
-      (record-admitted-event-turn-failure! body err)
-      (await (run-events/persist-run! (get @run-state/runs* (:run-id body))))
-      (await (notify-event-turn-settler! body (event-turn-failure err deadline-ms))))))
-
-(defn- ^:async execute-event-turn!
-  [{:keys [queue-id body start-turn! admission event-turn-timeout-ms]}]
-  (try
-    (when-not (await admission)
-      (await (execute-admitted-turn! body start-turn! (event-turn-deadline-ms event-turn-timeout-ms))))
-    (catch :default error
-      (xrunner/log-async-spawn-error! body error))
+      (log-and-record-async-spawn-error! body err)
+      (await (notify-event-turn-settler! body (event-turn-failure err))))
     (finally
-      (run-state/release-owned-run! queue-id)
       (when-let [next-entry (release-event-turn! queue-id)]
         (execute-event-turn! next-entry)))))
 
-(defn- ^:async admit-event-reservation! [config body queue-result entry gate]
-  (let [full? (= :full (:status queue-result))
-        message (when full? (str "event_agent_queue_full: pending queue limit "
-                                 (get-in queue-result [:snapshot :queue-limit]) " reached"))]
-    (try
-      (await (queued-run/record-event-turn! config body queue-result
-                                 (if full? "failed" "queued")
-                                 (if full? "event_turn_queue_rejected" "event_turn_queued") message))
-      ((:complete! gate) nil)
-      message
-      (catch :default error
-        ((:complete! gate) error)
-        (when-let [next-entry (release-event-turn! (:queue-id entry))]
-          (execute-event-turn! next-entry))
-        (throw error)))))
+(defn enqueue-event-turn!
+  "Admit an event-triggered turn to the bounded process-local FIFO.
 
-(defn ^:async enqueue-event-turn!
-  "Durably admit a run before acknowledging its reserved process-local FIFO position.
-  Await this result. The reservation precedes I/O; a promoted pending entry waits
-  for its own admission before starting. Durable event replay owns restart recovery."
+   `start-turn!` is a zero-arity function returning the full turn promise. The
+   limiter holds its slot until that promise settles. Queue state is observable
+   through the run store and the returned `:event_queue` metadata. Pending work
+   is intentionally not restart-aware; durable event replay is its recovery
+   mechanism."
   [config body start-turn!]
-  (let [config (assoc config startup/reservation-key (or (get config startup/reservation-key) (xturn-node/random-uuid!)))
-        {:keys [concurrency queue-limit]} (event-queue-settings config)
-        gate (admission/gate)
-        entry {:queue-id (xturn-node/random-uuid!) :body body :admission (:promise gate)
-               :event-turn-timeout-ms (:event-agent-turn-timeout-ms config) :start-turn! start-turn!}
-        queue-result (reserve-event-turn! entry concurrency queue-limit)
-        rejection (await (admit-event-reservation! config body queue-result entry gate))]
-    (if rejection
+  (let [{:keys [concurrency queue-limit]} (event-queue-settings config)
+        entry {:queue-id (xturn-node/random-uuid!)
+               :body body
+               :start-turn! start-turn!}
+        queue-result (reserve-event-turn! entry concurrency queue-limit)]
+    (if (= :full (:status queue-result))
+      (let [message (str "event_agent_queue_full: pending queue limit " queue-limit " reached")
+            err (js/Error. message)]
+        (record-event-turn! config body queue-result "failed" "event_turn_queue_rejected" message)
+        (log-and-record-async-spawn-error! body err)
+        (busy-error message))
       (do
-        (record-admitted-event-turn-failure! body (js/Error. rejection))
-        (await (run-events/flush! (:run-id body)))
-        (await (busy-error rejection)))
-      (do
-        (when (= :running (:status queue-result)) (execute-event-turn! entry))
+        (record-event-turn! config body queue-result "queued" "event_turn_queued" nil)
+        (when (= :running (:status queue-result))
+          (execute-event-turn! entry))
         (accepted-response body queue-result)))))
 
 (defn- ^:async queue-turn!
   [runtime config body]
   (await (agent-policy/validate-chat-policy! (:auth-context body) (policy-model config body)))
   (if (event-triggered-turn? body)
-    (let [config (assoc (event-turn-config config) startup/reservation-key (xturn-node/random-uuid!))]
-      (await (enqueue-event-turn!
-              config body
-              (fn [] (agent-turns/send-agent-turn! runtime config body)))))
+    (await (enqueue-event-turn!
+            config body
+            (fn []
+              (agent-turns/send-agent-turn!
+               runtime (event-turn-config config) body))))
     (do
       (send-turn-and-record! runtime config body)
       (accepted-response body))))
