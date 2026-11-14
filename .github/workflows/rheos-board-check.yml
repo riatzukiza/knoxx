@@ -21,7 +21,7 @@ jobs:
   rheos-board-check:
     permissions:
       contents: read
-    uses: open-hax/eta-mu/.github/workflows/rheos-board-check.yml@1af6746673b78000b690bfff773af0db10735566
+    uses: open-hax/eta-mu/.github/workflows/rheos-board-check.yml@f4ac84be690fb6cfc7bf8fbd27b62d1befaaaee8
     with:
       eta-mu-ref: 1af6746673b78000b690bfff773af0db10735566
       tasks-dir: kanban
