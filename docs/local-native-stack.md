@@ -23,8 +23,9 @@ Gotchas found on the way:
   `packages/stores/cache`. Otherwise `dist/server.js` fails with
   `ERR_MODULE_NOT_FOUND .../openplanner-sdk/dist/index.js`.
 - **gitlibs:** run `gh auth setup-git` first; if the first `shadow-cljs` run
-  reports `Unable to fetch ~/.gitlibs/_repos/.../eta-mu`, delete that dir and
-  rerun (three deps share the eta-mu repo and the parallel fetch can race).
+  reports `Unable to fetch ~/.gitlibs/_repos/.../eta-mu`, investigate the
+  cached checkout before retrying; three deps share the repo and parallel fetches
+  can race. Do not delete a shared cache without checking for local work.
 - **Mongo dbpath:** keep it off any directory a snapshot/backup agent touches.
   Foreign files in the WiredTiger journal dir (`WiredTigerLog.*.<suffix>`)
   make mongod `fassert` and exit.
@@ -59,11 +60,18 @@ mongosh --eval 'rs.initiate({_id:"rs0",members:[{_id:0,host:"127.0.0.1:27017"}]}
 (cd backend && node --env-file=$HOME/.config/knoxx/knoxx.env dist/server.js)
 ```
 
-Start from `scripts/local-native.env.example`. The log line
+Copy `scripts/local-native.env.example` to a private env file, fill in the
+secrets, and set `ENV` to its absolute path before running these commands. Use
+a dedicated Mongo database and local directories; the example database and
+paths are shared names, not per-run isolation. The log line
 `surface :mcp accepts :trusted-loopback` confirms the loopback MCP method is
 live (see `docs/mcp-local-testing.md`).
 
 ## Prove MCP end to end
+
+The `push_claim` call writes persistent data and queues embeddings. Run it only
+against a disposable database; this walkthrough does not remove the claim or
+its vectors. Tool counts and ranking scores are observations, not assertions.
 
 ```bash
 cd backend
